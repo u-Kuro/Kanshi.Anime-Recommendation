@@ -1,0 +1,1790 @@
+[
+  {
+    "info": "Action"
+  },
+  {
+    "info": "Adventure"
+  },
+  {
+    "info": "Comedy"
+  },
+  {
+    "info": "Drama"
+  },
+  {
+    "info": "Ecchi"
+  },
+  {
+    "info": "Fantasy"
+  },
+  {
+    "info": "Horror"
+  },
+  {
+    "info": "Mahou Shoujo"
+  },
+  {
+    "info": "Mecha"
+  },
+  {
+    "info": "Music"
+  },
+  {
+    "info": "Mystery"
+  },
+  {
+    "info": "Psychological"
+  },
+  {
+    "info": "Romance"
+  },
+  {
+    "info": "Sci-Fi"
+  },
+  {
+    "info": "Slice of Life"
+  },
+  {
+    "info": "Sports"
+  },
+  {
+    "info": "Supernatural"
+  },
+  {
+    "info": "Thriller"
+  },
+  {
+    "info": "4-koma"
+  },
+  {
+    "info": "Achronological Order"
+  },
+  {
+    "info": "Afterlife"
+  },
+  {
+    "info": "Age Gap"
+  },
+  {
+    "info": "Airsoft"
+  },
+  {
+    "info": "Aliens"
+  },
+  {
+    "info": "Alternate Universe"
+  },
+  {
+    "info": "American Football"
+  },
+  {
+    "info": "Amnesia"
+  },
+  {
+    "info": "Anti-Hero"
+  },
+  {
+    "info": "Archery"
+  },
+  {
+    "info": "Assassins"
+  },
+  {
+    "info": "Athletics"
+  },
+  {
+    "info": "Augmented Reality"
+  },
+  {
+    "info": "Aviation"
+  },
+  {
+    "info": "Badminton"
+  },
+  {
+    "info": "Band"
+  },
+  {
+    "info": "Bar"
+  },
+  {
+    "info": "Baseball"
+  },
+  {
+    "info": "Basketball"
+  },
+  {
+    "info": "Battle Royale"
+  },
+  {
+    "info": "Biographical"
+  },
+  {
+    "info": "Bisexual"
+  },
+  {
+    "info": "Body Swapping"
+  },
+  {
+    "info": "Boxing"
+  },
+  {
+    "info": "Bullying"
+  },
+  {
+    "info": "Calligraphy"
+  },
+  {
+    "info": "Card Battle"
+  },
+  {
+    "info": "Cars"
+  },
+  {
+    "info": "CGI"
+  },
+  {
+    "info": "Chibi"
+  },
+  {
+    "info": "Chuunibyou"
+  },
+  {
+    "info": "Classic Literature"
+  },
+  {
+    "info": "College"
+  },
+  {
+    "info": "Coming of Age"
+  },
+  {
+    "info": "Cosplay"
+  },
+  {
+    "info": "Crossdressing"
+  },
+  {
+    "info": "Crossover"
+  },
+  {
+    "info": "Cultivation"
+  },
+  {
+    "info": "Cute Girls Doing Cute Things"
+  },
+  {
+    "info": "Cyberpunk"
+  },
+  {
+    "info": "Cycling"
+  },
+  {
+    "info": "Dancing"
+  },
+  {
+    "info": "Delinquents"
+  },
+  {
+    "info": "Demons"
+  },
+  {
+    "info": "Development"
+  },
+  {
+    "info": "Dragons"
+  },
+  {
+    "info": "Drawing"
+  },
+  {
+    "info": "Dystopian"
+  },
+  {
+    "info": "Economics"
+  },
+  {
+    "info": "Educational"
+  },
+  {
+    "info": "Ensemble Cast"
+  },
+  {
+    "info": "Environmental"
+  },
+  {
+    "info": "Episodic"
+  },
+  {
+    "info": "Espionage"
+  },
+  {
+    "info": "Fairy Tale"
+  },
+  {
+    "info": "Family Life"
+  },
+  {
+    "info": "Fashion"
+  },
+  {
+    "info": "Female Protagonist"
+  },
+  {
+    "info": "Fishing"
+  },
+  {
+    "info": "Fitness"
+  },
+  {
+    "info": "Flash"
+  },
+  {
+    "info": "Food"
+  },
+  {
+    "info": "Football"
+  },
+  {
+    "info": "Foreign"
+  },
+  {
+    "info": "Fugitive"
+  },
+  {
+    "info": "Full CGI"
+  },
+  {
+    "info": "Full Colour"
+  },
+  {
+    "info": "Gambling"
+  },
+  {
+    "info": "Gangs"
+  },
+  {
+    "info": "Gender Bending"
+  },
+  {
+    "info": "Gender Neutral"
+  },
+  {
+    "info": "Ghost"
+  },
+  {
+    "info": "Gods"
+  },
+  {
+    "info": "Gore"
+  },
+  {
+    "info": "Guns"
+  },
+  {
+    "info": "Gyaru"
+  },
+  {
+    "info": "Harem"
+  },
+  {
+    "info": "Henshin"
+  },
+  {
+    "info": "Hikikomori"
+  },
+  {
+    "info": "Historical"
+  },
+  {
+    "info": "Ice Skating"
+  },
+  {
+    "info": "Idol"
+  },
+  {
+    "info": "Isekai"
+  },
+  {
+    "info": "Iyashikei"
+  },
+  {
+    "info": "Josei"
+  },
+  {
+    "info": "Kaiju"
+  },
+  {
+    "info": "Karuta"
+  },
+  {
+    "info": "Kemonomimi"
+  },
+  {
+    "info": "Kids"
+  },
+  {
+    "info": "Love Triangle"
+  },
+  {
+    "info": "Mafia"
+  },
+  {
+    "info": "Magic"
+  },
+  {
+    "info": "Mahjong"
+  },
+  {
+    "info": "Maids"
+  },
+  {
+    "info": "Male Protagonist"
+  },
+  {
+    "info": "Martial Arts"
+  },
+  {
+    "info": "Memory Manipulation"
+  },
+  {
+    "info": "Meta"
+  },
+  {
+    "info": "Military"
+  },
+  {
+    "info": "Monster Girl"
+  },
+  {
+    "info": "Mopeds"
+  },
+  {
+    "info": "Motorcycles"
+  },
+  {
+    "info": "Musical"
+  },
+  {
+    "info": "Mythology"
+  },
+  {
+    "info": "Nekomimi"
+  },
+  {
+    "info": "Ninja"
+  },
+  {
+    "info": "No Dialogue"
+  },
+  {
+    "info": "Noir"
+  },
+  {
+    "info": "Nudity"
+  },
+  {
+    "info": "Otaku Culture"
+  },
+  {
+    "info": "Outdoor"
+  },
+  {
+    "info": "Parody"
+  },
+  {
+    "info": "Philosophy"
+  },
+  {
+    "info": "Photography"
+  },
+  {
+    "info": "Pirates"
+  },
+  {
+    "info": "Poker"
+  },
+  {
+    "info": "Police"
+  },
+  {
+    "info": "Politics"
+  },
+  {
+    "info": "Post-Apocalyptic"
+  },
+  {
+    "info": "Primarily Adult Cast"
+  },
+  {
+    "info": "Primarily Female Cast"
+  },
+  {
+    "info": "Primarily Male Cast"
+  },
+  {
+    "info": "Puppetry"
+  },
+  {
+    "info": "Real Robot"
+  },
+  {
+    "info": "Rehabilitation"
+  },
+  {
+    "info": "Reincarnation"
+  },
+  {
+    "info": "Revenge"
+  },
+  {
+    "info": "Reverse Harem"
+  },
+  {
+    "info": "Robots"
+  },
+  {
+    "info": "Rugby"
+  },
+  {
+    "info": "Rural"
+  },
+  {
+    "info": "Samurai"
+  },
+  {
+    "info": "Satire"
+  },
+  {
+    "info": "School"
+  },
+  {
+    "info": "School Club"
+  },
+  {
+    "info": "Seinen"
+  },
+  {
+    "info": "Ships"
+  },
+  {
+    "info": "Shogi"
+  },
+  {
+    "info": "Shoujo"
+  },
+  {
+    "info": "Shoujo Ai"
+  },
+  {
+    "info": "Shounen"
+  },
+  {
+    "info": "Shounen Ai"
+  },
+  {
+    "info": "Slapstick"
+  },
+  {
+    "info": "Slavery"
+  },
+  {
+    "info": "Space"
+  },
+  {
+    "info": "Space Opera"
+  },
+  {
+    "info": "Steampunk"
+  },
+  {
+    "info": "Stop Motion"
+  },
+  {
+    "info": "Super Power"
+  },
+  {
+    "info": "Super Robot"
+  },
+  {
+    "info": "Superhero"
+  },
+  {
+    "info": "Surreal Comedy"
+  },
+  {
+    "info": "Survival"
+  },
+  {
+    "info": "Swimming"
+  },
+  {
+    "info": "Swordplay"
+  },
+  {
+    "info": "Table Tennis"
+  },
+  {
+    "info": "Tanks"
+  },
+  {
+    "info": "Teacher"
+  },
+  {
+    "info": "Tennis"
+  },
+  {
+    "info": "Terrorism"
+  },
+  {
+    "info": "Time Manipulation"
+  },
+  {
+    "info": "Time Skip"
+  },
+  {
+    "info": "Tragedy"
+  },
+  {
+    "info": "Trains"
+  },
+  {
+    "info": "Triads"
+  },
+  {
+    "info": "Tsundere"
+  },
+  {
+    "info": "Urban Fantasy"
+  },
+  {
+    "info": "Vampire"
+  },
+  {
+    "info": "Video Games"
+  },
+  {
+    "info": "Virtual World"
+  },
+  {
+    "info": "Volleyball"
+  },
+  {
+    "info": "War"
+  },
+  {
+    "info": "Witch"
+  },
+  {
+    "info": "Work"
+  },
+  {
+    "info": "Wrestling"
+  },
+  {
+    "info": "Writing"
+  },
+  {
+    "info": "Wuxia"
+  },
+  {
+    "info": "Yakuza"
+  },
+  {
+    "info": "Yandere"
+  },
+  {
+    "info": "Youkai"
+  },
+  {
+    "info": "Zombie"
+  },
+  {
+    "info": "UNWATCHED"
+  },
+  {
+    "info": "COMPLETED"
+  },
+  {
+    "info": "DROPPED"
+  },
+  {
+    "info": "PLANNING TO WATCH"
+  },
+  {
+    "info": "FALL"
+  },
+  {
+    "info": "WINTER"
+  },
+  {
+    "info": "SUMMER"
+  },
+  {
+    "info": "SPRING"
+  },
+  {
+    "info": "TV"
+  },
+  {
+    "info": "TV_SHORT"
+  },
+  {
+    "info": "OVA"
+  },
+  {
+    "info": "ONA"
+  },
+  {
+    "info": "MOVIE"
+  },
+  {
+    "info": "SPECIAL"
+  },
+  {
+    "info": "1940"
+  },
+  {
+    "info": "1941"
+  },
+  {
+    "info": "1942"
+  },
+  {
+    "info": "1943"
+  },
+  {
+    "info": "1944"
+  },
+  {
+    "info": "1945"
+  },
+  {
+    "info": "1946"
+  },
+  {
+    "info": "1947"
+  },
+  {
+    "info": "1948"
+  },
+  {
+    "info": "1949"
+  },
+  {
+    "info": "1950"
+  },
+  {
+    "info": "1951"
+  },
+  {
+    "info": "1952"
+  },
+  {
+    "info": "1953"
+  },
+  {
+    "info": "1954"
+  },
+  {
+    "info": "1955"
+  },
+  {
+    "info": "1956"
+  },
+  {
+    "info": "1957"
+  },
+  {
+    "info": "1958"
+  },
+  {
+    "info": "1959"
+  },
+  {
+    "info": "1960"
+  },
+  {
+    "info": "1961"
+  },
+  {
+    "info": "1962"
+  },
+  {
+    "info": "1963"
+  },
+  {
+    "info": "1964"
+  },
+  {
+    "info": "1965"
+  },
+  {
+    "info": "1966"
+  },
+  {
+    "info": "1967"
+  },
+  {
+    "info": "1968"
+  },
+  {
+    "info": "1969"
+  },
+  {
+    "info": "1970"
+  },
+  {
+    "info": "1971"
+  },
+  {
+    "info": "1972"
+  },
+  {
+    "info": "1973"
+  },
+  {
+    "info": "1974"
+  },
+  {
+    "info": "1975"
+  },
+  {
+    "info": "1976"
+  },
+  {
+    "info": "1977"
+  },
+  {
+    "info": "1978"
+  },
+  {
+    "info": "1979"
+  },
+  {
+    "info": "1980"
+  },
+  {
+    "info": "1981"
+  },
+  {
+    "info": "1982"
+  },
+  {
+    "info": "1983"
+  },
+  {
+    "info": "1984"
+  },
+  {
+    "info": "1985"
+  },
+  {
+    "info": "1986"
+  },
+  {
+    "info": "1987"
+  },
+  {
+    "info": "1988"
+  },
+  {
+    "info": "1989"
+  },
+  {
+    "info": "1990"
+  },
+  {
+    "info": "1991"
+  },
+  {
+    "info": "1992"
+  },
+  {
+    "info": "1993"
+  },
+  {
+    "info": "1994"
+  },
+  {
+    "info": "1995"
+  },
+  {
+    "info": "1996"
+  },
+  {
+    "info": "1997"
+  },
+  {
+    "info": "1998"
+  },
+  {
+    "info": "1999"
+  },
+  {
+    "info": "2000"
+  },
+  {
+    "info": "2001"
+  },
+  {
+    "info": "2002"
+  },
+  {
+    "info": "2003"
+  },
+  {
+    "info": "2004"
+  },
+  {
+    "info": "2005"
+  },
+  {
+    "info": "2006"
+  },
+  {
+    "info": "2007"
+  },
+  {
+    "info": "2008"
+  },
+  {
+    "info": "2009"
+  },
+  {
+    "info": "2010"
+  },
+  {
+    "info": "2011"
+  },
+  {
+    "info": "2012"
+  },
+  {
+    "info": "2013"
+  },
+  {
+    "info": "2014"
+  },
+  {
+    "info": "2015"
+  },
+  {
+    "info": "2016"
+  },
+  {
+    "info": "2017"
+  },
+  {
+    "info": "2018"
+  },
+  {
+    "info": "2019"
+  },
+  {
+    "info": "2020"
+  },
+  {
+    "info": "2021"
+  },
+  {
+    "info": "2022"
+  },
+  {
+    "info": "2023"
+  },
+  {
+    "info": "!Action"
+  },
+  {
+    "info": "!Adventure"
+  },
+  {
+    "info": "!Comedy"
+  },
+  {
+    "info": "!Drama"
+  },
+  {
+    "info": "!Ecchi"
+  },
+  {
+    "info": "!Fantasy"
+  },
+  {
+    "info": "!Horror"
+  },
+  {
+    "info": "!Mahou Shoujo"
+  },
+  {
+    "info": "!Mecha"
+  },
+  {
+    "info": "!Music"
+  },
+  {
+    "info": "!Mystery"
+  },
+  {
+    "info": "!Psychological"
+  },
+  {
+    "info": "!Romance"
+  },
+  {
+    "info": "!Sci-Fi"
+  },
+  {
+    "info": "!Slice of Life"
+  },
+  {
+    "info": "!Sports"
+  },
+  {
+    "info": "!Supernatural"
+  },
+  {
+    "info": "!Thriller"
+  },
+  {
+    "info": "!4-koma"
+  },
+  {
+    "info": "!Achronological Order"
+  },
+  {
+    "info": "!Afterlife"
+  },
+  {
+    "info": "!Age Gap"
+  },
+  {
+    "info": "!Airsoft"
+  },
+  {
+    "info": "!Aliens"
+  },
+  {
+    "info": "!Alternate Universe"
+  },
+  {
+    "info": "!American Football"
+  },
+  {
+    "info": "!Amnesia"
+  },
+  {
+    "info": "!Anti-Hero"
+  },
+  {
+    "info": "!Archery"
+  },
+  {
+    "info": "!Assassins"
+  },
+  {
+    "info": "!Athletics"
+  },
+  {
+    "info": "!Augmented Reality"
+  },
+  {
+    "info": "!Aviation"
+  },
+  {
+    "info": "!Badminton"
+  },
+  {
+    "info": "!Band"
+  },
+  {
+    "info": "!Bar"
+  },
+  {
+    "info": "!Baseball"
+  },
+  {
+    "info": "!Basketball"
+  },
+  {
+    "info": "!Battle Royale"
+  },
+  {
+    "info": "!Biographical"
+  },
+  {
+    "info": "!Bisexual"
+  },
+  {
+    "info": "!Body Swapping"
+  },
+  {
+    "info": "!Boxing"
+  },
+  {
+    "info": "!Bullying"
+  },
+  {
+    "info": "!Calligraphy"
+  },
+  {
+    "info": "!Card Battle"
+  },
+  {
+    "info": "!Cars"
+  },
+  {
+    "info": "!CGI"
+  },
+  {
+    "info": "!Chibi"
+  },
+  {
+    "info": "!Chuunibyou"
+  },
+  {
+    "info": "!Classic Literature"
+  },
+  {
+    "info": "!College"
+  },
+  {
+    "info": "!Coming of Age"
+  },
+  {
+    "info": "!Cosplay"
+  },
+  {
+    "info": "!Crossdressing"
+  },
+  {
+    "info": "!Crossover"
+  },
+  {
+    "info": "!Cultivation"
+  },
+  {
+    "info": "!Cute Girls Doing Cute Things"
+  },
+  {
+    "info": "!Cyberpunk"
+  },
+  {
+    "info": "!Cycling"
+  },
+  {
+    "info": "!Dancing"
+  },
+  {
+    "info": "!Delinquents"
+  },
+  {
+    "info": "!Demons"
+  },
+  {
+    "info": "!Development"
+  },
+  {
+    "info": "!Dragons"
+  },
+  {
+    "info": "!Drawing"
+  },
+  {
+    "info": "!Dystopian"
+  },
+  {
+    "info": "!Economics"
+  },
+  {
+    "info": "!Educational"
+  },
+  {
+    "info": "!Ensemble Cast"
+  },
+  {
+    "info": "!Environmental"
+  },
+  {
+    "info": "!Episodic"
+  },
+  {
+    "info": "!Espionage"
+  },
+  {
+    "info": "!Fairy Tale"
+  },
+  {
+    "info": "!Family Life"
+  },
+  {
+    "info": "!Fashion"
+  },
+  {
+    "info": "!Female Protagonist"
+  },
+  {
+    "info": "!Fishing"
+  },
+  {
+    "info": "!Fitness"
+  },
+  {
+    "info": "!Flash"
+  },
+  {
+    "info": "!Food"
+  },
+  {
+    "info": "!Football"
+  },
+  {
+    "info": "!Foreign"
+  },
+  {
+    "info": "!Fugitive"
+  },
+  {
+    "info": "!Full CGI"
+  },
+  {
+    "info": "!Full Colour"
+  },
+  {
+    "info": "!Gambling"
+  },
+  {
+    "info": "!Gangs"
+  },
+  {
+    "info": "!Gender Bending"
+  },
+  {
+    "info": "!Gender Neutral"
+  },
+  {
+    "info": "!Ghost"
+  },
+  {
+    "info": "!Gods"
+  },
+  {
+    "info": "!Gore"
+  },
+  {
+    "info": "!Guns"
+  },
+  {
+    "info": "!Gyaru"
+  },
+  {
+    "info": "!Harem"
+  },
+  {
+    "info": "!Henshin"
+  },
+  {
+    "info": "!Hikikomori"
+  },
+  {
+    "info": "!Historical"
+  },
+  {
+    "info": "!Ice Skating"
+  },
+  {
+    "info": "!Idol"
+  },
+  {
+    "info": "!Isekai"
+  },
+  {
+    "info": "!Iyashikei"
+  },
+  {
+    "info": "!Josei"
+  },
+  {
+    "info": "!Kaiju"
+  },
+  {
+    "info": "!Karuta"
+  },
+  {
+    "info": "!Kemonomimi"
+  },
+  {
+    "info": "!Kids"
+  },
+  {
+    "info": "!Love Triangle"
+  },
+  {
+    "info": "!Mafia"
+  },
+  {
+    "info": "!Magic"
+  },
+  {
+    "info": "!Mahjong"
+  },
+  {
+    "info": "!Maids"
+  },
+  {
+    "info": "!Male Protagonist"
+  },
+  {
+    "info": "!Martial Arts"
+  },
+  {
+    "info": "!Memory Manipulation"
+  },
+  {
+    "info": "!Meta"
+  },
+  {
+    "info": "!Military"
+  },
+  {
+    "info": "!Monster Girl"
+  },
+  {
+    "info": "!Mopeds"
+  },
+  {
+    "info": "!Motorcycles"
+  },
+  {
+    "info": "!Musical"
+  },
+  {
+    "info": "!Mythology"
+  },
+  {
+    "info": "!Nekomimi"
+  },
+  {
+    "info": "!Ninja"
+  },
+  {
+    "info": "!No Dialogue"
+  },
+  {
+    "info": "!Noir"
+  },
+  {
+    "info": "!Nudity"
+  },
+  {
+    "info": "!Otaku Culture"
+  },
+  {
+    "info": "!Outdoor"
+  },
+  {
+    "info": "!Parody"
+  },
+  {
+    "info": "!Philosophy"
+  },
+  {
+    "info": "!Photography"
+  },
+  {
+    "info": "!Pirates"
+  },
+  {
+    "info": "!Poker"
+  },
+  {
+    "info": "!Police"
+  },
+  {
+    "info": "!Politics"
+  },
+  {
+    "info": "!Post-Apocalyptic"
+  },
+  {
+    "info": "!Primarily Adult Cast"
+  },
+  {
+    "info": "!Primarily Female Cast"
+  },
+  {
+    "info": "!Primarily Male Cast"
+  },
+  {
+    "info": "!Puppetry"
+  },
+  {
+    "info": "!Real Robot"
+  },
+  {
+    "info": "!Rehabilitation"
+  },
+  {
+    "info": "!Reincarnation"
+  },
+  {
+    "info": "!Revenge"
+  },
+  {
+    "info": "!Reverse Harem"
+  },
+  {
+    "info": "!Robots"
+  },
+  {
+    "info": "!Rugby"
+  },
+  {
+    "info": "!Rural"
+  },
+  {
+    "info": "!Samurai"
+  },
+  {
+    "info": "!Satire"
+  },
+  {
+    "info": "!School"
+  },
+  {
+    "info": "!School Club"
+  },
+  {
+    "info": "!Seinen"
+  },
+  {
+    "info": "!Ships"
+  },
+  {
+    "info": "!Shogi"
+  },
+  {
+    "info": "!Shoujo"
+  },
+  {
+    "info": "!Shoujo Ai"
+  },
+  {
+    "info": "!Shounen"
+  },
+  {
+    "info": "!Shounen Ai"
+  },
+  {
+    "info": "!Slapstick"
+  },
+  {
+    "info": "!Slavery"
+  },
+  {
+    "info": "!Space"
+  },
+  {
+    "info": "!Space Opera"
+  },
+  {
+    "info": "!Steampunk"
+  },
+  {
+    "info": "!Stop Motion"
+  },
+  {
+    "info": "!Super Power"
+  },
+  {
+    "info": "!Super Robot"
+  },
+  {
+    "info": "!Superhero"
+  },
+  {
+    "info": "!Surreal Comedy"
+  },
+  {
+    "info": "!Survival"
+  },
+  {
+    "info": "!Swimming"
+  },
+  {
+    "info": "!Swordplay"
+  },
+  {
+    "info": "!Table Tennis"
+  },
+  {
+    "info": "!Tanks"
+  },
+  {
+    "info": "!Teacher"
+  },
+  {
+    "info": "!Tennis"
+  },
+  {
+    "info": "!Terrorism"
+  },
+  {
+    "info": "!Time Manipulation"
+  },
+  {
+    "info": "!Time Skip"
+  },
+  {
+    "info": "!Tragedy"
+  },
+  {
+    "info": "!Trains"
+  },
+  {
+    "info": "!Triads"
+  },
+  {
+    "info": "!Tsundere"
+  },
+  {
+    "info": "!Urban Fantasy"
+  },
+  {
+    "info": "!Vampire"
+  },
+  {
+    "info": "!Video Games"
+  },
+  {
+    "info": "!Virtual World"
+  },
+  {
+    "info": "!Volleyball"
+  },
+  {
+    "info": "!War"
+  },
+  {
+    "info": "!Witch"
+  },
+  {
+    "info": "!Work"
+  },
+  {
+    "info": "!Wrestling"
+  },
+  {
+    "info": "!Writing"
+  },
+  {
+    "info": "!Wuxia"
+  },
+  {
+    "info": "!Yakuza"
+  },
+  {
+    "info": "!Yandere"
+  },
+  {
+    "info": "!Youkai"
+  },
+  {
+    "info": "!Zombie"
+  },
+  {
+    "info": "!UNWATCHED"
+  },
+  {
+    "info": "!COMPLETED"
+  },
+  {
+    "info": "!DROPPED"
+  },
+  {
+    "info": "!PLANNING TO WATCH"
+  },
+  {
+    "info": "!FALL"
+  },
+  {
+    "info": "!WINTER"
+  },
+  {
+    "info": "!SUMMER"
+  },
+  {
+    "info": "!SPRING"
+  },
+  {
+    "info": "!TV"
+  },
+  {
+    "info": "!TV_SHORT"
+  },
+  {
+    "info": "!OVA"
+  },
+  {
+    "info": "!ONA"
+  },
+  {
+    "info": "!MOVIE"
+  },
+  {
+    "info": "!SPECIAL"
+  },
+  {
+    "info": "!1940"
+  },
+  {
+    "info": "!1941"
+  },
+  {
+    "info": "!1942"
+  },
+  {
+    "info": "!1943"
+  },
+  {
+    "info": "!1944"
+  },
+  {
+    "info": "!1945"
+  },
+  {
+    "info": "!1946"
+  },
+  {
+    "info": "!1947"
+  },
+  {
+    "info": "!1948"
+  },
+  {
+    "info": "!1949"
+  },
+  {
+    "info": "!1950"
+  },
+  {
+    "info": "!1951"
+  },
+  {
+    "info": "!1952"
+  },
+  {
+    "info": "!1953"
+  },
+  {
+    "info": "!1954"
+  },
+  {
+    "info": "!1955"
+  },
+  {
+    "info": "!1956"
+  },
+  {
+    "info": "!1957"
+  },
+  {
+    "info": "!1958"
+  },
+  {
+    "info": "!1959"
+  },
+  {
+    "info": "!1960"
+  },
+  {
+    "info": "!1961"
+  },
+  {
+    "info": "!1962"
+  },
+  {
+    "info": "!1963"
+  },
+  {
+    "info": "!1964"
+  },
+  {
+    "info": "!1965"
+  },
+  {
+    "info": "!1966"
+  },
+  {
+    "info": "!1967"
+  },
+  {
+    "info": "!1968"
+  },
+  {
+    "info": "!1969"
+  },
+  {
+    "info": "!1970"
+  },
+  {
+    "info": "!1971"
+  },
+  {
+    "info": "!1972"
+  },
+  {
+    "info": "!1973"
+  },
+  {
+    "info": "!1974"
+  },
+  {
+    "info": "!1975"
+  },
+  {
+    "info": "!1976"
+  },
+  {
+    "info": "!1977"
+  },
+  {
+    "info": "!1978"
+  },
+  {
+    "info": "!1979"
+  },
+  {
+    "info": "!1980"
+  },
+  {
+    "info": "!1981"
+  },
+  {
+    "info": "!1982"
+  },
+  {
+    "info": "!1983"
+  },
+  {
+    "info": "!1984"
+  },
+  {
+    "info": "!1985"
+  },
+  {
+    "info": "!1986"
+  },
+  {
+    "info": "!1987"
+  },
+  {
+    "info": "!1988"
+  },
+  {
+    "info": "!1989"
+  },
+  {
+    "info": "!1990"
+  },
+  {
+    "info": "!1991"
+  },
+  {
+    "info": "!1992"
+  },
+  {
+    "info": "!1993"
+  },
+  {
+    "info": "!1994"
+  },
+  {
+    "info": "!1995"
+  },
+  {
+    "info": "!1996"
+  },
+  {
+    "info": "!1997"
+  },
+  {
+    "info": "!1998"
+  },
+  {
+    "info": "!1999"
+  },
+  {
+    "info": "!2000"
+  },
+  {
+    "info": "!2001"
+  },
+  {
+    "info": "!2002"
+  },
+  {
+    "info": "!2003"
+  },
+  {
+    "info": "!2004"
+  },
+  {
+    "info": "!2005"
+  },
+  {
+    "info": "!2006"
+  },
+  {
+    "info": "!2007"
+  },
+  {
+    "info": "!2008"
+  },
+  {
+    "info": "!2009"
+  },
+  {
+    "info": "!2010"
+  },
+  {
+    "info": "!2011"
+  },
+  {
+    "info": "!2012"
+  },
+  {
+    "info": "!2013"
+  },
+  {
+    "info": "!2014"
+  },
+  {
+    "info": "!2015"
+  },
+  {
+    "info": "!2016"
+  },
+  {
+    "info": "!2017"
+  },
+  {
+    "info": "!2018"
+  },
+  {
+    "info": "!2019"
+  },
+  {
+    "info": "!2020"
+  },
+  {
+    "info": "!2021"
+  },
+  {
+    "info": "!2022"
+  },
+  {
+    "info": "!2023"
+  }
+]
