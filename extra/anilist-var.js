@@ -128,6 +128,7 @@ rl.question("Your Anilist Username: ", function (answer) {
           var tagsCategory = {}
           var studios = {}
           var staff = {}
+          var staffRole = {}
           if(Object.keys(varScheme).length<1){
             format = {["Format: "+anime.format]: {
                 count: 1,
@@ -175,7 +176,7 @@ rl.question("Your Anilist Username: ", function (answer) {
               }
             }
             for(let j=0; j<anime.studios.nodes.length; j++){
-              tags = {
+              studios = {
                 ["Studio: "+anime.studios.nodes[j].name]: {
                   count: 1,
                   weight: [weight]
@@ -194,6 +195,14 @@ rl.question("Your Anilist Username: ", function (answer) {
                 weight: [weight]
               }}
             }
+            for(let j=0; j<anime.staff.edges.length; j++){
+              staffRole = {
+                ["Staff Role: "+anime.staff.edges[j].role]: {
+                  count: 1,
+                  weight: [weight]
+                }
+              }
+            }
             varScheme = {
               // Key with key
               format: format,
@@ -204,7 +213,8 @@ rl.question("Your Anilist Username: ", function (answer) {
               tags: tags,
               tagsCategory: tagsCategory,
               studios: studios,
-              staff: staff
+              staffRole: staffRole,
+              staff: staff,
             }
           }
           else{
@@ -386,6 +396,23 @@ rl.question("Your Anilist Username: ", function (answer) {
                 count: 1,
                 weight: [weight]
               }}
+              var xstaffRole = anime.staff.edges[j].role==null? "Staff Role: null" : "Staff Role: "+anime.staff.edges[j].role
+              if(Object.keys(varScheme.staffRole).length<1){
+                varScheme.staffRole = {[xstaffRole]: {
+                  count: 1,
+                  weight: [weight]
+                }}
+              }
+              else if(Object.keys(varScheme.staffRole).includes(xstaffRole)){
+                varScheme.staffRole[xstaffRole].count = ++varScheme.staffRole[xstaffRole].count
+                varScheme.staffRole[xstaffRole].weight.push(weight)
+              }
+              else{
+                varScheme.staffRole = {...varScheme.staffRole, [xstaffRole]: {
+                  count: 1,
+                  weight: [weight]
+                }}
+              }
             }
          }
         }
@@ -393,39 +420,63 @@ rl.question("Your Anilist Username: ", function (answer) {
       // Fix Data JSON
       for(let i=0; i<Object.keys(varScheme.format).length; i++){
         var formatKey = Object.keys(varScheme.format)
-        varScheme.format[formatKey[i]] = {Score: arrayMean(varScheme.format[formatKey[i]].weight)*10, Count: varScheme.format[formatKey[i]].count}
+        varScheme.format[formatKey[i]] = {
+          Score: arrayMean(varScheme.format[formatKey[i]].weight)*10, 
+          Count: varScheme.format[formatKey[i]].count}
       }
       for(let i=0; i<Object.keys(varScheme.episodes).length; i++){
         var episodesKey = Object.keys(varScheme.episodes)
-        varScheme.episodes[episodesKey[i]] = {Score: arrayMean(varScheme.episodes[episodesKey[i]].weight)*10, Count: varScheme.episodes[episodesKey[i]].count}
+        varScheme.episodes[episodesKey[i]] = {
+          Score: arrayMean(varScheme.episodes[episodesKey[i]].weight)*10, 
+          Count: varScheme.episodes[episodesKey[i]].count}
       }
       for(let i=0; i<Object.keys(varScheme.year).length; i++){
         var yearKey = Object.keys(varScheme.year)
-        varScheme.year[yearKey[i]] = {Score: arrayMean(varScheme.year[yearKey[i]].weight)*10, Count: varScheme.year[yearKey[i]].count}
+        varScheme.year[yearKey[i]] = {
+          Score: arrayMean(varScheme.year[yearKey[i]].weight)*10, 
+          Count: varScheme.year[yearKey[i]].count}
       }
       for(let i=0; i<Object.keys(varScheme.season).length; i++){
         var seasonKey = Object.keys(varScheme.season)
-        varScheme.season[seasonKey[i]] = {Score: arrayMean(varScheme.season[seasonKey[i]].weight)*10, Count: varScheme.season[seasonKey[i]].count}
+        varScheme.season[seasonKey[i]] = {
+          Score: arrayMean(varScheme.season[seasonKey[i]].weight)*10, 
+          Count: varScheme.season[seasonKey[i]].count}
       }
       for(let i=0; i<Object.keys(varScheme.genres).length; i++){
         var genresKey = Object.keys(varScheme.genres)
-        varScheme.genres[genresKey[i]] = {Score: arrayMean(varScheme.genres[genresKey[i]].weight)*10, Count: varScheme.genres[genresKey[i]].count}
+        varScheme.genres[genresKey[i]] = {
+          Score: arrayMean(varScheme.genres[genresKey[i]].weight)*10, 
+          Count: varScheme.genres[genresKey[i]].count}
       }
       for(let i=0; i<Object.keys(varScheme.tags).length; i++){
         var tagsKey = Object.keys(varScheme.tags)
-        varScheme.tags[tagsKey[i]] = {Score: (arrayMean(varScheme.tags[tagsKey[i]].weight)*10), Count: varScheme.tags[tagsKey[i]].count}
+        varScheme.tags[tagsKey[i]] = {
+          Score: (arrayMean(varScheme.tags[tagsKey[i]].weight)*10), 
+          Count: varScheme.tags[tagsKey[i]].count}
       }
       for(let i=0; i<Object.keys(varScheme.tagsCategory).length; i++){
         var tagsCategoryKey = Object.keys(varScheme.tagsCategory)
-        varScheme.tagsCategory[tagsCategoryKey[i]] = {Score: (arrayMean(varScheme.tagsCategory[tagsCategoryKey[i]].weight)*10), Count: varScheme.tagsCategory[tagsCategoryKey[i]].count}
+        varScheme.tagsCategory[tagsCategoryKey[i]] = {
+          Score: (arrayMean(varScheme.tagsCategory[tagsCategoryKey[i]].weight)*10), 
+          Count: varScheme.tagsCategory[tagsCategoryKey[i]].count}
       }
       for(let i=0; i<Object.keys(varScheme.studios).length; i++){
         var studiosKey = Object.keys(varScheme.studios)
-        varScheme.studios[studiosKey[i]] = {Score: (arrayMean(varScheme.studios[studiosKey[i]].weight)*10), Count: varScheme.studios[studiosKey[i]].count}
+        varScheme.studios[studiosKey[i]] = {
+          Score: (arrayMean(varScheme.studios[studiosKey[i]].weight)*10), 
+          Count: varScheme.studios[studiosKey[i]].count}
       }
       for(let i=0; i<Object.keys(varScheme.staff).length; i++){
         var staffKey = Object.keys(varScheme.staff)
-        varScheme.staff[staffKey[i]] = {Score: arrayMean(varScheme.staff[staffKey[i]].weight)*10, Count: varScheme.staff[staffKey[i]].count}
+        varScheme.staff[staffKey[i]] = {
+          Score: arrayMean(varScheme.staff[staffKey[i]].weight)*10, 
+          Count: varScheme.staff[staffKey[i]].count}
+      }
+      for(let i=0; i<Object.keys(varScheme.staffRole).length; i++){
+        var staffRoleKey = Object.keys(varScheme.staffRole)
+        varScheme.staffRole[staffRoleKey[i]] = {
+          Score: arrayMean(varScheme.staffRole[staffRoleKey[i]].weight)*10, 
+          Count: varScheme.staffRole[staffRoleKey[i]].count}
       }
       // Join Data
       var varKeys = Object.keys(varScheme)
