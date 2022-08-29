@@ -62,6 +62,7 @@ rl.question("Your Anilist Username: ", function (answer) {
                       first
                       last
                     }
+                    siteUrl
                   }
                 }
               }
@@ -135,7 +136,7 @@ rl.question("Your Anilist Username: ", function (answer) {
                 weight: [weight]
               }
             }
-            episodes = {["Episode: "+episodetype]: {
+            episodes = {[episodetype]: {
                 count: 1,
                 weight: [weight]
               }
@@ -151,7 +152,6 @@ rl.question("Your Anilist Username: ", function (answer) {
               }
             }
             for(let j=0; j<anime.genres.length; j++){
-            // if(Object.keys(genres).length<1)
               genres = {
                 ["Genre: "+anime.genres[j]]: {
                   count: 1,
@@ -184,13 +184,19 @@ rl.question("Your Anilist Username: ", function (answer) {
               }
             }
             for(let j=0; j<anime.staff.edges.length; j++){
-              var fullname =
-                anime.staff.edges[j].node.name.first==null?"":anime.staff.edges[j].node.name.first
-                +" "+
-                anime.staff.edges[j].node.name.last==null?"":anime.staff.edges[j].node.name.last
-              if(fullname==""||fullname=="null") fullname="null"
-              fullname = "Staff: "+fullname
-              staff = {["Staff: "+fullname]: {
+              var firstname = anime.staff.edges[j].node.name.first==null?null:anime.staff.edges[j].node.name.first
+              var lastname = anime.staff.edges[j].node.name.last==null?null:anime.staff.edges[j].node.name.last
+              var fullname
+              if(firstname!=null&&lastname!=null)
+                fullname = firstname+" "+lastname
+              else if(firstname!=null&&lastname==null)
+                fullname = firstname
+              else if(firstname==null&&lastname!=null)
+                fullname = lastname
+              else 
+                fullname = "Staff: Person"
+              fullname = `=HYPERLINK("${anime.staff.edges[j].node.siteUrl}","Staff: ${fullname} [Link] (${anime.staff.edges[j].role})")`
+              staff = {[fullname]: {
                 count: 1,
                 weight: [weight]
               }}
@@ -234,7 +240,6 @@ rl.question("Your Anilist Username: ", function (answer) {
                 count: 1,
                 weight: [weight]
               }}
-              console.log(varScheme.format)
             }
             if(Object.keys(varScheme.episodes).length<1){
               varScheme.episodes = {[episodetype]: {
@@ -242,7 +247,7 @@ rl.question("Your Anilist Username: ", function (answer) {
                 weight: [weight]
               }}
             }
-            else if(Object.keys(varScheme.episodes).includes(episodetype)){
+            if(Object.keys(varScheme.episodes).includes(episodetype)){
               varScheme.episodes[episodetype].count = ++varScheme.episodes[episodetype].count
               varScheme.episodes[episodetype].weight.push(weight)
             }
@@ -376,23 +381,30 @@ rl.question("Your Anilist Username: ", function (answer) {
               }
             }
             for(let j=0; j<anime.staff.edges.length; j++){
-              var fullname =
-                anime.staff.edges[j].node.name.first==null?"":anime.staff.edges[j].node.name.first
-                +" "+
-                anime.staff.edges[j].node.name.last==null?"":anime.staff.edges[j].node.name.last
-              if(fullname==""||fullname=="null") fullname="null"
-              fullname = "Staff: "+fullname
+              var firstname = anime.staff.edges[j].node.name.first==null?null:anime.staff.edges[j].node.name.first
+              var lastname = anime.staff.edges[j].node.name.last==null?null:anime.staff.edges[j].node.name.last
+              var fullname
+              if(firstname!=null&&lastname!=null)
+                fullname = firstname+" "+lastname
+              else if(firstname!=null&&lastname==null)
+                fullname = firstname
+              else if(firstname==null&&lastname!=null)
+                fullname = lastname
+              else 
+                fullname = "Staff: Person"
+              fullname = `=HYPERLINK("${anime.staff.edges[j].node.siteUrl}","Staff: ${fullname} [Link] (${anime.staff.edges[j].role})")`
+              var xfullname = fullname
               if(Object.keys(varScheme.staff).length<1){
-                varScheme.staff = {[fullname]: {
+                varScheme.staff = {[xfullname]: {
                   count: 1,
                   weight: [weight]
                 }}
               }
-              else if(Object.keys(varScheme.staff).includes(fullname)){
-                varScheme.staff[fullname].count = ++varScheme.staff[fullname].count
-                varScheme.staff[fullname].weight.push(weight)
+              else if(Object.keys(varScheme.staff).includes(xfullname)){
+                varScheme.staff[xfullname].count = ++varScheme.staff[xfullname].count
+                varScheme.staff[xfullname].weight.push(weight)
               }
-              else varScheme.staff = {...varScheme.staff, [fullname]: {
+              else varScheme.staff = {...varScheme.staff, [xfullname]: {
                 count: 1,
                 weight: [weight]
               }}
@@ -418,65 +430,168 @@ rl.question("Your Anilist Username: ", function (answer) {
         }
       }
       // Fix Data JSON
+      var sum = 0
       for(let i=0; i<Object.keys(varScheme.format).length; i++){
         var formatKey = Object.keys(varScheme.format)
-        varScheme.format[formatKey[i]] = {
-          Score: arrayMean(varScheme.format[formatKey[i]].weight)*10, 
-          Count: varScheme.format[formatKey[i]].count}
+        sum += varScheme.format[formatKey[i]].count
       }
       for(let i=0; i<Object.keys(varScheme.episodes).length; i++){
         var episodesKey = Object.keys(varScheme.episodes)
-        varScheme.episodes[episodesKey[i]] = {
-          Score: arrayMean(varScheme.episodes[episodesKey[i]].weight)*10, 
-          Count: varScheme.episodes[episodesKey[i]].count}
+        sum += varScheme.episodes[episodesKey[i]].count
       }
       for(let i=0; i<Object.keys(varScheme.year).length; i++){
         var yearKey = Object.keys(varScheme.year)
-        varScheme.year[yearKey[i]] = {
-          Score: arrayMean(varScheme.year[yearKey[i]].weight)*10, 
-          Count: varScheme.year[yearKey[i]].count}
+        sum += varScheme.year[yearKey[i]].count
       }
       for(let i=0; i<Object.keys(varScheme.season).length; i++){
         var seasonKey = Object.keys(varScheme.season)
-        varScheme.season[seasonKey[i]] = {
-          Score: arrayMean(varScheme.season[seasonKey[i]].weight)*10, 
-          Count: varScheme.season[seasonKey[i]].count}
+        sum += varScheme.season[seasonKey[i]].count
       }
       for(let i=0; i<Object.keys(varScheme.genres).length; i++){
         var genresKey = Object.keys(varScheme.genres)
-        varScheme.genres[genresKey[i]] = {
-          Score: arrayMean(varScheme.genres[genresKey[i]].weight)*10, 
-          Count: varScheme.genres[genresKey[i]].count}
+        sum += varScheme.genres[genresKey[i]].count
       }
       for(let i=0; i<Object.keys(varScheme.tags).length; i++){
         var tagsKey = Object.keys(varScheme.tags)
-        varScheme.tags[tagsKey[i]] = {
-          Score: (arrayMean(varScheme.tags[tagsKey[i]].weight)*10), 
-          Count: varScheme.tags[tagsKey[i]].count}
+        sum += varScheme.tags[tagsKey[i]].count
       }
       for(let i=0; i<Object.keys(varScheme.tagsCategory).length; i++){
         var tagsCategoryKey = Object.keys(varScheme.tagsCategory)
-        varScheme.tagsCategory[tagsCategoryKey[i]] = {
-          Score: (arrayMean(varScheme.tagsCategory[tagsCategoryKey[i]].weight)*10), 
-          Count: varScheme.tagsCategory[tagsCategoryKey[i]].count}
+        sum += varScheme.tagsCategory[tagsCategoryKey[i]].count
       }
       for(let i=0; i<Object.keys(varScheme.studios).length; i++){
         var studiosKey = Object.keys(varScheme.studios)
-        varScheme.studios[studiosKey[i]] = {
-          Score: (arrayMean(varScheme.studios[studiosKey[i]].weight)*10), 
-          Count: varScheme.studios[studiosKey[i]].count}
+        sum += varScheme.studios[studiosKey[i]].count
       }
       for(let i=0; i<Object.keys(varScheme.staff).length; i++){
         var staffKey = Object.keys(varScheme.staff)
-        varScheme.staff[staffKey[i]] = {
-          Score: arrayMean(varScheme.staff[staffKey[i]].weight)*10, 
-          Count: varScheme.staff[staffKey[i]].count}
+        sum += varScheme.staff[staffKey[i]].count
       }
       for(let i=0; i<Object.keys(varScheme.staffRole).length; i++){
         var staffRoleKey = Object.keys(varScheme.staffRole)
+        sum += varScheme.staffRole[staffRoleKey[i]].count
+      }
+      ///////////////////////////////////////////////////////////////////////////////////////////////
+      var score, count, weight
+      for(let i=0; i<Object.keys(varScheme.format).length; i++){
+        var formatKey = Object.keys(varScheme.format)
+        score = arrayMean(varScheme.format[formatKey[i]].weight)*10
+        count = varScheme.format[formatKey[i]].count
+        weight = (1/sum)*count
+        varScheme.format[formatKey[i]] = {
+          Score: score, 
+          Count: count,
+          Weight: weight,
+          ["Weighted Score"]: weight*score
+        }
+      }
+      for(let i=0; i<Object.keys(varScheme.episodes).length; i++){
+        var episodesKey = Object.keys(varScheme.episodes)
+        score = arrayMean(varScheme.episodes[episodesKey[i]].weight)*10
+        count = varScheme.episodes[episodesKey[i]].count
+        weight = (1/sum)*count
+        varScheme.episodes[episodesKey[i]] = {
+          Score: score, 
+          Count: count,
+          Weight: weight,
+          ["Weighted Score"]: weight*score
+        }
+      }
+      for(let i=0; i<Object.keys(varScheme.year).length; i++){
+        var yearKey = Object.keys(varScheme.year)
+        score = arrayMean(varScheme.year[yearKey[i]].weight)*10
+        count = varScheme.year[yearKey[i]].count
+        weight = (1/sum)*count
+        varScheme.year[yearKey[i]] = {
+          Score: arrayMean(varScheme.year[yearKey[i]].weight)*10, 
+          Count: count,
+          Weight: weight,
+          ["Weighted Score"]: weight*score
+        }
+      }
+      for(let i=0; i<Object.keys(varScheme.season).length; i++){
+        var seasonKey = Object.keys(varScheme.season)
+        score = arrayMean(varScheme.season[seasonKey[i]].weight)*10
+        count = varScheme.season[seasonKey[i]].count
+        weight = (1/sum)*count
+        varScheme.season[seasonKey[i]] = {
+          Score: score, 
+          Count: count,
+          Weight: weight,
+          ["Weighted Score"]: weight*score
+        }
+      }
+      for(let i=0; i<Object.keys(varScheme.genres).length; i++){
+        var genresKey = Object.keys(varScheme.genres)
+        score = arrayMean(varScheme.genres[genresKey[i]].weight)*10
+        count = varScheme.genres[genresKey[i]].count
+        weight = (1/sum)*count
+        varScheme.genres[genresKey[i]] = {
+          Score: score, 
+          Count: count,
+          Weight: weight,
+          ["Weighted Score"]: weight*score
+        }
+      }
+      for(let i=0; i<Object.keys(varScheme.tags).length; i++){
+        var tagsKey = Object.keys(varScheme.tags)
+        score = arrayMean(varScheme.tags[tagsKey[i]].weight)*10
+        count = varScheme.tags[tagsKey[i]].count
+        weight = (1/sum)*count
+        varScheme.tags[tagsKey[i]] = {
+          Score: score, 
+          Count: count,
+          Weight: weight,
+          ["Weighted Score"]: weight*score
+        }
+      }
+      for(let i=0; i<Object.keys(varScheme.tagsCategory).length; i++){
+        var tagsCategoryKey = Object.keys(varScheme.tagsCategory)
+        score = arrayMean(varScheme.tagsCategory[tagsCategoryKey[i]].weight)*10
+        count = varScheme.tagsCategory[tagsCategoryKey[i]].count
+        weight = (1/sum)*count
+        varScheme.tagsCategory[tagsCategoryKey[i]] = {
+          Score: score, 
+          Count: count,
+          Weight: weight,
+          ["Weighted Score"]: weight*score
+        }
+      }
+      for(let i=0; i<Object.keys(varScheme.studios).length; i++){
+        var studiosKey = Object.keys(varScheme.studios)
+        score = arrayMean(varScheme.studios[studiosKey[i]].weight)*10
+        count = varScheme.studios[studiosKey[i]].count
+        weight = (1/sum)*count
+        varScheme.studios[studiosKey[i]] = {
+          Score: score, 
+          Count: count,
+          Weight: weight,
+          ["Weighted Score"]: weight*score
+        }
+      }
+      for(let i=0; i<Object.keys(varScheme.staff).length; i++){
+        var staffKey = Object.keys(varScheme.staff)
+        score = arrayMean(varScheme.staff[staffKey[i]].weight)*10
+        count = varScheme.staff[staffKey[i]].count
+        weight = (1/sum)*count
+        varScheme.staff[staffKey[i]] = {
+          Score: score, 
+          Count: count,
+          Weight: weight,
+          ["Weighted Score"]: weight*score
+        }
+      }
+      for(let i=0; i<Object.keys(varScheme.staffRole).length; i++){
+        var staffRoleKey = Object.keys(varScheme.staffRole)
+        score = arrayMean(varScheme.staffRole[staffRoleKey[i]].weight)*10
+        count = varScheme.staffRole[staffRoleKey[i]].count
+        weight = (1/sum)*count
         varScheme.staffRole[staffRoleKey[i]] = {
-          Score: arrayMean(varScheme.staffRole[staffRoleKey[i]].weight)*10, 
-          Count: varScheme.staffRole[staffRoleKey[i]].count}
+          Score: score, 
+          Count: count,
+          Weight: weight,
+          ["Weighted Score"]: weight*score
+        }
       }
       // Join Data
       var varKeys = Object.keys(varScheme)
