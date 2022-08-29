@@ -1,0 +1,5030 @@
+{
+  "Format: TV": {
+    "Score": 75,
+    "Count": 66
+  },
+  "Format: TV_SHORT": {
+    "Score": 70,
+    "Count": 9
+  },
+  "Format: MOVIE": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Format: ONA": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Episode: Episode: 7-13": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Episode: 7-13": {
+    "Score": 73.78787878787878,
+    "Count": 66
+  },
+  "Episode: 14-26": {
+    "Score": 70,
+    "Count": 6
+  },
+  "Episode: 53-100": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Episode: 101+": {
+    "Score": 95,
+    "Count": 2
+  },
+  "Episode: 1": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Year: 2021": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Year: 2022": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Year: 2017": {
+    "Score": 72,
+    "Count": 10
+  },
+  "Year: 2018": {
+    "Score": 77.6923076923077,
+    "Count": 13
+  },
+  "Year: 2002": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Year: 2007": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Year: 2014": {
+    "Score": 73.75,
+    "Count": 8
+  },
+  "Year: 2008": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Year: 2015": {
+    "Score": 71.42857142857143,
+    "Count": 7
+  },
+  "Year: 2012": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Year: 2020": {
+    "Score": 72.22222222222223,
+    "Count": 9
+  },
+  "Year: 2016": {
+    "Score": 71,
+    "Count": 10
+  },
+  "Year: 2019": {
+    "Score": 67.5,
+    "Count": 4
+  },
+  "Year: 2009": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Year: 2006": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Year: 2011": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Year: 2013": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Year: 2010": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Year: null": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Season: FALL": {
+    "Score": 72.60869565217392,
+    "Count": 23
+  },
+  "Season: SPRING": {
+    "Score": 74.5,
+    "Count": 20
+  },
+  "Season: SUMMER": {
+    "Score": 74.28571428571429,
+    "Count": 21
+  },
+  "Season: WINTER": {
+    "Score": 76,
+    "Count": 15
+  },
+  "Season: null": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Genre: Sci-Fi": {
+    "Score": 75.71428571428571,
+    "Count": 14
+  },
+  "Genre: Comedy": {
+    "Score": 74.28571428571429,
+    "Count": 56
+  },
+  "Genre: Romance": {
+    "Score": 70,
+    "Count": 24
+  },
+  "Genre: Slice of Life": {
+    "Score": 74.44444444444444,
+    "Count": 45
+  },
+  "Genre: Action": {
+    "Score": 75.9090909090909,
+    "Count": 22
+  },
+  "Genre: Mystery": {
+    "Score": 72.85714285714286,
+    "Count": 7
+  },
+  "Genre: Supernatural": {
+    "Score": 74,
+    "Count": 15
+  },
+  "Genre: Ecchi": {
+    "Score": 70,
+    "Count": 6
+  },
+  "Genre: Drama": {
+    "Score": 73,
+    "Count": 20
+  },
+  "Genre: Thriller": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Genre: Adventure": {
+    "Score": 77.14285714285714,
+    "Count": 14
+  },
+  "Genre: Fantasy": {
+    "Score": 74.70588235294117,
+    "Count": 17
+  },
+  "Genre: Sports": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Genre: Psychological": {
+    "Score": 70,
+    "Count": 7
+  },
+  "Genre: Music": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Genre: Horror": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Studio: BANDAI SPIRITS": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Tag: Kuudere": {
+    "Score": 73.7037037037037,
+    "Count": 27
+  },
+  "Tag: Surreal Comedy": {
+    "Score": 76.47058823529412,
+    "Count": 17
+  },
+  "Tag: School": {
+    "Score": 72.41379310344827,
+    "Count": 29
+  },
+  "Tag: Slapstick": {
+    "Score": 75.41666666666667,
+    "Count": 24
+  },
+  "Tag: Episodic": {
+    "Score": 75.33333333333333,
+    "Count": 30
+  },
+  "Tag: Primarily Teen Cast": {
+    "Score": 75.26315789473684,
+    "Count": 19
+  },
+  "Tag: Male Protagonist": {
+    "Score": 74.22222222222223,
+    "Count": 45
+  },
+  "Tag: Female Protagonist": {
+    "Score": 73.72093023255813,
+    "Count": 43
+  },
+  "Tag: Heterosexual": {
+    "Score": 72.22222222222223,
+    "Count": 27
+  },
+  "Tag: Parody": {
+    "Score": 77.85714285714286,
+    "Count": 14
+  },
+  "Tag: Meta": {
+    "Score": 76.25,
+    "Count": 16
+  },
+  "Tag: Cute Girls Doing Cute Things": {
+    "Score": 74.5,
+    "Count": 20
+  },
+  "Tag: Outdoor": {
+    "Score": 80,
+    "Count": 7
+  },
+  "Tag: Shounen": {
+    "Score": 75.65217391304347,
+    "Count": 23
+  },
+  "Tag: Family Life": {
+    "Score": 76.36363636363637,
+    "Count": 11
+  },
+  "Tag: Teacher": {
+    "Score": 72,
+    "Count": 5
+  },
+  "Tag: Animals": {
+    "Score": 78.88888888888889,
+    "Count": 9
+  },
+  "Tag: Tsundere": {
+    "Score": 74.44444444444444,
+    "Count": 18
+  },
+  "Tag: Crossdressing": {
+    "Score": 76.92307692307692,
+    "Count": 13
+  },
+  "Tag: Basketball": {
+    "Score": 65,
+    "Count": 2
+  },
+  "Tag: Iyashikei": {
+    "Score": 77.27272727272728,
+    "Count": 11
+  },
+  "Tag: Baseball": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Tag: Table Tennis": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Shogi": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Tag: Fishing": {
+    "Score": 82,
+    "Count": 5
+  },
+  "Tag: CGI": {
+    "Score": 75.71428571428571,
+    "Count": 14
+  },
+  "Tag: Male Harem": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Female Harem": {
+    "Score": 73.33333333333333,
+    "Count": 6
+  },
+  "Tag: Delinquents": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Tag: Gyaru": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Tag: Primarily Female Cast": {
+    "Score": 75.45454545454545,
+    "Count": 22
+  },
+  "Tag: School Club": {
+    "Score": 77.27272727272728,
+    "Count": 11
+  },
+  "Tag: Seinen": {
+    "Score": 74.44444444444444,
+    "Count": 27
+  },
+  "Tag: LGBTQ+ Themes": {
+    "Score": 81.42857142857142,
+    "Count": 7
+  },
+  "Tag: Ojou-sama": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Tag: Primarily Child Cast": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Tag: Ensemble Cast": {
+    "Score": 76.78571428571429,
+    "Count": 28
+  },
+  "Tag: Coming of Age": {
+    "Score": 73.57142857142857,
+    "Count": 14
+  },
+  "Tag: Tomboy": {
+    "Score": 75.45454545454545,
+    "Count": 11
+  },
+  "Tag: Mafia": {
+    "Score": 87.5,
+    "Count": 4
+  },
+  "Tag: Crime": {
+    "Score": 81.25,
+    "Count": 8
+  },
+  "Tag: Achronological Order": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Tag: Historical": {
+    "Score": 81.66666666666666,
+    "Count": 6
+  },
+  "Tag: Trains": {
+    "Score": 78.57142857142857,
+    "Count": 7
+  },
+  "Tag: Foreign": {
+    "Score": 80,
+    "Count": 7
+  },
+  "Tag: Urban Fantasy": {
+    "Score": 73.84615384615385,
+    "Count": 13
+  },
+  "Tag: Primarily Adult Cast": {
+    "Score": 77.6470588235294,
+    "Count": 17
+  },
+  "Tag: Noir": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Tag: Guns": {
+    "Score": 77.27272727272728,
+    "Count": 11
+  },
+  "Tag: Gore": {
+    "Score": 75.625,
+    "Count": 16
+  },
+  "Tag: Urban": {
+    "Score": 73.80952380952381,
+    "Count": 21
+  },
+  "Tag: Demons": {
+    "Score": 75,
+    "Count": 10
+  },
+  "Tag: Travel": {
+    "Score": 82.5,
+    "Count": 8
+  },
+  "Tag: Disability": {
+    "Score": 80,
+    "Count": 5
+  },
+  "Tag: Calligraphy": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Tag: Rural": {
+    "Score": 82,
+    "Count": 5
+  },
+  "Tag: Rehabilitation": {
+    "Score": 75,
+    "Count": 6
+  },
+  "Tag: Philosophy": {
+    "Score": 78.46153846153845,
+    "Count": 13
+  },
+  "Tag: Work": {
+    "Score": 73.75,
+    "Count": 16
+  },
+  "Tag: Cosplay": {
+    "Score": 77.5,
+    "Count": 4
+  },
+  "Tag: Otaku Culture": {
+    "Score": 75.71428571428571,
+    "Count": 7
+  },
+  "Tag: Age Gap": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Tag: Masochism": {
+    "Score": 86.66666666666666,
+    "Count": 3
+  },
+  "Tag: Chibi": {
+    "Score": 76.25,
+    "Count": 8
+  },
+  "Tag: Maids": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Tag: Satire": {
+    "Score": 80,
+    "Count": 5
+  },
+  "Tag: Afterlife": {
+    "Score": 83.33333333333334,
+    "Count": 3
+  },
+  "Tag: Video Games": {
+    "Score": 73.75,
+    "Count": 8
+  },
+  "Tag: Tragedy": {
+    "Score": 75.5,
+    "Count": 20
+  },
+  "Tag: Alternate Universe": {
+    "Score": 76,
+    "Count": 5
+  },
+  "Tag: Time Skip": {
+    "Score": 68.57142857142857,
+    "Count": 7
+  },
+  "Tag: Gangs": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Tag: Twins": {
+    "Score": 71.66666666666667,
+    "Count": 6
+  },
+  "Tag: Primarily Male Cast": {
+    "Score": 78.75,
+    "Count": 8
+  },
+  "Tag: Cute Boys Doing Cute Things": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Tag: Tanned Skin": {
+    "Score": 74,
+    "Count": 5
+  },
+  "Tag: Death Game": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Survival": {
+    "Score": 76.25,
+    "Count": 8
+  },
+  "Tag: Super Power": {
+    "Score": 76.36363636363637,
+    "Count": 11
+  },
+  "Tag: Battle Royale": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Tag: Yandere": {
+    "Score": 75,
+    "Count": 4
+  },
+  "Tag: Augmented Reality": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Conspiracy": {
+    "Score": 77.5,
+    "Count": 4
+  },
+  "Tag: Dissociative Identities": {
+    "Score": 76.66666666666667,
+    "Count": 6
+  },
+  "Tag: Gambling": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Swordplay": {
+    "Score": 77,
+    "Count": 10
+  },
+  "Tag: Martial Arts": {
+    "Score": 77.5,
+    "Count": 4
+  },
+  "Tag: Samurai": {
+    "Score": 80,
+    "Count": 5
+  },
+  "Tag: Isekai": {
+    "Score": 73.33333333333333,
+    "Count": 9
+  },
+  "Tag: War": {
+    "Score": 75,
+    "Count": 6
+  },
+  "Tag: Anachronism": {
+    "Score": 86.66666666666666,
+    "Count": 3
+  },
+  "Tag: Elf": {
+    "Score": 71.66666666666667,
+    "Count": 6
+  },
+  "Tag: Anti-Hero": {
+    "Score": 76.15384615384615,
+    "Count": 13
+  },
+  "Tag: Magic": {
+    "Score": 71.42857142857143,
+    "Count": 14
+  },
+  "Tag: Language Barrier": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Tag: Archery": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Tag: Dragons": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Tag: Aviation": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Rape": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Fitness": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Boxing": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Tag: Athletics": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Tag: Educational": {
+    "Score": 81.11111111111111,
+    "Count": 9
+  },
+  "Tag: Food": {
+    "Score": 75.55555555555556,
+    "Count": 9
+  },
+  "Tag: Nudity": {
+    "Score": 74,
+    "Count": 10
+  },
+  "Tag: Dungeon": {
+    "Score": 75,
+    "Count": 4
+  },
+  "Tag: Gods": {
+    "Score": 74.54545454545455,
+    "Count": 11
+  },
+  "Tag: Mythology": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Tag: Nekomimi": {
+    "Score": 76,
+    "Count": 5
+  },
+  "Tag: Kemonomimi": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Tag: Love Triangle": {
+    "Score": 68.57142857142857,
+    "Count": 7
+  },
+  "Tag: Goblin": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Tag: Cultivation": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Tag: Villainess": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Tag: Military": {
+    "Score": 78.33333333333333,
+    "Count": 6
+  },
+  "Tag: Politics": {
+    "Score": 75,
+    "Count": 8
+  },
+  "Tag: Necromancy": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Tag: Religion": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Tag: Fugitive": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Tag: Cyborg": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Tag: Lost Civilization": {
+    "Score": 80,
+    "Count": 4
+  },
+  "Tag: Revenge": {
+    "Score": 77.14285714285714,
+    "Count": 7
+  },
+  "Tag: Chimera": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Tag: Steampunk": {
+    "Score": 80,
+    "Count": 4
+  },
+  "Tag: Body Horror": {
+    "Score": 73.33333333333333,
+    "Count": 6
+  },
+  "Tag: Adoption": {
+    "Score": 80,
+    "Count": 5
+  },
+  "Tag: Cannibalism": {
+    "Score": 75,
+    "Count": 4
+  },
+  "Tag: Vore": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Tag: Writing": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Tag: Angels": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Hikikomori": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Tag: Chuunibyou": {
+    "Score": 74,
+    "Count": 5
+  },
+  "Tag: Drawing": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Tag: Gender Bending": {
+    "Score": 75.71428571428571,
+    "Count": 7
+  },
+  "Tag: Aliens": {
+    "Score": 77.5,
+    "Count": 8
+  },
+  "Tag: Terrorism": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Tag: Space": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Tag: Mopeds": {
+    "Score": 100,
+    "Count": 2
+  },
+  "Tag: Ninja": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Tag: Sadism": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Tag: Robots": {
+    "Score": 78.75,
+    "Count": 8
+  },
+  "Tag: Oiran": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Tag: Ghost": {
+    "Score": 77.5,
+    "Count": 4
+  },
+  "Tag: Pirates": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Tag: Body Swapping": {
+    "Score": 77.5,
+    "Count": 4
+  },
+  "Tag: Circus": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Tag: Netorare": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Tag: Acting": {
+    "Score": 60,
+    "Count": 2
+  },
+  "Tag: College": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Tag: Scuba Diving": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Tag: Incest": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Tag: Bisexual": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Tag: Youkai": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Tag: Age Regression": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Amnesia": {
+    "Score": 70,
+    "Count": 5
+  },
+  "Tag: Medicine": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Tag: Yakuza": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Tag: Bar": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Tag: Environmental": {
+    "Score": 75,
+    "Count": 6
+  },
+  "Tag: Cycling": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Tag: Virtual World": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Tag: Assassins": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Tag: Card Battle": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Tag: Found Family": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Tag: Agender": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Tag: Superhero": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Tag: Police": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Tag: Irrumatio": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Henshin": {
+    "Score": 75,
+    "Count": 4
+  },
+  "Tag: Monster Girl": {
+    "Score": 72,
+    "Count": 5
+  },
+  "Tag: Swimming": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Tag: Band": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Reincarnation": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Tag: Mahjong": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Tag: Time Manipulation": {
+    "Score": 70,
+    "Count": 5
+  },
+  "Tag: Memory Manipulation": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Tag: Shrine Maiden": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Shapeshifting": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Tag: Cosmic Horror": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Tag: Bullying": {
+    "Score": 73.33333333333333,
+    "Count": 6
+  },
+  "Tag: Economics": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Tag: Succubus": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Tag: Dullahan": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Tag: Fairy Tale": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Monster Boy": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Tag: Denpa": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Cars": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Idol": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Tag: Suicide": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Tag: Kaiju": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Tag: Asexual": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Tag: Office Lady": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Tag: Skeleton": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Butler": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Tag: Vampire": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Astronomy": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Post-Apocalyptic": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Tag: Artificial Intelligence": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Tag: Witch": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Tag: Cult": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Airsoft": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Shoujo": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Cyberpunk": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Tanks": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Tag: Espionage": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Tag: Torture": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Detective": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Large Breasts": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag: Josei": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Tag Category: Technical": {
+    "Score": 75.55555555555556,
+    "Count": 45
+  },
+  "Tag Category: Cast-Traits": {
+    "Score": 74.88000000000001,
+    "Count": 250
+  },
+  "Tag Category: Theme-Comedy": {
+    "Score": 76.66666666666667,
+    "Count": 60
+  },
+  "Tag Category: Setting-Scene": {
+    "Score": 75.22935779816514,
+    "Count": 109
+  },
+  "Tag Category: Cast-Main Cast": {
+    "Score": 75.35353535353535,
+    "Count": 198
+  },
+  "Tag Category: Theme-Romance": {
+    "Score": 71.70212765957447,
+    "Count": 47
+  },
+  "Tag Category: Theme-Other": {
+    "Score": 76.76300578034682,
+    "Count": 173
+  },
+  "Tag Category: Theme-Slice of Life": {
+    "Score": 75.55555555555556,
+    "Count": 45
+  },
+  "Tag Category: Demographic": {
+    "Score": 75,
+    "Count": 52
+  },
+  "Tag Category: Theme-Game-Sport": {
+    "Score": 76.95652173913044,
+    "Count": 23
+  },
+  "Tag Category: Theme-Game-Card & Board Game": {
+    "Score": 77.5,
+    "Count": 4
+  },
+  "Tag Category: Theme-Drama": {
+    "Score": 74.91525423728814,
+    "Count": 59
+  },
+  "Tag Category: Theme-Other-Organisations": {
+    "Score": 78,
+    "Count": 25
+  },
+  "Tag Category: Setting-Time": {
+    "Score": 77.22222222222223,
+    "Count": 18
+  },
+  "Tag Category: Theme-Other-Vehicle": {
+    "Score": 80,
+    "Count": 13
+  },
+  "Tag Category: Setting-Universe": {
+    "Score": 76.78571428571429,
+    "Count": 28
+  },
+  "Tag Category: Theme-Action": {
+    "Score": 76.96969696969697,
+    "Count": 33
+  },
+  "Tag Category: Theme": {
+    "Score": 82.5,
+    "Count": 8
+  },
+  "Tag Category: Theme-Arts": {
+    "Score": 73.33333333333333,
+    "Count": 18
+  },
+  "Tag Category: Sexual Content": {
+    "Score": 80,
+    "Count": 12
+  },
+  "Tag Category: Theme-Game": {
+    "Score": 73.75,
+    "Count": 8
+  },
+  "Tag Category: Theme-Fantasy": {
+    "Score": 74.7457627118644,
+    "Count": 59
+  },
+  "Tag Category: Theme-Arts-Music": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Tag Category: Theme-Sci-Fi": {
+    "Score": 70,
+    "Count": 6
+  },
+  "Studio: Felix Film": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: bilibili": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: diomedéa": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Studio: King Records": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Studio: Lerche": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: J.C. Staff": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Studio: Genco": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Studio: ADV Films": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Lantis": {
+    "Score": 72.5,
+    "Count": 8
+  },
+  "Studio: Imagica": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: TV Tokyo Music": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Studio: Cosmic Ray": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Aniplex": {
+    "Score": 76.92307692307692,
+    "Count": 13
+  },
+  "Studio: Funimation": {
+    "Score": 76,
+    "Count": 10
+  },
+  "Studio: Brain's Base": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Studio: Aniplex of America": {
+    "Score": 83.33333333333334,
+    "Count": 3
+  },
+  "Studio: Sakura Create": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Studio: Happinet Pictures": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Studio: Kinema Citrus": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Studio: VAP": {
+    "Score": 83.33333333333334,
+    "Count": 3
+  },
+  "Studio: Nippon Television Network": {
+    "Score": 83.33333333333334,
+    "Count": 3
+  },
+  "Studio: A-1 Pictures": {
+    "Score": 70,
+    "Count": 6
+  },
+  "Studio: Kansai TV": {
+    "Score": 65,
+    "Count": 2
+  },
+  "Studio: Studio Blanc": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Kyoto Animation": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Studio: Pony Canyon": {
+    "Score": 75,
+    "Count": 6
+  },
+  "Studio: TBS": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Studio: Rakuonsha": {
+    "Score": 75,
+    "Count": 4
+  },
+  "Studio: Animation Do": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Studio: DAX Production": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Studio: Dream Creation": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Creators in Pack": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Studio: Sunrise": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Studio: TV Tokyo": {
+    "Score": 78.75,
+    "Count": 8
+  },
+  "Studio: Square Enix": {
+    "Score": 83.33333333333334,
+    "Count": 3
+  },
+  "Studio: NIS America Inc.": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Trinity Sound": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Studio: Nexus": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Studio: Magic Capsule": {
+    "Score": 74,
+    "Count": 5
+  },
+  "Studio: Hoods Entertainment": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: NBCUniversal Entertainment Japan": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Studio: Doga Kobo": {
+    "Score": 71.66666666666667,
+    "Count": 6
+  },
+  "Studio: AT-X": {
+    "Score": 75,
+    "Count": 10
+  },
+  "Studio: NTT Plala": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: KADOKAWA": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Studio: Shogakukan": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Kadokawa Media House": {
+    "Score": 75,
+    "Count": 4
+  },
+  "Studio: Ray": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: MAGES.": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Studio: bones": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Studio: Mainichi Broadcasting System": {
+    "Score": 83.33333333333334,
+    "Count": 3
+  },
+  "Studio: ZEXCS": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Studio: KYORAKU": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Studio: Sony Music Communications": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Studio: Sentai Filmworks": {
+    "Score": 73.33333333333333,
+    "Count": 9
+  },
+  "Studio: Frontier Works": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Studio: Media Factory": {
+    "Score": 75,
+    "Count": 4
+  },
+  "Studio: Dentsu": {
+    "Score": 80,
+    "Count": 4
+  },
+  "Studio: Audio Highs": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Studio: Miracle Robo": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Studio: Geno Studio": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Studio: Zero-G": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Studio: Kodansha": {
+    "Score": 75,
+    "Count": 6
+  },
+  "Studio: Avex Entertainment": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Studio: Q-Tec": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Studio: TMS Entertainment": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: David Production": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Studio: feel.": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Studio: Nippon Columbia": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: MADHOUSE": {
+    "Score": 77.5,
+    "Count": 4
+  },
+  "Studio: Viz Media": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Studio: MAPPA": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Fuji TV": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Studio: DMM pictures": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: SILVER LINK.": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Studio: ABC Animation": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Studio: Sammy": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Docomo Anime Store": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: D-techno": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Movic": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Studio: Bandai Entertainment": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Maho Film": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Asmik Ace": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Studio: Toei Video": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Nikkatsu": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: BS Fuji": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Studio: Hobby Japan": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Bandai Namco Arts": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: P.A. Works": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Studio: TOKYO MX": {
+    "Score": 65,
+    "Count": 2
+  },
+  "Studio: BS11": {
+    "Score": 65,
+    "Count": 2
+  },
+  "Studio: Nagoya Broadcasting Network": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Studio: Visual Arts": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Studio: CoMix Wave": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Studio: Kadokawa Pictures Japan": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: NYAV Post": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Toho": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Studio: Madman Entertainment": {
+    "Score": 76,
+    "Count": 5
+  },
+  "Studio: Selecta Visión": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Forecast Communications": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Twin Engine": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Artland": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Studio DEEN": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Studio: Studio Pierrot": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Studio: Sony Music Entertainment": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Cygames": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Daume": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Starchild Records": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Eye Move": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Sunny Side Up": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Kadokawa Shoten": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Studio: Tear-Studio": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Studio: OLM": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: P.I.C.S.": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Pony Canyon Enterprise": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Crunchyroll": {
+    "Score": 83.33333333333334,
+    "Count": 3
+  },
+  "Studio: Yoshimoto Kogyo": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Bandai Visual": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Studio: Shueisha": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Studio: Banpresto": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Studio: Asatsu DK": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Good Smile Company": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Seven Arcs": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: xenron": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Hanabee Entertainment": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: White Fox": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Studio: Studio Signpost": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Nihon Narration Engi Kenkyuujo": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: project No.9": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Studio: CloverWorks": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Studio: Hakuhodo DY Music & Pictures": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: CONNECT": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: DMM music": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Happinet Phantom Studios": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Dream Shift": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Sotsu": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Klock Worx": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Bit Grooove Promotion": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Bergamo": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: arma bianca": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: BS Nippon": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: YOMIURI BRAND STUDIO": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: APDREAM": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Media Blasters": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: TYO Animations": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Studio Jack": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Satelight": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: HORNETS": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Mixer": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: North Stars Pictures": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: JY Animation": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: CA-Cygames Anime Fund": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Wit Studio": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Shogakukan-Shueisha Productions": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: East Japan Marketing & Communications": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Lawson Entertainment": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: STORY Inc.": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: GKids": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: 8-bit": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Bandai Namco Pictures": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Haoliners Animation": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Studio LAN": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: SPRiNG": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Studio Gokumi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: NAS": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: ENGI": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: YTV": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: Kanetsuu Investment": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Christmas Holly": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: Ichijinsha": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Studio: NUT": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Studio: C-Station": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: Staff: Furuya": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Mizu": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kousaki": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Yahiro": {
+    "Score": 65,
+    "Count": 4
+  },
+  "Staff: Yamamoto": {
+    "Score": 75.45454545454545,
+    "Count": 11
+  },
+  "Staff: Yoshioka": {
+    "Score": 73.33333333333333,
+    "Count": 6
+  },
+  "Staff: Makino": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: MONACA": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Hisao": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Fukuchi ": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Mishima": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Iwasa": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kurata": {
+    "Score": 71.42857142857143,
+    "Count": 7
+  },
+  "Staff: Tanaka": {
+    "Score": 80,
+    "Count": 8
+  },
+  "Staff: Iwai": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kimura": {
+    "Score": 71.42857142857143,
+    "Count": 7
+  },
+  "Staff: Abe": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Natsume": {
+    "Score": 77.5,
+    "Count": 4
+  },
+  "Staff: Yamada": {
+    "Score": 74,
+    "Count": 10
+  },
+  "Staff: Aizawa": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: null": {
+    "Score": 74.53781512605042,
+    "Count": 119
+  },
+  "Staff: Fajardo": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Whitehead": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kusakawa": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Tamaki": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Staff: Aoshima": {
+    "Score": 71,
+    "Count": 10
+  },
+  "Staff: Ishikawa": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Staff: Motoyama": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Staff: angela": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Uesaka": {
+    "Score": 66,
+    "Count": 5
+  },
+  "Staff: Kojima": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Staff: Ohira": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Itou": {
+    "Score": 73,
+    "Count": 20
+  },
+  "Staff: Oka": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Uemura": {
+    "Score": 72,
+    "Count": 5
+  },
+  "Staff: Inagaki": {
+    "Score": 70,
+    "Count": 5
+  },
+  "Staff: Shimizu": {
+    "Score": 72,
+    "Count": 5
+  },
+  "Staff: Ibata": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Suzuki": {
+    "Score": 72,
+    "Count": 15
+  },
+  "Staff: Kochouran": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Mishio": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Suzukawa": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kishi": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Kakihara": {
+    "Score": 80,
+    "Count": 4
+  },
+  "Staff: Kurosawa": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Kinome": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Kouda": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Staff: Iida": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Kohara": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kino": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Nagae": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kondou": {
+    "Score": 75,
+    "Count": 4
+  },
+  "Staff: Nakanishi": {
+    "Score": 70,
+    "Count": 8
+  },
+  "Staff: Inaka": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Sue": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Sakamoto": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Umino": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Staff: Higa": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Masafusa": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Mano": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Sasaki": {
+    "Score": 81.11111111111111,
+    "Count": 9
+  },
+  "Staff: Azuma": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ookouchi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Sakurai": {
+    "Score": 70,
+    "Count": 5
+  },
+  "Staff: Kishida": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Tsuruoka": {
+    "Score": 73.33333333333333,
+    "Count": 6
+  },
+  "Staff: Ledford": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Katou": {
+    "Score": 73.07692307692308,
+    "Count": 13
+  },
+  "Staff: Ueno": {
+    "Score": 75,
+    "Count": 6
+  },
+  "Staff: Kurihara": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Maki": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Watanabe": {
+    "Score": 72.3529411764706,
+    "Count": 17
+  },
+  "Staff: Nishikiori": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Ishihama": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Hata": {
+    "Score": 70,
+    "Count": 6
+  },
+  "Staff: Yamakawa": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Hasegawa": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ooki": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Cook": {
+    "Score": 83.33333333333334,
+    "Count": 3
+  },
+  "Staff: Huber": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Vale": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Harp": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Narita": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Enami": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Kajiura": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Staff: Fukunaga": {
+    "Score": 82.5,
+    "Count": 4
+  },
+  "Staff: Yoshimori": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Iwanami": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Oomori": {
+    "Score": 85,
+    "Count": 4
+  },
+  "Staff: Takagi": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Staff: Kanbe": {
+    "Score": 83.33333333333334,
+    "Count": 3
+  },
+  "Staff: Seki": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Kosaka": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Kawagoe": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Walker": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Oohata": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Staff: Tachibana": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Staff: Kawai": {
+    "Score": 75,
+    "Count": 4
+  },
+  "Staff: Yoshino": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Hoki": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Wakabayashi": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Staff: Kawatsura": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Staff: Iino": {
+    "Score": 75,
+    "Count": 6
+  },
+  "Staff: Ijuuin": {
+    "Score": 77.5,
+    "Count": 4
+  },
+  "Staff: Sugiura": {
+    "Score": 83.33333333333334,
+    "Count": 3
+  },
+  "Staff: Enokido": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Staff: Nakatani": {
+    "Score": 83.33333333333334,
+    "Count": 3
+  },
+  "Staff: Tashou": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Nakayama": {
+    "Score": 72.85714285714286,
+    "Count": 7
+  },
+  "Staff: Masuyama": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Zappa": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Okuda": {
+    "Score": 70,
+    "Count": 5
+  },
+  "Staff: Inoguchi ": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Kikuya": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Aoki": {
+    "Score": 75,
+    "Count": 4
+  },
+  "Staff: Iwakami": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Staff: Okada": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ootsuka": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Staff: Aburaya": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kinoshita": {
+    "Score": 68,
+    "Count": 5
+  },
+  "Staff: Koujuu": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Staff: Naitou": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Matsumoto": {
+    "Score": 72,
+    "Count": 10
+  },
+  "Staff: Shirane": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Nagayama": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Staff: Yuuki": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Takizawa": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yasuda": {
+    "Score": 74.44444444444444,
+    "Count": 9
+  },
+  "Staff: Yokota": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Ookubo": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Staff: Takahashi": {
+    "Score": 76.36363636363637,
+    "Count": 22
+  },
+  "Staff: Shibuya": {
+    "Score": 66.66666666666667,
+    "Count": 3
+  },
+  "Staff: Matsuki": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Nishio": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Saitou": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Staff: Ikai": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Satou": {
+    "Score": 75.55555555555556,
+    "Count": 18
+  },
+  "Staff: Yoshii": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ikehara": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Miyahara": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Miya": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Matsuda": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Kitamura": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Konuta": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Kurita": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Kanemoto": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Hanazawa": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Kawasaki": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Ogawa": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Tachizaki": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Miyake": {
+    "Score": 76.66666666666667,
+    "Count": 6
+  },
+  "Staff: Kusaka": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Audio Highs": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Honda": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yamaguchi": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Tokoro": {
+    "Score": 63.33333333333333,
+    "Count": 3
+  },
+  "Staff: Seo": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Oizaki": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Ide": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Kubo": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Kamiya": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Kifune": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Key": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Maeda": {
+    "Score": 70,
+    "Count": 10
+  },
+  "Staff: Hinoue": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Ishihara": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Tafu": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Hatta": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Nakamura": {
+    "Score": 75,
+    "Count": 14
+  },
+  "Staff: Shimo": {
+    "Score": 77.5,
+    "Count": 4
+  },
+  "Staff: Togoshi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Orito": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Ikeda": {
+    "Score": 75,
+    "Count": 4
+  },
+  "Staff: Shigemura": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Chata": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Shinohara": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: eufonius": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Yoneda": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Oomuro": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hirasawa": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Takamatsu": {
+    "Score": 88.18181818181819,
+    "Count": 11
+  },
+  "Staff: Yamauchi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Yumoto": {
+    "Score": 80,
+    "Count": 5
+  },
+  "Staff: Tajiri": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Yoshimura": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Staff: Miki": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Staff: Mix Speaker's,Inc.": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Wakano": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Inoue": {
+    "Score": 82.85714285714286,
+    "Count": 7
+  },
+  "Staff: Kuwabara": {
+    "Score": 71.66666666666667,
+    "Count": 6
+  },
+  "Staff: FLIPFLOPs": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Tokumoto": {
+    "Score": 70,
+    "Count": 5
+  },
+  "Staff: Suehiro": {
+    "Score": 76,
+    "Count": 5
+  },
+  "Staff: Aketagawa": {
+    "Score": 74.28571428571429,
+    "Count": 7
+  },
+  "Staff: Ayano": {
+    "Score": 65,
+    "Count": 2
+  },
+  "Staff: Tsubone": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Hirooka": {
+    "Score": 66.66666666666667,
+    "Count": 3
+  },
+  "Staff: Takeuchi": {
+    "Score": 84,
+    "Count": 5
+  },
+  "Staff: Miyama": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Kitahara": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Okazaki": {
+    "Score": 61.66666666666667,
+    "Count": 6
+  },
+  "Staff: Kaneko": {
+    "Score": 68,
+    "Count": 5
+  },
+  "Staff: Hirano": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Matsuo": {
+    "Score": 72,
+    "Count": 5
+  },
+  "Staff: Ishii": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Nakamori": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Kurosaki": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Hirakawa": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Nishikata": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kawamura": {
+    "Score": 73,
+    "Count": 10
+  },
+  "Staff: Sandrovich": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ai": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Saxton": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Clark": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Tipton": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Palencia": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Shipman": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hawkinson": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Harris": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Acosta": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Roberson": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kraatz": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Watkins": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Cline": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Davis": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Dewell": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Sabou": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Shinozaki": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Staff: Lauré": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Raiss": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Schouren": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Iwakura": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Sakurabi": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Inai": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kimoto": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Iguchi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yoshida": {
+    "Score": 78.88888888888889,
+    "Count": 9
+  },
+  "Staff: Anno": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Yakou": {
+    "Score": 65,
+    "Count": 2
+  },
+  "Staff: Dohi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: McFarland": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Burgmeier": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Glass": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Arakawa": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Oonogi": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Nakagawa": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Ban": {
+    "Score": 96.66666666666666,
+    "Count": 3
+  },
+  "Staff: Amemiya": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Ishino": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Irie": {
+    "Score": 90,
+    "Count": 3
+  },
+  "Staff: Minami": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Sakoi": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Staff: Takada": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Staff: Senju": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: SID": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Staff: Miura": {
+    "Score": 67.5,
+    "Count": 4
+  },
+  "Staff: Kumota": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Kuroyanagi": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Aoyama": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Ike": {
+    "Score": 65,
+    "Count": 2
+  },
+  "Staff: Hirama": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Nagasaki": {
+    "Score": 65,
+    "Count": 2
+  },
+  "Staff: Noguchi": {
+    "Score": 66.66666666666667,
+    "Count": 3
+  },
+  "Staff: Sugano": {
+    "Score": 60,
+    "Count": 2
+  },
+  "Staff: Sakazume": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Bridcutt": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Taichi": {
+    "Score": 60,
+    "Count": 2
+  },
+  "Staff: Oota": {
+    "Score": 71.42857142857143,
+    "Count": 7
+  },
+  "Staff: Misawa": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Staff: Kumagai": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Staff: Ebina": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Staff: Tomita": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Oozora": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Oonishi": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Sugihara": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Koyasu": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Mitani": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kikuchi": {
+    "Score": 72.5,
+    "Count": 8
+  },
+  "Staff: Tsubaki": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Ooishi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Amasaki": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kashimura": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Taguchi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Hiraoka": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Ishiguro": {
+    "Score": 74,
+    "Count": 5
+  },
+  "Staff: Takeshita": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Taniguchi": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Staff: Takemiya": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Ishizuka": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Beniya": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Hashimoto": {
+    "Score": 75,
+    "Count": 6
+  },
+  "Staff: Kamata": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Sugita": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: Sorachi": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: Yokote": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Staff: Yamatoya": {
+    "Score": 100,
+    "Count": 2
+  },
+  "Staff: Kawase": {
+    "Score": 100,
+    "Count": 2
+  },
+  "Staff: Hearts Grow": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: Beat Crusaders": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: Shigi": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: AZU": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: Kuriyama": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Staff: Base Ball Bear": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: Piko": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: Noda": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Staff: Nanba": {
+    "Score": 86.66666666666666,
+    "Count": 3
+  },
+  "Staff: Mogi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Osada": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Morikawa": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Hiroe": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Oonuki": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Shishido": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Sadamatsu": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: THE SIXTH LIE": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Hirata": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Staff: Andou": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Staff: Fukase": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kozono": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Fukushi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Miyanishi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Mizuno": {
+    "Score": 75,
+    "Count": 4
+  },
+  "Staff: Omata": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Taiga": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Ozawa": {
+    "Score": 65,
+    "Count": 2
+  },
+  "Staff: Furuichi": {
+    "Score": 60,
+    "Count": 2
+  },
+  "Staff: Kujirai": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Nakajima": {
+    "Score": 68,
+    "Count": 5
+  },
+  "Staff: Nakamoto ": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Oowada": {
+    "Score": 60,
+    "Count": 2
+  },
+  "Staff: Yano": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Kidou": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Nishioka": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Morioka": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Sano": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Torii": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Kusama": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Ochi ": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Takamoto": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Ueda": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Tonomizu": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Kugimiya": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Kawahara": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Utsunomiya": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Shimazaki": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Nishida": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Kumamoto": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Okita": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Kobayashi": {
+    "Score": 66.66666666666667,
+    "Count": 6
+  },
+  "Staff: Sogabe": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Onoda": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Kuraya": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Hiraike": {
+    "Score": 74,
+    "Count": 5
+  },
+  "Staff: Ooshima": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Yatsu": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hyakkoku": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Endou": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Maeyamada": {
+    "Score": 80,
+    "Count": 6
+  },
+  "Staff: Ono": {
+    "Score": 76,
+    "Count": 5
+  },
+  "Staff: Suemitsu": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Staff: Nakata": {
+    "Score": 63.33333333333333,
+    "Count": 3
+  },
+  "Staff: von Daake": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Maeno": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kajita": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Mimuro": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Matsushita": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Tsunoda": {
+    "Score": 77.5,
+    "Count": 4
+  },
+  "Staff: Hashiguchi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Ootake": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Oikawa": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Kamimoto": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Oochi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Masuda": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Hiraki": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Yoshihara": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Nakahigashi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kikushima": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Houjou": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Isogai": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Ogata": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Yoshitake": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Yamazaki": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Staff: Araki": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Matsubara": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Ookuma": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ogura": {
+    "Score": 66.66666666666667,
+    "Count": 3
+  },
+  "Staff: Nagata": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Soga": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ichihara": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Onodera": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Higashi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Takadera": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Staff: Makabe": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kuwano": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Sakashita": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Sisk": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Klein": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Akesaka": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kawaida": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Sasahara": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Takao": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Togashi": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Staff: Yoshimatsu": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Galneryus": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Koujina": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Yuzu": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Chiba": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Hanai": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Staff: Liang": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Abiru": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Ishiki ": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Saemann": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Baumgardt": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Kanno": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Oku": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yabuta": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Seko": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Onda": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Qaijff": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Haneda": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hirose": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hayama": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kurahashi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Muranaka": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Nagai": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Yoshiba": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Matsuzaki": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Takase": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Oonuma": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Minato": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Sawairi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Koin": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Koizumi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kawada": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Shinjou": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Aboshi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Horiuchi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Satomi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Misaka": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Horiguchi": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Toyosaki": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kotobuki": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hikasa": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Komori": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Tamura": {
+    "Score": 66.66666666666667,
+    "Count": 6
+  },
+  "Staff: Ririnra": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yanase": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Fudeyasu": {
+    "Score": 73.33333333333333,
+    "Count": 6
+  },
+  "Staff: Deguchi": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Shibata": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Tsutsumi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Nomura": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Tsuchiya": {
+    "Score": 75,
+    "Count": 6
+  },
+  "Staff: Tadokoro": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Rinehart": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Sluys": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Peters": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Na-Ga": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Asai": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Nii": {
+    "Score": 60,
+    "Count": 2
+  },
+  "Staff: Kajiwara": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Nakano": {
+    "Score": 66.66666666666667,
+    "Count": 3
+  },
+  "Staff: Teratani": {
+    "Score": 60,
+    "Count": 2
+  },
+  "Staff: Baba": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Chapin": {
+    "Score": 65,
+    "Count": 2
+  },
+  "Staff: Toba": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Kananiwa": {
+    "Score": 65,
+    "Count": 2
+  },
+  "Staff: Shinkai": {
+    "Score": 70,
+    "Count": 8
+  },
+  "Staff: Hachinohe": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Urbanowicz": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hamasu": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Inamura": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kagawa": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: von Stegmann": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Iwasaki": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Tanji": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Majima": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Takei": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Chopin": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yonemura": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hiramatsu": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Komaru": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Shima": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Fukada": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Inage": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yoshinari": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Shioiri": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kirimoto": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hayashi ": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yamashiro": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Iwaaki": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Haga": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Sengoku": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yang": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Horio": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Oohashi": {
+    "Score": 76,
+    "Count": 5
+  },
+  "Staff: Umetsu": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Staff: Hinata": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Schröder": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Inozume": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Wald": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Imaizumi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kuniyuki": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Imigi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Mizuki": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Kazama": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Fujita": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Staff: Touyama": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Akatsuki": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Staff: Kanasaki": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Uezu": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Staff: Kikuta": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Komatsu": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: David": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Staff: Amamiya": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Kayano": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Sonoda": {
+    "Score": 90,
+    "Count": 3
+  },
+  "Staff: Yonezawa": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Hamao": {
+    "Score": 90,
+    "Count": 1
+  },
+  "Staff: Namikawa": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kunihiko": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Mcdonald": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Takeda": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: ViViD": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Hanada": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Staff: Tsuda": {
+    "Score": 72,
+    "Count": 5
+  },
+  "Staff: Kimiya": {
+    "Score": 73.75,
+    "Count": 8
+  },
+  "Staff: Takakuwa": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Harada": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Akita": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Tsukushi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kise": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Penkin": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Koyanagi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ise": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Izawa": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Abo": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Mori": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kudou": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Yamashita": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Tsunetaka": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kumanomata": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Noro": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Shiraishi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Tanimura": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Soeno": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Chihara": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Sakuraba": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ochi": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Amino": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yamanaka": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Katsuwo": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Yasukawa": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Jinbou": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Staff: Morishita": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Yanagi": {
+    "Score": 65,
+    "Count": 2
+  },
+  "Staff: Takabayashi": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Fujishiro": {
+    "Score": 60,
+    "Count": 2
+  },
+  "Staff: Suzumoto": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Kuzuya": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Jones": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Gotou": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Staff: Ishigami": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Egeler": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Konomoto": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Nitta": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Amada": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Oozeki": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ushiroda": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Sawabe": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Mimori": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yarimizu": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kama": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Iizuka": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Nabeiwa": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kurosu": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kazuno": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Murata": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kubota": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: JAM Project": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Moriguchi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Miyazaki": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Hayashi": {
+    "Score": 75,
+    "Count": 6
+  },
+  "Staff: Maruyama": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Staff: Ushijima": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Staff: Mutou": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Yoshizawa": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Shinjuku": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Morijiri": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kaizu": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Enomoto": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kuwahara": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hiraga": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Wei": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hora": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kawazoe": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Mitsuyama": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Sunakohara": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Noshiro": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Saida": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Staff: Hatanaka": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Sorakubo": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Sugawara": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Gou": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Laisné": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Izumo": {
+    "Score": 74,
+    "Count": 5
+  },
+  "Staff: Maehara": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Tomono": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Machitani": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Takechi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Izumi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Sugiyama": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ebikawa": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Uchida": {
+    "Score": 72.5,
+    "Count": 4
+  },
+  "Staff: Fujiwara": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yokoyama": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Imai": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Tani": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Koyama": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kawaguchi": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Akazawa": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Nagatsuki": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yokotani": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Staff: Takamine": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Mataga": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Okamoto": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Saito": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Uchiyama": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Akimoto": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Fujieda": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kitayoshi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kisara": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Aitani": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kawakami": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Tahata": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kouno": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Takami": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Matsuzawa": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Hiramaki": {
+    "Score": 62,
+    "Count": 5
+  },
+  "Staff: Fukazawa": {
+    "Score": 60,
+    "Count": 1
+  },
+  "Staff: Sakai": {
+    "Score": 60,
+    "Count": 2
+  },
+  "Staff: Hoshino": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Sakuma ": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Nakao": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Oobou": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Nedzu": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Niizaka": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Usui": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Emoto": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Asano": {
+    "Score": 75,
+    "Count": 2
+  },
+  "Staff: Kamoshida": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Mizoguchi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Masui": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Miyao": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Iwata": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Fujii": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Shibutani": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Minase": {
+    "Score": 75,
+    "Count": 4
+  },
+  "Staff: Seto": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Tanezaki": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Igarashi": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Tateyama": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Staff: Aida": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Shinoda": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Fujie": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Tsuruta": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Mikami": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kamei": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Furukawa": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hiratsuka": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Nagakawa": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Arita": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Mieno": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Tateishi": {
+    "Score": 73.33333333333333,
+    "Count": 3
+  },
+  "Staff: Kasai": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Houno": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Nanbara": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Oliver": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Anbe": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Mizushima": {
+    "Score": 70,
+    "Count": 4
+  },
+  "Staff: Ultra-Prism": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Tsunaki": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ozaki": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Staff: Toda": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Staff: Hiramuki": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Hiramura": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Nagayoshi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Takeichi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Gureishi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Nghiem": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Mochizuki": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Hamano": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Yoshimata": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Moriyama": {
+    "Score": 76.66666666666667,
+    "Count": 3
+  },
+  "Staff: Kawano": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Shirato": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Sakurazawa": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff:  Sugawara": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Yamaoka": {
+    "Score": 90,
+    "Count": 2
+  },
+  "Staff: Locatelli": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Iwamoto": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Muramoto": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Furuhashi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Shimada": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Sugimoto": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Taniuchi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kanehira": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Fushihara": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Imagaki": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Katagiri": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Harada ": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Swasey": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kuroda": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Omode": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Hamada": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yanagimura": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kuribayashi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Matsuura": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Shigetomi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kameyama": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ibe": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Tsunemitsu": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Yoshie": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Takiguchi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Tokuno": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ichikawa": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hirota": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Tsuji": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Vah": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ebata": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Terashima": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Karasawa": {
+    "Score": 75,
+    "Count": 8
+  },
+  "Staff: Kosuge": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Gutiérrez": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Lauda": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Li": {
+    "Score": 70,
+    "Count": 5
+  },
+  "Staff: Ishida": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Morita": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kitajima": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Kyougoku": {
+    "Score": 80,
+    "Count": 3
+  },
+  "Staff: Miwa": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Mikasano": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Dismuke": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Grelle": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Rial": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Sono": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Sekikawa": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Haraguchi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Urahata": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Sumimoto": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Fudesaka": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Shoukinji": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Asao": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Miyagi": {
+    "Score": 85,
+    "Count": 2
+  },
+  "Staff: Aijima": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Tashiro": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Oguchi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Aihara": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Matsumoku": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Möller": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Trunte": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ishidate": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Kigami": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Unoguchi": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Call": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Myouken": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Hara": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Fukuyama": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Asumi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Takatsu": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Shingou": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Nakase": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hosoi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Adachi": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Honma": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kesamaru": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Sakamoto ": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Morokuma": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kataoka": {
+    "Score": 80,
+    "Count": 2
+  },
+  "Staff: Miyajima": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Fujiyama": {
+    "Score": 80,
+    "Count": 1
+  },
+  "Staff: Kamakura": {
+    "Score": 70,
+    "Count": 3
+  },
+  "Staff: Oosumi": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Tomatsu": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Aoyagi": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Saga": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Nakahara": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Sekiya": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Zen": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Shinotsuki": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Ihara": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Hosogoe": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Nishijima": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Katayama": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Shi": {
+    "Score": 70,
+    "Count": 1
+  },
+  "Staff: Niina": {
+    "Score": 70,
+    "Count": 2
+  },
+  "Staff: Tada": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: Tasaki": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: Momoda": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: Sakakibara": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: Shikura": {
+    "Score": 100,
+    "Count": 1
+  },
+  "Staff: Maruo": {
+    "Score": 100,
+    "Count": 1
+  }
+}
