@@ -91,7 +91,7 @@
     display: inline-block;
     position: relative;
     margin: 5px;
-    /* width: -webkit-fill-available; */
+    width: -webkit-fill-available;
 }
 .flexdatalist-multiple li.input-container,
 .flexdatalist-multiple li.input-container input {
