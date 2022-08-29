@@ -195,7 +195,7 @@ rl.question("Your Anilist Username: ", function (answer) {
                 fullname = lastname
               else 
                 fullname = "Staff: Person"
-              fullname = `=HYPERLINK("${anime.staff.edges[j].node.siteUrl}","Staff: ${fullname} [Link] (${anime.staff.edges[j].role})")`
+              fullname = `=HYPERLINK("${anime.staff.edges[j].node.siteUrl}","Staff: ${fullname} (${anime.staff.edges[j].role})")`
               staff = {[fullname]: {
                 count: 1,
                 weight: [weight]
@@ -392,7 +392,7 @@ rl.question("Your Anilist Username: ", function (answer) {
                 fullname = lastname
               else 
                 fullname = "Staff: Person"
-              fullname = `=HYPERLINK("${anime.staff.edges[j].node.siteUrl}","Staff: ${fullname} [Link] (${anime.staff.edges[j].role})")`
+              fullname = `=HYPERLINK("${anime.staff.edges[j].node.siteUrl}","Staff: ${fullname} (${anime.staff.edges[j].role})")`
               var xfullname = fullname
               if(Object.keys(varScheme.staff).length<1){
                 varScheme.staff = {[xfullname]: {
