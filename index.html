@@ -54,20 +54,6 @@
                 text-indent: 0;
                 box-sizing: border-box;
             }
-            /* Scrollbar */
-            ::-webkit-scrollbar{
-                width: 0.75rem;
-                height: 0.75rem;
-            }
-            ::-webkit-scrollbar-track{
-                background: #fff;
-                border-radius: .3em;
-            }
-
-            ::-webkit-scrollbar-thumb{
-                border-radius: .3em;
-                background: #bcc0c4;
-            }
             /* Text */
             .textLogo{
                 font-size: clamp(1.6rem, 2vw,1.6rem) !important;
@@ -410,7 +396,7 @@
                     // Initialize Anilist Graphql Data
                     var query = `
                     {
-                        MediaListCollection(userName: "${username}", type: ANIME) {
+                        MediaListCollection(userName: "${username}", type: ANIME, sort: SCORE) {
                             lists {
                                 status
                                 entries {
@@ -532,7 +518,7 @@
                                                 // Add Recommendation Scheme
                                                 if(recScheme.length<1){
                                                 recScheme.push({
-                                                    ["Hide (x)"]: "", title: title, url:url,
+                                                    title: title, url:url,
                                                     score: 0, 
                                                     meanUserScoreWeighted: 0, anilistScoreWeighted: 0, userAnilistScore: 0, 
                                                     meanUserScore: [meanUserScore],  anilistScore: anilistScore, count: 1,
