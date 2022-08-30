@@ -22,55 +22,130 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
         <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
         <style>
+            /* Re-edit */
+                /* Change For Text Size */
+            :root{
+                font-size: 0.9rem !important;
+            }
+                /* Change/Add to Class/Tag of desired division for Padding */
+            .Home,
+            .overlay{
+                padding-inline: clamp(0px, 5vw, 75px) !important;
+            }
+            /* Default */
+            :root{
+                font-size: 0.9rem;
+                background-color: #fff;
+                font-family: sans-serif;
+                z-index: 0;
+                min-width: 100%;
+                min-height: 100%;
+            }
+            :root>*{
+                background-color: #fff;
+                min-width: inherit;
+                min-height: inherit;
+            }
             *,
             ::after,
             ::before{
-                margin:0;
-                padding:0;
-                box-sizing:border-box
+                margin: 0;
+                padding: 0;
+                text-indent: 0;
+                box-sizing: border-box;
             }
-            html {
-            font-size: calc( (100vw - 480px)/(1280 - 480) * (24 - 16) + 16px);
+            /* Scrollbar */
+            ::-webkit-scrollbar{
+                width: 0.75rem;
+                height: 0.75rem;
             }
-            button,
-            button *{
-                cursor:pointer
+            ::-webkit-scrollbar-track{
+                background: #fff;
+                border-radius: .3em;
             }
-            dialog{
-                border:0
+
+            ::-webkit-scrollbar-thumb{
+                border-radius: .3em;
+                background: #bcc0c4;
             }
-            img{
-                max-width:100%
+            /* Text */
+            .textLogo{
+                font-size: clamp(1.6rem, 2vw,1.6rem) !important;
             }
+            h1{
+                font-size: clamp(1.3rem, 2vw,1.3rem);
+            }
+            h2{
+                font-size: clamp(1.05rem, 2vw,1.05rem);
+            }
+            h3{
+                font-size: clamp(1.05rem, 2vw,1.05rem);
+            }
+            p,
+            label,
+            input[type="text"]{
+                font-size: clamp(0.95rem, 2vw,0.95rem);
+            }
+            h4{
+                font-size: clamp(1rem, 2vw,1rem);
+            }
+            h5{
+                font-size: clamp(0.9rem, 2vw,0.9rem);
+            }
+            h6{
+                font-size: clamp(0.8rem, 2vw,0.8rem);
+            }
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6,
+            p,
+            input,
+            textarea,
+            .textLogo{
+                cursor:default;
+                hyphens:manual;
+                white-space:pre-wrap;
+                word-break:break-word;
+                overflow-wrap:break-word;
+                transform-origin: left;
+            }
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6,
+            p,
+            .textLogo{
+                max-width: min-content;
+                min-width: fit-content;
+            }
+            /* Forms */
             input,
             textarea{
-                outline:0
+                outline: 0;
             }
             input[type=text]{
-                width:0
+                width: 0;
             }
-            h1 {
-                font-size: calc(100% * calc( (100vw - 480px)/(1280 - 480) * (24 - 16) + 16px));
+            button,
+            button>*{
+                cursor: pointer;
             }
-            h2 {
-                font-size: calc(85% * calc( (100vw - 480px)/(1280 - 480) * (24 - 16) + 16px));
+            dialog{
+                border: 0;
             }
-            h3 {
-                font-size: calc(71% * calc( (100vw - 480px)/(1280 - 480) * (24 - 16) + 16px));
+            img{
+                max-width: 100%;
             }
-            h4 {
-                font-size: calc(57% * calc( (100vw - 480px)/(1280 - 480) * (24 - 16) + 16px));
+            /* Additional */
+            button {
+                background-color: black !important;
+                color: white !important;
             }
-            h5 {
-                font-size: calc(42% * calc( (100vw - 480px)/(1280 - 480) * (24 - 16) + 16px));;
-            }
-            p{
-                font-size: calc(14% * calc( (100vw - 480px)/(1280 - 480) * (24 - 16) + 16px));
-            }
-            h6 {
-                font-size: calc(28% * calc( (100vw - 480px)/(1280 - 480) * (24 - 16) + 16px));
-            }
-            /*  */
             input {
                 padding: 0.5em;
             }
@@ -92,8 +167,15 @@
                 background: url('./public/loading.gif') 
                     50% 50% no-repeat 
                     rgb(0, 0, 0)
-            };
-            /*  */
+            }
+            .loader > * {
+                justify-content: center;
+                min-height: 100%;
+                align-items: center;
+                display: flex;
+                margin-top: 150px;
+                color: wheat;
+            }
             html,body,.home{
                 width: 100%;
                 min-height: 100%;
@@ -119,6 +201,7 @@
             }
             .flexdatalist-multiple{
                 display: flex;
+                flex-wrap: wrap;
                 max-height: 120px;
                 overflow-y: scroll;
             }
@@ -173,12 +256,12 @@
     <body>
         <header>
             <div class="overlay">
-                <h1>Kanshi.</h1>
-                <h5>Anime - Anilist</h5>
-                <h5>Recommendation</h5>
+                <h1 class="textLogo">Kanshi.</h1>
+                <h3>Anime - Anilist</h3>
+                <h3>Recommendation</h3>
             </div>
         </header>
-        <div class="Home container">
+        <div class="Home">
             <div class="searchData">
                 <div class="userInputContainer">
                     <input class="userInput" placeholder="Anilist Username" name="username" id="username" type="text">
@@ -198,9 +281,10 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table id="anime-table" class="tablesorter {sortlist: [[0,1]]} table table-bordered table-striped">
+                <table id="anime-table" class="tablesorter {sortlist: [[1,1]]} table table-bordered table-striped">
                     <thead>
                         <tr>
+                            <th>Hide</th>
                             <th>Score</th>
                             <th>Title</th>
                             <th>Status</th>
@@ -216,7 +300,9 @@
                 </table>
             </div>
         </div>
-        <div class="loader"></div>
+        <div class="loader">
+            <span><h1>Loading...</h1></span>
+        </div>
 
         <script defer>
             // Load Saved Data
@@ -265,6 +351,17 @@
                         0:{sortInitialOrder: "desc"}
                     }
                 });
+                $('#anime-table').delegate('button.remove', 'click' ,function() {
+                    var t = $('#anime-table');
+                    // disabling the pager will restore all table rows
+                    // t.trigger('disablePager');
+                    // remove chosen row
+                    $(this).closest('tr').remove();
+                    // restore pager
+                    // t.trigger('enablePager');
+                    t.trigger('update');
+                    return false;
+                });
                 // Remove Loader
                 $(".loader").fadeOut("slow");
             });
@@ -288,7 +385,6 @@
                     // Saved New Data
                     saveJSON(username,"savedUsername")
                     savedUsername = username
-                    console.log(savedUsername, username, retrieveJSON("savedUsername"))
                     var filterInputs = $(".flexdatalist-multiple > .value").children(".text")
                     var filters = []
                     var includes = []
@@ -502,7 +598,6 @@
 
             function LoadData(includes, excludes, data){
                 if(data!==null && typeof data==="object") {
-                    console.log(data)
                 // FilterOut User Includes and Excludes
                     // Include
                     var tempRecScheme = []
@@ -593,6 +688,9 @@
                     var animeData = ""
                     $.each(data, (key, value) => {
                         animeData += `<tr class="item" role="row">`
+                        animeData += `<td style="vertical-align:middle;">
+                                        <button style="margin:auto;padding: 5px 13px;" type="button" class="remove" title="Remove this row">X</button>
+                                      </td>`
                         animeData += `<td>${value.score.toFixed(4)}</td>`
                         animeData += `<td><a href="${value.url}">${value.title}</a></td>`
                         animeData += `<td>${value.status}</td>`
@@ -608,31 +706,31 @@
                     $("#anime-table").trigger("update");
                 }
             }
-        //////////////////////////////////////////////////////////////////
-        // Extra
-        function saveJSON(data, name) {
-            localStorage.setItem(name, JSON.stringify(data));       
-        }
-        function retrieveJSON(name) {
-            var retrievedObject = localStorage.getItem(name);
-            return JSON.parse(retrievedObject)
-        }
-        function equalsNCS(str1, str2) {
-            var s1 = str1
-            var s2 = str2
-            if(typeof str1=="number") s1 = str1.toString()
-            if(typeof str2=="number") s2 = str2.toString()
-            if(typeof str1=="string"&&typeof str2=="string")
-                return str1.toLowerCase() == str2.toLowerCase()
-            else return s1==s2
-            
-        }
-        function arraySum(obj) {
-            return obj.reduce((a, b) => a + b, 0)
-        }
-        function arrayMean(obj) {
-            return (arraySum(obj) / obj.length) || 0
-        }
+            //////////////////////////////////////////////////////////////////
+            // Extra
+            function saveJSON(data, name) {
+                localStorage.setItem(name, JSON.stringify(data));       
+            }
+            function retrieveJSON(name) {
+                var retrievedObject = localStorage.getItem(name);
+                return JSON.parse(retrievedObject)
+            }
+            function equalsNCS(str1, str2) {
+                var s1 = str1
+                var s2 = str2
+                if(typeof str1=="number") s1 = str1.toString()
+                if(typeof str2=="number") s2 = str2.toString()
+                if(typeof str1=="string"&&typeof str2=="string")
+                    return str1.toLowerCase() == str2.toLowerCase()
+                else return s1==s2
+                
+            }
+            function arraySum(obj) {
+                return obj.reduce((a, b) => a + b, 0)
+            }
+            function arrayMean(obj) {
+                return (arraySum(obj) / obj.length) || 0
+            }
         </script>
     </body>
 </html>
