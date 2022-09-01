@@ -1,4 +1,4 @@
-# Anilist-Graphql-Recommendation
+# Kanshi.-Anime-Recommendation
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An anime recommendation system using current Anilist account, calculations were based on User Score, Amount of Anilist Recommendations for a Specific Anime, and Recommeded Animes' Anilist General Ratings.
 
 ## Starting Up
