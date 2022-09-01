@@ -1,7832 +1,7877 @@
 [
-  {
-    "info": "Action"
-  },
-  {
-    "info": "Adventure"
-  },
-  {
-    "info": "Comedy"
-  },
-  {
-    "info": "Drama"
-  },
-  {
-    "info": "Ecchi"
-  },
-  {
-    "info": "Fantasy"
-  },
-  {
-    "info": "Horror"
-  },
-  {
-    "info": "Mahou Shoujo"
-  },
-  {
-    "info": "Mecha"
-  },
-  {
-    "info": "Music"
-  },
-  {
-    "info": "Mystery"
-  },
-  {
-    "info": "Psychological"
-  },
-  {
-    "info": "Romance"
-  },
-  {
-    "info": "Sci-Fi"
-  },
-  {
-    "info": "Slice of Life"
-  },
-  {
-    "info": "Sports"
-  },
-  {
-    "info": "Supernatural"
-  },
-  {
-    "info": "Thriller"
-  },
-  {
-    "info": "4-koma"
-  },
-  {
-    "info": "Achromatic"
-  },
-  {
-    "info": "Achronological Order"
-  },
-  {
-    "info": "Acting"
-  },
-  {
-    "info": "Adoption"
-  },
-  {
-    "info": "Advertisement"
-  },
-  {
-    "info": "Afterlife"
-  },
-  {
-    "info": "Age Gap"
-  },
-  {
-    "info": "Age Regression"
-  },
-  {
-    "info": "Agender"
-  },
-  {
-    "info": "Agriculture"
-  },
-  {
-    "info": "Airsoft"
-  },
-  {
-    "info": "Alchemy"
-  },
-  {
-    "info": "Aliens"
-  },
-  {
-    "info": "Alternate Universe"
-  },
-  {
-    "info": "American Football"
-  },
-  {
-    "info": "Amnesia"
-  },
-  {
-    "info": "Anachronism"
-  },
-  {
-    "info": "Angels"
-  },
-  {
-    "info": "Animals,\n      Anthology"
-  },
-  {
-    "info": "Anthropomorphism"
-  },
-  {
-    "info": "Anti-Hero"
-  },
-  {
-    "info": "Archery"
-  },
-  {
-    "info": "Artificial Intelligence"
-  },
-  {
-    "info": "Asexual"
-  },
-  {
-    "info": "Assassins"
-  },
-  {
-    "info": "Astronomy"
-  },
-  {
-    "info": "Athletics"
-  },
-  {
-    "info": "Augmented Reality"
-  },
-  {
-    "info": "Autobiographical"
-  },
-  {
-    "info": "Aviation"
-  },
-  {
-    "info": "Badminton"
-  },
-  {
-    "info": "Band"
-  },
-  {
-    "info": "Bar"
-  },
-  {
-    "info": "Baseball"
-  },
-  {
-    "info": "Basketball"
-  },
-  {
-    "info": "Battle Royale"
-  },
-  {
-    "info": "Biographical"
-  },
-  {
-    "info": "Bisexual"
-  },
-  {
-    "info": "Body Horror"
-  },
-  {
-    "info": "Body Swapping"
-  },
-  {
-    "info": "Boxing"
-  },
-  {
-    "info": "Boys' Love"
-  },
-  {
-    "info": "Bullying"
-  },
-  {
-    "info": "Butler"
-  },
-  {
-    "info": "Calligraphy"
-  },
-  {
-    "info": "Cannibalism"
-  },
-  {
-    "info": "Card Battle"
-  },
-  {
-    "info": "Cars"
-  },
-  {
-    "info": "Centaur"
-  },
-  {
-    "info": "CGI"
-  },
-  {
-    "info": "Cheerleading"
-  },
-  {
-    "info": "Chibi"
-  },
-  {
-    "info": "Chimera"
-  },
-  {
-    "info": "Chuunibyou"
-  },
-  {
-    "info": "Circus"
-  },
-  {
-    "info": "Classic Literature"
-  },
-  {
-    "info": "Clone"
-  },
-  {
-    "info": "College"
-  },
-  {
-    "info": "Coming of Age"
-  },
-  {
-    "info": "Conspiracy"
-  },
-  {
-    "info": "Cosmic Horror"
-  },
-  {
-    "info": "Cosplay"
-  },
-  {
-    "info": "Crime"
-  },
-  {
-    "info": "Crossdressing"
-  },
-  {
-    "info": "Crossover"
-  },
-  {
-    "info": "Cult"
-  },
-  {
-    "info": "Cultivation"
-  },
-  {
-    "info": "Cute Boys Doing Cute Things"
-  },
-  {
-    "info": "Cute Girls Doing Cute Things"
-  },
-  {
-    "info": "Cyberpunk,\n      Cyborg"
-  },
-  {
-    "info": "Cycling"
-  },
-  {
-    "info": "Dancing"
-  },
-  {
-    "info": "Death Game"
-  },
-  {
-    "info": "Delinquents"
-  },
-  {
-    "info": "Demons"
-  },
-  {
-    "info": "Denpa"
-  },
-  {
-    "info": "Detective"
-  },
-  {
-    "info": "Dinosaurs"
-  },
-  {
-    "info": "Disability"
-  },
-  {
-    "info": "Dissociative Identities"
-  },
-  {
-    "info": "Dragons"
-  },
-  {
-    "info": "Drawing"
-  },
-  {
-    "info": "Drugs"
-  },
-  {
-    "info": "Dullahan"
-  },
-  {
-    "info": "Dungeon"
-  },
-  {
-    "info": "Dystopian"
-  },
-  {
-    "info": "E-Sports"
-  },
-  {
-    "info": "Economics"
-  },
-  {
-    "info": "Educational"
-  },
-  {
-    "info": "Elf"
-  },
-  {
-    "info": "Ensemble Cast"
-  },
-  {
-    "info": "Environmental"
-  },
-  {
-    "info": "Episodic"
-  },
-  {
-    "info": "Ero Guro"
-  },
-  {
-    "info": "Espionage"
-  },
-  {
-    "info": "Fairy Tale"
-  },
-  {
-    "info": "Family Life"
-  },
-  {
-    "info": "Fashion"
-  },
-  {
-    "info": "Female Harem"
-  },
-  {
-    "info": "Female Protagonist"
-  },
-  {
-    "info": "Fencing"
-  },
-  {
-    "info": "Firefighters"
-  },
-  {
-    "info": "Fishing"
-  },
-  {
-    "info": "Fitness"
-  },
-  {
-    "info": "Flash"
-  },
-  {
-    "info": "Food"
-  },
-  {
-    "info": "Football"
-  },
-  {
-    "info": "Foreign"
-  },
-  {
-    "info": "Found Family"
-  },
-  {
-    "info": "Fugitive"
-  },
-  {
-    "info": "Full CGI"
-  },
-  {
-    "info": "Full Color"
-  },
-  {
-    "info": "Gambling"
-  },
-  {
-    "info": "Gangs"
-  },
-  {
-    "info": "Gender Bending,\n      Ghost"
-  },
-  {
-    "info": "Go"
-  },
-  {
-    "info": "Goblin"
-  },
-  {
-    "info": "Gods"
-  },
-  {
-    "info": "Golf"
-  },
-  {
-    "info": "Gore"
-  },
-  {
-    "info": "Guns"
-  },
-  {
-    "info": "Gyaru"
-  },
-  {
-    "info": "Handball"
-  },
-  {
-    "info": "Henshin"
-  },
-  {
-    "info": "Heterosexual"
-  },
-  {
-    "info": "Hikikomori"
-  },
-  {
-    "info": "Historical"
-  },
-  {
-    "info": "Homeless"
-  },
-  {
-    "info": "Ice Skating"
-  },
-  {
-    "info": "Idol"
-  },
-  {
-    "info": "Isekai"
-  },
-  {
-    "info": "Iyashikei"
-  },
-  {
-    "info": "Josei"
-  },
-  {
-    "info": "Judo"
-  },
-  {
-    "info": "Kaiju"
-  },
-  {
-    "info": "Karuta"
-  },
-  {
-    "info": "Kemonomimi"
-  },
-  {
-    "info": "Kids"
-  },
-  {
-    "info": "Kuudere"
-  },
-  {
-    "info": "Lacrosse"
-  },
-  {
-    "info": "Language Barrier"
-  },
-  {
-    "info": "LGBTQ+ Themes"
-  },
-  {
-    "info": "Lost Civilization"
-  },
-  {
-    "info": "Love Triangle"
-  },
-  {
-    "info": "Mafia"
-  },
-  {
-    "info": "Magic"
-  },
-  {
-    "info": "Mahjong"
-  },
-  {
-    "info": "Maids"
-  },
-  {
-    "info": "Makeup"
-  },
-  {
-    "info": "Male Harem"
-  },
-  {
-    "info": "Male Protagonist"
-  },
-  {
-    "info": "Martial Arts"
-  },
-  {
-    "info": "Medicine"
-  },
-  {
-    "info": "Memory Manipulation"
-  },
-  {
-    "info": "Mermaid"
-  },
-  {
-    "info": "Meta"
-  },
-  {
-    "info": "Military"
-  },
-  {
-    "info": "Mixed Gender Harem"
-  },
-  {
-    "info": "Monster Boy"
-  },
-  {
-    "info": "Monster Girl"
-  },
-  {
-    "info": "Mopeds"
-  },
-  {
-    "info": "Motorcycles"
-  },
-  {
-    "info": "Musical"
-  },
-  {
-    "info": "Mythology"
-  },
-  {
-    "info": "Necromancy"
-  },
-  {
-    "info": "Nekomimi"
-  },
-  {
-    "info": "Ninja"
-  },
-  {
-    "info": "No Dialogue"
-  },
-  {
-    "info": "Noir"
-  },
-  {
-    "info": "Non-fiction"
-  },
-  {
-    "info": "Nudity"
-  },
-  {
-    "info": "Nun"
-  },
-  {
-    "info": "Office Lady"
-  },
-  {
-    "info": "Oiran"
-  },
-  {
-    "info": "Ojou-sama"
-  },
-  {
-    "info": "Orphan"
-  },
-  {
-    "info": "Otaku Culture"
-  },
-  {
-    "info": "Outdoor"
-  },
-  {
-    "info": "Pandemic"
-  },
-  {
-    "info": "Parkour"
-  },
-  {
-    "info": "Parody,\n      Philosophy"
-  },
-  {
-    "info": "Photography"
-  },
-  {
-    "info": "Pirates"
-  },
-  {
-    "info": "Poker"
-  },
-  {
-    "info": "Police"
-  },
-  {
-    "info": "Politics"
-  },
-  {
-    "info": "Post-Apocalyptic"
-  },
-  {
-    "info": "POV"
-  },
-  {
-    "info": "Primarily Adult Cast"
-  },
-  {
-    "info": "Primarily Child Cast"
-  },
-  {
-    "info": "Primarily Female Cast"
-  },
-  {
-    "info": "Primarily Male Cast"
-  },
-  {
-    "info": "Primarily Teen Cast"
-  },
-  {
-    "info": "Puppetry"
-  },
-  {
-    "info": "Rakugo"
-  },
-  {
-    "info": "Real Robot"
-  },
-  {
-    "info": "Rehabilitation"
-  },
-  {
-    "info": "Reincarnation"
-  },
-  {
-    "info": "Religion"
-  },
-  {
-    "info": "Revenge"
-  },
-  {
-    "info": "Robots"
-  },
-  {
-    "info": "Rotoscoping"
-  },
-  {
-    "info": "Rugby"
-  },
-  {
-    "info": "Rural"
-  },
-  {
-    "info": "Samurai"
-  },
-  {
-    "info": "Satire"
-  },
-  {
-    "info": "School"
-  },
-  {
-    "info": "School Club"
-  },
-  {
-    "info": "Scuba Diving"
-  },
-  {
-    "info": "Seinen"
-  },
-  {
-    "info": "Shapeshifting"
-  },
-  {
-    "info": "Ships"
-  },
-  {
-    "info": "Shogi"
-  },
-  {
-    "info": "Shoujo"
-  },
-  {
-    "info": "Shounen"
-  },
-  {
-    "info": "Shrine Maiden"
-  },
-  {
-    "info": "Skateboarding"
-  },
-  {
-    "info": "Skeleton"
-  },
-  {
-    "info": "Slapstick"
-  },
-  {
-    "info": "Slavery"
-  },
-  {
-    "info": "Software Development"
-  },
-  {
-    "info": "Space"
-  },
-  {
-    "info": "Space Opera"
-  },
-  {
-    "info": "Spearplay"
-  },
-  {
-    "info": "Steampunk"
-  },
-  {
-    "info": "Stop Motion"
-  },
-  {
-    "info": "Succubus"
-  },
-  {
-    "info": "Suicide"
-  },
-  {
-    "info": "Sumo"
-  },
-  {
-    "info": "Super Power"
-  },
-  {
-    "info": "Super Robot"
-  },
-  {
-    "info": "Superhero"
-  },
-  {
-    "info": "Surfing"
-  },
-  {
-    "info": "Surreal Comedy"
-  },
-  {
-    "info": "Survival"
-  },
-  {
-    "info": "Swimming"
-  },
-  {
-    "info": "Swordplay"
-  },
-  {
-    "info": "Table Tennis"
-  },
-  {
-    "info": "Tanks"
-  },
-  {
-    "info": "Tanned Skin"
-  },
-  {
-    "info": "Teacher,\n      Teens' Love"
-  },
-  {
-    "info": "Tennis"
-  },
-  {
-    "info": "Terrorism"
-  },
-  {
-    "info": "Time Manipulation"
-  },
-  {
-    "info": "Time Skip"
-  },
-  {
-    "info": "Tokusatsu"
-  },
-  {
-    "info": "Tomboy"
-  },
-  {
-    "info": "Torture"
-  },
-  {
-    "info": "Tragedy"
-  },
-  {
-    "info": "Trains"
-  },
-  {
-    "info": "Transgender"
-  },
-  {
-    "info": "Travel"
-  },
-  {
-    "info": "Triads"
-  },
-  {
-    "info": "Tsundere"
-  },
-  {
-    "info": "Twins"
-  },
-  {
-    "info": "Urban"
-  },
-  {
-    "info": "Urban Fantasy"
-  },
-  {
-    "info": "Vampire"
-  },
-  {
-    "info": "Video Games"
-  },
-  {
-    "info": "Vikings"
-  },
-  {
-    "info": "Villainess"
-  },
-  {
-    "info": "Virtual World"
-  },
-  {
-    "info": "Volleyball"
-  },
-  {
-    "info": "VTuber"
-  },
-  {
-    "info": "War"
-  },
-  {
-    "info": "Werewolf"
-  },
-  {
-    "info": "Witch"
-  },
-  {
-    "info": "Work"
-  },
-  {
-    "info": "Wrestling"
-  },
-  {
-    "info": "Writing"
-  },
-  {
-    "info": "Wuxia"
-  },
-  {
-    "info": "Yakuza"
-  },
-  {
-    "info": "Yandere"
-  },
-  {
-    "info": "Youkai"
-  },
-  {
-    "info": "Yuri"
-  },
-  {
-    "info": "Zombie"
-  },
-  {
-    "info": "UNWATCHED"
-  },
-  {
-    "info": "COMPLETED"
-  },
-  {
-    "info": "DROPPED"
-  },
-  {
-    "info": "PLANNING TO WATCH"
-  },
-  {
-    "info": "FALL"
-  },
-  {
-    "info": "WINTER"
-  },
-  {
-    "info": "SUMMER"
-  },
-  {
-    "info": "SPRING"
-  },
-  {
-    "info": "TV"
-  },
-  {
-    "info": "TV_SHORT"
-  },
-  {
-    "info": "OVA"
-  },
-  {
-    "info": "ONA"
-  },
-  {
-    "info": "MOVIE"
-  },
-  {
-    "info": "SPECIAL"
-  },
-  {
-    "info": "1940"
-  },
-  {
-    "info": "1941"
-  },
-  {
-    "info": "1942"
-  },
-  {
-    "info": "1943"
-  },
-  {
-    "info": "1944"
-  },
-  {
-    "info": "1945"
-  },
-  {
-    "info": "1946"
-  },
-  {
-    "info": "1947"
-  },
-  {
-    "info": "1948"
-  },
-  {
-    "info": "1949"
-  },
-  {
-    "info": "1950"
-  },
-  {
-    "info": "1951"
-  },
-  {
-    "info": "1952"
-  },
-  {
-    "info": "1953"
-  },
-  {
-    "info": "1954"
-  },
-  {
-    "info": "1955"
-  },
-  {
-    "info": "1956"
-  },
-  {
-    "info": "1957"
-  },
-  {
-    "info": "1958"
-  },
-  {
-    "info": "1959"
-  },
-  {
-    "info": "1960"
-  },
-  {
-    "info": "1961"
-  },
-  {
-    "info": "1962"
-  },
-  {
-    "info": "1963"
-  },
-  {
-    "info": "1964"
-  },
-  {
-    "info": "1965"
-  },
-  {
-    "info": "1966"
-  },
-  {
-    "info": "1967"
-  },
-  {
-    "info": "1968"
-  },
-  {
-    "info": "1969"
-  },
-  {
-    "info": "1970"
-  },
-  {
-    "info": "1971"
-  },
-  {
-    "info": "1972"
-  },
-  {
-    "info": "1973"
-  },
-  {
-    "info": "1974"
-  },
-  {
-    "info": "1975"
-  },
-  {
-    "info": "1976"
-  },
-  {
-    "info": "1977"
-  },
-  {
-    "info": "1978"
-  },
-  {
-    "info": "1979"
-  },
-  {
-    "info": "1980"
-  },
-  {
-    "info": "1981"
-  },
-  {
-    "info": "1982"
-  },
-  {
-    "info": "1983"
-  },
-  {
-    "info": "1984"
-  },
-  {
-    "info": "1985"
-  },
-  {
-    "info": "1986"
-  },
-  {
-    "info": "1987"
-  },
-  {
-    "info": "1988"
-  },
-  {
-    "info": "1989"
-  },
-  {
-    "info": "1990"
-  },
-  {
-    "info": "1991"
-  },
-  {
-    "info": "1992"
-  },
-  {
-    "info": "1993"
-  },
-  {
-    "info": "1994"
-  },
-  {
-    "info": "1995"
-  },
-  {
-    "info": "1996"
-  },
-  {
-    "info": "1997"
-  },
-  {
-    "info": "1998"
-  },
-  {
-    "info": "1999"
-  },
-  {
-    "info": "2000"
-  },
-  {
-    "info": "2001"
-  },
-  {
-    "info": "2002"
-  },
-  {
-    "info": "2003"
-  },
-  {
-    "info": "2004"
-  },
-  {
-    "info": "2005"
-  },
-  {
-    "info": "2006"
-  },
-  {
-    "info": "2007"
-  },
-  {
-    "info": "2008"
-  },
-  {
-    "info": "2009"
-  },
-  {
-    "info": "2010"
-  },
-  {
-    "info": "2011"
-  },
-  {
-    "info": "2012"
-  },
-  {
-    "info": "2013"
-  },
-  {
-    "info": "2014"
-  },
-  {
-    "info": "2015"
-  },
-  {
-    "info": "2016"
-  },
-  {
-    "info": "2017"
-  },
-  {
-    "info": "2018"
-  },
-  {
-    "info": "2019"
-  },
-  {
-    "info": "2020"
-  },
-  {
-    "info": "2021"
-  },
-  {
-    "info": "2022"
-  },
-  {
-    "info": "2023"
-  },
-  {
-    "info": "Satelight"
-  },
-  {
-    "info": "Funimation"
-  },
-  {
-    "info": "Media Factory"
-  },
-  {
-    "info": "Bandai"
-  },
-  {
-    "info": "8-bit"
-  },
-  {
-    "info": "GONZO"
-  },
-  {
-    "info": "GDH"
-  },
-  {
-    "info": "Dentsu"
-  },
-  {
-    "info": "Trigger"
-  },
-  {
-    "info": "Aniplex"
-  },
-  {
-    "info": "CloverWorks"
-  },
-  {
-    "info": "A-1 Pictures"
-  },
-  {
-    "info": "Movic"
-  },
-  {
-    "info": "Ultra Super Pictures"
-  },
-  {
-    "info": "Maho Film"
-  },
-  {
-    "info": "Lantis"
-  },
-  {
-    "info": "Warner Bros. Japan"
-  },
-  {
-    "info": "Bandai Namco Arts"
-  },
-  {
-    "info": "Kodansha"
-  },
-  {
-    "info": "Asmik Ace"
-  },
-  {
-    "info": "WOWOW"
-  },
-  {
-    "info": "SILVER LINK."
-  },
-  {
-    "info": "White Fox"
-  },
-  {
-    "info": "Good Smile Film"
-  },
-  {
-    "info": "SB Creative"
-  },
-  {
-    "info": "Hakuhodo DY Music & Pictures"
-  },
-  {
-    "info": "Sony Pictures Entertainment"
-  },
-  {
-    "info": "AT-X"
-  },
-  {
-    "info": "Bushiroad"
-  },
-  {
-    "info": "Magic Capsule"
-  },
-  {
-    "info": "Frontier Works"
-  },
-  {
-    "info": "Asread"
-  },
-  {
-    "info": "OVERLAP"
-  },
-  {
-    "info": "FuRyu"
-  },
-  {
-    "info": "Sony Music Solutions"
-  },
-  {
-    "info": "Toranoana"
-  },
-  {
-    "info": "MADHOUSE"
-  },
-  {
-    "info": "Sentai Filmworks"
-  },
-  {
-    "info": "Studio DEEN"
-  },
-  {
-    "info": "Madman Entertainment"
-  },
-  {
-    "info": "Genco"
-  },
-  {
-    "info": "DAX Production"
-  },
-  {
-    "info": "Aniplex of America"
-  },
-  {
-    "info": "ASCII Media Works"
-  },
-  {
-    "info": "NHK"
-  },
-  {
-    "info": "NHK Enterprises"
-  },
-  {
-    "info": "Bandai Namco Pictures"
-  },
-  {
-    "info": "LIDENFILMS"
-  },
-  {
-    "info": "Felix Film"
-  },
-  {
-    "info": "Square Enix"
-  },
-  {
-    "info": "BS11"
-  },
-  {
-    "info": "Amusement Media Academy"
-  },
-  {
-    "info": "Hayakawa Shobou"
-  },
-  {
-    "info": "diomedéa"
-  },
-  {
-    "info": "ENGI"
-  },
-  {
-    "info": "KADOKAWA"
-  },
-  {
-    "info": "Bit Grooove Promotion"
-  },
-  {
-    "info": "ADV Films"
-  },
-  {
-    "info": "CONNECT"
-  },
-  {
-    "info": "Vega Entertainment"
-  },
-  {
-    "info": "SynergySP"
-  },
-  {
-    "info": "Shogakukan-Shueisha Productions"
-  },
-  {
-    "info": "Pony Canyon"
-  },
-  {
-    "info": "Fields"
-  },
-  {
-    "info": "BANDAI SPIRITS"
-  },
-  {
-    "info": "TOKYO MX"
-  },
-  {
-    "info": "Kansai TV"
-  },
-  {
-    "info": "Geek Toys"
-  },
-  {
-    "info": "Crunchyroll"
-  },
-  {
-    "info": "Tezuka Productions"
-  },
-  {
-    "info": "Kadokawa Shoten"
-  },
-  {
-    "info": "Kadokawa Pictures Japan"
-  },
-  {
-    "info": "Klock Worx"
-  },
-  {
-    "info": "flying DOG"
-  },
-  {
-    "info": "Studio Silver"
-  },
-  {
-    "info": "Arvo Animation"
-  },
-  {
-    "info": "Nippon BS Broadcasting"
-  },
-  {
-    "info": "ADK Marketing Solutions"
-  },
-  {
-    "info": "Shueisha"
-  },
-  {
-    "info": "Barnum Studio"
-  },
-  {
-    "info": "Shaft"
-  },
-  {
-    "info": "Mainichi Broadcasting System"
-  },
-  {
-    "info": "Xebec"
-  },
-  {
-    "info": "J.C. Staff"
-  },
-  {
-    "info": "TMS Entertainment"
-  },
-  {
-    "info": "DMM pictures"
-  },
-  {
-    "info": "Doga Kobo"
-  },
-  {
-    "info": "Toho"
-  },
-  {
-    "info": "TBS"
-  },
-  {
-    "info": "Studio Gokumi"
-  },
-  {
-    "info": "Ichijinsha"
-  },
-  {
-    "info": "Sotsu"
-  },
-  {
-    "info": "BS Fuji"
-  },
-  {
-    "info": "G.CMay Animation & Film"
-  },
-  {
-    "info": "Starchild Records"
-  },
-  {
-    "info": "Dwango"
-  },
-  {
-    "info": "East Japan Marketing & Communications"
-  },
-  {
-    "info": "Nichion"
-  },
-  {
-    "info": "Myrica Music"
-  },
-  {
-    "info": "My Theater D.D."
-  },
-  {
-    "info": "Global Solutions"
-  },
-  {
-    "info": "Mirai Koujou"
-  },
-  {
-    "info": "Kanetsuu Investment"
-  },
-  {
-    "info": "Brain's Base"
-  },
-  {
-    "info": "KYORAKU"
-  },
-  {
-    "info": "NIS America Inc."
-  },
-  {
-    "info": "Yomiuri Advertising"
-  },
-  {
-    "info": "TV Tokyo Music"
-  },
-  {
-    "info": "Hanabee Entertainment"
-  },
-  {
-    "info": "ABC Animation"
-  },
-  {
-    "info": "Delfi Sound"
-  },
-  {
-    "info": "Mukuo Studio"
-  },
-  {
-    "info": "feel."
-  },
-  {
-    "info": "GANSIS"
-  },
-  {
-    "info": "C2C"
-  },
-  {
-    "info": "Sunrise"
-  },
-  {
-    "info": "Bandai Entertainment"
-  },
-  {
-    "info": "Sony Music Entertainment"
-  },
-  {
-    "info": "NUT"
-  },
-  {
-    "info": "Wit Studio"
-  },
-  {
-    "info": "Production I.G"
-  },
-  {
-    "info": "Pony Canyon Enterprise"
-  },
-  {
-    "info": "10GAUGE"
-  },
-  {
-    "info": "Rakuonsha"
-  },
-  {
-    "info": "NBCUniversal Entertainment Japan"
-  },
-  {
-    "info": "Fuji TV"
-  },
-  {
-    "info": "Graphinica"
-  },
-  {
-    "info": "Yumeta Company"
-  },
-  {
-    "info": "FLAGSHIP LINE"
-  },
-  {
-    "info": "aNCHOR"
-  },
-  {
-    "info": "Avex Pictures"
-  },
-  {
-    "info": "Tencent"
-  },
-  {
-    "info": "bones"
-  },
-  {
-    "info": "Artland"
-  },
-  {
-    "info": "Kitty Film"
-  },
-  {
-    "info": "Magic Bus"
-  },
-  {
-    "info": "Sunrise Beyond"
-  },
-  {
-    "info": "Sunrise Music"
-  },
-  {
-    "info": "Gainax"
-  },
-  {
-    "info": "TV Tokyo"
-  },
-  {
-    "info": "NAS"
-  },
-  {
-    "info": "Tatsunoko Production"
-  },
-  {
-    "info": "Kyoto Animation"
-  },
-  {
-    "info": "TROYCA"
-  },
-  {
-    "info": "MAGES."
-  },
-  {
-    "info": "Nitroplus"
-  },
-  {
-    "info": "Houbunsha"
-  },
-  {
-    "info": "Asahi Broadcasting Corporation"
-  },
-  {
-    "info": "Nippon Animation"
-  },
-  {
-    "info": "Central Park Media"
-  },
-  {
-    "info": "Kadokawa Pictures USA"
-  },
-  {
-    "info": "Happinet Pictures"
-  },
-  {
-    "info": "Asatsu DK"
-  },
-  {
-    "info": "AIC"
-  },
-  {
-    "info": "BS-TBS"
-  },
-  {
-    "info": "Jumondou"
-  },
-  {
-    "info": "Lucky Paradise"
-  },
-  {
-    "info": "Q-Tec"
-  },
-  {
-    "info": "Shogakukan Music & Digital Entertainment"
-  },
-  {
-    "info": "G-mode"
-  },
-  {
-    "info": "Real-T"
-  },
-  {
-    "info": "Tengu Kobou"
-  },
-  {
-    "info": "Capcom"
-  },
-  {
-    "info": "Bandai Namco Entertainment"
-  },
-  {
-    "info": "Picona Creative Studio"
-  },
-  {
-    "info": "BIGLOBE"
-  },
-  {
-    "info": "Seven"
-  },
-  {
-    "info": "Seven Arcs"
-  },
-  {
-    "info": "Shogakukan"
-  },
-  {
-    "info": "Hakusensha"
-  },
-  {
-    "info": "Half H.P Studio"
-  },
-  {
-    "info": "Sammy"
-  },
-  {
-    "info": "Docomo Anime Store"
-  },
-  {
-    "info": "Kadokawa Media House"
-  },
-  {
-    "info": "D-techno"
-  },
-  {
-    "info": "David Production"
-  },
-  {
-    "info": "Inu x Boku SS Production Partners"
-  },
-  {
-    "info": "Daume"
-  },
-  {
-    "info": "Studio Gram"
-  },
-  {
-    "info": "PRA"
-  },
-  {
-    "info": "Kinema Citrus"
-  },
-  {
-    "info": "Animax"
-  },
-  {
-    "info": "Animation Do"
-  },
-  {
-    "info": "Broccoli"
-  },
-  {
-    "info": "Studio Matrix"
-  },
-  {
-    "info": "TV Osaka"
-  },
-  {
-    "info": "VAP"
-  },
-  {
-    "info": "King Records"
-  },
-  {
-    "info": "Hal Film Maker"
-  },
-  {
-    "info": "bilibili"
-  },
-  {
-    "info": "Ashi Productions"
-  },
-  {
-    "info": "OLM"
-  },
-  {
-    "info": "Shin-Ei Animation"
-  },
-  {
-    "info": "DMM music"
-  },
-  {
-    "info": "CBC"
-  },
-  {
-    "info": "Futabasha"
-  },
-  {
-    "info": "Studio Pierrot"
-  },
-  {
-    "info": "Bandai Visual"
-  },
-  {
-    "info": "Media Blasters"
-  },
-  {
-    "info": "NYAV Post"
-  },
-  {
-    "info": "Studio Mausu"
-  },
-  {
-    "info": "Trinity Sound"
-  },
-  {
-    "info": "AQUA ARIS"
-  },
-  {
-    "info": "Ai Addiction"
-  },
-  {
-    "info": "Lesprit"
-  },
-  {
-    "info": "Dream Creation"
-  },
-  {
-    "info": "Cospa"
-  },
-  {
-    "info": "SoftBank Creative Corp."
-  },
-  {
-    "info": "ZEXCS"
-  },
-  {
-    "info": "Discotek"
-  },
-  {
-    "info": "EMT Squared"
-  },
-  {
-    "info": "Passione"
-  },
-  {
-    "info": "MAPPA"
-  },
-  {
-    "info": "Earth Star Entertainment"
-  },
-  {
-    "info": "Toei Animation"
-  },
-  {
-    "info": "Avex Entertainment"
-  },
-  {
-    "info": "TV Asahi"
-  },
-  {
-    "info": "Viz Media"
-  },
-  {
-    "info": "Forecast Communications"
-  },
-  {
-    "info": "Nikkatsu"
-  },
-  {
-    "info": "Telecom Animation Film"
-  },
-  {
-    "info": "Nippon Columbia"
-  },
-  {
-    "info": "Shouchiku"
-  },
-  {
-    "info": "P.A. Works"
-  },
-  {
-    "info": "Studio Rikka"
-  },
-  {
-    "info": "Directions"
-  },
-  {
-    "info": "Code"
-  },
-  {
-    "info": "Trick Block"
-  },
-  {
-    "info": "Purple Cow Studio Japan"
-  },
-  {
-    "info": "Marvelous"
-  },
-  {
-    "info": "Age Global Networks"
-  },
-  {
-    "info": "TOP-INSIGHT"
-  },
-  {
-    "info": "SANZIGEN"
-  },
-  {
-    "info": "Sogo Vision"
-  },
-  {
-    "info": "Yomiko Advertising"
-  },
-  {
-    "info": "Apollon"
-  },
-  {
-    "info": "Yomiuri TV"
-  },
-  {
-    "info": "Selecta Visión"
-  },
-  {
-    "info": "Lay-duce"
-  },
-  {
-    "info": "Haoliners Animation"
-  },
-  {
-    "info": "Tencent Animation & Comics"
-  },
-  {
-    "info": "Toei Video"
-  },
-  {
-    "info": "Ray"
-  },
-  {
-    "info": "MUSE"
-  },
-  {
-    "info": "MediaNet"
-  },
-  {
-    "info": "Coamix"
-  },
-  {
-    "info": "Studio Ghibli"
-  },
-  {
-    "info": "Tokuma Shoten"
-  },
-  {
-    "info": "GKids"
-  },
-  {
-    "info": "Nippon Television Network"
-  },
-  {
-    "info": "YTV"
-  },
-  {
-    "info": "Enterbrain"
-  },
-  {
-    "info": "monofilmo"
-  },
-  {
-    "info": "Nomad"
-  },
-  {
-    "info": "Sonilude"
-  },
-  {
-    "info": "BloomZ"
-  },
-  {
-    "info": "Touyou Recording"
-  },
-  {
-    "info": "C-one"
-  },
-  {
-    "info": "AMG Entertainment"
-  },
-  {
-    "info": "MediaNet Pictures"
-  },
-  {
-    "info": "Hokkaidou Bunka Housou"
-  },
-  {
-    "info": "Miyazaki Broadcasting"
-  },
-  {
-    "info": "Christmas Holly"
-  },
-  {
-    "info": "Lerche"
-  },
-  {
-    "info": "Netflix"
-  },
-  {
-    "info": "Tokyo Movie Shinsha"
-  },
-  {
-    "info": "Manga Entertainment"
-  },
-  {
-    "info": "Animatsu Entertainment"
-  },
-  {
-    "info": "CygamesPictures"
-  },
-  {
-    "info": "Sola Digital Arts"
-  },
-  {
-    "info": "Manglobe"
-  },
-  {
-    "info": "Sakura Create"
-  },
-  {
-    "info": "GYAO!"
-  },
-  {
-    "info": "A-Sketch"
-  },
-  {
-    "info": "Fujipacific Music"
-  },
-  {
-    "info": "Anchor Bay Films"
-  },
-  {
-    "info": "Zero-G"
-  },
-  {
-    "info": "NAZ"
-  },
-  {
-    "info": "Geno Studio"
-  },
-  {
-    "info": "Twin Engine"
-  },
-  {
-    "info": "Asahi Production"
-  },
-  {
-    "info": "Shirogumi"
-  },
-  {
-    "info": "Slowcurve"
-  },
-  {
-    "info": "PPP"
-  },
-  {
-    "info": "Shufunotomo"
-  },
-  {
-    "info": "Dai Nippon Printing"
-  },
-  {
-    "info": "HORNETS"
-  },
-  {
-    "info": "Mixer"
-  },
-  {
-    "info": "North Stars Pictures"
-  },
-  {
-    "info": "JY Animation"
-  },
-  {
-    "info": "CA-Cygames Anime Fund"
-  },
-  {
-    "info": "Sunny Side Up"
-  },
-  {
-    "info": "Ajiado"
-  },
-  {
-    "info": "GREE"
-  },
-  {
-    "info": "BLADE"
-  },
-  {
-    "info": "Thundray"
-  },
-  {
-    "info": "miHoYo"
-  },
-  {
-    "info": "miHoYo Anime"
-  },
-  {
-    "info": "ufotable"
-  },
-  {
-    "info": "Omnibus Japan"
-  },
-  {
-    "info": "Sony Music Communications"
-  },
-  {
-    "info": "Sony PCL"
-  },
-  {
-    "info": "DeNA"
-  },
-  {
-    "info": "Tohokushinsha Film Corporation"
-  },
-  {
-    "info": "Bunka Housou"
-  },
-  {
-    "info": "Fosun"
-  },
-  {
-    "info": "NetEase"
-  },
-  {
-    "info": "BookLive"
-  },
-  {
-    "info": "Encourage Films"
-  },
-  {
-    "info": "KBS"
-  },
-  {
-    "info": "Konami"
-  },
-  {
-    "info": "AIC A.S.T.A."
-  },
-  {
-    "info": "Trilogy Future Studio"
-  },
-  {
-    "info": "AXsiZ"
-  },
-  {
-    "info": "Studio Hibari"
-  },
-  {
-    "info": "Visual Arts"
-  },
-  {
-    "info": "Key"
-  },
-  {
-    "info": "WOWMAX"
-  },
-  {
-    "info": "Infinite"
-  },
-  {
-    "info": "Studio Blanc"
-  },
-  {
-    "info": "Yokohama Animation Lab"
-  },
-  {
-    "info": "BS Nippon"
-  },
-  {
-    "info": "MIGHTY MEDIA"
-  },
-  {
-    "info": "CBC TV"
-  },
-  {
-    "info": "Tasogare Otome×Amnesia Production Partners"
-  },
-  {
-    "info": "Radix"
-  },
-  {
-    "info": "Kourin Mitsuzou Koubou"
-  },
-  {
-    "info": "Rondo Robe"
-  },
-  {
-    "info": "Studio 3Hz"
-  },
-  {
-    "info": "Orange"
-  },
-  {
-    "info": "Touhouku Shinsha"
-  },
-  {
-    "info": "Toshiba EMI"
-  },
-  {
-    "info": "Nagoya Broadcasting Network"
-  },
-  {
-    "info": "Memory-Tech"
-  },
-  {
-    "info": "Knack Productions"
-  },
-  {
-    "info": "Fanworks"
-  },
-  {
-    "info": "Imagineer"
-  },
-  {
-    "info": "Tencent Penguin Pictures"
-  },
-  {
-    "info": "China Wit Media"
-  },
-  {
-    "info": "Gathering"
-  },
-  {
-    "info": "Sanrio"
-  },
-  {
-    "info": "Sharefun Studio"
-  },
-  {
-    "info": "Aha Entertainment"
-  },
-  {
-    "info": "AIC Plus+"
-  },
-  {
-    "info": "Planet Cartoon"
-  },
-  {
-    "info": "EGG FIRM"
-  },
-  {
-    "info": "Hotline"
-  },
-  {
-    "info": "Kachidoki Studio"
-  },
-  {
-    "info": "Project Railgun"
-  },
-  {
-    "info": "PINE JAM"
-  },
-  {
-    "info": "Asahi Housou"
-  },
-  {
-    "info": "Natsuiro Kiseki Production Partners"
-  },
-  {
-    "info": "Ryukyu Asahi Broadcasting"
-  },
-  {
-    "info": "Bandai Namco Live Creative"
-  },
-  {
-    "info": "NTT Docomo"
-  },
-  {
-    "info": "Arms"
-  },
-  {
-    "info": "A Line"
-  },
-  {
-    "info": "chara-ani.com"
-  },
-  {
-    "info": "12 Diary Holders"
-  },
-  {
-    "info": "SKY Perfect Well Think"
-  },
-  {
-    "info": "Zack Promotion"
-  },
-  {
-    "info": "STEVE N' STEVEN"
-  },
-  {
-    "info": "Sound Team Don Juan"
-  },
-  {
-    "info": "Marvelous Entertainment"
-  },
-  {
-    "info": "Creators in Pack"
-  },
-  {
-    "info": "AKABEiSOFT2"
-  },
-  {
-    "info": "Bandai Namco Music Live"
-  },
-  {
-    "info": "d-rights"
-  },
-  {
-    "info": "Tokuma Japan Communications"
-  },
-  {
-    "info": "Nelke Planning"
-  },
-  {
-    "info": "NHN Comico"
-  },
-  {
-    "info": "GP MEDIA JAPAN"
-  },
-  {
-    "info": "Bridge"
-  },
-  {
-    "info": "Lawson"
-  },
-  {
-    "info": "TV Aichi"
-  },
-  {
-    "info": "Hoods Entertainment"
-  },
-  {
-    "info": "The Right Stuf International"
-  },
-  {
-    "info": "TYO Animations"
-  },
-  {
-    "info": "Studio Colorido"
-  },
-  {
-    "info": "KDDI"
-  },
-  {
-    "info": "Dentsu Meitetsu Communications"
-  },
-  {
-    "info": "Fuji Creative Corporation"
-  },
-  {
-    "info": "Universal Music Japan"
-  },
-  {
-    "info": "Qualia Animation"
-  },
-  {
-    "info": "Studio Jack"
-  },
-  {
-    "info": "Lawson Entertainment"
-  },
-  {
-    "info": "4Kids Entertainment"
-  },
-  {
-    "info": "Studio VOLN"
-  },
-  {
-    "info": "Sumzap"
-  },
-  {
-    "info": "LICO"
-  },
-  {
-    "info": "TAP"
-  },
-  {
-    "info": "Lapin Track"
-  },
-  {
-    "info": "BEEP"
-  },
-  {
-    "info": "Triple A"
-  },
-  {
-    "info": "BSP"
-  },
-  {
-    "info": "Nexus"
-  },
-  {
-    "info": "Totonyan"
-  },
-  {
-    "info": "Victor Entertainment"
-  },
-  {
-    "info": "tsuritama partners"
-  },
-  {
-    "info": "BMG Japan"
-  },
-  {
-    "info": "Kids Station"
-  },
-  {
-    "info": "Audio Highs"
-  },
-  {
-    "info": "Miracle Robo"
-  },
-  {
-    "info": "Glovision"
-  },
-  {
-    "info": "Good Smile Company"
-  },
-  {
-    "info": "NTT Plala"
-  },
-  {
-    "info": "EKACHI EPILKA"
-  },
-  {
-    "info": "Hobby Japan"
-  },
-  {
-    "info": " l-a-unch・BOX"
-  },
-  {
-    "info": "Studio elle"
-  },
-  {
-    "info": "TNK"
-  },
-  {
-    "info": "Millepensee"
-  },
-  {
-    "info": "exsa"
-  },
-  {
-    "info": "Cygames"
-  },
-  {
-    "info": "Micro Magazine Sha"
-  },
-  {
-    "info": "Geneon Entertainment"
-  },
-  {
-    "info": "WAO World"
-  },
-  {
-    "info": "Melonbooks"
-  },
-  {
-    "info": "CTW"
-  },
-  {
-    "info": "Strawberry Meets Pictures"
-  },
-  {
-    "info": "Kanon"
-  },
-  {
-    "info": "Nihon Narration Engi Kenkyuujo"
-  },
-  {
-    "info": "Happinet"
-  },
-  {
-    "info": "Yomiuri TV Enterprise"
-  },
-  {
-    "info": "TO Books"
-  },
-  {
-    "info": "JTB Next Creation"
-  },
-  {
-    "info": "Tokyo Animator Gakuin"
-  },
-  {
-    "info": "Toshiba Entertainment"
-  },
-  {
-    "info": "Imagica Lab."
-  },
-  {
-    "info": "Planet"
-  },
-  {
-    "info": "81 Produce"
-  },
-  {
-    "info": "Zipang"
-  },
-  {
-    "info": "CBC Radio"
-  },
-  {
-    "info": "Adult Swim"
-  },
-  {
-    "info": "Happinet Phantom Studios"
-  },
-  {
-    "info": "Imagica"
-  },
-  {
-    "info": "Cosmic Ray"
-  },
-  {
-    "info": "Studio Signpost"
-  },
-  {
-    "info": "Banpresto"
-  },
-  {
-    "info": "Studio Comet"
-  },
-  {
-    "info": "Contents Seed"
-  },
-  {
-    "info": "Medicos Entertainment"
-  },
-  {
-    "info": "Cammot"
-  },
-  {
-    "info": "Lilix"
-  },
-  {
-    "info": "Studio Palette"
-  },
-  {
-    "info": "Dream Force"
-  },
-  {
-    "info": "Staple Entertainment"
-  },
-  {
-    "info": "APDREAM"
-  },
-  {
-    "info": "Eye Move"
-  },
-  {
-    "info": "Shuka"
-  },
-  {
-    "info": "GoHands"
-  },
-  {
-    "info": "Actas"
-  },
-  {
-    "info": "ONE MUSIC"
-  },
-  {
-    "info": "Horipro"
-  },
-  {
-    "info": "Studio 4°C"
-  },
-  {
-    "info": "AIC Build"
-  },
-  {
-    "info": "Studio Fantasia"
-  },
-  {
-    "info": "Walt Disney Studios"
-  },
-  {
-    "info": "Studio Chizu"
-  },
-  {
-    "info": "C-Station"
-  },
-  {
-    "info": "Group TAC"
-  },
-  {
-    "info": "SamBakZa"
-  },
-  {
-    "info": "P.I.C.S."
-  },
-  {
-    "info": "Yoshimoto Kogyo"
-  },
-  {
-    "info": "Imagin"
-  },
-  {
-    "info": "Pioneer LDC"
-  },
-  {
-    "info": "APPP"
-  },
-  {
-    "info": "Gaina"
-  },
-  {
-    "info": "KSS"
-  },
-  {
-    "info": "Youmex"
-  },
-  {
-    "info": "Studio Kelmadick"
-  },
-  {
-    "info": "Mushi Production"
-  },
-  {
-    "info": "Studio Guts"
-  },
-  {
-    "info": "AnimEigo"
-  },
-  {
-    "info": "Bushiroad Move"
-  },
-  {
-    "info": "Micro House"
-  },
-  {
-    "info": "Tohjak"
-  },
-  {
-    "info": "Video Market"
-  },
-  {
-    "info": "Hifumi Shobou"
-  },
-  {
-    "info": "Live Viewing Japan"
-  },
-  {
-    "info": "I0plus"
-  },
-  {
-    "info": "Studio Animal"
-  },
-  {
-    "info": "Drive"
-  },
-  {
-    "info": "Ichigo Animation"
-  },
-  {
-    "info": "Comic Animation"
-  },
-  {
-    "info": "Ordet"
-  },
-  {
-    "info": "Akita Shoten"
-  },
-  {
-    "info": "Science SARU"
-  },
-  {
-    "info": "Tohan"
-  },
-  {
-    "info": "Animax Broadcast Japan"
-  },
-  {
-    "info": "SME Visual Works"
-  },
-  {
-    "info": "Kadokawa Contents Gate"
-  },
-  {
-    "info": "Line Webtoon"
-  },
-  {
-    "info": "Tear-Studio"
-  },
-  {
-    "info": "TrioPen Studio"
-  },
-  {
-    "info": "project No.9"
-  },
-  {
-    "info": "YOMIURI BRAND STUDIO"
-  },
-  {
-    "info": "Bergamo"
-  },
-  {
-    "info": "D.N. Dream Partners"
-  },
-  {
-    "info": "Signal.MD"
-  },
-  {
-    "info": "Sublimation"
-  },
-  {
-    "info": "CoMix Wave"
-  },
-  {
-    "info": "STORY Inc."
-  },
-  {
-    "info": "Bushiroad Music"
-  },
-  {
-    "info": "Bibury Animation Studios"
-  },
-  {
-    "info": "MAGNET"
-  },
-  {
-    "info": "GRANTdesign"
-  },
-  {
-    "info": "AMG MUSIC"
-  },
-  {
-    "info": "Studio KAI"
-  },
-  {
-    "info": "Domerica"
-  },
-  {
-    "info": "NAMU Animation"
-  },
-  {
-    "info": "Okuruto Noboru"
-  },
-  {
-    "info": "DIVE II Entertainment"
-  },
-  {
-    "info": "Index"
-  },
-  {
-    "info": "Anima&Co. "
-  },
-  {
-    "info": "Plum"
-  },
-  {
-    "info": "AIC Spirits"
-  },
-  {
-    "info": "dugout"
-  },
-  {
-    "info": "Platinum Vision"
-  },
-  {
-    "info": "Smile Company"
-  },
-  {
-    "info": "ENISHIYA Inc."
-  },
-  {
-    "info": "FIREBUG"
-  },
-  {
-    "info": "Top Marshal"
-  },
-  {
-    "info": "Front Wing"
-  },
-  {
-    "info": "Amuse"
-  },
-  {
-    "info": "Daiichi Kosho Company"
-  },
-  {
-    "info": "Animatic"
-  },
-  {
-    "info": "Radio Osaka"
-  },
-  {
-    "info": "Parco"
-  },
-  {
-    "info": "Teichiku Entertainment"
-  },
-  {
-    "info": "e-notion"
-  },
-  {
-    "info": "CAAnimation"
-  },
-  {
-    "info": "Emoto Entertainment"
-  },
-  {
-    "info": "Kamikaze Douga"
-  },
-  {
-    "info": "Hot Zipang "
-  },
-  {
-    "info": "Asahi Shimbun"
-  },
-  {
-    "info": "Age"
-  },
-  {
-    "info": "Cover Corp"
-  },
-  {
-    "info": "NOKID"
-  },
-  {
-    "info": "UWAN Pictures"
-  },
-  {
-    "info": "Adnero"
-  },
-  {
-    "info": "xenron"
-  },
-  {
-    "info": "DLE"
-  },
-  {
-    "info": "Bouncy"
-  },
-  {
-    "info": "Kimi To Boku Production Partners"
-  },
-  {
-    "info": "Tsuburaya Productions"
-  },
-  {
-    "info": "XFLAG"
-  },
-  {
-    "info": "Studio Gazelle"
-  },
-  {
-    "info": "Azone International"
-  },
-  {
-    "info": "Pokelabo"
-  },
-  {
-    "info": "Marui Group"
-  },
-  {
-    "info": "Bushiroad Creative"
-  },
-  {
-    "info": "Legs"
-  },
-  {
-    "info": "Idea Factory"
-  },
-  {
-    "info": "production doA"
-  },
-  {
-    "info": "Notes"
-  },
-  {
-    "info": "CREi"
-  },
-  {
-    "info": "KLab"
-  },
-  {
-    "info": "Project No Name"
-  },
-  {
-    "info": "Project IS"
-  },
-  {
-    "info": "entama"
-  },
-  {
-    "info": "Studio Pastoral"
-  },
-  {
-    "info": "Dream Shift"
-  },
-  {
-    "info": "arma bianca"
-  },
-  {
-    "info": "Yahoo! Japan"
-  },
-  {
-    "info": "REVOROOT"
-  },
-  {
-    "info": "TMS-Kyokuchi"
-  },
-  {
-    "info": "POLYGON PICTURES"
-  },
-  {
-    "info": "Palm Studio"
-  },
-  {
-    "info": "Ascension"
-  },
-  {
-    "info": "Techno Sound"
-  },
-  {
-    "info": "Chaos Union"
-  },
-  {
-    "info": "NTV Music"
-  },
-  {
-    "info": "Flying Ship Studio"
-  },
-  {
-    "info": "Studio Khara"
-  },
-  {
-    "info": "3xCube"
-  },
-  {
-    "info": "TMS Music"
-  },
-  {
-    "info": "Big Firebird Cultural Media"
-  },
-  {
-    "info": "Heart Company"
-  },
-  {
-    "info": "Juumonji"
-  },
-  {
-    "info": "Pink Pineapple"
-  },
-  {
-    "info": "Grooove"
-  },
-  {
-    "info": "StudioRF Inc."
-  },
-  {
-    "info": "Animate"
-  },
-  {
-    "info": "Ezo’la"
-  },
-  {
-    "info": "Sega Games"
-  },
-  {
-    "info": "OZ"
-  },
-  {
-    "info": "ACC Production"
-  },
-  {
-    "info": "Jormungand Production Partners"
-  },
-  {
-    "info": "YAMATOWORKS"
-  },
-  {
-    "info": "Rising Force"
-  },
-  {
-    "info": "Primastea"
-  },
-  {
-    "info": "Larx Entertainment"
-  },
-  {
-    "info": "Studio Massket"
-  },
-  {
-    "info": "Jinnan Studio"
-  },
-  {
-    "info": "Ashisuto"
-  },
-  {
-    "info": "TSUTAYA"
-  },
-  {
-    "info": "HTC"
-  },
-  {
-    "info": "G&G Entertainment"
-  },
-  {
-    "info": "Studio Bind"
-  },
-  {
-    "info": "Toy's Factory"
-  },
-  {
-    "info": "Triangle Staff"
-  },
-  {
-    "info": "CLAP"
-  },
-  {
-    "info": "Rex Entertainment "
-  },
-  {
-    "info": "ONIRO"
-  },
-  {
-    "info": "Magia Doraglier"
-  },
-  {
-    "info": "ElectromagneticWave"
-  },
-  {
-    "info": "TOKYOPOP"
-  },
-  {
-    "info": "Marvy Jack"
-  },
-  {
-    "info": "A.C.G.T."
-  },
-  {
-    "info": "studio A-CAT"
-  },
-  {
-    "info": "comico"
-  },
-  {
-    "info": "INCS toenter"
-  },
-  {
-    "info": "Atelier Pontdarc"
-  },
-  {
-    "info": "Seikaisha"
-  },
-  {
-    "info": "DELiGHTWORKS"
-  },
-  {
-    "info": "Daiei"
-  },
-  {
-    "info": "BeDream"
-  },
-  {
-    "info": "Studio LAN"
-  },
-  {
-    "info": "Nippon Victor"
-  },
-  {
-    "info": "Arts Pro"
-  },
-  {
-    "info": "The Answer Studio"
-  },
-  {
-    "info": "Bee Train"
-  },
-  {
-    "info": "Studio Gallop"
-  },
-  {
-    "info": "Madoka Partners"
-  },
-  {
-    "info": "BS Asahi"
-  },
-  {
-    "info": "f4samurai"
-  },
-  {
-    "info": "C&I Entertainment"
-  },
-  {
-    "info": "TRUSS"
-  },
-  {
-    "info": "TYPHOON GRAPHICS"
-  },
-  {
-    "info": "Union Creative"
-  },
-  {
-    "info": "Tsukisuzusha"
-  },
-  {
-    "info": "GOT"
-  },
-  {
-    "info": "Yoshimoto Music"
-  },
-  {
-    "info": "Toei Agency"
-  },
-  {
-    "info": "Exa"
-  },
-  {
-    "info": "A3"
-  },
-  {
-    "info": "Dynamic Planning"
-  },
-  {
-    "info": "GEMBA"
-  },
-  {
-    "info": "Koei"
-  },
-  {
-    "info": "Office Nobu"
-  },
-  {
-    "info": "GREE Entertainment"
-  },
-  {
-    "info": "Space Neko Company"
-  },
-  {
-    "info": "DOGA Productions"
-  },
-  {
-    "info": "DMM.futureworks"
-  },
-  {
-    "info": "Mellow Head"
-  },
-  {
-    "info": "Marubeni"
-  },
-  {
-    "info": "Iwatobi High School Swimming Club"
-  },
-  {
-    "info": "Artmic"
-  },
-  {
-    "info": "Po10tial"
-  },
-  {
-    "info": "Atlus"
-  },
-  {
-    "info": "Tapioca"
-  },
-  {
-    "info": "studio MOTHER"
-  },
-  {
-    "info": "Production IMS"
-  },
-  {
-    "info": "WolfsBane"
-  },
-  {
-    "info": "Maiden Japan"
-  },
-  {
-    "info": "NHK-BS2"
-  },
-  {
-    "info": "Crimson Star Media"
-  },
-  {
-    "info": "Procidis"
-  },
-  {
-    "info": "Eiken"
-  },
-  {
-    "info": "Craftar"
-  },
-  {
-    "info": "Warner Bros. Eiga"
-  },
-  {
-    "info": "Straight Edge"
-  },
-  {
-    "info": "S-Wood"
-  },
-  {
-    "info": "Bushiroad Media"
-  },
-  {
-    "info": "Fairy Tale Co."
-  },
-  {
-    "info": "Trans Arts"
-  },
-  {
-    "info": "RCC Chugoku Broadcasting"
-  },
-  {
-    "info": "GEN Productions"
-  },
-  {
-    "info": "Topcraft"
-  },
-  {
-    "info": "Jacom"
-  },
-  {
-    "info": "Visual 80"
-  },
-  {
-    "info": "Yostar Pictures"
-  },
-  {
-    "info": "eStream"
-  },
-  {
-    "info": "Anime R"
-  },
-  {
-    "info": "Beyond C."
-  },
-  {
-    "info": "Omega Project"
-  },
-  {
-    "info": "Days"
-  },
-  {
-    "info": "ABC Frontier"
-  },
-  {
-    "info": "CyberConnect2"
-  },
-  {
-    "info": "Shufu to Seikatsusha"
-  },
-  {
-    "info": "CREST"
-  },
-  {
-    "info": "Sun Television"
-  },
-  {
-    "info": "Simplicity"
-  },
-  {
-    "info": "Digital Frontier"
-  },
-  {
-    "info": "Studio PuYUKAI"
-  },
-  {
-    "info": "Think Corporation"
-  },
-  {
-    "info": "KENMedia"
-  },
-  {
-    "info": "Mag Garden"
-  },
-  {
-    "info": "Wawayu Animation"
-  },
-  {
-    "info": "Yuewen Animation & Comics"
-  },
-  {
-    "info": "China Literature"
-  },
-  {
-    "info": "K.PICTURES"
-  },
-  {
-    "info": "Colored Pencil Animation"
-  },
-  {
-    "info": "Twilight Studio"
-  },
-  {
-    "info": "Tamakoshi"
-  },
-  {
-    "info": "MusicRay`n"
-  },
-  {
-    "info": "Alice"
-  },
-  {
-    "info": "U-NEXT"
-  },
-  {
-    "info": "flaggs"
-  },
-  {
-    "info": "Laulea Works"
-  },
-  {
-    "info": "SoftX"
-  },
-  {
-    "info": "E&G Films"
-  },
-  {
-    "info": "B&T"
-  },
-  {
-    "info": "Enlight Pictures"
-  },
-  {
-    "info": "Coloroom Pictures"
-  },
-  {
-    "info": "Cartoon Saloon"
-  },
-  {
-    "info": "Issen"
-  },
-  {
-    "info": "Toei"
-  },
-  {
-    "info": "ADK Emotions"
-  },
-  {
-    "info": "LIDENFILMS Kyoto Studio"
-  },
-  {
-    "info": "m.o.e."
-  },
-  {
-    "info": "Soft Garage"
-  },
-  {
-    "info": "Majin"
-  },
-  {
-    "info": "Majin petit"
-  },
-  {
-    "info": "Langmaor"
-  },
-  {
-    "info": "Alice Soft"
-  },
-  {
-    "info": "Suiseisha"
-  },
-  {
-    "info": "Picante Circus"
-  },
-  {
-    "info": "Rabbit Gate"
-  },
-  {
-    "info": "Mary Jane"
-  },
-  {
-    "info": "Studio Eromatick"
-  },
-  {
-    "info": "D3"
-  },
-  {
-    "info": "Studio 9 Maiami"
-  },
-  {
-    "info": "Studio Houkiboshi"
-  },
-  {
-    "info": "Studio 1st"
-  },
-  {
-    "info": "44℃ Baidoku"
-  },
-  {
-    "info": "Cosmos"
-  },
-  {
-    "info": "PoRO"
-  },
-  {
-    "info": "PoRO petit"
-  },
-  {
-    "info": "DR Movie"
-  },
-  {
-    "info": "Picture Magic"
-  },
-  {
-    "info": "Kiyosumi High School Mahjong Club"
-  },
-  {
-    "info": "DMM.com"
-  },
-  {
-    "info": "Studio Flad"
-  },
-  {
-    "info": "On-Lead"
-  },
-  {
-    "info": "Ginga Ya"
-  },
-  {
-    "info": "Alchemist"
-  },
-  {
-    "info": "Voyager Entertainment"
-  },
-  {
-    "info": "Tokyo Kids"
-  },
-  {
-    "info": "Minami Machi Bugyousho"
-  },
-  {
-    "info": "Production +h"
-  },
-  {
-    "info": "Hakuhodo"
-  },
-  {
-    "info": "Kakao Japan"
-  },
-  {
-    "info": "Chuugai Kougyou"
-  },
-  {
-    "info": "Sei Young Animation"
-  },
-  {
-    "info": "KORAD"
-  },
-  {
-    "info": "A-Real"
-  },
-  {
-    "info": "Nippon Shuppan Hanbai (Nippan) K.K."
-  },
-  {
-    "info": "Aiko"
-  },
-  {
-    "info": "Kaname Production"
-  },
-  {
-    "info": "B.CMAY PICTURES"
-  },
-  {
-    "info": "CALF"
-  },
-  {
-    "info": "Children's Playground Entertainment"
-  },
-  {
-    "info": "Oh! Production"
-  },
-  {
-    "info": "Agent 21"
-  },
-  {
-    "info": "FENZ"
-  },
-  {
-    "info": "Tianwen Kadokawa"
-  },
-  {
-    "info": "HMCH"
-  },
-  {
-    "info": "Observatory Animation"
-  },
-  {
-    "info": "drop"
-  },
-  {
-    "info": "Kyotoma"
-  },
-  {
-    "info": "Quad"
-  },
-  {
-    "info": "Flex Comics"
-  },
-  {
-    "info": "Starry Cube"
-  },
-  {
-    "info": "SUPA LOVE"
-  },
-  {
-    "info": "Holoimua"
-  },
-  {
-    "info": "Annel"
-  },
-  {
-    "info": "Septeni Holdings"
-  },
-  {
-    "info": "OB Planning"
-  },
-  {
-    "info": "Grouper Productions"
-  },
-  {
-    "info": "Pie in the sky"
-  },
-  {
-    "info": "Kyoto Seika University"
-  },
-  {
-    "info": "Wolf Smoke"
-  },
-  {
-    "info": "Rikuentai"
-  },
-  {
-    "info": "feng"
-  },
-  {
-    "info": "Foch"
-  },
-  {
-    "info": "SKY Perfect"
-  },
-  {
-    "info": "Studio Tulip"
-  },
-  {
-    "info": "Studio Wombat"
-  },
-  {
-    "info": "Gust"
-  },
-  {
-    "info": "Studio Ponoc"
-  },
-  {
-    "info": "Remic"
-  },
-  {
-    "info": "Nexon"
-  },
-  {
-    "info": "Hakoniwa Academy Student Council"
-  },
-  {
-    "info": "Trinet Entertainment"
-  },
-  {
-    "info": "I Will"
-  },
-  {
-    "info": "Yaoyorozu"
-  },
-  {
-    "info": "Tomason"
-  },
-  {
-    "info": "Nippon Herald Eiga"
-  },
-  {
-    "info": "Digital Network Animation"
-  },
-  {
-    "info": "Musashino Art University"
-  },
-  {
-    "info": "Sunwoo Entertainment"
-  },
-  {
-    "info": "Yellow Film"
-  },
-  {
-    "info": "Y.O.U.C"
-  },
-  {
-    "info": "office DCI"
-  },
-  {
-    "info": "Azeta Pictures"
-  },
-  {
-    "info": "Magilm Pictures"
-  },
-  {
-    "info": "Djinn Power"
-  },
-  {
-    "info": "Dazed "
-  },
-  {
-    "info": "BeSTACK"
-  },
-  {
-    "info": "FABTONE"
-  },
-  {
-    "info": "LMD"
-  },
-  {
-    "info": "Saetta"
-  },
-  {
-    "info": "TAKI Corporation"
-  },
-  {
-    "info": "Studio Saki Makura"
-  },
-  {
-    "info": "Kitty Media"
-  },
-  {
-    "info": "Venet"
-  },
-  {
-    "info": "SUNBORN Network Technology"
-  },
-  {
-    "info": "GRIFFIN & KRYUGER"
-  },
-  {
-    "info": "GAGA"
-  },
-  {
-    "info": "Rakuten"
-  },
-  {
-    "info": "Nice Boat Animation"
-  },
-  {
-    "info": "Gudong Animation Studio"
-  },
-  {
-    "info": "FILMONY"
-  },
-  {
-    "info": "Otogi Production"
-  },
-  {
-    "info": "EBS"
-  },
-  {
-    "info": "Durufix"
-  },
-  {
-    "info": "Studio Kikan"
-  },
-  {
-    "info": "Joy Pictures"
-  },
-  {
-    "info": "Tencent Games"
-  },
-  {
-    "info": "Team YokkyuFuman"
-  },
-  {
-    "info": "LDCX"
-  },
-  {
-    "info": "Marui"
-  },
-  {
-    "info": "TV Tokyo Communications"
-  },
-  {
-    "info": "Ensky"
-  },
-  {
-    "info": "Goodshow Animation"
-  },
-  {
-    "info": "Hot Game Studio"
-  },
-  {
-    "info": "ibis Capital Partners"
-  },
-  {
-    "info": "Gyokkoudou"
-  },
-  {
-    "info": "TV Nagasaki"
-  },
-  {
-    "info": "Cloud"
-  },
-  {
-    "info": "Energy and System Planning"
-  },
-  {
-    "info": "Team Yamahitsuji"
-  },
-  {
-    "info": "FLAT STUDIO"
-  },
-  {
-    "info": "TriF studio"
-  },
-  {
-    "info": "Studio Kyuuma"
-  },
-  {
-    "info": "Wanda Film"
-  },
-  {
-    "info": "Sunac Pictures"
-  },
-  {
-    "info": "Samsara Studio"
-  },
-  {
-    "info": "Green Monster Team"
-  },
-  {
-    "info": "SPRiNG"
-  },
-  {
-    "info": "Marvel Entertainment"
-  },
-  {
-    "info": "Qubic Pictures"
-  },
-  {
-    "info": "CGCG Studio Inc."
-  },
-  {
-    "info": "dwarf"
-  },
-  {
-    "info": "Tooniverse"
-  },
-  {
-    "info": "Tama Art University"
-  },
-  {
-    "info": "Amuse Soft Entertainment"
-  },
-  {
-    "info": "Mook Animation"
-  },
-  {
-    "info": "Robot"
-  },
-  {
-    "info": "Geidai Animation"
-  },
-  {
-    "info": "Ai ga areba Daijobu"
-  },
-  {
-    "info": "Tamura Shigeru Studio"
-  },
-  {
-    "info": "VCRWORKS"
-  },
-  {
-    "info": "Studio Junior"
-  },
-  {
-    "info": "Studio Junio"
-  },
-  {
-    "info": "JTB Entertainment"
-  },
-  {
-    "info": "Wargaming Japan"
-  },
-  {
-    "info": "501st JOINT FIGHTER WING"
-  },
-  {
-    "info": "Tsuchida Productions"
-  },
-  {
-    "info": "Studio G-1Neo"
-  },
-  {
-    "info": "Pastel"
-  },
-  {
-    "info": "Aeon Entertainment"
-  },
-  {
-    "info": "Sav! The World Productions"
-  },
-  {
-    "info": "Wolf Smoke Studio"
-  },
-  {
-    "info": "MAKING ANIMATION"
-  },
-  {
-    "info": "L² Studio"
-  },
-  {
-    "info": "U17"
-  },
-  {
-    "info": "UNLIMITED Partners"
-  },
-  {
-    "info": "Studio Nue"
-  },
-  {
-    "info": "Hero"
-  },
-  {
-    "info": "Grasshoppa!"
-  },
-  {
-    "info": "Manga Productions"
-  },
-  {
-    "info": "INDIVISION"
-  },
-  {
-    "info": "AIC Takarazuka"
-  },
-  {
-    "info": "Animate Film"
-  },
-  {
-    "info": "Enoki Films"
-  },
-  {
-    "info": "Aubec"
-  },
-  {
-    "info": "Academy Productions"
-  },
-  {
-    "info": "JCF"
-  },
-  {
-    "info": "Echo"
-  },
-  {
-    "info": "Nihon Ad Systems"
-  },
-  {
-    "info": "Annapuru"
-  },
-  {
-    "info": "Office AO"
-  },
-  {
-    "info": "DiC Entertainment"
-  },
-  {
-    "info": "Three Fat Samurai"
-  },
-  {
-    "info": "Character Plan"
-  },
-  {
-    "info": "Ekura Animal"
-  },
-  {
-    "info": "Nippon Broadcasting System"
-  },
-  {
-    "info": "Liber Entertainment"
-  },
-  {
-    "info": "WarRock"
-  },
-  {
-    "info": "TV Asahi Music"
-  },
-  {
-    "info": "Universal Music"
-  },
-  {
-    "info": "Studio Izena"
-  },
-  {
-    "info": "Senran Kagura Partners"
-  },
-  {
-    "info": "Project Team Argos"
-  },
-  {
-    "info": "Creators Dot Com"
-  },
-  {
-    "info": "teamKG"
-  },
-  {
-    "info": "IYUNO STUDIOS"
-  },
-  {
-    "info": "MooGoo"
-  },
-  {
-    "info": "AC Create"
-  },
-  {
-    "info": "MMT"
-  },
-  {
-    "info": "Children's Playground Media"
-  },
-  {
-    "info": "Heartbit"
-  },
-  {
-    "info": "Tomoyasu Murata Company"
-  },
-  {
-    "info": "Automatic Flowers Studio"
-  },
-  {
-    "info": "ACiD FiLM"
-  },
-  {
-    "info": "Anpro"
-  },
-  {
-    "info": "Gosay Studio"
-  },
-  {
-    "info": "Xebec Zwei"
-  },
-  {
-    "info": "Sol Blade"
-  },
-  {
-    "info": "!Action"
-  },
-  {
-    "info": "!Adventure"
-  },
-  {
-    "info": "!Comedy"
-  },
-  {
-    "info": "!Drama"
-  },
-  {
-    "info": "!Ecchi"
-  },
-  {
-    "info": "!Fantasy"
-  },
-  {
-    "info": "!Horror"
-  },
-  {
-    "info": "!Mahou Shoujo"
-  },
-  {
-    "info": "!Mecha"
-  },
-  {
-    "info": "!Music"
-  },
-  {
-    "info": "!Mystery"
-  },
-  {
-    "info": "!Psychological"
-  },
-  {
-    "info": "!Romance"
-  },
-  {
-    "info": "!Sci-Fi"
-  },
-  {
-    "info": "!Slice of Life"
-  },
-  {
-    "info": "!Sports"
-  },
-  {
-    "info": "!Supernatural"
-  },
-  {
-    "info": "!Thriller"
-  },
-  {
-    "info": "!4-koma"
-  },
-  {
-    "info": "!Achromatic"
-  },
-  {
-    "info": "!Achronological Order"
-  },
-  {
-    "info": "!Acting"
-  },
-  {
-    "info": "!Adoption"
-  },
-  {
-    "info": "!Advertisement"
-  },
-  {
-    "info": "!Afterlife"
-  },
-  {
-    "info": "!Age Gap"
-  },
-  {
-    "info": "!Age Regression"
-  },
-  {
-    "info": "!Agender"
-  },
-  {
-    "info": "!Agriculture"
-  },
-  {
-    "info": "!Airsoft"
-  },
-  {
-    "info": "!Alchemy"
-  },
-  {
-    "info": "!Aliens"
-  },
-  {
-    "info": "!Alternate Universe"
-  },
-  {
-    "info": "!American Football"
-  },
-  {
-    "info": "!Amnesia"
-  },
-  {
-    "info": "!Anachronism"
-  },
-  {
-    "info": "!Angels"
-  },
-  {
-    "info": "!Animals,\n      Anthology"
-  },
-  {
-    "info": "!Anthropomorphism"
-  },
-  {
-    "info": "!Anti-Hero"
-  },
-  {
-    "info": "!Archery"
-  },
-  {
-    "info": "!Artificial Intelligence"
-  },
-  {
-    "info": "!Asexual"
-  },
-  {
-    "info": "!Assassins"
-  },
-  {
-    "info": "!Astronomy"
-  },
-  {
-    "info": "!Athletics"
-  },
-  {
-    "info": "!Augmented Reality"
-  },
-  {
-    "info": "!Autobiographical"
-  },
-  {
-    "info": "!Aviation"
-  },
-  {
-    "info": "!Badminton"
-  },
-  {
-    "info": "!Band"
-  },
-  {
-    "info": "!Bar"
-  },
-  {
-    "info": "!Baseball"
-  },
-  {
-    "info": "!Basketball"
-  },
-  {
-    "info": "!Battle Royale"
-  },
-  {
-    "info": "!Biographical"
-  },
-  {
-    "info": "!Bisexual"
-  },
-  {
-    "info": "!Body Horror"
-  },
-  {
-    "info": "!Body Swapping"
-  },
-  {
-    "info": "!Boxing"
-  },
-  {
-    "info": "!Boys' Love"
-  },
-  {
-    "info": "!Bullying"
-  },
-  {
-    "info": "!Butler"
-  },
-  {
-    "info": "!Calligraphy"
-  },
-  {
-    "info": "!Cannibalism"
-  },
-  {
-    "info": "!Card Battle"
-  },
-  {
-    "info": "!Cars"
-  },
-  {
-    "info": "!Centaur"
-  },
-  {
-    "info": "!CGI"
-  },
-  {
-    "info": "!Cheerleading"
-  },
-  {
-    "info": "!Chibi"
-  },
-  {
-    "info": "!Chimera"
-  },
-  {
-    "info": "!Chuunibyou"
-  },
-  {
-    "info": "!Circus"
-  },
-  {
-    "info": "!Classic Literature"
-  },
-  {
-    "info": "!Clone"
-  },
-  {
-    "info": "!College"
-  },
-  {
-    "info": "!Coming of Age"
-  },
-  {
-    "info": "!Conspiracy"
-  },
-  {
-    "info": "!Cosmic Horror"
-  },
-  {
-    "info": "!Cosplay"
-  },
-  {
-    "info": "!Crime"
-  },
-  {
-    "info": "!Crossdressing"
-  },
-  {
-    "info": "!Crossover"
-  },
-  {
-    "info": "!Cult"
-  },
-  {
-    "info": "!Cultivation"
-  },
-  {
-    "info": "!Cute Boys Doing Cute Things"
-  },
-  {
-    "info": "!Cute Girls Doing Cute Things"
-  },
-  {
-    "info": "!Cyberpunk,\n      Cyborg"
-  },
-  {
-    "info": "!Cycling"
-  },
-  {
-    "info": "!Dancing"
-  },
-  {
-    "info": "!Death Game"
-  },
-  {
-    "info": "!Delinquents"
-  },
-  {
-    "info": "!Demons"
-  },
-  {
-    "info": "!Denpa"
-  },
-  {
-    "info": "!Detective"
-  },
-  {
-    "info": "!Dinosaurs"
-  },
-  {
-    "info": "!Disability"
-  },
-  {
-    "info": "!Dissociative Identities"
-  },
-  {
-    "info": "!Dragons"
-  },
-  {
-    "info": "!Drawing"
-  },
-  {
-    "info": "!Drugs"
-  },
-  {
-    "info": "!Dullahan"
-  },
-  {
-    "info": "!Dungeon"
-  },
-  {
-    "info": "!Dystopian"
-  },
-  {
-    "info": "!E-Sports"
-  },
-  {
-    "info": "!Economics"
-  },
-  {
-    "info": "!Educational"
-  },
-  {
-    "info": "!Elf"
-  },
-  {
-    "info": "!Ensemble Cast"
-  },
-  {
-    "info": "!Environmental"
-  },
-  {
-    "info": "!Episodic"
-  },
-  {
-    "info": "!Ero Guro"
-  },
-  {
-    "info": "!Espionage"
-  },
-  {
-    "info": "!Fairy Tale"
-  },
-  {
-    "info": "!Family Life"
-  },
-  {
-    "info": "!Fashion"
-  },
-  {
-    "info": "!Female Harem"
-  },
-  {
-    "info": "!Female Protagonist"
-  },
-  {
-    "info": "!Fencing"
-  },
-  {
-    "info": "!Firefighters"
-  },
-  {
-    "info": "!Fishing"
-  },
-  {
-    "info": "!Fitness"
-  },
-  {
-    "info": "!Flash"
-  },
-  {
-    "info": "!Food"
-  },
-  {
-    "info": "!Football"
-  },
-  {
-    "info": "!Foreign"
-  },
-  {
-    "info": "!Found Family"
-  },
-  {
-    "info": "!Fugitive"
-  },
-  {
-    "info": "!Full CGI"
-  },
-  {
-    "info": "!Full Color"
-  },
-  {
-    "info": "!Gambling"
-  },
-  {
-    "info": "!Gangs"
-  },
-  {
-    "info": "!Gender Bending,\n      Ghost"
-  },
-  {
-    "info": "!Go"
-  },
-  {
-    "info": "!Goblin"
-  },
-  {
-    "info": "!Gods"
-  },
-  {
-    "info": "!Golf"
-  },
-  {
-    "info": "!Gore"
-  },
-  {
-    "info": "!Guns"
-  },
-  {
-    "info": "!Gyaru"
-  },
-  {
-    "info": "!Handball"
-  },
-  {
-    "info": "!Henshin"
-  },
-  {
-    "info": "!Heterosexual"
-  },
-  {
-    "info": "!Hikikomori"
-  },
-  {
-    "info": "!Historical"
-  },
-  {
-    "info": "!Homeless"
-  },
-  {
-    "info": "!Ice Skating"
-  },
-  {
-    "info": "!Idol"
-  },
-  {
-    "info": "!Isekai"
-  },
-  {
-    "info": "!Iyashikei"
-  },
-  {
-    "info": "!Josei"
-  },
-  {
-    "info": "!Judo"
-  },
-  {
-    "info": "!Kaiju"
-  },
-  {
-    "info": "!Karuta"
-  },
-  {
-    "info": "!Kemonomimi"
-  },
-  {
-    "info": "!Kids"
-  },
-  {
-    "info": "!Kuudere"
-  },
-  {
-    "info": "!Lacrosse"
-  },
-  {
-    "info": "!Language Barrier"
-  },
-  {
-    "info": "!LGBTQ+ Themes"
-  },
-  {
-    "info": "!Lost Civilization"
-  },
-  {
-    "info": "!Love Triangle"
-  },
-  {
-    "info": "!Mafia"
-  },
-  {
-    "info": "!Magic"
-  },
-  {
-    "info": "!Mahjong"
-  },
-  {
-    "info": "!Maids"
-  },
-  {
-    "info": "!Makeup"
-  },
-  {
-    "info": "!Male Harem"
-  },
-  {
-    "info": "!Male Protagonist"
-  },
-  {
-    "info": "!Martial Arts"
-  },
-  {
-    "info": "!Medicine"
-  },
-  {
-    "info": "!Memory Manipulation"
-  },
-  {
-    "info": "!Mermaid"
-  },
-  {
-    "info": "!Meta"
-  },
-  {
-    "info": "!Military"
-  },
-  {
-    "info": "!Mixed Gender Harem"
-  },
-  {
-    "info": "!Monster Boy"
-  },
-  {
-    "info": "!Monster Girl"
-  },
-  {
-    "info": "!Mopeds"
-  },
-  {
-    "info": "!Motorcycles"
-  },
-  {
-    "info": "!Musical"
-  },
-  {
-    "info": "!Mythology"
-  },
-  {
-    "info": "!Necromancy"
-  },
-  {
-    "info": "!Nekomimi"
-  },
-  {
-    "info": "!Ninja"
-  },
-  {
-    "info": "!No Dialogue"
-  },
-  {
-    "info": "!Noir"
-  },
-  {
-    "info": "!Non-fiction"
-  },
-  {
-    "info": "!Nudity"
-  },
-  {
-    "info": "!Nun"
-  },
-  {
-    "info": "!Office Lady"
-  },
-  {
-    "info": "!Oiran"
-  },
-  {
-    "info": "!Ojou-sama"
-  },
-  {
-    "info": "!Orphan"
-  },
-  {
-    "info": "!Otaku Culture"
-  },
-  {
-    "info": "!Outdoor"
-  },
-  {
-    "info": "!Pandemic"
-  },
-  {
-    "info": "!Parkour"
-  },
-  {
-    "info": "!Parody,\n      Philosophy"
-  },
-  {
-    "info": "!Photography"
-  },
-  {
-    "info": "!Pirates"
-  },
-  {
-    "info": "!Poker"
-  },
-  {
-    "info": "!Police"
-  },
-  {
-    "info": "!Politics"
-  },
-  {
-    "info": "!Post-Apocalyptic"
-  },
-  {
-    "info": "!POV"
-  },
-  {
-    "info": "!Primarily Adult Cast"
-  },
-  {
-    "info": "!Primarily Child Cast"
-  },
-  {
-    "info": "!Primarily Female Cast"
-  },
-  {
-    "info": "!Primarily Male Cast"
-  },
-  {
-    "info": "!Primarily Teen Cast"
-  },
-  {
-    "info": "!Puppetry"
-  },
-  {
-    "info": "!Rakugo"
-  },
-  {
-    "info": "!Real Robot"
-  },
-  {
-    "info": "!Rehabilitation"
-  },
-  {
-    "info": "!Reincarnation"
-  },
-  {
-    "info": "!Religion"
-  },
-  {
-    "info": "!Revenge"
-  },
-  {
-    "info": "!Robots"
-  },
-  {
-    "info": "!Rotoscoping"
-  },
-  {
-    "info": "!Rugby"
-  },
-  {
-    "info": "!Rural"
-  },
-  {
-    "info": "!Samurai"
-  },
-  {
-    "info": "!Satire"
-  },
-  {
-    "info": "!School"
-  },
-  {
-    "info": "!School Club"
-  },
-  {
-    "info": "!Scuba Diving"
-  },
-  {
-    "info": "!Seinen"
-  },
-  {
-    "info": "!Shapeshifting"
-  },
-  {
-    "info": "!Ships"
-  },
-  {
-    "info": "!Shogi"
-  },
-  {
-    "info": "!Shoujo"
-  },
-  {
-    "info": "!Shounen"
-  },
-  {
-    "info": "!Shrine Maiden"
-  },
-  {
-    "info": "!Skateboarding"
-  },
-  {
-    "info": "!Skeleton"
-  },
-  {
-    "info": "!Slapstick"
-  },
-  {
-    "info": "!Slavery"
-  },
-  {
-    "info": "!Software Development"
-  },
-  {
-    "info": "!Space"
-  },
-  {
-    "info": "!Space Opera"
-  },
-  {
-    "info": "!Spearplay"
-  },
-  {
-    "info": "!Steampunk"
-  },
-  {
-    "info": "!Stop Motion"
-  },
-  {
-    "info": "!Succubus"
-  },
-  {
-    "info": "!Suicide"
-  },
-  {
-    "info": "!Sumo"
-  },
-  {
-    "info": "!Super Power"
-  },
-  {
-    "info": "!Super Robot"
-  },
-  {
-    "info": "!Superhero"
-  },
-  {
-    "info": "!Surfing"
-  },
-  {
-    "info": "!Surreal Comedy"
-  },
-  {
-    "info": "!Survival"
-  },
-  {
-    "info": "!Swimming"
-  },
-  {
-    "info": "!Swordplay"
-  },
-  {
-    "info": "!Table Tennis"
-  },
-  {
-    "info": "!Tanks"
-  },
-  {
-    "info": "!Tanned Skin"
-  },
-  {
-    "info": "!Teacher,\n      Teens' Love"
-  },
-  {
-    "info": "!Tennis"
-  },
-  {
-    "info": "!Terrorism"
-  },
-  {
-    "info": "!Time Manipulation"
-  },
-  {
-    "info": "!Time Skip"
-  },
-  {
-    "info": "!Tokusatsu"
-  },
-  {
-    "info": "!Tomboy"
-  },
-  {
-    "info": "!Torture"
-  },
-  {
-    "info": "!Tragedy"
-  },
-  {
-    "info": "!Trains"
-  },
-  {
-    "info": "!Transgender"
-  },
-  {
-    "info": "!Travel"
-  },
-  {
-    "info": "!Triads"
-  },
-  {
-    "info": "!Tsundere"
-  },
-  {
-    "info": "!Twins"
-  },
-  {
-    "info": "!Urban"
-  },
-  {
-    "info": "!Urban Fantasy"
-  },
-  {
-    "info": "!Vampire"
-  },
-  {
-    "info": "!Video Games"
-  },
-  {
-    "info": "!Vikings"
-  },
-  {
-    "info": "!Villainess"
-  },
-  {
-    "info": "!Virtual World"
-  },
-  {
-    "info": "!Volleyball"
-  },
-  {
-    "info": "!VTuber"
-  },
-  {
-    "info": "!War"
-  },
-  {
-    "info": "!Werewolf"
-  },
-  {
-    "info": "!Witch"
-  },
-  {
-    "info": "!Work"
-  },
-  {
-    "info": "!Wrestling"
-  },
-  {
-    "info": "!Writing"
-  },
-  {
-    "info": "!Wuxia"
-  },
-  {
-    "info": "!Yakuza"
-  },
-  {
-    "info": "!Yandere"
-  },
-  {
-    "info": "!Youkai"
-  },
-  {
-    "info": "!Yuri"
-  },
-  {
-    "info": "!Zombie"
-  },
-  {
-    "info": "!UNWATCHED"
-  },
-  {
-    "info": "!COMPLETED"
-  },
-  {
-    "info": "!DROPPED"
-  },
-  {
-    "info": "!PLANNING TO WATCH"
-  },
-  {
-    "info": "!FALL"
-  },
-  {
-    "info": "!WINTER"
-  },
-  {
-    "info": "!SUMMER"
-  },
-  {
-    "info": "!SPRING"
-  },
-  {
-    "info": "!TV"
-  },
-  {
-    "info": "!TV_SHORT"
-  },
-  {
-    "info": "!OVA"
-  },
-  {
-    "info": "!ONA"
-  },
-  {
-    "info": "!MOVIE"
-  },
-  {
-    "info": "!SPECIAL"
-  },
-  {
-    "info": "!1940"
-  },
-  {
-    "info": "!1941"
-  },
-  {
-    "info": "!1942"
-  },
-  {
-    "info": "!1943"
-  },
-  {
-    "info": "!1944"
-  },
-  {
-    "info": "!1945"
-  },
-  {
-    "info": "!1946"
-  },
-  {
-    "info": "!1947"
-  },
-  {
-    "info": "!1948"
-  },
-  {
-    "info": "!1949"
-  },
-  {
-    "info": "!1950"
-  },
-  {
-    "info": "!1951"
-  },
-  {
-    "info": "!1952"
-  },
-  {
-    "info": "!1953"
-  },
-  {
-    "info": "!1954"
-  },
-  {
-    "info": "!1955"
-  },
-  {
-    "info": "!1956"
-  },
-  {
-    "info": "!1957"
-  },
-  {
-    "info": "!1958"
-  },
-  {
-    "info": "!1959"
-  },
-  {
-    "info": "!1960"
-  },
-  {
-    "info": "!1961"
-  },
-  {
-    "info": "!1962"
-  },
-  {
-    "info": "!1963"
-  },
-  {
-    "info": "!1964"
-  },
-  {
-    "info": "!1965"
-  },
-  {
-    "info": "!1966"
-  },
-  {
-    "info": "!1967"
-  },
-  {
-    "info": "!1968"
-  },
-  {
-    "info": "!1969"
-  },
-  {
-    "info": "!1970"
-  },
-  {
-    "info": "!1971"
-  },
-  {
-    "info": "!1972"
-  },
-  {
-    "info": "!1973"
-  },
-  {
-    "info": "!1974"
-  },
-  {
-    "info": "!1975"
-  },
-  {
-    "info": "!1976"
-  },
-  {
-    "info": "!1977"
-  },
-  {
-    "info": "!1978"
-  },
-  {
-    "info": "!1979"
-  },
-  {
-    "info": "!1980"
-  },
-  {
-    "info": "!1981"
-  },
-  {
-    "info": "!1982"
-  },
-  {
-    "info": "!1983"
-  },
-  {
-    "info": "!1984"
-  },
-  {
-    "info": "!1985"
-  },
-  {
-    "info": "!1986"
-  },
-  {
-    "info": "!1987"
-  },
-  {
-    "info": "!1988"
-  },
-  {
-    "info": "!1989"
-  },
-  {
-    "info": "!1990"
-  },
-  {
-    "info": "!1991"
-  },
-  {
-    "info": "!1992"
-  },
-  {
-    "info": "!1993"
-  },
-  {
-    "info": "!1994"
-  },
-  {
-    "info": "!1995"
-  },
-  {
-    "info": "!1996"
-  },
-  {
-    "info": "!1997"
-  },
-  {
-    "info": "!1998"
-  },
-  {
-    "info": "!1999"
-  },
-  {
-    "info": "!2000"
-  },
-  {
-    "info": "!2001"
-  },
-  {
-    "info": "!2002"
-  },
-  {
-    "info": "!2003"
-  },
-  {
-    "info": "!2004"
-  },
-  {
-    "info": "!2005"
-  },
-  {
-    "info": "!2006"
-  },
-  {
-    "info": "!2007"
-  },
-  {
-    "info": "!2008"
-  },
-  {
-    "info": "!2009"
-  },
-  {
-    "info": "!2010"
-  },
-  {
-    "info": "!2011"
-  },
-  {
-    "info": "!2012"
-  },
-  {
-    "info": "!2013"
-  },
-  {
-    "info": "!2014"
-  },
-  {
-    "info": "!2015"
-  },
-  {
-    "info": "!2016"
-  },
-  {
-    "info": "!2017"
-  },
-  {
-    "info": "!2018"
-  },
-  {
-    "info": "!2019"
-  },
-  {
-    "info": "!2020"
-  },
-  {
-    "info": "!2021"
-  },
-  {
-    "info": "!2022"
-  },
-  {
-    "info": "!2023"
-  },
-  {
-    "info": "!Satelight"
-  },
-  {
-    "info": "!Funimation"
-  },
-  {
-    "info": "!Media Factory"
-  },
-  {
-    "info": "!Bandai"
-  },
-  {
-    "info": "!8-bit"
-  },
-  {
-    "info": "!GONZO"
-  },
-  {
-    "info": "!GDH"
-  },
-  {
-    "info": "!Dentsu"
-  },
-  {
-    "info": "!Trigger"
-  },
-  {
-    "info": "!Aniplex"
-  },
-  {
-    "info": "!CloverWorks"
-  },
-  {
-    "info": "!A-1 Pictures"
-  },
-  {
-    "info": "!Movic"
-  },
-  {
-    "info": "!Ultra Super Pictures"
-  },
-  {
-    "info": "!Maho Film"
-  },
-  {
-    "info": "!Lantis"
-  },
-  {
-    "info": "!Warner Bros. Japan"
-  },
-  {
-    "info": "!Bandai Namco Arts"
-  },
-  {
-    "info": "!Kodansha"
-  },
-  {
-    "info": "!Asmik Ace"
-  },
-  {
-    "info": "!WOWOW"
-  },
-  {
-    "info": "!SILVER LINK."
-  },
-  {
-    "info": "!White Fox"
-  },
-  {
-    "info": "!Good Smile Film"
-  },
-  {
-    "info": "!SB Creative"
-  },
-  {
-    "info": "!Hakuhodo DY Music & Pictures"
-  },
-  {
-    "info": "!Sony Pictures Entertainment"
-  },
-  {
-    "info": "!AT-X"
-  },
-  {
-    "info": "!Bushiroad"
-  },
-  {
-    "info": "!Magic Capsule"
-  },
-  {
-    "info": "!Frontier Works"
-  },
-  {
-    "info": "!Asread"
-  },
-  {
-    "info": "!OVERLAP"
-  },
-  {
-    "info": "!FuRyu"
-  },
-  {
-    "info": "!Sony Music Solutions"
-  },
-  {
-    "info": "!Toranoana"
-  },
-  {
-    "info": "!MADHOUSE"
-  },
-  {
-    "info": "!Sentai Filmworks"
-  },
-  {
-    "info": "!Studio DEEN"
-  },
-  {
-    "info": "!Madman Entertainment"
-  },
-  {
-    "info": "!Genco"
-  },
-  {
-    "info": "!DAX Production"
-  },
-  {
-    "info": "!Aniplex of America"
-  },
-  {
-    "info": "!ASCII Media Works"
-  },
-  {
-    "info": "!NHK"
-  },
-  {
-    "info": "!NHK Enterprises"
-  },
-  {
-    "info": "!Bandai Namco Pictures"
-  },
-  {
-    "info": "!LIDENFILMS"
-  },
-  {
-    "info": "!Felix Film"
-  },
-  {
-    "info": "!Square Enix"
-  },
-  {
-    "info": "!BS11"
-  },
-  {
-    "info": "!Amusement Media Academy"
-  },
-  {
-    "info": "!Hayakawa Shobou"
-  },
-  {
-    "info": "!diomedéa"
-  },
-  {
-    "info": "!ENGI"
-  },
-  {
-    "info": "!KADOKAWA"
-  },
-  {
-    "info": "!Bit Grooove Promotion"
-  },
-  {
-    "info": "!ADV Films"
-  },
-  {
-    "info": "!CONNECT"
-  },
-  {
-    "info": "!Vega Entertainment"
-  },
-  {
-    "info": "!SynergySP"
-  },
-  {
-    "info": "!Shogakukan-Shueisha Productions"
-  },
-  {
-    "info": "!Pony Canyon"
-  },
-  {
-    "info": "!Fields"
-  },
-  {
-    "info": "!BANDAI SPIRITS"
-  },
-  {
-    "info": "!TOKYO MX"
-  },
-  {
-    "info": "!Kansai TV"
-  },
-  {
-    "info": "!Geek Toys"
-  },
-  {
-    "info": "!Crunchyroll"
-  },
-  {
-    "info": "!Tezuka Productions"
-  },
-  {
-    "info": "!Kadokawa Shoten"
-  },
-  {
-    "info": "!Kadokawa Pictures Japan"
-  },
-  {
-    "info": "!Klock Worx"
-  },
-  {
-    "info": "!flying DOG"
-  },
-  {
-    "info": "!Studio Silver"
-  },
-  {
-    "info": "!Arvo Animation"
-  },
-  {
-    "info": "!Nippon BS Broadcasting"
-  },
-  {
-    "info": "!ADK Marketing Solutions"
-  },
-  {
-    "info": "!Shueisha"
-  },
-  {
-    "info": "!Barnum Studio"
-  },
-  {
-    "info": "!Shaft"
-  },
-  {
-    "info": "!Mainichi Broadcasting System"
-  },
-  {
-    "info": "!Xebec"
-  },
-  {
-    "info": "!J.C. Staff"
-  },
-  {
-    "info": "!TMS Entertainment"
-  },
-  {
-    "info": "!DMM pictures"
-  },
-  {
-    "info": "!Doga Kobo"
-  },
-  {
-    "info": "!Toho"
-  },
-  {
-    "info": "!TBS"
-  },
-  {
-    "info": "!Studio Gokumi"
-  },
-  {
-    "info": "!Ichijinsha"
-  },
-  {
-    "info": "!Sotsu"
-  },
-  {
-    "info": "!BS Fuji"
-  },
-  {
-    "info": "!G.CMay Animation & Film"
-  },
-  {
-    "info": "!Starchild Records"
-  },
-  {
-    "info": "!Dwango"
-  },
-  {
-    "info": "!East Japan Marketing & Communications"
-  },
-  {
-    "info": "!Nichion"
-  },
-  {
-    "info": "!Myrica Music"
-  },
-  {
-    "info": "!My Theater D.D."
-  },
-  {
-    "info": "!Global Solutions"
-  },
-  {
-    "info": "!Mirai Koujou"
-  },
-  {
-    "info": "!Kanetsuu Investment"
-  },
-  {
-    "info": "!Brain's Base"
-  },
-  {
-    "info": "!KYORAKU"
-  },
-  {
-    "info": "!NIS America Inc."
-  },
-  {
-    "info": "!Yomiuri Advertising"
-  },
-  {
-    "info": "!TV Tokyo Music"
-  },
-  {
-    "info": "!Hanabee Entertainment"
-  },
-  {
-    "info": "!ABC Animation"
-  },
-  {
-    "info": "!Delfi Sound"
-  },
-  {
-    "info": "!Mukuo Studio"
-  },
-  {
-    "info": "!feel."
-  },
-  {
-    "info": "!GANSIS"
-  },
-  {
-    "info": "!C2C"
-  },
-  {
-    "info": "!Sunrise"
-  },
-  {
-    "info": "!Bandai Entertainment"
-  },
-  {
-    "info": "!Sony Music Entertainment"
-  },
-  {
-    "info": "!NUT"
-  },
-  {
-    "info": "!Wit Studio"
-  },
-  {
-    "info": "!Production I.G"
-  },
-  {
-    "info": "!Pony Canyon Enterprise"
-  },
-  {
-    "info": "!10GAUGE"
-  },
-  {
-    "info": "!Rakuonsha"
-  },
-  {
-    "info": "!NBCUniversal Entertainment Japan"
-  },
-  {
-    "info": "!Fuji TV"
-  },
-  {
-    "info": "!Graphinica"
-  },
-  {
-    "info": "!Yumeta Company"
-  },
-  {
-    "info": "!FLAGSHIP LINE"
-  },
-  {
-    "info": "!aNCHOR"
-  },
-  {
-    "info": "!Avex Pictures"
-  },
-  {
-    "info": "!Tencent"
-  },
-  {
-    "info": "!bones"
-  },
-  {
-    "info": "!Artland"
-  },
-  {
-    "info": "!Kitty Film"
-  },
-  {
-    "info": "!Magic Bus"
-  },
-  {
-    "info": "!Sunrise Beyond"
-  },
-  {
-    "info": "!Sunrise Music"
-  },
-  {
-    "info": "!Gainax"
-  },
-  {
-    "info": "!TV Tokyo"
-  },
-  {
-    "info": "!NAS"
-  },
-  {
-    "info": "!Tatsunoko Production"
-  },
-  {
-    "info": "!Kyoto Animation"
-  },
-  {
-    "info": "!TROYCA"
-  },
-  {
-    "info": "!MAGES."
-  },
-  {
-    "info": "!Nitroplus"
-  },
-  {
-    "info": "!Houbunsha"
-  },
-  {
-    "info": "!Asahi Broadcasting Corporation"
-  },
-  {
-    "info": "!Nippon Animation"
-  },
-  {
-    "info": "!Central Park Media"
-  },
-  {
-    "info": "!Kadokawa Pictures USA"
-  },
-  {
-    "info": "!Happinet Pictures"
-  },
-  {
-    "info": "!Asatsu DK"
-  },
-  {
-    "info": "!AIC"
-  },
-  {
-    "info": "!BS-TBS"
-  },
-  {
-    "info": "!Jumondou"
-  },
-  {
-    "info": "!Lucky Paradise"
-  },
-  {
-    "info": "!Q-Tec"
-  },
-  {
-    "info": "!Shogakukan Music & Digital Entertainment"
-  },
-  {
-    "info": "!G-mode"
-  },
-  {
-    "info": "!Real-T"
-  },
-  {
-    "info": "!Tengu Kobou"
-  },
-  {
-    "info": "!Capcom"
-  },
-  {
-    "info": "!Bandai Namco Entertainment"
-  },
-  {
-    "info": "!Picona Creative Studio"
-  },
-  {
-    "info": "!BIGLOBE"
-  },
-  {
-    "info": "!Seven"
-  },
-  {
-    "info": "!Seven Arcs"
-  },
-  {
-    "info": "!Shogakukan"
-  },
-  {
-    "info": "!Hakusensha"
-  },
-  {
-    "info": "!Half H.P Studio"
-  },
-  {
-    "info": "!Sammy"
-  },
-  {
-    "info": "!Docomo Anime Store"
-  },
-  {
-    "info": "!Kadokawa Media House"
-  },
-  {
-    "info": "!D-techno"
-  },
-  {
-    "info": "!David Production"
-  },
-  {
-    "info": "!Inu x Boku SS Production Partners"
-  },
-  {
-    "info": "!Daume"
-  },
-  {
-    "info": "!Studio Gram"
-  },
-  {
-    "info": "!PRA"
-  },
-  {
-    "info": "!Kinema Citrus"
-  },
-  {
-    "info": "!Animax"
-  },
-  {
-    "info": "!Animation Do"
-  },
-  {
-    "info": "!Broccoli"
-  },
-  {
-    "info": "!Studio Matrix"
-  },
-  {
-    "info": "!TV Osaka"
-  },
-  {
-    "info": "!VAP"
-  },
-  {
-    "info": "!King Records"
-  },
-  {
-    "info": "!Hal Film Maker"
-  },
-  {
-    "info": "!bilibili"
-  },
-  {
-    "info": "!Ashi Productions"
-  },
-  {
-    "info": "!OLM"
-  },
-  {
-    "info": "!Shin-Ei Animation"
-  },
-  {
-    "info": "!DMM music"
-  },
-  {
-    "info": "!CBC"
-  },
-  {
-    "info": "!Futabasha"
-  },
-  {
-    "info": "!Studio Pierrot"
-  },
-  {
-    "info": "!Bandai Visual"
-  },
-  {
-    "info": "!Media Blasters"
-  },
-  {
-    "info": "!NYAV Post"
-  },
-  {
-    "info": "!Studio Mausu"
-  },
-  {
-    "info": "!Trinity Sound"
-  },
-  {
-    "info": "!AQUA ARIS"
-  },
-  {
-    "info": "!Ai Addiction"
-  },
-  {
-    "info": "!Lesprit"
-  },
-  {
-    "info": "!Dream Creation"
-  },
-  {
-    "info": "!Cospa"
-  },
-  {
-    "info": "!SoftBank Creative Corp."
-  },
-  {
-    "info": "!ZEXCS"
-  },
-  {
-    "info": "!Discotek"
-  },
-  {
-    "info": "!EMT Squared"
-  },
-  {
-    "info": "!Passione"
-  },
-  {
-    "info": "!MAPPA"
-  },
-  {
-    "info": "!Earth Star Entertainment"
-  },
-  {
-    "info": "!Toei Animation"
-  },
-  {
-    "info": "!Avex Entertainment"
-  },
-  {
-    "info": "!TV Asahi"
-  },
-  {
-    "info": "!Viz Media"
-  },
-  {
-    "info": "!Forecast Communications"
-  },
-  {
-    "info": "!Nikkatsu"
-  },
-  {
-    "info": "!Telecom Animation Film"
-  },
-  {
-    "info": "!Nippon Columbia"
-  },
-  {
-    "info": "!Shouchiku"
-  },
-  {
-    "info": "!P.A. Works"
-  },
-  {
-    "info": "!Studio Rikka"
-  },
-  {
-    "info": "!Directions"
-  },
-  {
-    "info": "!Code"
-  },
-  {
-    "info": "!Trick Block"
-  },
-  {
-    "info": "!Purple Cow Studio Japan"
-  },
-  {
-    "info": "!Marvelous"
-  },
-  {
-    "info": "!Age Global Networks"
-  },
-  {
-    "info": "!TOP-INSIGHT"
-  },
-  {
-    "info": "!SANZIGEN"
-  },
-  {
-    "info": "!Sogo Vision"
-  },
-  {
-    "info": "!Yomiko Advertising"
-  },
-  {
-    "info": "!Apollon"
-  },
-  {
-    "info": "!Yomiuri TV"
-  },
-  {
-    "info": "!Selecta Visión"
-  },
-  {
-    "info": "!Lay-duce"
-  },
-  {
-    "info": "!Haoliners Animation"
-  },
-  {
-    "info": "!Tencent Animation & Comics"
-  },
-  {
-    "info": "!Toei Video"
-  },
-  {
-    "info": "!Ray"
-  },
-  {
-    "info": "!MUSE"
-  },
-  {
-    "info": "!MediaNet"
-  },
-  {
-    "info": "!Coamix"
-  },
-  {
-    "info": "!Studio Ghibli"
-  },
-  {
-    "info": "!Tokuma Shoten"
-  },
-  {
-    "info": "!GKids"
-  },
-  {
-    "info": "!Nippon Television Network"
-  },
-  {
-    "info": "!YTV"
-  },
-  {
-    "info": "!Enterbrain"
-  },
-  {
-    "info": "!monofilmo"
-  },
-  {
-    "info": "!Nomad"
-  },
-  {
-    "info": "!Sonilude"
-  },
-  {
-    "info": "!BloomZ"
-  },
-  {
-    "info": "!Touyou Recording"
-  },
-  {
-    "info": "!C-one"
-  },
-  {
-    "info": "!AMG Entertainment"
-  },
-  {
-    "info": "!MediaNet Pictures"
-  },
-  {
-    "info": "!Hokkaidou Bunka Housou"
-  },
-  {
-    "info": "!Miyazaki Broadcasting"
-  },
-  {
-    "info": "!Christmas Holly"
-  },
-  {
-    "info": "!Lerche"
-  },
-  {
-    "info": "!Netflix"
-  },
-  {
-    "info": "!Tokyo Movie Shinsha"
-  },
-  {
-    "info": "!Manga Entertainment"
-  },
-  {
-    "info": "!Animatsu Entertainment"
-  },
-  {
-    "info": "!CygamesPictures"
-  },
-  {
-    "info": "!Sola Digital Arts"
-  },
-  {
-    "info": "!Manglobe"
-  },
-  {
-    "info": "!Sakura Create"
-  },
-  {
-    "info": "!GYAO!"
-  },
-  {
-    "info": "!A-Sketch"
-  },
-  {
-    "info": "!Fujipacific Music"
-  },
-  {
-    "info": "!Anchor Bay Films"
-  },
-  {
-    "info": "!Zero-G"
-  },
-  {
-    "info": "!NAZ"
-  },
-  {
-    "info": "!Geno Studio"
-  },
-  {
-    "info": "!Twin Engine"
-  },
-  {
-    "info": "!Asahi Production"
-  },
-  {
-    "info": "!Shirogumi"
-  },
-  {
-    "info": "!Slowcurve"
-  },
-  {
-    "info": "!PPP"
-  },
-  {
-    "info": "!Shufunotomo"
-  },
-  {
-    "info": "!Dai Nippon Printing"
-  },
-  {
-    "info": "!HORNETS"
-  },
-  {
-    "info": "!Mixer"
-  },
-  {
-    "info": "!North Stars Pictures"
-  },
-  {
-    "info": "!JY Animation"
-  },
-  {
-    "info": "!CA-Cygames Anime Fund"
-  },
-  {
-    "info": "!Sunny Side Up"
-  },
-  {
-    "info": "!Ajiado"
-  },
-  {
-    "info": "!GREE"
-  },
-  {
-    "info": "!BLADE"
-  },
-  {
-    "info": "!Thundray"
-  },
-  {
-    "info": "!miHoYo"
-  },
-  {
-    "info": "!miHoYo Anime"
-  },
-  {
-    "info": "!ufotable"
-  },
-  {
-    "info": "!Omnibus Japan"
-  },
-  {
-    "info": "!Sony Music Communications"
-  },
-  {
-    "info": "!Sony PCL"
-  },
-  {
-    "info": "!DeNA"
-  },
-  {
-    "info": "!Tohokushinsha Film Corporation"
-  },
-  {
-    "info": "!Bunka Housou"
-  },
-  {
-    "info": "!Fosun"
-  },
-  {
-    "info": "!NetEase"
-  },
-  {
-    "info": "!BookLive"
-  },
-  {
-    "info": "!Encourage Films"
-  },
-  {
-    "info": "!KBS"
-  },
-  {
-    "info": "!Konami"
-  },
-  {
-    "info": "!AIC A.S.T.A."
-  },
-  {
-    "info": "!Trilogy Future Studio"
-  },
-  {
-    "info": "!AXsiZ"
-  },
-  {
-    "info": "!Studio Hibari"
-  },
-  {
-    "info": "!Visual Arts"
-  },
-  {
-    "info": "!Key"
-  },
-  {
-    "info": "!WOWMAX"
-  },
-  {
-    "info": "!Infinite"
-  },
-  {
-    "info": "!Studio Blanc"
-  },
-  {
-    "info": "!Yokohama Animation Lab"
-  },
-  {
-    "info": "!BS Nippon"
-  },
-  {
-    "info": "!MIGHTY MEDIA"
-  },
-  {
-    "info": "!CBC TV"
-  },
-  {
-    "info": "!Tasogare Otome×Amnesia Production Partners"
-  },
-  {
-    "info": "!Radix"
-  },
-  {
-    "info": "!Kourin Mitsuzou Koubou"
-  },
-  {
-    "info": "!Rondo Robe"
-  },
-  {
-    "info": "!Studio 3Hz"
-  },
-  {
-    "info": "!Orange"
-  },
-  {
-    "info": "!Touhouku Shinsha"
-  },
-  {
-    "info": "!Toshiba EMI"
-  },
-  {
-    "info": "!Nagoya Broadcasting Network"
-  },
-  {
-    "info": "!Memory-Tech"
-  },
-  {
-    "info": "!Knack Productions"
-  },
-  {
-    "info": "!Fanworks"
-  },
-  {
-    "info": "!Imagineer"
-  },
-  {
-    "info": "!Tencent Penguin Pictures"
-  },
-  {
-    "info": "!China Wit Media"
-  },
-  {
-    "info": "!Gathering"
-  },
-  {
-    "info": "!Sanrio"
-  },
-  {
-    "info": "!Sharefun Studio"
-  },
-  {
-    "info": "!Aha Entertainment"
-  },
-  {
-    "info": "!AIC Plus+"
-  },
-  {
-    "info": "!Planet Cartoon"
-  },
-  {
-    "info": "!EGG FIRM"
-  },
-  {
-    "info": "!Hotline"
-  },
-  {
-    "info": "!Kachidoki Studio"
-  },
-  {
-    "info": "!Project Railgun"
-  },
-  {
-    "info": "!PINE JAM"
-  },
-  {
-    "info": "!Asahi Housou"
-  },
-  {
-    "info": "!Natsuiro Kiseki Production Partners"
-  },
-  {
-    "info": "!Ryukyu Asahi Broadcasting"
-  },
-  {
-    "info": "!Bandai Namco Live Creative"
-  },
-  {
-    "info": "!NTT Docomo"
-  },
-  {
-    "info": "!Arms"
-  },
-  {
-    "info": "!A Line"
-  },
-  {
-    "info": "!chara-ani.com"
-  },
-  {
-    "info": "!12 Diary Holders"
-  },
-  {
-    "info": "!SKY Perfect Well Think"
-  },
-  {
-    "info": "!Zack Promotion"
-  },
-  {
-    "info": "!STEVE N' STEVEN"
-  },
-  {
-    "info": "!Sound Team Don Juan"
-  },
-  {
-    "info": "!Marvelous Entertainment"
-  },
-  {
-    "info": "!Creators in Pack"
-  },
-  {
-    "info": "!AKABEiSOFT2"
-  },
-  {
-    "info": "!Bandai Namco Music Live"
-  },
-  {
-    "info": "!d-rights"
-  },
-  {
-    "info": "!Tokuma Japan Communications"
-  },
-  {
-    "info": "!Nelke Planning"
-  },
-  {
-    "info": "!NHN Comico"
-  },
-  {
-    "info": "!GP MEDIA JAPAN"
-  },
-  {
-    "info": "!Bridge"
-  },
-  {
-    "info": "!Lawson"
-  },
-  {
-    "info": "!TV Aichi"
-  },
-  {
-    "info": "!Hoods Entertainment"
-  },
-  {
-    "info": "!The Right Stuf International"
-  },
-  {
-    "info": "!TYO Animations"
-  },
-  {
-    "info": "!Studio Colorido"
-  },
-  {
-    "info": "!KDDI"
-  },
-  {
-    "info": "!Dentsu Meitetsu Communications"
-  },
-  {
-    "info": "!Fuji Creative Corporation"
-  },
-  {
-    "info": "!Universal Music Japan"
-  },
-  {
-    "info": "!Qualia Animation"
-  },
-  {
-    "info": "!Studio Jack"
-  },
-  {
-    "info": "!Lawson Entertainment"
-  },
-  {
-    "info": "!4Kids Entertainment"
-  },
-  {
-    "info": "!Studio VOLN"
-  },
-  {
-    "info": "!Sumzap"
-  },
-  {
-    "info": "!LICO"
-  },
-  {
-    "info": "!TAP"
-  },
-  {
-    "info": "!Lapin Track"
-  },
-  {
-    "info": "!BEEP"
-  },
-  {
-    "info": "!Triple A"
-  },
-  {
-    "info": "!BSP"
-  },
-  {
-    "info": "!Nexus"
-  },
-  {
-    "info": "!Totonyan"
-  },
-  {
-    "info": "!Victor Entertainment"
-  },
-  {
-    "info": "!tsuritama partners"
-  },
-  {
-    "info": "!BMG Japan"
-  },
-  {
-    "info": "!Kids Station"
-  },
-  {
-    "info": "!Audio Highs"
-  },
-  {
-    "info": "!Miracle Robo"
-  },
-  {
-    "info": "!Glovision"
-  },
-  {
-    "info": "!Good Smile Company"
-  },
-  {
-    "info": "!NTT Plala"
-  },
-  {
-    "info": "!EKACHI EPILKA"
-  },
-  {
-    "info": "!Hobby Japan"
-  },
-  {
-    "info": "! l-a-unch・BOX"
-  },
-  {
-    "info": "!Studio elle"
-  },
-  {
-    "info": "!TNK"
-  },
-  {
-    "info": "!Millepensee"
-  },
-  {
-    "info": "!exsa"
-  },
-  {
-    "info": "!Cygames"
-  },
-  {
-    "info": "!Micro Magazine Sha"
-  },
-  {
-    "info": "!Geneon Entertainment"
-  },
-  {
-    "info": "!WAO World"
-  },
-  {
-    "info": "!Melonbooks"
-  },
-  {
-    "info": "!CTW"
-  },
-  {
-    "info": "!Strawberry Meets Pictures"
-  },
-  {
-    "info": "!Kanon"
-  },
-  {
-    "info": "!Nihon Narration Engi Kenkyuujo"
-  },
-  {
-    "info": "!Happinet"
-  },
-  {
-    "info": "!Yomiuri TV Enterprise"
-  },
-  {
-    "info": "!TO Books"
-  },
-  {
-    "info": "!JTB Next Creation"
-  },
-  {
-    "info": "!Tokyo Animator Gakuin"
-  },
-  {
-    "info": "!Toshiba Entertainment"
-  },
-  {
-    "info": "!Imagica Lab."
-  },
-  {
-    "info": "!Planet"
-  },
-  {
-    "info": "!81 Produce"
-  },
-  {
-    "info": "!Zipang"
-  },
-  {
-    "info": "!CBC Radio"
-  },
-  {
-    "info": "!Adult Swim"
-  },
-  {
-    "info": "!Happinet Phantom Studios"
-  },
-  {
-    "info": "!Imagica"
-  },
-  {
-    "info": "!Cosmic Ray"
-  },
-  {
-    "info": "!Studio Signpost"
-  },
-  {
-    "info": "!Banpresto"
-  },
-  {
-    "info": "!Studio Comet"
-  },
-  {
-    "info": "!Contents Seed"
-  },
-  {
-    "info": "!Medicos Entertainment"
-  },
-  {
-    "info": "!Cammot"
-  },
-  {
-    "info": "!Lilix"
-  },
-  {
-    "info": "!Studio Palette"
-  },
-  {
-    "info": "!Dream Force"
-  },
-  {
-    "info": "!Staple Entertainment"
-  },
-  {
-    "info": "!APDREAM"
-  },
-  {
-    "info": "!Eye Move"
-  },
-  {
-    "info": "!Shuka"
-  },
-  {
-    "info": "!GoHands"
-  },
-  {
-    "info": "!Actas"
-  },
-  {
-    "info": "!ONE MUSIC"
-  },
-  {
-    "info": "!Horipro"
-  },
-  {
-    "info": "!Studio 4°C"
-  },
-  {
-    "info": "!AIC Build"
-  },
-  {
-    "info": "!Studio Fantasia"
-  },
-  {
-    "info": "!Walt Disney Studios"
-  },
-  {
-    "info": "!Studio Chizu"
-  },
-  {
-    "info": "!C-Station"
-  },
-  {
-    "info": "!Group TAC"
-  },
-  {
-    "info": "!SamBakZa"
-  },
-  {
-    "info": "!P.I.C.S."
-  },
-  {
-    "info": "!Yoshimoto Kogyo"
-  },
-  {
-    "info": "!Imagin"
-  },
-  {
-    "info": "!Pioneer LDC"
-  },
-  {
-    "info": "!APPP"
-  },
-  {
-    "info": "!Gaina"
-  },
-  {
-    "info": "!KSS"
-  },
-  {
-    "info": "!Youmex"
-  },
-  {
-    "info": "!Studio Kelmadick"
-  },
-  {
-    "info": "!Mushi Production"
-  },
-  {
-    "info": "!Studio Guts"
-  },
-  {
-    "info": "!AnimEigo"
-  },
-  {
-    "info": "!Bushiroad Move"
-  },
-  {
-    "info": "!Micro House"
-  },
-  {
-    "info": "!Tohjak"
-  },
-  {
-    "info": "!Video Market"
-  },
-  {
-    "info": "!Hifumi Shobou"
-  },
-  {
-    "info": "!Live Viewing Japan"
-  },
-  {
-    "info": "!I0plus"
-  },
-  {
-    "info": "!Studio Animal"
-  },
-  {
-    "info": "!Drive"
-  },
-  {
-    "info": "!Ichigo Animation"
-  },
-  {
-    "info": "!Comic Animation"
-  },
-  {
-    "info": "!Ordet"
-  },
-  {
-    "info": "!Akita Shoten"
-  },
-  {
-    "info": "!Science SARU"
-  },
-  {
-    "info": "!Tohan"
-  },
-  {
-    "info": "!Animax Broadcast Japan"
-  },
-  {
-    "info": "!SME Visual Works"
-  },
-  {
-    "info": "!Kadokawa Contents Gate"
-  },
-  {
-    "info": "!Line Webtoon"
-  },
-  {
-    "info": "!Tear-Studio"
-  },
-  {
-    "info": "!TrioPen Studio"
-  },
-  {
-    "info": "!project No.9"
-  },
-  {
-    "info": "!YOMIURI BRAND STUDIO"
-  },
-  {
-    "info": "!Bergamo"
-  },
-  {
-    "info": "!D.N. Dream Partners"
-  },
-  {
-    "info": "!Signal.MD"
-  },
-  {
-    "info": "!Sublimation"
-  },
-  {
-    "info": "!CoMix Wave"
-  },
-  {
-    "info": "!STORY Inc."
-  },
-  {
-    "info": "!Bushiroad Music"
-  },
-  {
-    "info": "!Bibury Animation Studios"
-  },
-  {
-    "info": "!MAGNET"
-  },
-  {
-    "info": "!GRANTdesign"
-  },
-  {
-    "info": "!AMG MUSIC"
-  },
-  {
-    "info": "!Studio KAI"
-  },
-  {
-    "info": "!Domerica"
-  },
-  {
-    "info": "!NAMU Animation"
-  },
-  {
-    "info": "!Okuruto Noboru"
-  },
-  {
-    "info": "!DIVE II Entertainment"
-  },
-  {
-    "info": "!Index"
-  },
-  {
-    "info": "!Anima&Co. "
-  },
-  {
-    "info": "!Plum"
-  },
-  {
-    "info": "!AIC Spirits"
-  },
-  {
-    "info": "!dugout"
-  },
-  {
-    "info": "!Platinum Vision"
-  },
-  {
-    "info": "!Smile Company"
-  },
-  {
-    "info": "!ENISHIYA Inc."
-  },
-  {
-    "info": "!FIREBUG"
-  },
-  {
-    "info": "!Top Marshal"
-  },
-  {
-    "info": "!Front Wing"
-  },
-  {
-    "info": "!Amuse"
-  },
-  {
-    "info": "!Daiichi Kosho Company"
-  },
-  {
-    "info": "!Animatic"
-  },
-  {
-    "info": "!Radio Osaka"
-  },
-  {
-    "info": "!Parco"
-  },
-  {
-    "info": "!Teichiku Entertainment"
-  },
-  {
-    "info": "!e-notion"
-  },
-  {
-    "info": "!CAAnimation"
-  },
-  {
-    "info": "!Emoto Entertainment"
-  },
-  {
-    "info": "!Kamikaze Douga"
-  },
-  {
-    "info": "!Hot Zipang "
-  },
-  {
-    "info": "!Asahi Shimbun"
-  },
-  {
-    "info": "!Age"
-  },
-  {
-    "info": "!Cover Corp"
-  },
-  {
-    "info": "!NOKID"
-  },
-  {
-    "info": "!UWAN Pictures"
-  },
-  {
-    "info": "!Adnero"
-  },
-  {
-    "info": "!xenron"
-  },
-  {
-    "info": "!DLE"
-  },
-  {
-    "info": "!Bouncy"
-  },
-  {
-    "info": "!Kimi To Boku Production Partners"
-  },
-  {
-    "info": "!Tsuburaya Productions"
-  },
-  {
-    "info": "!XFLAG"
-  },
-  {
-    "info": "!Studio Gazelle"
-  },
-  {
-    "info": "!Azone International"
-  },
-  {
-    "info": "!Pokelabo"
-  },
-  {
-    "info": "!Marui Group"
-  },
-  {
-    "info": "!Bushiroad Creative"
-  },
-  {
-    "info": "!Legs"
-  },
-  {
-    "info": "!Idea Factory"
-  },
-  {
-    "info": "!production doA"
-  },
-  {
-    "info": "!Notes"
-  },
-  {
-    "info": "!CREi"
-  },
-  {
-    "info": "!KLab"
-  },
-  {
-    "info": "!Project No Name"
-  },
-  {
-    "info": "!Project IS"
-  },
-  {
-    "info": "!entama"
-  },
-  {
-    "info": "!Studio Pastoral"
-  },
-  {
-    "info": "!Dream Shift"
-  },
-  {
-    "info": "!arma bianca"
-  },
-  {
-    "info": "!Yahoo! Japan"
-  },
-  {
-    "info": "!REVOROOT"
-  },
-  {
-    "info": "!TMS-Kyokuchi"
-  },
-  {
-    "info": "!POLYGON PICTURES"
-  },
-  {
-    "info": "!Palm Studio"
-  },
-  {
-    "info": "!Ascension"
-  },
-  {
-    "info": "!Techno Sound"
-  },
-  {
-    "info": "!Chaos Union"
-  },
-  {
-    "info": "!NTV Music"
-  },
-  {
-    "info": "!Flying Ship Studio"
-  },
-  {
-    "info": "!Studio Khara"
-  },
-  {
-    "info": "!3xCube"
-  },
-  {
-    "info": "!TMS Music"
-  },
-  {
-    "info": "!Big Firebird Cultural Media"
-  },
-  {
-    "info": "!Heart Company"
-  },
-  {
-    "info": "!Juumonji"
-  },
-  {
-    "info": "!Pink Pineapple"
-  },
-  {
-    "info": "!Grooove"
-  },
-  {
-    "info": "!StudioRF Inc."
-  },
-  {
-    "info": "!Animate"
-  },
-  {
-    "info": "!Ezo’la"
-  },
-  {
-    "info": "!Sega Games"
-  },
-  {
-    "info": "!OZ"
-  },
-  {
-    "info": "!ACC Production"
-  },
-  {
-    "info": "!Jormungand Production Partners"
-  },
-  {
-    "info": "!YAMATOWORKS"
-  },
-  {
-    "info": "!Rising Force"
-  },
-  {
-    "info": "!Primastea"
-  },
-  {
-    "info": "!Larx Entertainment"
-  },
-  {
-    "info": "!Studio Massket"
-  },
-  {
-    "info": "!Jinnan Studio"
-  },
-  {
-    "info": "!Ashisuto"
-  },
-  {
-    "info": "!TSUTAYA"
-  },
-  {
-    "info": "!HTC"
-  },
-  {
-    "info": "!G&G Entertainment"
-  },
-  {
-    "info": "!Studio Bind"
-  },
-  {
-    "info": "!Toy's Factory"
-  },
-  {
-    "info": "!Triangle Staff"
-  },
-  {
-    "info": "!CLAP"
-  },
-  {
-    "info": "!Rex Entertainment "
-  },
-  {
-    "info": "!ONIRO"
-  },
-  {
-    "info": "!Magia Doraglier"
-  },
-  {
-    "info": "!ElectromagneticWave"
-  },
-  {
-    "info": "!TOKYOPOP"
-  },
-  {
-    "info": "!Marvy Jack"
-  },
-  {
-    "info": "!A.C.G.T."
-  },
-  {
-    "info": "!studio A-CAT"
-  },
-  {
-    "info": "!comico"
-  },
-  {
-    "info": "!INCS toenter"
-  },
-  {
-    "info": "!Atelier Pontdarc"
-  },
-  {
-    "info": "!Seikaisha"
-  },
-  {
-    "info": "!DELiGHTWORKS"
-  },
-  {
-    "info": "!Daiei"
-  },
-  {
-    "info": "!BeDream"
-  },
-  {
-    "info": "!Studio LAN"
-  },
-  {
-    "info": "!Nippon Victor"
-  },
-  {
-    "info": "!Arts Pro"
-  },
-  {
-    "info": "!The Answer Studio"
-  },
-  {
-    "info": "!Bee Train"
-  },
-  {
-    "info": "!Studio Gallop"
-  },
-  {
-    "info": "!Madoka Partners"
-  },
-  {
-    "info": "!BS Asahi"
-  },
-  {
-    "info": "!f4samurai"
-  },
-  {
-    "info": "!C&I Entertainment"
-  },
-  {
-    "info": "!TRUSS"
-  },
-  {
-    "info": "!TYPHOON GRAPHICS"
-  },
-  {
-    "info": "!Union Creative"
-  },
-  {
-    "info": "!Tsukisuzusha"
-  },
-  {
-    "info": "!GOT"
-  },
-  {
-    "info": "!Yoshimoto Music"
-  },
-  {
-    "info": "!Toei Agency"
-  },
-  {
-    "info": "!Exa"
-  },
-  {
-    "info": "!A3"
-  },
-  {
-    "info": "!Dynamic Planning"
-  },
-  {
-    "info": "!GEMBA"
-  },
-  {
-    "info": "!Koei"
-  },
-  {
-    "info": "!Office Nobu"
-  },
-  {
-    "info": "!GREE Entertainment"
-  },
-  {
-    "info": "!Space Neko Company"
-  },
-  {
-    "info": "!DOGA Productions"
-  },
-  {
-    "info": "!DMM.futureworks"
-  },
-  {
-    "info": "!Mellow Head"
-  },
-  {
-    "info": "!Marubeni"
-  },
-  {
-    "info": "!Iwatobi High School Swimming Club"
-  },
-  {
-    "info": "!Artmic"
-  },
-  {
-    "info": "!Po10tial"
-  },
-  {
-    "info": "!Atlus"
-  },
-  {
-    "info": "!Tapioca"
-  },
-  {
-    "info": "!studio MOTHER"
-  },
-  {
-    "info": "!Production IMS"
-  },
-  {
-    "info": "!WolfsBane"
-  },
-  {
-    "info": "!Maiden Japan"
-  },
-  {
-    "info": "!NHK-BS2"
-  },
-  {
-    "info": "!Crimson Star Media"
-  },
-  {
-    "info": "!Procidis"
-  },
-  {
-    "info": "!Eiken"
-  },
-  {
-    "info": "!Craftar"
-  },
-  {
-    "info": "!Warner Bros. Eiga"
-  },
-  {
-    "info": "!Straight Edge"
-  },
-  {
-    "info": "!S-Wood"
-  },
-  {
-    "info": "!Bushiroad Media"
-  },
-  {
-    "info": "!Fairy Tale Co."
-  },
-  {
-    "info": "!Trans Arts"
-  },
-  {
-    "info": "!RCC Chugoku Broadcasting"
-  },
-  {
-    "info": "!GEN Productions"
-  },
-  {
-    "info": "!Topcraft"
-  },
-  {
-    "info": "!Jacom"
-  },
-  {
-    "info": "!Visual 80"
-  },
-  {
-    "info": "!Yostar Pictures"
-  },
-  {
-    "info": "!eStream"
-  },
-  {
-    "info": "!Anime R"
-  },
-  {
-    "info": "!Beyond C."
-  },
-  {
-    "info": "!Omega Project"
-  },
-  {
-    "info": "!Days"
-  },
-  {
-    "info": "!ABC Frontier"
-  },
-  {
-    "info": "!CyberConnect2"
-  },
-  {
-    "info": "!Shufu to Seikatsusha"
-  },
-  {
-    "info": "!CREST"
-  },
-  {
-    "info": "!Sun Television"
-  },
-  {
-    "info": "!Simplicity"
-  },
-  {
-    "info": "!Digital Frontier"
-  },
-  {
-    "info": "!Studio PuYUKAI"
-  },
-  {
-    "info": "!Think Corporation"
-  },
-  {
-    "info": "!KENMedia"
-  },
-  {
-    "info": "!Mag Garden"
-  },
-  {
-    "info": "!Wawayu Animation"
-  },
-  {
-    "info": "!Yuewen Animation & Comics"
-  },
-  {
-    "info": "!China Literature"
-  },
-  {
-    "info": "!K.PICTURES"
-  },
-  {
-    "info": "!Colored Pencil Animation"
-  },
-  {
-    "info": "!Twilight Studio"
-  },
-  {
-    "info": "!Tamakoshi"
-  },
-  {
-    "info": "!MusicRay`n"
-  },
-  {
-    "info": "!Alice"
-  },
-  {
-    "info": "!U-NEXT"
-  },
-  {
-    "info": "!flaggs"
-  },
-  {
-    "info": "!Laulea Works"
-  },
-  {
-    "info": "!SoftX"
-  },
-  {
-    "info": "!E&G Films"
-  },
-  {
-    "info": "!B&T"
-  },
-  {
-    "info": "!Enlight Pictures"
-  },
-  {
-    "info": "!Coloroom Pictures"
-  },
-  {
-    "info": "!Cartoon Saloon"
-  },
-  {
-    "info": "!Issen"
-  },
-  {
-    "info": "!Toei"
-  },
-  {
-    "info": "!ADK Emotions"
-  },
-  {
-    "info": "!LIDENFILMS Kyoto Studio"
-  },
-  {
-    "info": "!m.o.e."
-  },
-  {
-    "info": "!Soft Garage"
-  },
-  {
-    "info": "!Majin"
-  },
-  {
-    "info": "!Majin petit"
-  },
-  {
-    "info": "!Langmaor"
-  },
-  {
-    "info": "!Alice Soft"
-  },
-  {
-    "info": "!Suiseisha"
-  },
-  {
-    "info": "!Picante Circus"
-  },
-  {
-    "info": "!Rabbit Gate"
-  },
-  {
-    "info": "!Mary Jane"
-  },
-  {
-    "info": "!Studio Eromatick"
-  },
-  {
-    "info": "!D3"
-  },
-  {
-    "info": "!Studio 9 Maiami"
-  },
-  {
-    "info": "!Studio Houkiboshi"
-  },
-  {
-    "info": "!Studio 1st"
-  },
-  {
-    "info": "!44℃ Baidoku"
-  },
-  {
-    "info": "!Cosmos"
-  },
-  {
-    "info": "!PoRO"
-  },
-  {
-    "info": "!PoRO petit"
-  },
-  {
-    "info": "!DR Movie"
-  },
-  {
-    "info": "!Picture Magic"
-  },
-  {
-    "info": "!Kiyosumi High School Mahjong Club"
-  },
-  {
-    "info": "!DMM.com"
-  },
-  {
-    "info": "!Studio Flad"
-  },
-  {
-    "info": "!On-Lead"
-  },
-  {
-    "info": "!Ginga Ya"
-  },
-  {
-    "info": "!Alchemist"
-  },
-  {
-    "info": "!Voyager Entertainment"
-  },
-  {
-    "info": "!Tokyo Kids"
-  },
-  {
-    "info": "!Minami Machi Bugyousho"
-  },
-  {
-    "info": "!Production +h"
-  },
-  {
-    "info": "!Hakuhodo"
-  },
-  {
-    "info": "!Kakao Japan"
-  },
-  {
-    "info": "!Chuugai Kougyou"
-  },
-  {
-    "info": "!Sei Young Animation"
-  },
-  {
-    "info": "!KORAD"
-  },
-  {
-    "info": "!A-Real"
-  },
-  {
-    "info": "!Nippon Shuppan Hanbai (Nippan) K.K."
-  },
-  {
-    "info": "!Aiko"
-  },
-  {
-    "info": "!Kaname Production"
-  },
-  {
-    "info": "!B.CMAY PICTURES"
-  },
-  {
-    "info": "!CALF"
-  },
-  {
-    "info": "!Children's Playground Entertainment"
-  },
-  {
-    "info": "!Oh! Production"
-  },
-  {
-    "info": "!Agent 21"
-  },
-  {
-    "info": "!FENZ"
-  },
-  {
-    "info": "!Tianwen Kadokawa"
-  },
-  {
-    "info": "!HMCH"
-  },
-  {
-    "info": "!Observatory Animation"
-  },
-  {
-    "info": "!drop"
-  },
-  {
-    "info": "!Kyotoma"
-  },
-  {
-    "info": "!Quad"
-  },
-  {
-    "info": "!Flex Comics"
-  },
-  {
-    "info": "!Starry Cube"
-  },
-  {
-    "info": "!SUPA LOVE"
-  },
-  {
-    "info": "!Holoimua"
-  },
-  {
-    "info": "!Annel"
-  },
-  {
-    "info": "!Septeni Holdings"
-  },
-  {
-    "info": "!OB Planning"
-  },
-  {
-    "info": "!Grouper Productions"
-  },
-  {
-    "info": "!Pie in the sky"
-  },
-  {
-    "info": "!Kyoto Seika University"
-  },
-  {
-    "info": "!Wolf Smoke"
-  },
-  {
-    "info": "!Rikuentai"
-  },
-  {
-    "info": "!feng"
-  },
-  {
-    "info": "!Foch"
-  },
-  {
-    "info": "!SKY Perfect"
-  },
-  {
-    "info": "!Studio Tulip"
-  },
-  {
-    "info": "!Studio Wombat"
-  },
-  {
-    "info": "!Gust"
-  },
-  {
-    "info": "!Studio Ponoc"
-  },
-  {
-    "info": "!Remic"
-  },
-  {
-    "info": "!Nexon"
-  },
-  {
-    "info": "!Hakoniwa Academy Student Council"
-  },
-  {
-    "info": "!Trinet Entertainment"
-  },
-  {
-    "info": "!I Will"
-  },
-  {
-    "info": "!Yaoyorozu"
-  },
-  {
-    "info": "!Tomason"
-  },
-  {
-    "info": "!Nippon Herald Eiga"
-  },
-  {
-    "info": "!Digital Network Animation"
-  },
-  {
-    "info": "!Musashino Art University"
-  },
-  {
-    "info": "!Sunwoo Entertainment"
-  },
-  {
-    "info": "!Yellow Film"
-  },
-  {
-    "info": "!Y.O.U.C"
-  },
-  {
-    "info": "!office DCI"
-  },
-  {
-    "info": "!Azeta Pictures"
-  },
-  {
-    "info": "!Magilm Pictures"
-  },
-  {
-    "info": "!Djinn Power"
-  },
-  {
-    "info": "!Dazed "
-  },
-  {
-    "info": "!BeSTACK"
-  },
-  {
-    "info": "!FABTONE"
-  },
-  {
-    "info": "!LMD"
-  },
-  {
-    "info": "!Saetta"
-  },
-  {
-    "info": "!TAKI Corporation"
-  },
-  {
-    "info": "!Studio Saki Makura"
-  },
-  {
-    "info": "!Kitty Media"
-  },
-  {
-    "info": "!Venet"
-  },
-  {
-    "info": "!SUNBORN Network Technology"
-  },
-  {
-    "info": "!GRIFFIN & KRYUGER"
-  },
-  {
-    "info": "!GAGA"
-  },
-  {
-    "info": "!Rakuten"
-  },
-  {
-    "info": "!Nice Boat Animation"
-  },
-  {
-    "info": "!Gudong Animation Studio"
-  },
-  {
-    "info": "!FILMONY"
-  },
-  {
-    "info": "!Otogi Production"
-  },
-  {
-    "info": "!EBS"
-  },
-  {
-    "info": "!Durufix"
-  },
-  {
-    "info": "!Studio Kikan"
-  },
-  {
-    "info": "!Joy Pictures"
-  },
-  {
-    "info": "!Tencent Games"
-  },
-  {
-    "info": "!Team YokkyuFuman"
-  },
-  {
-    "info": "!LDCX"
-  },
-  {
-    "info": "!Marui"
-  },
-  {
-    "info": "!TV Tokyo Communications"
-  },
-  {
-    "info": "!Ensky"
-  },
-  {
-    "info": "!Goodshow Animation"
-  },
-  {
-    "info": "!Hot Game Studio"
-  },
-  {
-    "info": "!ibis Capital Partners"
-  },
-  {
-    "info": "!Gyokkoudou"
-  },
-  {
-    "info": "!TV Nagasaki"
-  },
-  {
-    "info": "!Cloud"
-  },
-  {
-    "info": "!Energy and System Planning"
-  },
-  {
-    "info": "!Team Yamahitsuji"
-  },
-  {
-    "info": "!FLAT STUDIO"
-  },
-  {
-    "info": "!TriF studio"
-  },
-  {
-    "info": "!Studio Kyuuma"
-  },
-  {
-    "info": "!Wanda Film"
-  },
-  {
-    "info": "!Sunac Pictures"
-  },
-  {
-    "info": "!Samsara Studio"
-  },
-  {
-    "info": "!Green Monster Team"
-  },
-  {
-    "info": "!SPRiNG"
-  },
-  {
-    "info": "!Marvel Entertainment"
-  },
-  {
-    "info": "!Qubic Pictures"
-  },
-  {
-    "info": "!CGCG Studio Inc."
-  },
-  {
-    "info": "!dwarf"
-  },
-  {
-    "info": "!Tooniverse"
-  },
-  {
-    "info": "!Tama Art University"
-  },
-  {
-    "info": "!Amuse Soft Entertainment"
-  },
-  {
-    "info": "!Mook Animation"
-  },
-  {
-    "info": "!Robot"
-  },
-  {
-    "info": "!Geidai Animation"
-  },
-  {
-    "info": "!Ai ga areba Daijobu"
-  },
-  {
-    "info": "!Tamura Shigeru Studio"
-  },
-  {
-    "info": "!VCRWORKS"
-  },
-  {
-    "info": "!Studio Junior"
-  },
-  {
-    "info": "!Studio Junio"
-  },
-  {
-    "info": "!JTB Entertainment"
-  },
-  {
-    "info": "!Wargaming Japan"
-  },
-  {
-    "info": "!501st JOINT FIGHTER WING"
-  },
-  {
-    "info": "!Tsuchida Productions"
-  },
-  {
-    "info": "!Studio G-1Neo"
-  },
-  {
-    "info": "!Pastel"
-  },
-  {
-    "info": "!Aeon Entertainment"
-  },
-  {
-    "info": "!Sav! The World Productions"
-  },
-  {
-    "info": "!Wolf Smoke Studio"
-  },
-  {
-    "info": "!MAKING ANIMATION"
-  },
-  {
-    "info": "!L² Studio"
-  },
-  {
-    "info": "!U17"
-  },
-  {
-    "info": "!UNLIMITED Partners"
-  },
-  {
-    "info": "!Studio Nue"
-  },
-  {
-    "info": "!Hero"
-  },
-  {
-    "info": "!Grasshoppa!"
-  },
-  {
-    "info": "!Manga Productions"
-  },
-  {
-    "info": "!INDIVISION"
-  },
-  {
-    "info": "!AIC Takarazuka"
-  },
-  {
-    "info": "!Animate Film"
-  },
-  {
-    "info": "!Enoki Films"
-  },
-  {
-    "info": "!Aubec"
-  },
-  {
-    "info": "!Academy Productions"
-  },
-  {
-    "info": "!JCF"
-  },
-  {
-    "info": "!Echo"
-  },
-  {
-    "info": "!Nihon Ad Systems"
-  },
-  {
-    "info": "!Annapuru"
-  },
-  {
-    "info": "!Office AO"
-  },
-  {
-    "info": "!DiC Entertainment"
-  },
-  {
-    "info": "!Three Fat Samurai"
-  },
-  {
-    "info": "!Character Plan"
-  },
-  {
-    "info": "!Ekura Animal"
-  },
-  {
-    "info": "!Nippon Broadcasting System"
-  },
-  {
-    "info": "!Liber Entertainment"
-  },
-  {
-    "info": "!WarRock"
-  },
-  {
-    "info": "!TV Asahi Music"
-  },
-  {
-    "info": "!Universal Music"
-  },
-  {
-    "info": "!Studio Izena"
-  },
-  {
-    "info": "!Senran Kagura Partners"
-  },
-  {
-    "info": "!Project Team Argos"
-  },
-  {
-    "info": "!Creators Dot Com"
-  },
-  {
-    "info": "!teamKG"
-  },
-  {
-    "info": "!IYUNO STUDIOS"
-  },
-  {
-    "info": "!MooGoo"
-  },
-  {
-    "info": "!AC Create"
-  },
-  {
-    "info": "!MMT"
-  },
-  {
-    "info": "!Children's Playground Media"
-  },
-  {
-    "info": "!Heartbit"
-  },
-  {
-    "info": "!Tomoyasu Murata Company"
-  },
-  {
-    "info": "!Automatic Flowers Studio"
-  },
-  {
-    "info": "!ACiD FiLM"
-  },
-  {
-    "info": "!Anpro"
-  },
-  {
-    "info": "!Gosay Studio"
-  },
-  {
-    "info": "!Xebec Zwei"
-  },
-  {
-    "info": "!Sol Blade"
-  }
+	{
+		"info": "action"
+	},
+	{
+		"info": "adventure"
+	},
+	{
+		"info": "comedy"
+	},
+	{
+		"info": "drama"
+	},
+	{
+		"info": "ecchi"
+	},
+	{
+		"info": "fantasy"
+	},
+	{
+		"info": "horror"
+	},
+	{
+		"info": "mahou shoujo"
+	},
+	{
+		"info": "mecha"
+	},
+	{
+		"info": "music"
+	},
+	{
+		"info": "mystery"
+	},
+	{
+		"info": "psychological"
+	},
+	{
+		"info": "romance"
+	},
+	{
+		"info": "sci-fi"
+	},
+	{
+		"info": "slice of life"
+	},
+	{
+		"info": "sports"
+	},
+	{
+		"info": "supernatural"
+	},
+	{
+		"info": "thriller"
+	},
+	{
+		"info": "4-koma"
+	},
+	{
+		"info": "achromatic"
+	},
+	{
+		"info": "achronological order"
+	},
+	{
+		"info": "acting"
+	},
+	{
+		"info": "adoption"
+	},
+	{
+		"info": "advertisement"
+	},
+	{
+		"info": "afterlife"
+	},
+	{
+		"info": "age gap"
+	},
+	{
+		"info": "age regression"
+	},
+	{
+		"info": "agender"
+	},
+	{
+		"info": "agriculture"
+	},
+	{
+		"info": "airsoft"
+	},
+	{
+		"info": "alchemy"
+	},
+	{
+		"info": "aliens"
+	},
+	{
+		"info": "alternate universe"
+	},
+	{
+		"info": "american football"
+	},
+	{
+		"info": "amnesia"
+	},
+	{
+		"info": "anachronism"
+	},
+	{
+		"info": "angels"
+	},
+	{
+		"info": "animals"
+	},
+	{
+		"info": "anthology"
+	},
+	{
+		"info": "anthropomorphism"
+	},
+	{
+		"info": "anti-hero"
+	},
+	{
+		"info": "archery"
+	},
+	{
+		"info": "artificial intelligence"
+	},
+	{
+		"info": "asexual"
+	},
+	{
+		"info": "assassins"
+	},
+	{
+		"info": "astronomy"
+	},
+	{
+		"info": "athletics"
+	},
+	{
+		"info": "augmented reality"
+	},
+	{
+		"info": "autobiographical"
+	},
+	{
+		"info": "aviation"
+	},
+	{
+		"info": "badminton"
+	},
+	{
+		"info": "band"
+	},
+	{
+		"info": "bar"
+	},
+	{
+		"info": "baseball"
+	},
+	{
+		"info": "basketball"
+	},
+	{
+		"info": "battle royale"
+	},
+	{
+		"info": "biographical"
+	},
+	{
+		"info": "bisexual"
+	},
+	{
+		"info": "body horror"
+	},
+	{
+		"info": "body swapping"
+	},
+	{
+		"info": "boxing"
+	},
+	{
+		"info": "boys' love"
+	},
+	{
+		"info": "bullying"
+	},
+	{
+		"info": "butler"
+	},
+	{
+		"info": "calligraphy"
+	},
+	{
+		"info": "cannibalism"
+	},
+	{
+		"info": "card battle"
+	},
+	{
+		"info": "cars"
+	},
+	{
+		"info": "centaur"
+	},
+	{
+		"info": "cgi"
+	},
+	{
+		"info": "cheerleading"
+	},
+	{
+		"info": "chibi"
+	},
+	{
+		"info": "chimera"
+	},
+	{
+		"info": "chuunibyou"
+	},
+	{
+		"info": "circus"
+	},
+	{
+		"info": "classic literature"
+	},
+	{
+		"info": "clone"
+	},
+	{
+		"info": "college"
+	},
+	{
+		"info": "coming of age"
+	},
+	{
+		"info": "conspiracy"
+	},
+	{
+		"info": "cosmic horror"
+	},
+	{
+		"info": "cosplay"
+	},
+	{
+		"info": "crime"
+	},
+	{
+		"info": "crossdressing"
+	},
+	{
+		"info": "crossover"
+	},
+	{
+		"info": "cult"
+	},
+	{
+		"info": "cultivation"
+	},
+	{
+		"info": "cute boys doing cute things"
+	},
+	{
+		"info": "cute girls doing cute things"
+	},
+	{
+		"info": "cyberpunk"
+	},
+	{
+		"info": "cyborg"
+	},
+	{
+		"info": "cycling"
+	},
+	{
+		"info": "dancing"
+	},
+	{
+		"info": "death game"
+	},
+	{
+		"info": "delinquents"
+	},
+	{
+		"info": "demons"
+	},
+	{
+		"info": "denpa"
+	},
+	{
+		"info": "detective"
+	},
+	{
+		"info": "dinosaurs"
+	},
+	{
+		"info": "disability"
+	},
+	{
+		"info": "dissociative identities"
+	},
+	{
+		"info": "dragons"
+	},
+	{
+		"info": "drawing"
+	},
+	{
+		"info": "drugs"
+	},
+	{
+		"info": "dullahan"
+	},
+	{
+		"info": "dungeon"
+	},
+	{
+		"info": "dystopian"
+	},
+	{
+		"info": "e-sports"
+	},
+	{
+		"info": "economics"
+	},
+	{
+		"info": "educational"
+	},
+	{
+		"info": "elf"
+	},
+	{
+		"info": "ensemble cast"
+	},
+	{
+		"info": "environmental"
+	},
+	{
+		"info": "episodic"
+	},
+	{
+		"info": "ero guro"
+	},
+	{
+		"info": "espionage"
+	},
+	{
+		"info": "fairy tale"
+	},
+	{
+		"info": "family life"
+	},
+	{
+		"info": "fashion"
+	},
+	{
+		"info": "female harem"
+	},
+	{
+		"info": "female protagonist"
+	},
+	{
+		"info": "fencing"
+	},
+	{
+		"info": "firefighters"
+	},
+	{
+		"info": "fishing"
+	},
+	{
+		"info": "fitness"
+	},
+	{
+		"info": "flash"
+	},
+	{
+		"info": "food"
+	},
+	{
+		"info": "football"
+	},
+	{
+		"info": "foreign"
+	},
+	{
+		"info": "found family"
+	},
+	{
+		"info": "fugitive"
+	},
+	{
+		"info": "full cgi"
+	},
+	{
+		"info": "full color"
+	},
+	{
+		"info": "gambling"
+	},
+	{
+		"info": "gangs"
+	},
+	{
+		"info": "gender bending"
+	},
+	{
+		"info": "ghost"
+	},
+	{
+		"info": "go"
+	},
+	{
+		"info": "goblin"
+	},
+	{
+		"info": "gods"
+	},
+	{
+		"info": "golf"
+	},
+	{
+		"info": "gore"
+	},
+	{
+		"info": "guns"
+	},
+	{
+		"info": "gyaru"
+	},
+	{
+		"info": "handball"
+	},
+	{
+		"info": "henshin"
+	},
+	{
+		"info": "heterosexual"
+	},
+	{
+		"info": "hikikomori"
+	},
+	{
+		"info": "historical"
+	},
+	{
+		"info": "homeless"
+	},
+	{
+		"info": "ice skating"
+	},
+	{
+		"info": "idol"
+	},
+	{
+		"info": "isekai"
+	},
+	{
+		"info": "iyashikei"
+	},
+	{
+		"info": "josei"
+	},
+	{
+		"info": "judo"
+	},
+	{
+		"info": "kaiju"
+	},
+	{
+		"info": "karuta"
+	},
+	{
+		"info": "kemonomimi"
+	},
+	{
+		"info": "kids"
+	},
+	{
+		"info": "kuudere"
+	},
+	{
+		"info": "lacrosse"
+	},
+	{
+		"info": "language barrier"
+	},
+	{
+		"info": "lgbtq+ themes"
+	},
+	{
+		"info": "lost civilization"
+	},
+	{
+		"info": "love triangle"
+	},
+	{
+		"info": "mafia"
+	},
+	{
+		"info": "magic"
+	},
+	{
+		"info": "mahjong"
+	},
+	{
+		"info": "maids"
+	},
+	{
+		"info": "makeup"
+	},
+	{
+		"info": "male harem"
+	},
+	{
+		"info": "male protagonist"
+	},
+	{
+		"info": "martial arts"
+	},
+	{
+		"info": "medicine"
+	},
+	{
+		"info": "memory manipulation"
+	},
+	{
+		"info": "mermaid"
+	},
+	{
+		"info": "meta"
+	},
+	{
+		"info": "military"
+	},
+	{
+		"info": "mixed gender harem"
+	},
+	{
+		"info": "monster boy"
+	},
+	{
+		"info": "monster girl"
+	},
+	{
+		"info": "mopeds"
+	},
+	{
+		"info": "motorcycles"
+	},
+	{
+		"info": "musical"
+	},
+	{
+		"info": "mythology"
+	},
+	{
+		"info": "necromancy"
+	},
+	{
+		"info": "nekomimi"
+	},
+	{
+		"info": "ninja"
+	},
+	{
+		"info": "no dialogue"
+	},
+	{
+		"info": "noir"
+	},
+	{
+		"info": "non-fiction"
+	},
+	{
+		"info": "nudity"
+	},
+	{
+		"info": "nun"
+	},
+	{
+		"info": "office lady"
+	},
+	{
+		"info": "oiran"
+	},
+	{
+		"info": "ojou-sama"
+	},
+	{
+		"info": "orphan"
+	},
+	{
+		"info": "otaku culture"
+	},
+	{
+		"info": "outdoor"
+	},
+	{
+		"info": "pandemic"
+	},
+	{
+		"info": "parkour"
+	},
+	{
+		"info": "parody"
+	},
+	{
+		"info": "philosophy"
+	},
+	{
+		"info": "photography"
+	},
+	{
+		"info": "pirates"
+	},
+	{
+		"info": "poker"
+	},
+	{
+		"info": "police"
+	},
+	{
+		"info": "politics"
+	},
+	{
+		"info": "post-apocalyptic"
+	},
+	{
+		"info": "pov"
+	},
+	{
+		"info": "primarily adult cast"
+	},
+	{
+		"info": "primarily child cast"
+	},
+	{
+		"info": "primarily female cast"
+	},
+	{
+		"info": "primarily male cast"
+	},
+	{
+		"info": "primarily teen cast"
+	},
+	{
+		"info": "puppetry"
+	},
+	{
+		"info": "rakugo"
+	},
+	{
+		"info": "real robot"
+	},
+	{
+		"info": "rehabilitation"
+	},
+	{
+		"info": "reincarnation"
+	},
+	{
+		"info": "religion"
+	},
+	{
+		"info": "revenge"
+	},
+	{
+		"info": "robots"
+	},
+	{
+		"info": "rotoscoping"
+	},
+	{
+		"info": "rugby"
+	},
+	{
+		"info": "rural"
+	},
+	{
+		"info": "samurai"
+	},
+	{
+		"info": "satire"
+	},
+	{
+		"info": "school"
+	},
+	{
+		"info": "school club"
+	},
+	{
+		"info": "scuba diving"
+	},
+	{
+		"info": "seinen"
+	},
+	{
+		"info": "shapeshifting"
+	},
+	{
+		"info": "ships"
+	},
+	{
+		"info": "shogi"
+	},
+	{
+		"info": "shoujo"
+	},
+	{
+		"info": "shounen"
+	},
+	{
+		"info": "shrine maiden"
+	},
+	{
+		"info": "skateboarding"
+	},
+	{
+		"info": "skeleton"
+	},
+	{
+		"info": "slapstick"
+	},
+	{
+		"info": "slavery"
+	},
+	{
+		"info": "software development"
+	},
+	{
+		"info": "space"
+	},
+	{
+		"info": "space opera"
+	},
+	{
+		"info": "spearplay"
+	},
+	{
+		"info": "steampunk"
+	},
+	{
+		"info": "stop motion"
+	},
+	{
+		"info": "succubus"
+	},
+	{
+		"info": "suicide"
+	},
+	{
+		"info": "sumo"
+	},
+	{
+		"info": "super power"
+	},
+	{
+		"info": "super robot"
+	},
+	{
+		"info": "superhero"
+	},
+	{
+		"info": "surfing"
+	},
+	{
+		"info": "surreal comedy"
+	},
+	{
+		"info": "survival"
+	},
+	{
+		"info": "swimming"
+	},
+	{
+		"info": "swordplay"
+	},
+	{
+		"info": "table tennis"
+	},
+	{
+		"info": "tanks"
+	},
+	{
+		"info": "tanned skin"
+	},
+	{
+		"info": "teacher"
+	},
+	{
+		"info": "teens' love"
+	},
+	{
+		"info": "tennis"
+	},
+	{
+		"info": "terrorism"
+	},
+	{
+		"info": "time manipulation"
+	},
+	{
+		"info": "time skip"
+	},
+	{
+		"info": "tokusatsu"
+	},
+	{
+		"info": "tomboy"
+	},
+	{
+		"info": "torture"
+	},
+	{
+		"info": "tragedy"
+	},
+	{
+		"info": "trains"
+	},
+	{
+		"info": "transgender"
+	},
+	{
+		"info": "travel"
+	},
+	{
+		"info": "triads"
+	},
+	{
+		"info": "tsundere"
+	},
+	{
+		"info": "twins"
+	},
+	{
+		"info": "urban"
+	},
+	{
+		"info": "urban fantasy"
+	},
+	{
+		"info": "vampire"
+	},
+	{
+		"info": "video games"
+	},
+	{
+		"info": "vikings"
+	},
+	{
+		"info": "villainess"
+	},
+	{
+		"info": "virtual world"
+	},
+	{
+		"info": "volleyball"
+	},
+	{
+		"info": "vtuber"
+	},
+	{
+		"info": "war"
+	},
+	{
+		"info": "werewolf"
+	},
+	{
+		"info": "witch"
+	},
+	{
+		"info": "work"
+	},
+	{
+		"info": "wrestling"
+	},
+	{
+		"info": "writing"
+	},
+	{
+		"info": "wuxia"
+	},
+	{
+		"info": "yakuza"
+	},
+	{
+		"info": "yandere"
+	},
+	{
+		"info": "youkai"
+	},
+	{
+		"info": "yuri"
+	},
+	{
+		"info": "zombie"
+	},
+	{
+		"info": "unwatched"
+	},
+	{
+		"info": "completed"
+	},
+	{
+		"info": "dropped"
+	},
+	{
+		"info": "planning to watch"
+	},
+	{
+		"info": "fall"
+	},
+	{
+		"info": "winter"
+	},
+	{
+		"info": "summer"
+	},
+	{
+		"info": "spring"
+	},
+	{
+		"info": "tv"
+	},
+	{
+		"info": "tv_short"
+	},
+	{
+		"info": "ova"
+	},
+	{
+		"info": "ona"
+	},
+	{
+		"info": "movie"
+	},
+	{
+		"info": "special"
+	},
+	{
+		"info": "1940"
+	},
+	{
+		"info": "1941"
+	},
+	{
+		"info": "1942"
+	},
+	{
+		"info": "1943"
+	},
+	{
+		"info": "1944"
+	},
+	{
+		"info": "1945"
+	},
+	{
+		"info": "1946"
+	},
+	{
+		"info": "1947"
+	},
+	{
+		"info": "1948"
+	},
+	{
+		"info": "1949"
+	},
+	{
+		"info": "1950"
+	},
+	{
+		"info": "1951"
+	},
+	{
+		"info": "1952"
+	},
+	{
+		"info": "1953"
+	},
+	{
+		"info": "1954"
+	},
+	{
+		"info": "1955"
+	},
+	{
+		"info": "1956"
+	},
+	{
+		"info": "1957"
+	},
+	{
+		"info": "1958"
+	},
+	{
+		"info": "1959"
+	},
+	{
+		"info": "1960"
+	},
+	{
+		"info": "1961"
+	},
+	{
+		"info": "1962"
+	},
+	{
+		"info": "1963"
+	},
+	{
+		"info": "1964"
+	},
+	{
+		"info": "1965"
+	},
+	{
+		"info": "1966"
+	},
+	{
+		"info": "1967"
+	},
+	{
+		"info": "1968"
+	},
+	{
+		"info": "1969"
+	},
+	{
+		"info": "1970"
+	},
+	{
+		"info": "1971"
+	},
+	{
+		"info": "1972"
+	},
+	{
+		"info": "1973"
+	},
+	{
+		"info": "1974"
+	},
+	{
+		"info": "1975"
+	},
+	{
+		"info": "1976"
+	},
+	{
+		"info": "1977"
+	},
+	{
+		"info": "1978"
+	},
+	{
+		"info": "1979"
+	},
+	{
+		"info": "1980"
+	},
+	{
+		"info": "1981"
+	},
+	{
+		"info": "1982"
+	},
+	{
+		"info": "1983"
+	},
+	{
+		"info": "1984"
+	},
+	{
+		"info": "1985"
+	},
+	{
+		"info": "1986"
+	},
+	{
+		"info": "1987"
+	},
+	{
+		"info": "1988"
+	},
+	{
+		"info": "1989"
+	},
+	{
+		"info": "1990"
+	},
+	{
+		"info": "1991"
+	},
+	{
+		"info": "1992"
+	},
+	{
+		"info": "1993"
+	},
+	{
+		"info": "1994"
+	},
+	{
+		"info": "1995"
+	},
+	{
+		"info": "1996"
+	},
+	{
+		"info": "1997"
+	},
+	{
+		"info": "1998"
+	},
+	{
+		"info": "1999"
+	},
+	{
+		"info": "2000"
+	},
+	{
+		"info": "2001"
+	},
+	{
+		"info": "2002"
+	},
+	{
+		"info": "2003"
+	},
+	{
+		"info": "2004"
+	},
+	{
+		"info": "2005"
+	},
+	{
+		"info": "2006"
+	},
+	{
+		"info": "2007"
+	},
+	{
+		"info": "2008"
+	},
+	{
+		"info": "2009"
+	},
+	{
+		"info": "2010"
+	},
+	{
+		"info": "2011"
+	},
+	{
+		"info": "2012"
+	},
+	{
+		"info": "2013"
+	},
+	{
+		"info": "2014"
+	},
+	{
+		"info": "2015"
+	},
+	{
+		"info": "2016"
+	},
+	{
+		"info": "2017"
+	},
+	{
+		"info": "2018"
+	},
+	{
+		"info": "2019"
+	},
+	{
+		"info": "2020"
+	},
+	{
+		"info": "2021"
+	},
+	{
+		"info": "2022"
+	},
+	{
+		"info": "2023"
+	},
+	{
+		"info": "satelight"
+	},
+	{
+		"info": "funimation"
+	},
+	{
+		"info": "media factory"
+	},
+	{
+		"info": "bandai"
+	},
+	{
+		"info": "8-bit"
+	},
+	{
+		"info": "gonzo"
+	},
+	{
+		"info": "gdh"
+	},
+	{
+		"info": "dentsu"
+	},
+	{
+		"info": "trigger"
+	},
+	{
+		"info": "aniplex"
+	},
+	{
+		"info": "cloverworks"
+	},
+	{
+		"info": "a-1 pictures"
+	},
+	{
+		"info": "movic"
+	},
+	{
+		"info": "ultra super pictures"
+	},
+	{
+		"info": "maho film"
+	},
+	{
+		"info": "lantis"
+	},
+	{
+		"info": "warner bros. japan"
+	},
+	{
+		"info": "bandai namco arts"
+	},
+	{
+		"info": "kodansha"
+	},
+	{
+		"info": "asmik ace"
+	},
+	{
+		"info": "wowow"
+	},
+	{
+		"info": "silver link."
+	},
+	{
+		"info": "white fox"
+	},
+	{
+		"info": "good smile film"
+	},
+	{
+		"info": "sb creative"
+	},
+	{
+		"info": "hakuhodo dy music & pictures"
+	},
+	{
+		"info": "sony pictures entertainment"
+	},
+	{
+		"info": "at-x"
+	},
+	{
+		"info": "bushiroad"
+	},
+	{
+		"info": "magic capsule"
+	},
+	{
+		"info": "frontier works"
+	},
+	{
+		"info": "asread"
+	},
+	{
+		"info": "overlap"
+	},
+	{
+		"info": "furyu"
+	},
+	{
+		"info": "sony music solutions"
+	},
+	{
+		"info": "toranoana"
+	},
+	{
+		"info": "madhouse"
+	},
+	{
+		"info": "sentai filmworks"
+	},
+	{
+		"info": "studio deen"
+	},
+	{
+		"info": "madman entertainment"
+	},
+	{
+		"info": "genco"
+	},
+	{
+		"info": "dax production"
+	},
+	{
+		"info": "aniplex of america"
+	},
+	{
+		"info": "ascii media works"
+	},
+	{
+		"info": "nhk"
+	},
+	{
+		"info": "nhk enterprises"
+	},
+	{
+		"info": "bandai namco pictures"
+	},
+	{
+		"info": "lidenfilms"
+	},
+	{
+		"info": "felix film"
+	},
+	{
+		"info": "square enix"
+	},
+	{
+		"info": "bs11"
+	},
+	{
+		"info": "amusement media academy"
+	},
+	{
+		"info": "hayakawa shobou"
+	},
+	{
+		"info": "diomedéa"
+	},
+	{
+		"info": "engi"
+	},
+	{
+		"info": "kadokawa"
+	},
+	{
+		"info": "bit grooove promotion"
+	},
+	{
+		"info": "adv films"
+	},
+	{
+		"info": "connect"
+	},
+	{
+		"info": "vega entertainment"
+	},
+	{
+		"info": "synergysp"
+	},
+	{
+		"info": "shogakukan-shueisha productions"
+	},
+	{
+		"info": "pony canyon"
+	},
+	{
+		"info": "fields"
+	},
+	{
+		"info": "bandai spirits"
+	},
+	{
+		"info": "tokyo mx"
+	},
+	{
+		"info": "kansai tv"
+	},
+	{
+		"info": "geek toys"
+	},
+	{
+		"info": "crunchyroll"
+	},
+	{
+		"info": "tezuka productions"
+	},
+	{
+		"info": "kadokawa shoten"
+	},
+	{
+		"info": "kadokawa pictures japan"
+	},
+	{
+		"info": "klock worx"
+	},
+	{
+		"info": "flying dog"
+	},
+	{
+		"info": "studio silver"
+	},
+	{
+		"info": "arvo animation"
+	},
+	{
+		"info": "nippon bs broadcasting"
+	},
+	{
+		"info": "adk marketing solutions"
+	},
+	{
+		"info": "shueisha"
+	},
+	{
+		"info": "barnum studio"
+	},
+	{
+		"info": "shaft"
+	},
+	{
+		"info": "mainichi broadcasting system"
+	},
+	{
+		"info": "xebec"
+	},
+	{
+		"info": "j.c. staff"
+	},
+	{
+		"info": "tms entertainment"
+	},
+	{
+		"info": "dmm pictures"
+	},
+	{
+		"info": "doga kobo"
+	},
+	{
+		"info": "toho"
+	},
+	{
+		"info": "tbs"
+	},
+	{
+		"info": "studio gokumi"
+	},
+	{
+		"info": "ichijinsha"
+	},
+	{
+		"info": "sotsu"
+	},
+	{
+		"info": "bs fuji"
+	},
+	{
+		"info": "g.cmay animation & film"
+	},
+	{
+		"info": "starchild records"
+	},
+	{
+		"info": "dwango"
+	},
+	{
+		"info": "east japan marketing & communications"
+	},
+	{
+		"info": "nichion"
+	},
+	{
+		"info": "myrica music"
+	},
+	{
+		"info": "my theater d.d."
+	},
+	{
+		"info": "global solutions"
+	},
+	{
+		"info": "mirai koujou"
+	},
+	{
+		"info": "kanetsuu investment"
+	},
+	{
+		"info": "brain's base"
+	},
+	{
+		"info": "kyoraku"
+	},
+	{
+		"info": "nis america inc."
+	},
+	{
+		"info": "yomiuri advertising"
+	},
+	{
+		"info": "tv tokyo music"
+	},
+	{
+		"info": "hanabee entertainment"
+	},
+	{
+		"info": "abc animation"
+	},
+	{
+		"info": "delfi sound"
+	},
+	{
+		"info": "mukuo studio"
+	},
+	{
+		"info": "feel."
+	},
+	{
+		"info": "gansis"
+	},
+	{
+		"info": "c2c"
+	},
+	{
+		"info": "sunrise"
+	},
+	{
+		"info": "bandai entertainment"
+	},
+	{
+		"info": "sony music entertainment"
+	},
+	{
+		"info": "nut"
+	},
+	{
+		"info": "wit studio"
+	},
+	{
+		"info": "production i.g"
+	},
+	{
+		"info": "pony canyon enterprise"
+	},
+	{
+		"info": "10gauge"
+	},
+	{
+		"info": "rakuonsha"
+	},
+	{
+		"info": "nbcuniversal entertainment japan"
+	},
+	{
+		"info": "fuji tv"
+	},
+	{
+		"info": "graphinica"
+	},
+	{
+		"info": "yumeta company"
+	},
+	{
+		"info": "flagship line"
+	},
+	{
+		"info": "anchor"
+	},
+	{
+		"info": "avex pictures"
+	},
+	{
+		"info": "tencent"
+	},
+	{
+		"info": "bones"
+	},
+	{
+		"info": "artland"
+	},
+	{
+		"info": "kitty film"
+	},
+	{
+		"info": "magic bus"
+	},
+	{
+		"info": "sunrise beyond"
+	},
+	{
+		"info": "sunrise music"
+	},
+	{
+		"info": "gainax"
+	},
+	{
+		"info": "tv tokyo"
+	},
+	{
+		"info": "nas"
+	},
+	{
+		"info": "tatsunoko production"
+	},
+	{
+		"info": "kyoto animation"
+	},
+	{
+		"info": "troyca"
+	},
+	{
+		"info": "mages."
+	},
+	{
+		"info": "nitroplus"
+	},
+	{
+		"info": "houbunsha"
+	},
+	{
+		"info": "asahi broadcasting corporation"
+	},
+	{
+		"info": "nippon animation"
+	},
+	{
+		"info": "central park media"
+	},
+	{
+		"info": "kadokawa pictures usa"
+	},
+	{
+		"info": "happinet pictures"
+	},
+	{
+		"info": "asatsu dk"
+	},
+	{
+		"info": "aic"
+	},
+	{
+		"info": "bs-tbs"
+	},
+	{
+		"info": "jumondou"
+	},
+	{
+		"info": "lucky paradise"
+	},
+	{
+		"info": "q-tec"
+	},
+	{
+		"info": "shogakukan music & digital entertainment"
+	},
+	{
+		"info": "g-mode"
+	},
+	{
+		"info": "real-t"
+	},
+	{
+		"info": "tengu kobou"
+	},
+	{
+		"info": "capcom"
+	},
+	{
+		"info": "bandai namco entertainment"
+	},
+	{
+		"info": "picona creative studio"
+	},
+	{
+		"info": "biglobe"
+	},
+	{
+		"info": "seven"
+	},
+	{
+		"info": "seven arcs"
+	},
+	{
+		"info": "shogakukan"
+	},
+	{
+		"info": "hakusensha"
+	},
+	{
+		"info": "half h.p studio"
+	},
+	{
+		"info": "sammy"
+	},
+	{
+		"info": "docomo anime store"
+	},
+	{
+		"info": "kadokawa media house"
+	},
+	{
+		"info": "d-techno"
+	},
+	{
+		"info": "david production"
+	},
+	{
+		"info": "inu x boku ss production partners"
+	},
+	{
+		"info": "daume"
+	},
+	{
+		"info": "studio gram"
+	},
+	{
+		"info": "pra"
+	},
+	{
+		"info": "kinema citrus"
+	},
+	{
+		"info": "animax"
+	},
+	{
+		"info": "animation do"
+	},
+	{
+		"info": "broccoli"
+	},
+	{
+		"info": "studio matrix"
+	},
+	{
+		"info": "tv osaka"
+	},
+	{
+		"info": "vap"
+	},
+	{
+		"info": "king records"
+	},
+	{
+		"info": "hal film maker"
+	},
+	{
+		"info": "bilibili"
+	},
+	{
+		"info": "ashi productions"
+	},
+	{
+		"info": "olm"
+	},
+	{
+		"info": "shin-ei animation"
+	},
+	{
+		"info": "dmm music"
+	},
+	{
+		"info": "cbc"
+	},
+	{
+		"info": "futabasha"
+	},
+	{
+		"info": "studio pierrot"
+	},
+	{
+		"info": "bandai visual"
+	},
+	{
+		"info": "media blasters"
+	},
+	{
+		"info": "nyav post"
+	},
+	{
+		"info": "studio mausu"
+	},
+	{
+		"info": "trinity sound"
+	},
+	{
+		"info": "aqua aris"
+	},
+	{
+		"info": "ai addiction"
+	},
+	{
+		"info": "lesprit"
+	},
+	{
+		"info": "dream creation"
+	},
+	{
+		"info": "cospa"
+	},
+	{
+		"info": "softbank creative corp."
+	},
+	{
+		"info": "zexcs"
+	},
+	{
+		"info": "discotek"
+	},
+	{
+		"info": "emt squared"
+	},
+	{
+		"info": "passione"
+	},
+	{
+		"info": "mappa"
+	},
+	{
+		"info": "earth star entertainment"
+	},
+	{
+		"info": "toei animation"
+	},
+	{
+		"info": "avex entertainment"
+	},
+	{
+		"info": "tv asahi"
+	},
+	{
+		"info": "viz media"
+	},
+	{
+		"info": "forecast communications"
+	},
+	{
+		"info": "nikkatsu"
+	},
+	{
+		"info": "telecom animation film"
+	},
+	{
+		"info": "nippon columbia"
+	},
+	{
+		"info": "shouchiku"
+	},
+	{
+		"info": "p.a. works"
+	},
+	{
+		"info": "studio rikka"
+	},
+	{
+		"info": "directions"
+	},
+	{
+		"info": "code"
+	},
+	{
+		"info": "trick block"
+	},
+	{
+		"info": "purple cow studio japan"
+	},
+	{
+		"info": "marvelous"
+	},
+	{
+		"info": "age global networks"
+	},
+	{
+		"info": "top-insight"
+	},
+	{
+		"info": "sanzigen"
+	},
+	{
+		"info": "sogo vision"
+	},
+	{
+		"info": "yomiko advertising"
+	},
+	{
+		"info": "apollon"
+	},
+	{
+		"info": "yomiuri tv"
+	},
+	{
+		"info": "selecta visión"
+	},
+	{
+		"info": "lay-duce"
+	},
+	{
+		"info": "haoliners animation"
+	},
+	{
+		"info": "tencent animation & comics"
+	},
+	{
+		"info": "toei video"
+	},
+	{
+		"info": "ray"
+	},
+	{
+		"info": "muse"
+	},
+	{
+		"info": "medianet"
+	},
+	{
+		"info": "coamix"
+	},
+	{
+		"info": "studio ghibli"
+	},
+	{
+		"info": "tokuma shoten"
+	},
+	{
+		"info": "gkids"
+	},
+	{
+		"info": "nippon television network"
+	},
+	{
+		"info": "ytv"
+	},
+	{
+		"info": "enterbrain"
+	},
+	{
+		"info": "monofilmo"
+	},
+	{
+		"info": "nomad"
+	},
+	{
+		"info": "sonilude"
+	},
+	{
+		"info": "bloomz"
+	},
+	{
+		"info": "touyou recording"
+	},
+	{
+		"info": "c-one"
+	},
+	{
+		"info": "amg entertainment"
+	},
+	{
+		"info": "medianet pictures"
+	},
+	{
+		"info": "hokkaidou bunka housou"
+	},
+	{
+		"info": "miyazaki broadcasting"
+	},
+	{
+		"info": "christmas holly"
+	},
+	{
+		"info": "lerche"
+	},
+	{
+		"info": "netflix"
+	},
+	{
+		"info": "tokyo movie shinsha"
+	},
+	{
+		"info": "manga entertainment"
+	},
+	{
+		"info": "animatsu entertainment"
+	},
+	{
+		"info": "cygamespictures"
+	},
+	{
+		"info": "sola digital arts"
+	},
+	{
+		"info": "manglobe"
+	},
+	{
+		"info": "sakura create"
+	},
+	{
+		"info": "gyao!"
+	},
+	{
+		"info": "a-sketch"
+	},
+	{
+		"info": "fujipacific music"
+	},
+	{
+		"info": "anchor bay films"
+	},
+	{
+		"info": "zero-g"
+	},
+	{
+		"info": "naz"
+	},
+	{
+		"info": "geno studio"
+	},
+	{
+		"info": "twin engine"
+	},
+	{
+		"info": "asahi production"
+	},
+	{
+		"info": "shirogumi"
+	},
+	{
+		"info": "slowcurve"
+	},
+	{
+		"info": "ppp"
+	},
+	{
+		"info": "shufunotomo"
+	},
+	{
+		"info": "dai nippon printing"
+	},
+	{
+		"info": "hornets"
+	},
+	{
+		"info": "mixer"
+	},
+	{
+		"info": "north stars pictures"
+	},
+	{
+		"info": "jy animation"
+	},
+	{
+		"info": "ca-cygames anime fund"
+	},
+	{
+		"info": "sunny side up"
+	},
+	{
+		"info": "ajiado"
+	},
+	{
+		"info": "gree"
+	},
+	{
+		"info": "blade"
+	},
+	{
+		"info": "thundray"
+	},
+	{
+		"info": "mihoyo"
+	},
+	{
+		"info": "mihoyo anime"
+	},
+	{
+		"info": "ufotable"
+	},
+	{
+		"info": "omnibus japan"
+	},
+	{
+		"info": "sony music communications"
+	},
+	{
+		"info": "sony pcl"
+	},
+	{
+		"info": "dena"
+	},
+	{
+		"info": "tohokushinsha film corporation"
+	},
+	{
+		"info": "bunka housou"
+	},
+	{
+		"info": "fosun"
+	},
+	{
+		"info": "netease"
+	},
+	{
+		"info": "booklive"
+	},
+	{
+		"info": "encourage films"
+	},
+	{
+		"info": "kbs"
+	},
+	{
+		"info": "konami"
+	},
+	{
+		"info": "aic a.s.t.a."
+	},
+	{
+		"info": "trilogy future studio"
+	},
+	{
+		"info": "axsiz"
+	},
+	{
+		"info": "studio hibari"
+	},
+	{
+		"info": "visual arts"
+	},
+	{
+		"info": "key"
+	},
+	{
+		"info": "wowmax"
+	},
+	{
+		"info": "infinite"
+	},
+	{
+		"info": "studio blanc"
+	},
+	{
+		"info": "yokohama animation lab"
+	},
+	{
+		"info": "bs nippon"
+	},
+	{
+		"info": "mighty media"
+	},
+	{
+		"info": "cbc tv"
+	},
+	{
+		"info": "tasogare otome×amnesia production partners"
+	},
+	{
+		"info": "radix"
+	},
+	{
+		"info": "kourin mitsuzou koubou"
+	},
+	{
+		"info": "rondo robe"
+	},
+	{
+		"info": "studio 3hz"
+	},
+	{
+		"info": "orange"
+	},
+	{
+		"info": "touhouku shinsha"
+	},
+	{
+		"info": "toshiba emi"
+	},
+	{
+		"info": "nagoya broadcasting network"
+	},
+	{
+		"info": "memory-tech"
+	},
+	{
+		"info": "knack productions"
+	},
+	{
+		"info": "fanworks"
+	},
+	{
+		"info": "imagineer"
+	},
+	{
+		"info": "tencent penguin pictures"
+	},
+	{
+		"info": "china wit media"
+	},
+	{
+		"info": "gathering"
+	},
+	{
+		"info": "sanrio"
+	},
+	{
+		"info": "sharefun studio"
+	},
+	{
+		"info": "aha entertainment"
+	},
+	{
+		"info": "aic plus+"
+	},
+	{
+		"info": "planet cartoon"
+	},
+	{
+		"info": "egg firm"
+	},
+	{
+		"info": "hotline"
+	},
+	{
+		"info": "kachidoki studio"
+	},
+	{
+		"info": "project railgun"
+	},
+	{
+		"info": "pine jam"
+	},
+	{
+		"info": "asahi housou"
+	},
+	{
+		"info": "natsuiro kiseki production partners"
+	},
+	{
+		"info": "ryukyu asahi broadcasting"
+	},
+	{
+		"info": "bandai namco live creative"
+	},
+	{
+		"info": "ntt docomo"
+	},
+	{
+		"info": "arms"
+	},
+	{
+		"info": "a line"
+	},
+	{
+		"info": "chara-ani.com"
+	},
+	{
+		"info": "12 diary holders"
+	},
+	{
+		"info": "sky perfect well think"
+	},
+	{
+		"info": "zack promotion"
+	},
+	{
+		"info": "steve n' steven"
+	},
+	{
+		"info": "sound team don juan"
+	},
+	{
+		"info": "marvelous entertainment"
+	},
+	{
+		"info": "creators in pack"
+	},
+	{
+		"info": "akabeisoft2"
+	},
+	{
+		"info": "bandai namco music live"
+	},
+	{
+		"info": "d-rights"
+	},
+	{
+		"info": "tokuma japan communications"
+	},
+	{
+		"info": "nelke planning"
+	},
+	{
+		"info": "nhn comico"
+	},
+	{
+		"info": "gp media japan"
+	},
+	{
+		"info": "bridge"
+	},
+	{
+		"info": "lawson"
+	},
+	{
+		"info": "tv aichi"
+	},
+	{
+		"info": "hoods entertainment"
+	},
+	{
+		"info": "the right stuf international"
+	},
+	{
+		"info": "tyo animations"
+	},
+	{
+		"info": "studio colorido"
+	},
+	{
+		"info": "kddi"
+	},
+	{
+		"info": "dentsu meitetsu communications"
+	},
+	{
+		"info": "fuji creative corporation"
+	},
+	{
+		"info": "universal music japan"
+	},
+	{
+		"info": "qualia animation"
+	},
+	{
+		"info": "studio jack"
+	},
+	{
+		"info": "lawson entertainment"
+	},
+	{
+		"info": "4kids entertainment"
+	},
+	{
+		"info": "studio voln"
+	},
+	{
+		"info": "sumzap"
+	},
+	{
+		"info": "lico"
+	},
+	{
+		"info": "tap"
+	},
+	{
+		"info": "lapin track"
+	},
+	{
+		"info": "beep"
+	},
+	{
+		"info": "triple a"
+	},
+	{
+		"info": "bsp"
+	},
+	{
+		"info": "nexus"
+	},
+	{
+		"info": "totonyan"
+	},
+	{
+		"info": "victor entertainment"
+	},
+	{
+		"info": "tsuritama partners"
+	},
+	{
+		"info": "bmg japan"
+	},
+	{
+		"info": "kids station"
+	},
+	{
+		"info": "audio highs"
+	},
+	{
+		"info": "miracle robo"
+	},
+	{
+		"info": "glovision"
+	},
+	{
+		"info": "good smile company"
+	},
+	{
+		"info": "ntt plala"
+	},
+	{
+		"info": "ekachi epilka"
+	},
+	{
+		"info": "hobby japan"
+	},
+	{
+		"info": " l-a-unch・box"
+	},
+	{
+		"info": "studio elle"
+	},
+	{
+		"info": "tnk"
+	},
+	{
+		"info": "millepensee"
+	},
+	{
+		"info": "exsa"
+	},
+	{
+		"info": "cygames"
+	},
+	{
+		"info": "micro magazine sha"
+	},
+	{
+		"info": "geneon entertainment"
+	},
+	{
+		"info": "wao world"
+	},
+	{
+		"info": "melonbooks"
+	},
+	{
+		"info": "ctw"
+	},
+	{
+		"info": "strawberry meets pictures"
+	},
+	{
+		"info": "kanon"
+	},
+	{
+		"info": "nihon narration engi kenkyuujo"
+	},
+	{
+		"info": "happinet"
+	},
+	{
+		"info": "yomiuri tv enterprise"
+	},
+	{
+		"info": "to books"
+	},
+	{
+		"info": "jtb next creation"
+	},
+	{
+		"info": "tokyo animator gakuin"
+	},
+	{
+		"info": "toshiba entertainment"
+	},
+	{
+		"info": "imagica lab."
+	},
+	{
+		"info": "planet"
+	},
+	{
+		"info": "81 produce"
+	},
+	{
+		"info": "zipang"
+	},
+	{
+		"info": "cbc radio"
+	},
+	{
+		"info": "adult swim"
+	},
+	{
+		"info": "happinet phantom studios"
+	},
+	{
+		"info": "imagica"
+	},
+	{
+		"info": "cosmic ray"
+	},
+	{
+		"info": "studio signpost"
+	},
+	{
+		"info": "banpresto"
+	},
+	{
+		"info": "studio comet"
+	},
+	{
+		"info": "contents seed"
+	},
+	{
+		"info": "medicos entertainment"
+	},
+	{
+		"info": "cammot"
+	},
+	{
+		"info": "lilix"
+	},
+	{
+		"info": "studio palette"
+	},
+	{
+		"info": "dream force"
+	},
+	{
+		"info": "staple entertainment"
+	},
+	{
+		"info": "apdream"
+	},
+	{
+		"info": "eye move"
+	},
+	{
+		"info": "shuka"
+	},
+	{
+		"info": "gohands"
+	},
+	{
+		"info": "actas"
+	},
+	{
+		"info": "one music"
+	},
+	{
+		"info": "horipro"
+	},
+	{
+		"info": "studio 4°c"
+	},
+	{
+		"info": "aic build"
+	},
+	{
+		"info": "studio fantasia"
+	},
+	{
+		"info": "walt disney studios"
+	},
+	{
+		"info": "studio chizu"
+	},
+	{
+		"info": "c-station"
+	},
+	{
+		"info": "group tac"
+	},
+	{
+		"info": "sambakza"
+	},
+	{
+		"info": "p.i.c.s."
+	},
+	{
+		"info": "yoshimoto kogyo"
+	},
+	{
+		"info": "imagin"
+	},
+	{
+		"info": "pioneer ldc"
+	},
+	{
+		"info": "appp"
+	},
+	{
+		"info": "gaina"
+	},
+	{
+		"info": "kss"
+	},
+	{
+		"info": "youmex"
+	},
+	{
+		"info": "studio kelmadick"
+	},
+	{
+		"info": "mushi production"
+	},
+	{
+		"info": "studio guts"
+	},
+	{
+		"info": "animeigo"
+	},
+	{
+		"info": "bushiroad move"
+	},
+	{
+		"info": "micro house"
+	},
+	{
+		"info": "tohjak"
+	},
+	{
+		"info": "video market"
+	},
+	{
+		"info": "hifumi shobou"
+	},
+	{
+		"info": "live viewing japan"
+	},
+	{
+		"info": "i0plus"
+	},
+	{
+		"info": "studio animal"
+	},
+	{
+		"info": "drive"
+	},
+	{
+		"info": "ichigo animation"
+	},
+	{
+		"info": "comic animation"
+	},
+	{
+		"info": "ordet"
+	},
+	{
+		"info": "akita shoten"
+	},
+	{
+		"info": "science saru"
+	},
+	{
+		"info": "tohan"
+	},
+	{
+		"info": "animax broadcast japan"
+	},
+	{
+		"info": "sme visual works"
+	},
+	{
+		"info": "kadokawa contents gate"
+	},
+	{
+		"info": "line webtoon"
+	},
+	{
+		"info": "tear-studio"
+	},
+	{
+		"info": "triopen studio"
+	},
+	{
+		"info": "project no.9"
+	},
+	{
+		"info": "yomiuri brand studio"
+	},
+	{
+		"info": "bergamo"
+	},
+	{
+		"info": "d.n. dream partners"
+	},
+	{
+		"info": "signal.md"
+	},
+	{
+		"info": "sublimation"
+	},
+	{
+		"info": "comix wave"
+	},
+	{
+		"info": "story inc."
+	},
+	{
+		"info": "bushiroad music"
+	},
+	{
+		"info": "bibury animation studios"
+	},
+	{
+		"info": "magnet"
+	},
+	{
+		"info": "grantdesign"
+	},
+	{
+		"info": "amg music"
+	},
+	{
+		"info": "studio kai"
+	},
+	{
+		"info": "domerica"
+	},
+	{
+		"info": "namu animation"
+	},
+	{
+		"info": "okuruto noboru"
+	},
+	{
+		"info": "dive ii entertainment"
+	},
+	{
+		"info": "index"
+	},
+	{
+		"info": "anima&co. "
+	},
+	{
+		"info": "plum"
+	},
+	{
+		"info": "aic spirits"
+	},
+	{
+		"info": "dugout"
+	},
+	{
+		"info": "platinum vision"
+	},
+	{
+		"info": "smile company"
+	},
+	{
+		"info": "enishiya inc."
+	},
+	{
+		"info": "firebug"
+	},
+	{
+		"info": "top marshal"
+	},
+	{
+		"info": "front wing"
+	},
+	{
+		"info": "amuse"
+	},
+	{
+		"info": "daiichi kosho company"
+	},
+	{
+		"info": "animatic"
+	},
+	{
+		"info": "radio osaka"
+	},
+	{
+		"info": "parco"
+	},
+	{
+		"info": "teichiku entertainment"
+	},
+	{
+		"info": "e-notion"
+	},
+	{
+		"info": "caanimation"
+	},
+	{
+		"info": "emoto entertainment"
+	},
+	{
+		"info": "kamikaze douga"
+	},
+	{
+		"info": "hot zipang "
+	},
+	{
+		"info": "asahi shimbun"
+	},
+	{
+		"info": "age"
+	},
+	{
+		"info": "cover corp"
+	},
+	{
+		"info": "nokid"
+	},
+	{
+		"info": "uwan pictures"
+	},
+	{
+		"info": "adnero"
+	},
+	{
+		"info": "xenron"
+	},
+	{
+		"info": "dle"
+	},
+	{
+		"info": "bouncy"
+	},
+	{
+		"info": "kimi to boku production partners"
+	},
+	{
+		"info": "tsuburaya productions"
+	},
+	{
+		"info": "xflag"
+	},
+	{
+		"info": "studio gazelle"
+	},
+	{
+		"info": "azone international"
+	},
+	{
+		"info": "pokelabo"
+	},
+	{
+		"info": "marui group"
+	},
+	{
+		"info": "bushiroad creative"
+	},
+	{
+		"info": "legs"
+	},
+	{
+		"info": "idea factory"
+	},
+	{
+		"info": "production doa"
+	},
+	{
+		"info": "notes"
+	},
+	{
+		"info": "crei"
+	},
+	{
+		"info": "klab"
+	},
+	{
+		"info": "project no name"
+	},
+	{
+		"info": "project is"
+	},
+	{
+		"info": "entama"
+	},
+	{
+		"info": "studio pastoral"
+	},
+	{
+		"info": "dream shift"
+	},
+	{
+		"info": "arma bianca"
+	},
+	{
+		"info": "yahoo! japan"
+	},
+	{
+		"info": "revoroot"
+	},
+	{
+		"info": "tms-kyokuchi"
+	},
+	{
+		"info": "polygon pictures"
+	},
+	{
+		"info": "palm studio"
+	},
+	{
+		"info": "ascension"
+	},
+	{
+		"info": "techno sound"
+	},
+	{
+		"info": "chaos union"
+	},
+	{
+		"info": "ntv music"
+	},
+	{
+		"info": "flying ship studio"
+	},
+	{
+		"info": "studio khara"
+	},
+	{
+		"info": "3xcube"
+	},
+	{
+		"info": "tms music"
+	},
+	{
+		"info": "big firebird cultural media"
+	},
+	{
+		"info": "heart company"
+	},
+	{
+		"info": "juumonji"
+	},
+	{
+		"info": "pink pineapple"
+	},
+	{
+		"info": "grooove"
+	},
+	{
+		"info": "studiorf inc."
+	},
+	{
+		"info": "animate"
+	},
+	{
+		"info": "ezo’la"
+	},
+	{
+		"info": "sega games"
+	},
+	{
+		"info": "oz"
+	},
+	{
+		"info": "acc production"
+	},
+	{
+		"info": "jormungand production partners"
+	},
+	{
+		"info": "yamatoworks"
+	},
+	{
+		"info": "rising force"
+	},
+	{
+		"info": "primastea"
+	},
+	{
+		"info": "larx entertainment"
+	},
+	{
+		"info": "studio massket"
+	},
+	{
+		"info": "jinnan studio"
+	},
+	{
+		"info": "ashisuto"
+	},
+	{
+		"info": "tsutaya"
+	},
+	{
+		"info": "htc"
+	},
+	{
+		"info": "g&g entertainment"
+	},
+	{
+		"info": "studio bind"
+	},
+	{
+		"info": "toy's factory"
+	},
+	{
+		"info": "triangle staff"
+	},
+	{
+		"info": "clap"
+	},
+	{
+		"info": "rex entertainment "
+	},
+	{
+		"info": "oniro"
+	},
+	{
+		"info": "magia doraglier"
+	},
+	{
+		"info": "electromagneticwave"
+	},
+	{
+		"info": "tokyopop"
+	},
+	{
+		"info": "marvy jack"
+	},
+	{
+		"info": "a.c.g.t."
+	},
+	{
+		"info": "studio a-cat"
+	},
+	{
+		"info": "comico"
+	},
+	{
+		"info": "incs toenter"
+	},
+	{
+		"info": "atelier pontdarc"
+	},
+	{
+		"info": "seikaisha"
+	},
+	{
+		"info": "delightworks"
+	},
+	{
+		"info": "daiei"
+	},
+	{
+		"info": "bedream"
+	},
+	{
+		"info": "studio lan"
+	},
+	{
+		"info": "nippon victor"
+	},
+	{
+		"info": "arts pro"
+	},
+	{
+		"info": "the answer studio"
+	},
+	{
+		"info": "bee train"
+	},
+	{
+		"info": "studio gallop"
+	},
+	{
+		"info": "madoka partners"
+	},
+	{
+		"info": "bs asahi"
+	},
+	{
+		"info": "f4samurai"
+	},
+	{
+		"info": "c&i entertainment"
+	},
+	{
+		"info": "truss"
+	},
+	{
+		"info": "typhoon graphics"
+	},
+	{
+		"info": "union creative"
+	},
+	{
+		"info": "tsukisuzusha"
+	},
+	{
+		"info": "got"
+	},
+	{
+		"info": "yoshimoto music"
+	},
+	{
+		"info": "toei agency"
+	},
+	{
+		"info": "exa"
+	},
+	{
+		"info": "a3"
+	},
+	{
+		"info": "dynamic planning"
+	},
+	{
+		"info": "gemba"
+	},
+	{
+		"info": "koei"
+	},
+	{
+		"info": "office nobu"
+	},
+	{
+		"info": "gree entertainment"
+	},
+	{
+		"info": "space neko company"
+	},
+	{
+		"info": "doga productions"
+	},
+	{
+		"info": "dmm.futureworks"
+	},
+	{
+		"info": "mellow head"
+	},
+	{
+		"info": "marubeni"
+	},
+	{
+		"info": "iwatobi high school swimming club"
+	},
+	{
+		"info": "artmic"
+	},
+	{
+		"info": "po10tial"
+	},
+	{
+		"info": "atlus"
+	},
+	{
+		"info": "tapioca"
+	},
+	{
+		"info": "studio mother"
+	},
+	{
+		"info": "production ims"
+	},
+	{
+		"info": "wolfsbane"
+	},
+	{
+		"info": "maiden japan"
+	},
+	{
+		"info": "nhk-bs2"
+	},
+	{
+		"info": "crimson star media"
+	},
+	{
+		"info": "procidis"
+	},
+	{
+		"info": "eiken"
+	},
+	{
+		"info": "craftar"
+	},
+	{
+		"info": "warner bros. eiga"
+	},
+	{
+		"info": "straight edge"
+	},
+	{
+		"info": "s-wood"
+	},
+	{
+		"info": "bushiroad media"
+	},
+	{
+		"info": "fairy tale co."
+	},
+	{
+		"info": "trans arts"
+	},
+	{
+		"info": "rcc chugoku broadcasting"
+	},
+	{
+		"info": "gen productions"
+	},
+	{
+		"info": "topcraft"
+	},
+	{
+		"info": "jacom"
+	},
+	{
+		"info": "visual 80"
+	},
+	{
+		"info": "yostar pictures"
+	},
+	{
+		"info": "estream"
+	},
+	{
+		"info": "anime r"
+	},
+	{
+		"info": "beyond c."
+	},
+	{
+		"info": "omega project"
+	},
+	{
+		"info": "days"
+	},
+	{
+		"info": "abc frontier"
+	},
+	{
+		"info": "cyberconnect2"
+	},
+	{
+		"info": "shufu to seikatsusha"
+	},
+	{
+		"info": "crest"
+	},
+	{
+		"info": "sun television"
+	},
+	{
+		"info": "simplicity"
+	},
+	{
+		"info": "digital frontier"
+	},
+	{
+		"info": "studio puyukai"
+	},
+	{
+		"info": "think corporation"
+	},
+	{
+		"info": "kenmedia"
+	},
+	{
+		"info": "mag garden"
+	},
+	{
+		"info": "wawayu animation"
+	},
+	{
+		"info": "yuewen animation & comics"
+	},
+	{
+		"info": "china literature"
+	},
+	{
+		"info": "k.pictures"
+	},
+	{
+		"info": "colored pencil animation"
+	},
+	{
+		"info": "twilight studio"
+	},
+	{
+		"info": "tamakoshi"
+	},
+	{
+		"info": "musicray`n"
+	},
+	{
+		"info": "alice"
+	},
+	{
+		"info": "u-next"
+	},
+	{
+		"info": "flaggs"
+	},
+	{
+		"info": "laulea works"
+	},
+	{
+		"info": "softx"
+	},
+	{
+		"info": "e&g films"
+	},
+	{
+		"info": "b&t"
+	},
+	{
+		"info": "enlight pictures"
+	},
+	{
+		"info": "coloroom pictures"
+	},
+	{
+		"info": "cartoon saloon"
+	},
+	{
+		"info": "issen"
+	},
+	{
+		"info": "toei"
+	},
+	{
+		"info": "adk emotions"
+	},
+	{
+		"info": "lidenfilms kyoto studio"
+	},
+	{
+		"info": "m.o.e."
+	},
+	{
+		"info": "soft garage"
+	},
+	{
+		"info": "majin"
+	},
+	{
+		"info": "majin petit"
+	},
+	{
+		"info": "langmaor"
+	},
+	{
+		"info": "alice soft"
+	},
+	{
+		"info": "suiseisha"
+	},
+	{
+		"info": "picante circus"
+	},
+	{
+		"info": "rabbit gate"
+	},
+	{
+		"info": "mary jane"
+	},
+	{
+		"info": "studio eromatick"
+	},
+	{
+		"info": "d3"
+	},
+	{
+		"info": "studio 9 maiami"
+	},
+	{
+		"info": "studio houkiboshi"
+	},
+	{
+		"info": "studio 1st"
+	},
+	{
+		"info": "44℃ baidoku"
+	},
+	{
+		"info": "cosmos"
+	},
+	{
+		"info": "poro"
+	},
+	{
+		"info": "poro petit"
+	},
+	{
+		"info": "dr movie"
+	},
+	{
+		"info": "picture magic"
+	},
+	{
+		"info": "kiyosumi high school mahjong club"
+	},
+	{
+		"info": "dmm.com"
+	},
+	{
+		"info": "studio flad"
+	},
+	{
+		"info": "on-lead"
+	},
+	{
+		"info": "ginga ya"
+	},
+	{
+		"info": "alchemist"
+	},
+	{
+		"info": "voyager entertainment"
+	},
+	{
+		"info": "tokyo kids"
+	},
+	{
+		"info": "minami machi bugyousho"
+	},
+	{
+		"info": "production +h"
+	},
+	{
+		"info": "hakuhodo"
+	},
+	{
+		"info": "kakao japan"
+	},
+	{
+		"info": "chuugai kougyou"
+	},
+	{
+		"info": "sei young animation"
+	},
+	{
+		"info": "korad"
+	},
+	{
+		"info": "a-real"
+	},
+	{
+		"info": "nippon shuppan hanbai (nippan) k.k."
+	},
+	{
+		"info": "aiko"
+	},
+	{
+		"info": "kaname production"
+	},
+	{
+		"info": "b.cmay pictures"
+	},
+	{
+		"info": "calf"
+	},
+	{
+		"info": "children's playground entertainment"
+	},
+	{
+		"info": "oh! production"
+	},
+	{
+		"info": "agent 21"
+	},
+	{
+		"info": "fenz"
+	},
+	{
+		"info": "tianwen kadokawa"
+	},
+	{
+		"info": "hmch"
+	},
+	{
+		"info": "observatory animation"
+	},
+	{
+		"info": "drop"
+	},
+	{
+		"info": "kyotoma"
+	},
+	{
+		"info": "quad"
+	},
+	{
+		"info": "flex comics"
+	},
+	{
+		"info": "starry cube"
+	},
+	{
+		"info": "supa love"
+	},
+	{
+		"info": "holoimua"
+	},
+	{
+		"info": "annel"
+	},
+	{
+		"info": "septeni holdings"
+	},
+	{
+		"info": "ob planning"
+	},
+	{
+		"info": "grouper productions"
+	},
+	{
+		"info": "pie in the sky"
+	},
+	{
+		"info": "kyoto seika university"
+	},
+	{
+		"info": "wolf smoke"
+	},
+	{
+		"info": "rikuentai"
+	},
+	{
+		"info": "feng"
+	},
+	{
+		"info": "foch"
+	},
+	{
+		"info": "sky perfect"
+	},
+	{
+		"info": "studio tulip"
+	},
+	{
+		"info": "studio wombat"
+	},
+	{
+		"info": "gust"
+	},
+	{
+		"info": "studio ponoc"
+	},
+	{
+		"info": "remic"
+	},
+	{
+		"info": "nexon"
+	},
+	{
+		"info": "hakoniwa academy student council"
+	},
+	{
+		"info": "trinet entertainment"
+	},
+	{
+		"info": "i will"
+	},
+	{
+		"info": "yaoyorozu"
+	},
+	{
+		"info": "tomason"
+	},
+	{
+		"info": "nippon herald eiga"
+	},
+	{
+		"info": "digital network animation"
+	},
+	{
+		"info": "musashino art university"
+	},
+	{
+		"info": "sunwoo entertainment"
+	},
+	{
+		"info": "yellow film"
+	},
+	{
+		"info": "y.o.u.c"
+	},
+	{
+		"info": "office dci"
+	},
+	{
+		"info": "azeta pictures"
+	},
+	{
+		"info": "magilm pictures"
+	},
+	{
+		"info": "djinn power"
+	},
+	{
+		"info": "dazed "
+	},
+	{
+		"info": "bestack"
+	},
+	{
+		"info": "fabtone"
+	},
+	{
+		"info": "lmd"
+	},
+	{
+		"info": "saetta"
+	},
+	{
+		"info": "taki corporation"
+	},
+	{
+		"info": "studio saki makura"
+	},
+	{
+		"info": "kitty media"
+	},
+	{
+		"info": "venet"
+	},
+	{
+		"info": "sunborn network technology"
+	},
+	{
+		"info": "griffin & kryuger"
+	},
+	{
+		"info": "gaga"
+	},
+	{
+		"info": "rakuten"
+	},
+	{
+		"info": "nice boat animation"
+	},
+	{
+		"info": "gudong animation studio"
+	},
+	{
+		"info": "filmony"
+	},
+	{
+		"info": "otogi production"
+	},
+	{
+		"info": "ebs"
+	},
+	{
+		"info": "durufix"
+	},
+	{
+		"info": "studio kikan"
+	},
+	{
+		"info": "joy pictures"
+	},
+	{
+		"info": "tencent games"
+	},
+	{
+		"info": "team yokkyufuman"
+	},
+	{
+		"info": "ldcx"
+	},
+	{
+		"info": "marui"
+	},
+	{
+		"info": "tv tokyo communications"
+	},
+	{
+		"info": "ensky"
+	},
+	{
+		"info": "goodshow animation"
+	},
+	{
+		"info": "hot game studio"
+	},
+	{
+		"info": "ibis capital partners"
+	},
+	{
+		"info": "gyokkoudou"
+	},
+	{
+		"info": "tv nagasaki"
+	},
+	{
+		"info": "cloud"
+	},
+	{
+		"info": "energy and system planning"
+	},
+	{
+		"info": "team yamahitsuji"
+	},
+	{
+		"info": "flat studio"
+	},
+	{
+		"info": "trif studio"
+	},
+	{
+		"info": "studio kyuuma"
+	},
+	{
+		"info": "wanda film"
+	},
+	{
+		"info": "sunac pictures"
+	},
+	{
+		"info": "samsara studio"
+	},
+	{
+		"info": "green monster team"
+	},
+	{
+		"info": "spring"
+	},
+	{
+		"info": "marvel entertainment"
+	},
+	{
+		"info": "qubic pictures"
+	},
+	{
+		"info": "cgcg studio inc."
+	},
+	{
+		"info": "dwarf"
+	},
+	{
+		"info": "tooniverse"
+	},
+	{
+		"info": "tama art university"
+	},
+	{
+		"info": "amuse soft entertainment"
+	},
+	{
+		"info": "mook animation"
+	},
+	{
+		"info": "robot"
+	},
+	{
+		"info": "geidai animation"
+	},
+	{
+		"info": "ai ga areba daijobu"
+	},
+	{
+		"info": "tamura shigeru studio"
+	},
+	{
+		"info": "vcrworks"
+	},
+	{
+		"info": "studio junior"
+	},
+	{
+		"info": "studio junio"
+	},
+	{
+		"info": "jtb entertainment"
+	},
+	{
+		"info": "wargaming japan"
+	},
+	{
+		"info": "501st joint fighter wing"
+	},
+	{
+		"info": "tsuchida productions"
+	},
+	{
+		"info": "studio g-1neo"
+	},
+	{
+		"info": "pastel"
+	},
+	{
+		"info": "aeon entertainment"
+	},
+	{
+		"info": "sav! the world productions"
+	},
+	{
+		"info": "wolf smoke studio"
+	},
+	{
+		"info": "making animation"
+	},
+	{
+		"info": "l² studio"
+	},
+	{
+		"info": "u17"
+	},
+	{
+		"info": "unlimited partners"
+	},
+	{
+		"info": "studio nue"
+	},
+	{
+		"info": "hero"
+	},
+	{
+		"info": "grasshoppa!"
+	},
+	{
+		"info": "manga productions"
+	},
+	{
+		"info": "indivision"
+	},
+	{
+		"info": "aic takarazuka"
+	},
+	{
+		"info": "animate film"
+	},
+	{
+		"info": "enoki films"
+	},
+	{
+		"info": "aubec"
+	},
+	{
+		"info": "academy productions"
+	},
+	{
+		"info": "jcf"
+	},
+	{
+		"info": "echo"
+	},
+	{
+		"info": "nihon ad systems"
+	},
+	{
+		"info": "annapuru"
+	},
+	{
+		"info": "office ao"
+	},
+	{
+		"info": "dic entertainment"
+	},
+	{
+		"info": "three fat samurai"
+	},
+	{
+		"info": "character plan"
+	},
+	{
+		"info": "ekura animal"
+	},
+	{
+		"info": "nippon broadcasting system"
+	},
+	{
+		"info": "liber entertainment"
+	},
+	{
+		"info": "warrock"
+	},
+	{
+		"info": "tv asahi music"
+	},
+	{
+		"info": "universal music"
+	},
+	{
+		"info": "studio izena"
+	},
+	{
+		"info": "senran kagura partners"
+	},
+	{
+		"info": "project team argos"
+	},
+	{
+		"info": "creators dot com"
+	},
+	{
+		"info": "teamkg"
+	},
+	{
+		"info": "iyuno studios"
+	},
+	{
+		"info": "moogoo"
+	},
+	{
+		"info": "ac create"
+	},
+	{
+		"info": "mmt"
+	},
+	{
+		"info": "children's playground media"
+	},
+	{
+		"info": "heartbit"
+	},
+	{
+		"info": "tomoyasu murata company"
+	},
+	{
+		"info": "automatic flowers studio"
+	},
+	{
+		"info": "acid film"
+	},
+	{
+		"info": "anpro"
+	},
+	{
+		"info": "gosay studio"
+	},
+	{
+		"info": "xebec zwei"
+	},
+	{
+		"info": "sol blade"
+	},
+	{
+		"info": "magical kingdom anime (hk)"
+	},
+	{
+		"info": "production ace"
+	},
+	{
+		"info": "hidden"
+	},
+	{
+		"info": "!action"
+	},
+	{
+		"info": "!adventure"
+	},
+	{
+		"info": "!comedy"
+	},
+	{
+		"info": "!drama"
+	},
+	{
+		"info": "!ecchi"
+	},
+	{
+		"info": "!fantasy"
+	},
+	{
+		"info": "!horror"
+	},
+	{
+		"info": "!mahou shoujo"
+	},
+	{
+		"info": "!mecha"
+	},
+	{
+		"info": "!music"
+	},
+	{
+		"info": "!mystery"
+	},
+	{
+		"info": "!psychological"
+	},
+	{
+		"info": "!romance"
+	},
+	{
+		"info": "!sci-fi"
+	},
+	{
+		"info": "!slice of life"
+	},
+	{
+		"info": "!sports"
+	},
+	{
+		"info": "!supernatural"
+	},
+	{
+		"info": "!thriller"
+	},
+	{
+		"info": "!4-koma"
+	},
+	{
+		"info": "!achromatic"
+	},
+	{
+		"info": "!achronological order"
+	},
+	{
+		"info": "!acting"
+	},
+	{
+		"info": "!adoption"
+	},
+	{
+		"info": "!advertisement"
+	},
+	{
+		"info": "!afterlife"
+	},
+	{
+		"info": "!age gap"
+	},
+	{
+		"info": "!age regression"
+	},
+	{
+		"info": "!agender"
+	},
+	{
+		"info": "!agriculture"
+	},
+	{
+		"info": "!airsoft"
+	},
+	{
+		"info": "!alchemy"
+	},
+	{
+		"info": "!aliens"
+	},
+	{
+		"info": "!alternate universe"
+	},
+	{
+		"info": "!american football"
+	},
+	{
+		"info": "!amnesia"
+	},
+	{
+		"info": "!anachronism"
+	},
+	{
+		"info": "!angels"
+	},
+	{
+		"info": "!animals"
+	},
+	{
+		"info": "!anthology"
+	},
+	{
+		"info": "!anthropomorphism"
+	},
+	{
+		"info": "!anti-hero"
+	},
+	{
+		"info": "!archery"
+	},
+	{
+		"info": "!artificial intelligence"
+	},
+	{
+		"info": "!asexual"
+	},
+	{
+		"info": "!assassins"
+	},
+	{
+		"info": "!astronomy"
+	},
+	{
+		"info": "!athletics"
+	},
+	{
+		"info": "!augmented reality"
+	},
+	{
+		"info": "!autobiographical"
+	},
+	{
+		"info": "!aviation"
+	},
+	{
+		"info": "!badminton"
+	},
+	{
+		"info": "!band"
+	},
+	{
+		"info": "!bar"
+	},
+	{
+		"info": "!baseball"
+	},
+	{
+		"info": "!basketball"
+	},
+	{
+		"info": "!battle royale"
+	},
+	{
+		"info": "!biographical"
+	},
+	{
+		"info": "!bisexual"
+	},
+	{
+		"info": "!body horror"
+	},
+	{
+		"info": "!body swapping"
+	},
+	{
+		"info": "!boxing"
+	},
+	{
+		"info": "!boys' love"
+	},
+	{
+		"info": "!bullying"
+	},
+	{
+		"info": "!butler"
+	},
+	{
+		"info": "!calligraphy"
+	},
+	{
+		"info": "!cannibalism"
+	},
+	{
+		"info": "!card battle"
+	},
+	{
+		"info": "!cars"
+	},
+	{
+		"info": "!centaur"
+	},
+	{
+		"info": "!cgi"
+	},
+	{
+		"info": "!cheerleading"
+	},
+	{
+		"info": "!chibi"
+	},
+	{
+		"info": "!chimera"
+	},
+	{
+		"info": "!chuunibyou"
+	},
+	{
+		"info": "!circus"
+	},
+	{
+		"info": "!classic literature"
+	},
+	{
+		"info": "!clone"
+	},
+	{
+		"info": "!college"
+	},
+	{
+		"info": "!coming of age"
+	},
+	{
+		"info": "!conspiracy"
+	},
+	{
+		"info": "!cosmic horror"
+	},
+	{
+		"info": "!cosplay"
+	},
+	{
+		"info": "!crime"
+	},
+	{
+		"info": "!crossdressing"
+	},
+	{
+		"info": "!crossover"
+	},
+	{
+		"info": "!cult"
+	},
+	{
+		"info": "!cultivation"
+	},
+	{
+		"info": "!cute boys doing cute things"
+	},
+	{
+		"info": "!cute girls doing cute things"
+	},
+	{
+		"info": "!cyberpunk"
+	},
+	{
+		"info": "!cyborg"
+	},
+	{
+		"info": "!cycling"
+	},
+	{
+		"info": "!dancing"
+	},
+	{
+		"info": "!death game"
+	},
+	{
+		"info": "!delinquents"
+	},
+	{
+		"info": "!demons"
+	},
+	{
+		"info": "!denpa"
+	},
+	{
+		"info": "!detective"
+	},
+	{
+		"info": "!dinosaurs"
+	},
+	{
+		"info": "!disability"
+	},
+	{
+		"info": "!dissociative identities"
+	},
+	{
+		"info": "!dragons"
+	},
+	{
+		"info": "!drawing"
+	},
+	{
+		"info": "!drugs"
+	},
+	{
+		"info": "!dullahan"
+	},
+	{
+		"info": "!dungeon"
+	},
+	{
+		"info": "!dystopian"
+	},
+	{
+		"info": "!e-sports"
+	},
+	{
+		"info": "!economics"
+	},
+	{
+		"info": "!educational"
+	},
+	{
+		"info": "!elf"
+	},
+	{
+		"info": "!ensemble cast"
+	},
+	{
+		"info": "!environmental"
+	},
+	{
+		"info": "!episodic"
+	},
+	{
+		"info": "!ero guro"
+	},
+	{
+		"info": "!espionage"
+	},
+	{
+		"info": "!fairy tale"
+	},
+	{
+		"info": "!family life"
+	},
+	{
+		"info": "!fashion"
+	},
+	{
+		"info": "!female harem"
+	},
+	{
+		"info": "!female protagonist"
+	},
+	{
+		"info": "!fencing"
+	},
+	{
+		"info": "!firefighters"
+	},
+	{
+		"info": "!fishing"
+	},
+	{
+		"info": "!fitness"
+	},
+	{
+		"info": "!flash"
+	},
+	{
+		"info": "!food"
+	},
+	{
+		"info": "!football"
+	},
+	{
+		"info": "!foreign"
+	},
+	{
+		"info": "!found family"
+	},
+	{
+		"info": "!fugitive"
+	},
+	{
+		"info": "!full cgi"
+	},
+	{
+		"info": "!full color"
+	},
+	{
+		"info": "!gambling"
+	},
+	{
+		"info": "!gangs"
+	},
+	{
+		"info": "!gender bending"
+	},
+	{
+		"info": "!ghost"
+	},
+	{
+		"info": "!go"
+	},
+	{
+		"info": "!goblin"
+	},
+	{
+		"info": "!gods"
+	},
+	{
+		"info": "!golf"
+	},
+	{
+		"info": "!gore"
+	},
+	{
+		"info": "!guns"
+	},
+	{
+		"info": "!gyaru"
+	},
+	{
+		"info": "!handball"
+	},
+	{
+		"info": "!henshin"
+	},
+	{
+		"info": "!heterosexual"
+	},
+	{
+		"info": "!hikikomori"
+	},
+	{
+		"info": "!historical"
+	},
+	{
+		"info": "!homeless"
+	},
+	{
+		"info": "!ice skating"
+	},
+	{
+		"info": "!idol"
+	},
+	{
+		"info": "!isekai"
+	},
+	{
+		"info": "!iyashikei"
+	},
+	{
+		"info": "!josei"
+	},
+	{
+		"info": "!judo"
+	},
+	{
+		"info": "!kaiju"
+	},
+	{
+		"info": "!karuta"
+	},
+	{
+		"info": "!kemonomimi"
+	},
+	{
+		"info": "!kids"
+	},
+	{
+		"info": "!kuudere"
+	},
+	{
+		"info": "!lacrosse"
+	},
+	{
+		"info": "!language barrier"
+	},
+	{
+		"info": "!lgbtq+ themes"
+	},
+	{
+		"info": "!lost civilization"
+	},
+	{
+		"info": "!love triangle"
+	},
+	{
+		"info": "!mafia"
+	},
+	{
+		"info": "!magic"
+	},
+	{
+		"info": "!mahjong"
+	},
+	{
+		"info": "!maids"
+	},
+	{
+		"info": "!makeup"
+	},
+	{
+		"info": "!male harem"
+	},
+	{
+		"info": "!male protagonist"
+	},
+	{
+		"info": "!martial arts"
+	},
+	{
+		"info": "!medicine"
+	},
+	{
+		"info": "!memory manipulation"
+	},
+	{
+		"info": "!mermaid"
+	},
+	{
+		"info": "!meta"
+	},
+	{
+		"info": "!military"
+	},
+	{
+		"info": "!mixed gender harem"
+	},
+	{
+		"info": "!monster boy"
+	},
+	{
+		"info": "!monster girl"
+	},
+	{
+		"info": "!mopeds"
+	},
+	{
+		"info": "!motorcycles"
+	},
+	{
+		"info": "!musical"
+	},
+	{
+		"info": "!mythology"
+	},
+	{
+		"info": "!necromancy"
+	},
+	{
+		"info": "!nekomimi"
+	},
+	{
+		"info": "!ninja"
+	},
+	{
+		"info": "!no dialogue"
+	},
+	{
+		"info": "!noir"
+	},
+	{
+		"info": "!non-fiction"
+	},
+	{
+		"info": "!nudity"
+	},
+	{
+		"info": "!nun"
+	},
+	{
+		"info": "!office lady"
+	},
+	{
+		"info": "!oiran"
+	},
+	{
+		"info": "!ojou-sama"
+	},
+	{
+		"info": "!orphan"
+	},
+	{
+		"info": "!otaku culture"
+	},
+	{
+		"info": "!outdoor"
+	},
+	{
+		"info": "!pandemic"
+	},
+	{
+		"info": "!parkour"
+	},
+	{
+		"info": "!parody"
+	},
+	{
+		"info": "!philosophy"
+	},
+	{
+		"info": "!photography"
+	},
+	{
+		"info": "!pirates"
+	},
+	{
+		"info": "!poker"
+	},
+	{
+		"info": "!police"
+	},
+	{
+		"info": "!politics"
+	},
+	{
+		"info": "!post-apocalyptic"
+	},
+	{
+		"info": "!pov"
+	},
+	{
+		"info": "!primarily adult cast"
+	},
+	{
+		"info": "!primarily child cast"
+	},
+	{
+		"info": "!primarily female cast"
+	},
+	{
+		"info": "!primarily male cast"
+	},
+	{
+		"info": "!primarily teen cast"
+	},
+	{
+		"info": "!puppetry"
+	},
+	{
+		"info": "!rakugo"
+	},
+	{
+		"info": "!real robot"
+	},
+	{
+		"info": "!rehabilitation"
+	},
+	{
+		"info": "!reincarnation"
+	},
+	{
+		"info": "!religion"
+	},
+	{
+		"info": "!revenge"
+	},
+	{
+		"info": "!robots"
+	},
+	{
+		"info": "!rotoscoping"
+	},
+	{
+		"info": "!rugby"
+	},
+	{
+		"info": "!rural"
+	},
+	{
+		"info": "!samurai"
+	},
+	{
+		"info": "!satire"
+	},
+	{
+		"info": "!school"
+	},
+	{
+		"info": "!school club"
+	},
+	{
+		"info": "!scuba diving"
+	},
+	{
+		"info": "!seinen"
+	},
+	{
+		"info": "!shapeshifting"
+	},
+	{
+		"info": "!ships"
+	},
+	{
+		"info": "!shogi"
+	},
+	{
+		"info": "!shoujo"
+	},
+	{
+		"info": "!shounen"
+	},
+	{
+		"info": "!shrine maiden"
+	},
+	{
+		"info": "!skateboarding"
+	},
+	{
+		"info": "!skeleton"
+	},
+	{
+		"info": "!slapstick"
+	},
+	{
+		"info": "!slavery"
+	},
+	{
+		"info": "!software development"
+	},
+	{
+		"info": "!space"
+	},
+	{
+		"info": "!space opera"
+	},
+	{
+		"info": "!spearplay"
+	},
+	{
+		"info": "!steampunk"
+	},
+	{
+		"info": "!stop motion"
+	},
+	{
+		"info": "!succubus"
+	},
+	{
+		"info": "!suicide"
+	},
+	{
+		"info": "!sumo"
+	},
+	{
+		"info": "!super power"
+	},
+	{
+		"info": "!super robot"
+	},
+	{
+		"info": "!superhero"
+	},
+	{
+		"info": "!surfing"
+	},
+	{
+		"info": "!surreal comedy"
+	},
+	{
+		"info": "!survival"
+	},
+	{
+		"info": "!swimming"
+	},
+	{
+		"info": "!swordplay"
+	},
+	{
+		"info": "!table tennis"
+	},
+	{
+		"info": "!tanks"
+	},
+	{
+		"info": "!tanned skin"
+	},
+	{
+		"info": "!teacher"
+	},
+	{
+		"info": "!teens' love"
+	},
+	{
+		"info": "!tennis"
+	},
+	{
+		"info": "!terrorism"
+	},
+	{
+		"info": "!time manipulation"
+	},
+	{
+		"info": "!time skip"
+	},
+	{
+		"info": "!tokusatsu"
+	},
+	{
+		"info": "!tomboy"
+	},
+	{
+		"info": "!torture"
+	},
+	{
+		"info": "!tragedy"
+	},
+	{
+		"info": "!trains"
+	},
+	{
+		"info": "!transgender"
+	},
+	{
+		"info": "!travel"
+	},
+	{
+		"info": "!triads"
+	},
+	{
+		"info": "!tsundere"
+	},
+	{
+		"info": "!twins"
+	},
+	{
+		"info": "!urban"
+	},
+	{
+		"info": "!urban fantasy"
+	},
+	{
+		"info": "!vampire"
+	},
+	{
+		"info": "!video games"
+	},
+	{
+		"info": "!vikings"
+	},
+	{
+		"info": "!villainess"
+	},
+	{
+		"info": "!virtual world"
+	},
+	{
+		"info": "!volleyball"
+	},
+	{
+		"info": "!vtuber"
+	},
+	{
+		"info": "!war"
+	},
+	{
+		"info": "!werewolf"
+	},
+	{
+		"info": "!witch"
+	},
+	{
+		"info": "!work"
+	},
+	{
+		"info": "!wrestling"
+	},
+	{
+		"info": "!writing"
+	},
+	{
+		"info": "!wuxia"
+	},
+	{
+		"info": "!yakuza"
+	},
+	{
+		"info": "!yandere"
+	},
+	{
+		"info": "!youkai"
+	},
+	{
+		"info": "!yuri"
+	},
+	{
+		"info": "!zombie"
+	},
+	{
+		"info": "!unwatched"
+	},
+	{
+		"info": "!completed"
+	},
+	{
+		"info": "!dropped"
+	},
+	{
+		"info": "!planning to watch"
+	},
+	{
+		"info": "!fall"
+	},
+	{
+		"info": "!winter"
+	},
+	{
+		"info": "!summer"
+	},
+	{
+		"info": "!spring"
+	},
+	{
+		"info": "!tv"
+	},
+	{
+		"info": "!tv_short"
+	},
+	{
+		"info": "!ova"
+	},
+	{
+		"info": "!ona"
+	},
+	{
+		"info": "!movie"
+	},
+	{
+		"info": "!special"
+	},
+	{
+		"info": "!1940"
+	},
+	{
+		"info": "!1941"
+	},
+	{
+		"info": "!1942"
+	},
+	{
+		"info": "!1943"
+	},
+	{
+		"info": "!1944"
+	},
+	{
+		"info": "!1945"
+	},
+	{
+		"info": "!1946"
+	},
+	{
+		"info": "!1947"
+	},
+	{
+		"info": "!1948"
+	},
+	{
+		"info": "!1949"
+	},
+	{
+		"info": "!1950"
+	},
+	{
+		"info": "!1951"
+	},
+	{
+		"info": "!1952"
+	},
+	{
+		"info": "!1953"
+	},
+	{
+		"info": "!1954"
+	},
+	{
+		"info": "!1955"
+	},
+	{
+		"info": "!1956"
+	},
+	{
+		"info": "!1957"
+	},
+	{
+		"info": "!1958"
+	},
+	{
+		"info": "!1959"
+	},
+	{
+		"info": "!1960"
+	},
+	{
+		"info": "!1961"
+	},
+	{
+		"info": "!1962"
+	},
+	{
+		"info": "!1963"
+	},
+	{
+		"info": "!1964"
+	},
+	{
+		"info": "!1965"
+	},
+	{
+		"info": "!1966"
+	},
+	{
+		"info": "!1967"
+	},
+	{
+		"info": "!1968"
+	},
+	{
+		"info": "!1969"
+	},
+	{
+		"info": "!1970"
+	},
+	{
+		"info": "!1971"
+	},
+	{
+		"info": "!1972"
+	},
+	{
+		"info": "!1973"
+	},
+	{
+		"info": "!1974"
+	},
+	{
+		"info": "!1975"
+	},
+	{
+		"info": "!1976"
+	},
+	{
+		"info": "!1977"
+	},
+	{
+		"info": "!1978"
+	},
+	{
+		"info": "!1979"
+	},
+	{
+		"info": "!1980"
+	},
+	{
+		"info": "!1981"
+	},
+	{
+		"info": "!1982"
+	},
+	{
+		"info": "!1983"
+	},
+	{
+		"info": "!1984"
+	},
+	{
+		"info": "!1985"
+	},
+	{
+		"info": "!1986"
+	},
+	{
+		"info": "!1987"
+	},
+	{
+		"info": "!1988"
+	},
+	{
+		"info": "!1989"
+	},
+	{
+		"info": "!1990"
+	},
+	{
+		"info": "!1991"
+	},
+	{
+		"info": "!1992"
+	},
+	{
+		"info": "!1993"
+	},
+	{
+		"info": "!1994"
+	},
+	{
+		"info": "!1995"
+	},
+	{
+		"info": "!1996"
+	},
+	{
+		"info": "!1997"
+	},
+	{
+		"info": "!1998"
+	},
+	{
+		"info": "!1999"
+	},
+	{
+		"info": "!2000"
+	},
+	{
+		"info": "!2001"
+	},
+	{
+		"info": "!2002"
+	},
+	{
+		"info": "!2003"
+	},
+	{
+		"info": "!2004"
+	},
+	{
+		"info": "!2005"
+	},
+	{
+		"info": "!2006"
+	},
+	{
+		"info": "!2007"
+	},
+	{
+		"info": "!2008"
+	},
+	{
+		"info": "!2009"
+	},
+	{
+		"info": "!2010"
+	},
+	{
+		"info": "!2011"
+	},
+	{
+		"info": "!2012"
+	},
+	{
+		"info": "!2013"
+	},
+	{
+		"info": "!2014"
+	},
+	{
+		"info": "!2015"
+	},
+	{
+		"info": "!2016"
+	},
+	{
+		"info": "!2017"
+	},
+	{
+		"info": "!2018"
+	},
+	{
+		"info": "!2019"
+	},
+	{
+		"info": "!2020"
+	},
+	{
+		"info": "!2021"
+	},
+	{
+		"info": "!2022"
+	},
+	{
+		"info": "!2023"
+	},
+	{
+		"info": "!satelight"
+	},
+	{
+		"info": "!funimation"
+	},
+	{
+		"info": "!media factory"
+	},
+	{
+		"info": "!bandai"
+	},
+	{
+		"info": "!8-bit"
+	},
+	{
+		"info": "!gonzo"
+	},
+	{
+		"info": "!gdh"
+	},
+	{
+		"info": "!dentsu"
+	},
+	{
+		"info": "!trigger"
+	},
+	{
+		"info": "!aniplex"
+	},
+	{
+		"info": "!cloverworks"
+	},
+	{
+		"info": "!a-1 pictures"
+	},
+	{
+		"info": "!movic"
+	},
+	{
+		"info": "!ultra super pictures"
+	},
+	{
+		"info": "!maho film"
+	},
+	{
+		"info": "!lantis"
+	},
+	{
+		"info": "!warner bros. japan"
+	},
+	{
+		"info": "!bandai namco arts"
+	},
+	{
+		"info": "!kodansha"
+	},
+	{
+		"info": "!asmik ace"
+	},
+	{
+		"info": "!wowow"
+	},
+	{
+		"info": "!silver link."
+	},
+	{
+		"info": "!white fox"
+	},
+	{
+		"info": "!good smile film"
+	},
+	{
+		"info": "!sb creative"
+	},
+	{
+		"info": "!hakuhodo dy music & pictures"
+	},
+	{
+		"info": "!sony pictures entertainment"
+	},
+	{
+		"info": "!at-x"
+	},
+	{
+		"info": "!bushiroad"
+	},
+	{
+		"info": "!magic capsule"
+	},
+	{
+		"info": "!frontier works"
+	},
+	{
+		"info": "!asread"
+	},
+	{
+		"info": "!overlap"
+	},
+	{
+		"info": "!furyu"
+	},
+	{
+		"info": "!sony music solutions"
+	},
+	{
+		"info": "!toranoana"
+	},
+	{
+		"info": "!madhouse"
+	},
+	{
+		"info": "!sentai filmworks"
+	},
+	{
+		"info": "!studio deen"
+	},
+	{
+		"info": "!madman entertainment"
+	},
+	{
+		"info": "!genco"
+	},
+	{
+		"info": "!dax production"
+	},
+	{
+		"info": "!aniplex of america"
+	},
+	{
+		"info": "!ascii media works"
+	},
+	{
+		"info": "!nhk"
+	},
+	{
+		"info": "!nhk enterprises"
+	},
+	{
+		"info": "!bandai namco pictures"
+	},
+	{
+		"info": "!lidenfilms"
+	},
+	{
+		"info": "!felix film"
+	},
+	{
+		"info": "!square enix"
+	},
+	{
+		"info": "!bs11"
+	},
+	{
+		"info": "!amusement media academy"
+	},
+	{
+		"info": "!hayakawa shobou"
+	},
+	{
+		"info": "!diomedéa"
+	},
+	{
+		"info": "!engi"
+	},
+	{
+		"info": "!kadokawa"
+	},
+	{
+		"info": "!bit grooove promotion"
+	},
+	{
+		"info": "!adv films"
+	},
+	{
+		"info": "!connect"
+	},
+	{
+		"info": "!vega entertainment"
+	},
+	{
+		"info": "!synergysp"
+	},
+	{
+		"info": "!shogakukan-shueisha productions"
+	},
+	{
+		"info": "!pony canyon"
+	},
+	{
+		"info": "!fields"
+	},
+	{
+		"info": "!bandai spirits"
+	},
+	{
+		"info": "!tokyo mx"
+	},
+	{
+		"info": "!kansai tv"
+	},
+	{
+		"info": "!geek toys"
+	},
+	{
+		"info": "!crunchyroll"
+	},
+	{
+		"info": "!tezuka productions"
+	},
+	{
+		"info": "!kadokawa shoten"
+	},
+	{
+		"info": "!kadokawa pictures japan"
+	},
+	{
+		"info": "!klock worx"
+	},
+	{
+		"info": "!flying dog"
+	},
+	{
+		"info": "!studio silver"
+	},
+	{
+		"info": "!arvo animation"
+	},
+	{
+		"info": "!nippon bs broadcasting"
+	},
+	{
+		"info": "!adk marketing solutions"
+	},
+	{
+		"info": "!shueisha"
+	},
+	{
+		"info": "!barnum studio"
+	},
+	{
+		"info": "!shaft"
+	},
+	{
+		"info": "!mainichi broadcasting system"
+	},
+	{
+		"info": "!xebec"
+	},
+	{
+		"info": "!j.c. staff"
+	},
+	{
+		"info": "!tms entertainment"
+	},
+	{
+		"info": "!dmm pictures"
+	},
+	{
+		"info": "!doga kobo"
+	},
+	{
+		"info": "!toho"
+	},
+	{
+		"info": "!tbs"
+	},
+	{
+		"info": "!studio gokumi"
+	},
+	{
+		"info": "!ichijinsha"
+	},
+	{
+		"info": "!sotsu"
+	},
+	{
+		"info": "!bs fuji"
+	},
+	{
+		"info": "!g.cmay animation & film"
+	},
+	{
+		"info": "!starchild records"
+	},
+	{
+		"info": "!dwango"
+	},
+	{
+		"info": "!east japan marketing & communications"
+	},
+	{
+		"info": "!nichion"
+	},
+	{
+		"info": "!myrica music"
+	},
+	{
+		"info": "!my theater d.d."
+	},
+	{
+		"info": "!global solutions"
+	},
+	{
+		"info": "!mirai koujou"
+	},
+	{
+		"info": "!kanetsuu investment"
+	},
+	{
+		"info": "!brain's base"
+	},
+	{
+		"info": "!kyoraku"
+	},
+	{
+		"info": "!nis america inc."
+	},
+	{
+		"info": "!yomiuri advertising"
+	},
+	{
+		"info": "!tv tokyo music"
+	},
+	{
+		"info": "!hanabee entertainment"
+	},
+	{
+		"info": "!abc animation"
+	},
+	{
+		"info": "!delfi sound"
+	},
+	{
+		"info": "!mukuo studio"
+	},
+	{
+		"info": "!feel."
+	},
+	{
+		"info": "!gansis"
+	},
+	{
+		"info": "!c2c"
+	},
+	{
+		"info": "!sunrise"
+	},
+	{
+		"info": "!bandai entertainment"
+	},
+	{
+		"info": "!sony music entertainment"
+	},
+	{
+		"info": "!nut"
+	},
+	{
+		"info": "!wit studio"
+	},
+	{
+		"info": "!production i.g"
+	},
+	{
+		"info": "!pony canyon enterprise"
+	},
+	{
+		"info": "!10gauge"
+	},
+	{
+		"info": "!rakuonsha"
+	},
+	{
+		"info": "!nbcuniversal entertainment japan"
+	},
+	{
+		"info": "!fuji tv"
+	},
+	{
+		"info": "!graphinica"
+	},
+	{
+		"info": "!yumeta company"
+	},
+	{
+		"info": "!flagship line"
+	},
+	{
+		"info": "!anchor"
+	},
+	{
+		"info": "!avex pictures"
+	},
+	{
+		"info": "!tencent"
+	},
+	{
+		"info": "!bones"
+	},
+	{
+		"info": "!artland"
+	},
+	{
+		"info": "!kitty film"
+	},
+	{
+		"info": "!magic bus"
+	},
+	{
+		"info": "!sunrise beyond"
+	},
+	{
+		"info": "!sunrise music"
+	},
+	{
+		"info": "!gainax"
+	},
+	{
+		"info": "!tv tokyo"
+	},
+	{
+		"info": "!nas"
+	},
+	{
+		"info": "!tatsunoko production"
+	},
+	{
+		"info": "!kyoto animation"
+	},
+	{
+		"info": "!troyca"
+	},
+	{
+		"info": "!mages."
+	},
+	{
+		"info": "!nitroplus"
+	},
+	{
+		"info": "!houbunsha"
+	},
+	{
+		"info": "!asahi broadcasting corporation"
+	},
+	{
+		"info": "!nippon animation"
+	},
+	{
+		"info": "!central park media"
+	},
+	{
+		"info": "!kadokawa pictures usa"
+	},
+	{
+		"info": "!happinet pictures"
+	},
+	{
+		"info": "!asatsu dk"
+	},
+	{
+		"info": "!aic"
+	},
+	{
+		"info": "!bs-tbs"
+	},
+	{
+		"info": "!jumondou"
+	},
+	{
+		"info": "!lucky paradise"
+	},
+	{
+		"info": "!q-tec"
+	},
+	{
+		"info": "!shogakukan music & digital entertainment"
+	},
+	{
+		"info": "!g-mode"
+	},
+	{
+		"info": "!real-t"
+	},
+	{
+		"info": "!tengu kobou"
+	},
+	{
+		"info": "!capcom"
+	},
+	{
+		"info": "!bandai namco entertainment"
+	},
+	{
+		"info": "!picona creative studio"
+	},
+	{
+		"info": "!biglobe"
+	},
+	{
+		"info": "!seven"
+	},
+	{
+		"info": "!seven arcs"
+	},
+	{
+		"info": "!shogakukan"
+	},
+	{
+		"info": "!hakusensha"
+	},
+	{
+		"info": "!half h.p studio"
+	},
+	{
+		"info": "!sammy"
+	},
+	{
+		"info": "!docomo anime store"
+	},
+	{
+		"info": "!kadokawa media house"
+	},
+	{
+		"info": "!d-techno"
+	},
+	{
+		"info": "!david production"
+	},
+	{
+		"info": "!inu x boku ss production partners"
+	},
+	{
+		"info": "!daume"
+	},
+	{
+		"info": "!studio gram"
+	},
+	{
+		"info": "!pra"
+	},
+	{
+		"info": "!kinema citrus"
+	},
+	{
+		"info": "!animax"
+	},
+	{
+		"info": "!animation do"
+	},
+	{
+		"info": "!broccoli"
+	},
+	{
+		"info": "!studio matrix"
+	},
+	{
+		"info": "!tv osaka"
+	},
+	{
+		"info": "!vap"
+	},
+	{
+		"info": "!king records"
+	},
+	{
+		"info": "!hal film maker"
+	},
+	{
+		"info": "!bilibili"
+	},
+	{
+		"info": "!ashi productions"
+	},
+	{
+		"info": "!olm"
+	},
+	{
+		"info": "!shin-ei animation"
+	},
+	{
+		"info": "!dmm music"
+	},
+	{
+		"info": "!cbc"
+	},
+	{
+		"info": "!futabasha"
+	},
+	{
+		"info": "!studio pierrot"
+	},
+	{
+		"info": "!bandai visual"
+	},
+	{
+		"info": "!media blasters"
+	},
+	{
+		"info": "!nyav post"
+	},
+	{
+		"info": "!studio mausu"
+	},
+	{
+		"info": "!trinity sound"
+	},
+	{
+		"info": "!aqua aris"
+	},
+	{
+		"info": "!ai addiction"
+	},
+	{
+		"info": "!lesprit"
+	},
+	{
+		"info": "!dream creation"
+	},
+	{
+		"info": "!cospa"
+	},
+	{
+		"info": "!softbank creative corp."
+	},
+	{
+		"info": "!zexcs"
+	},
+	{
+		"info": "!discotek"
+	},
+	{
+		"info": "!emt squared"
+	},
+	{
+		"info": "!passione"
+	},
+	{
+		"info": "!mappa"
+	},
+	{
+		"info": "!earth star entertainment"
+	},
+	{
+		"info": "!toei animation"
+	},
+	{
+		"info": "!avex entertainment"
+	},
+	{
+		"info": "!tv asahi"
+	},
+	{
+		"info": "!viz media"
+	},
+	{
+		"info": "!forecast communications"
+	},
+	{
+		"info": "!nikkatsu"
+	},
+	{
+		"info": "!telecom animation film"
+	},
+	{
+		"info": "!nippon columbia"
+	},
+	{
+		"info": "!shouchiku"
+	},
+	{
+		"info": "!p.a. works"
+	},
+	{
+		"info": "!studio rikka"
+	},
+	{
+		"info": "!directions"
+	},
+	{
+		"info": "!code"
+	},
+	{
+		"info": "!trick block"
+	},
+	{
+		"info": "!purple cow studio japan"
+	},
+	{
+		"info": "!marvelous"
+	},
+	{
+		"info": "!age global networks"
+	},
+	{
+		"info": "!top-insight"
+	},
+	{
+		"info": "!sanzigen"
+	},
+	{
+		"info": "!sogo vision"
+	},
+	{
+		"info": "!yomiko advertising"
+	},
+	{
+		"info": "!apollon"
+	},
+	{
+		"info": "!yomiuri tv"
+	},
+	{
+		"info": "!selecta visión"
+	},
+	{
+		"info": "!lay-duce"
+	},
+	{
+		"info": "!haoliners animation"
+	},
+	{
+		"info": "!tencent animation & comics"
+	},
+	{
+		"info": "!toei video"
+	},
+	{
+		"info": "!ray"
+	},
+	{
+		"info": "!muse"
+	},
+	{
+		"info": "!medianet"
+	},
+	{
+		"info": "!coamix"
+	},
+	{
+		"info": "!studio ghibli"
+	},
+	{
+		"info": "!tokuma shoten"
+	},
+	{
+		"info": "!gkids"
+	},
+	{
+		"info": "!nippon television network"
+	},
+	{
+		"info": "!ytv"
+	},
+	{
+		"info": "!enterbrain"
+	},
+	{
+		"info": "!monofilmo"
+	},
+	{
+		"info": "!nomad"
+	},
+	{
+		"info": "!sonilude"
+	},
+	{
+		"info": "!bloomz"
+	},
+	{
+		"info": "!touyou recording"
+	},
+	{
+		"info": "!c-one"
+	},
+	{
+		"info": "!amg entertainment"
+	},
+	{
+		"info": "!medianet pictures"
+	},
+	{
+		"info": "!hokkaidou bunka housou"
+	},
+	{
+		"info": "!miyazaki broadcasting"
+	},
+	{
+		"info": "!christmas holly"
+	},
+	{
+		"info": "!lerche"
+	},
+	{
+		"info": "!netflix"
+	},
+	{
+		"info": "!tokyo movie shinsha"
+	},
+	{
+		"info": "!manga entertainment"
+	},
+	{
+		"info": "!animatsu entertainment"
+	},
+	{
+		"info": "!cygamespictures"
+	},
+	{
+		"info": "!sola digital arts"
+	},
+	{
+		"info": "!manglobe"
+	},
+	{
+		"info": "!sakura create"
+	},
+	{
+		"info": "!gyao!"
+	},
+	{
+		"info": "!a-sketch"
+	},
+	{
+		"info": "!fujipacific music"
+	},
+	{
+		"info": "!anchor bay films"
+	},
+	{
+		"info": "!zero-g"
+	},
+	{
+		"info": "!naz"
+	},
+	{
+		"info": "!geno studio"
+	},
+	{
+		"info": "!twin engine"
+	},
+	{
+		"info": "!asahi production"
+	},
+	{
+		"info": "!shirogumi"
+	},
+	{
+		"info": "!slowcurve"
+	},
+	{
+		"info": "!ppp"
+	},
+	{
+		"info": "!shufunotomo"
+	},
+	{
+		"info": "!dai nippon printing"
+	},
+	{
+		"info": "!hornets"
+	},
+	{
+		"info": "!mixer"
+	},
+	{
+		"info": "!north stars pictures"
+	},
+	{
+		"info": "!jy animation"
+	},
+	{
+		"info": "!ca-cygames anime fund"
+	},
+	{
+		"info": "!sunny side up"
+	},
+	{
+		"info": "!ajiado"
+	},
+	{
+		"info": "!gree"
+	},
+	{
+		"info": "!blade"
+	},
+	{
+		"info": "!thundray"
+	},
+	{
+		"info": "!mihoyo"
+	},
+	{
+		"info": "!mihoyo anime"
+	},
+	{
+		"info": "!ufotable"
+	},
+	{
+		"info": "!omnibus japan"
+	},
+	{
+		"info": "!sony music communications"
+	},
+	{
+		"info": "!sony pcl"
+	},
+	{
+		"info": "!dena"
+	},
+	{
+		"info": "!tohokushinsha film corporation"
+	},
+	{
+		"info": "!bunka housou"
+	},
+	{
+		"info": "!fosun"
+	},
+	{
+		"info": "!netease"
+	},
+	{
+		"info": "!booklive"
+	},
+	{
+		"info": "!encourage films"
+	},
+	{
+		"info": "!kbs"
+	},
+	{
+		"info": "!konami"
+	},
+	{
+		"info": "!aic a.s.t.a."
+	},
+	{
+		"info": "!trilogy future studio"
+	},
+	{
+		"info": "!axsiz"
+	},
+	{
+		"info": "!studio hibari"
+	},
+	{
+		"info": "!visual arts"
+	},
+	{
+		"info": "!key"
+	},
+	{
+		"info": "!wowmax"
+	},
+	{
+		"info": "!infinite"
+	},
+	{
+		"info": "!studio blanc"
+	},
+	{
+		"info": "!yokohama animation lab"
+	},
+	{
+		"info": "!bs nippon"
+	},
+	{
+		"info": "!mighty media"
+	},
+	{
+		"info": "!cbc tv"
+	},
+	{
+		"info": "!tasogare otome×amnesia production partners"
+	},
+	{
+		"info": "!radix"
+	},
+	{
+		"info": "!kourin mitsuzou koubou"
+	},
+	{
+		"info": "!rondo robe"
+	},
+	{
+		"info": "!studio 3hz"
+	},
+	{
+		"info": "!orange"
+	},
+	{
+		"info": "!touhouku shinsha"
+	},
+	{
+		"info": "!toshiba emi"
+	},
+	{
+		"info": "!nagoya broadcasting network"
+	},
+	{
+		"info": "!memory-tech"
+	},
+	{
+		"info": "!knack productions"
+	},
+	{
+		"info": "!fanworks"
+	},
+	{
+		"info": "!imagineer"
+	},
+	{
+		"info": "!tencent penguin pictures"
+	},
+	{
+		"info": "!china wit media"
+	},
+	{
+		"info": "!gathering"
+	},
+	{
+		"info": "!sanrio"
+	},
+	{
+		"info": "!sharefun studio"
+	},
+	{
+		"info": "!aha entertainment"
+	},
+	{
+		"info": "!aic plus+"
+	},
+	{
+		"info": "!planet cartoon"
+	},
+	{
+		"info": "!egg firm"
+	},
+	{
+		"info": "!hotline"
+	},
+	{
+		"info": "!kachidoki studio"
+	},
+	{
+		"info": "!project railgun"
+	},
+	{
+		"info": "!pine jam"
+	},
+	{
+		"info": "!asahi housou"
+	},
+	{
+		"info": "!natsuiro kiseki production partners"
+	},
+	{
+		"info": "!ryukyu asahi broadcasting"
+	},
+	{
+		"info": "!bandai namco live creative"
+	},
+	{
+		"info": "!ntt docomo"
+	},
+	{
+		"info": "!arms"
+	},
+	{
+		"info": "!a line"
+	},
+	{
+		"info": "!chara-ani.com"
+	},
+	{
+		"info": "!12 diary holders"
+	},
+	{
+		"info": "!sky perfect well think"
+	},
+	{
+		"info": "!zack promotion"
+	},
+	{
+		"info": "!steve n' steven"
+	},
+	{
+		"info": "!sound team don juan"
+	},
+	{
+		"info": "!marvelous entertainment"
+	},
+	{
+		"info": "!creators in pack"
+	},
+	{
+		"info": "!akabeisoft2"
+	},
+	{
+		"info": "!bandai namco music live"
+	},
+	{
+		"info": "!d-rights"
+	},
+	{
+		"info": "!tokuma japan communications"
+	},
+	{
+		"info": "!nelke planning"
+	},
+	{
+		"info": "!nhn comico"
+	},
+	{
+		"info": "!gp media japan"
+	},
+	{
+		"info": "!bridge"
+	},
+	{
+		"info": "!lawson"
+	},
+	{
+		"info": "!tv aichi"
+	},
+	{
+		"info": "!hoods entertainment"
+	},
+	{
+		"info": "!the right stuf international"
+	},
+	{
+		"info": "!tyo animations"
+	},
+	{
+		"info": "!studio colorido"
+	},
+	{
+		"info": "!kddi"
+	},
+	{
+		"info": "!dentsu meitetsu communications"
+	},
+	{
+		"info": "!fuji creative corporation"
+	},
+	{
+		"info": "!universal music japan"
+	},
+	{
+		"info": "!qualia animation"
+	},
+	{
+		"info": "!studio jack"
+	},
+	{
+		"info": "!lawson entertainment"
+	},
+	{
+		"info": "!4kids entertainment"
+	},
+	{
+		"info": "!studio voln"
+	},
+	{
+		"info": "!sumzap"
+	},
+	{
+		"info": "!lico"
+	},
+	{
+		"info": "!tap"
+	},
+	{
+		"info": "!lapin track"
+	},
+	{
+		"info": "!beep"
+	},
+	{
+		"info": "!triple a"
+	},
+	{
+		"info": "!bsp"
+	},
+	{
+		"info": "!nexus"
+	},
+	{
+		"info": "!totonyan"
+	},
+	{
+		"info": "!victor entertainment"
+	},
+	{
+		"info": "!tsuritama partners"
+	},
+	{
+		"info": "!bmg japan"
+	},
+	{
+		"info": "!kids station"
+	},
+	{
+		"info": "!audio highs"
+	},
+	{
+		"info": "!miracle robo"
+	},
+	{
+		"info": "!glovision"
+	},
+	{
+		"info": "!good smile company"
+	},
+	{
+		"info": "!ntt plala"
+	},
+	{
+		"info": "!ekachi epilka"
+	},
+	{
+		"info": "!hobby japan"
+	},
+	{
+		"info": "! l-a-unch・box"
+	},
+	{
+		"info": "!studio elle"
+	},
+	{
+		"info": "!tnk"
+	},
+	{
+		"info": "!millepensee"
+	},
+	{
+		"info": "!exsa"
+	},
+	{
+		"info": "!cygames"
+	},
+	{
+		"info": "!micro magazine sha"
+	},
+	{
+		"info": "!geneon entertainment"
+	},
+	{
+		"info": "!wao world"
+	},
+	{
+		"info": "!melonbooks"
+	},
+	{
+		"info": "!ctw"
+	},
+	{
+		"info": "!strawberry meets pictures"
+	},
+	{
+		"info": "!kanon"
+	},
+	{
+		"info": "!nihon narration engi kenkyuujo"
+	},
+	{
+		"info": "!happinet"
+	},
+	{
+		"info": "!yomiuri tv enterprise"
+	},
+	{
+		"info": "!to books"
+	},
+	{
+		"info": "!jtb next creation"
+	},
+	{
+		"info": "!tokyo animator gakuin"
+	},
+	{
+		"info": "!toshiba entertainment"
+	},
+	{
+		"info": "!imagica lab."
+	},
+	{
+		"info": "!planet"
+	},
+	{
+		"info": "!81 produce"
+	},
+	{
+		"info": "!zipang"
+	},
+	{
+		"info": "!cbc radio"
+	},
+	{
+		"info": "!adult swim"
+	},
+	{
+		"info": "!happinet phantom studios"
+	},
+	{
+		"info": "!imagica"
+	},
+	{
+		"info": "!cosmic ray"
+	},
+	{
+		"info": "!studio signpost"
+	},
+	{
+		"info": "!banpresto"
+	},
+	{
+		"info": "!studio comet"
+	},
+	{
+		"info": "!contents seed"
+	},
+	{
+		"info": "!medicos entertainment"
+	},
+	{
+		"info": "!cammot"
+	},
+	{
+		"info": "!lilix"
+	},
+	{
+		"info": "!studio palette"
+	},
+	{
+		"info": "!dream force"
+	},
+	{
+		"info": "!staple entertainment"
+	},
+	{
+		"info": "!apdream"
+	},
+	{
+		"info": "!eye move"
+	},
+	{
+		"info": "!shuka"
+	},
+	{
+		"info": "!gohands"
+	},
+	{
+		"info": "!actas"
+	},
+	{
+		"info": "!one music"
+	},
+	{
+		"info": "!horipro"
+	},
+	{
+		"info": "!studio 4°c"
+	},
+	{
+		"info": "!aic build"
+	},
+	{
+		"info": "!studio fantasia"
+	},
+	{
+		"info": "!walt disney studios"
+	},
+	{
+		"info": "!studio chizu"
+	},
+	{
+		"info": "!c-station"
+	},
+	{
+		"info": "!group tac"
+	},
+	{
+		"info": "!sambakza"
+	},
+	{
+		"info": "!p.i.c.s."
+	},
+	{
+		"info": "!yoshimoto kogyo"
+	},
+	{
+		"info": "!imagin"
+	},
+	{
+		"info": "!pioneer ldc"
+	},
+	{
+		"info": "!appp"
+	},
+	{
+		"info": "!gaina"
+	},
+	{
+		"info": "!kss"
+	},
+	{
+		"info": "!youmex"
+	},
+	{
+		"info": "!studio kelmadick"
+	},
+	{
+		"info": "!mushi production"
+	},
+	{
+		"info": "!studio guts"
+	},
+	{
+		"info": "!animeigo"
+	},
+	{
+		"info": "!bushiroad move"
+	},
+	{
+		"info": "!micro house"
+	},
+	{
+		"info": "!tohjak"
+	},
+	{
+		"info": "!video market"
+	},
+	{
+		"info": "!hifumi shobou"
+	},
+	{
+		"info": "!live viewing japan"
+	},
+	{
+		"info": "!i0plus"
+	},
+	{
+		"info": "!studio animal"
+	},
+	{
+		"info": "!drive"
+	},
+	{
+		"info": "!ichigo animation"
+	},
+	{
+		"info": "!comic animation"
+	},
+	{
+		"info": "!ordet"
+	},
+	{
+		"info": "!akita shoten"
+	},
+	{
+		"info": "!science saru"
+	},
+	{
+		"info": "!tohan"
+	},
+	{
+		"info": "!animax broadcast japan"
+	},
+	{
+		"info": "!sme visual works"
+	},
+	{
+		"info": "!kadokawa contents gate"
+	},
+	{
+		"info": "!line webtoon"
+	},
+	{
+		"info": "!tear-studio"
+	},
+	{
+		"info": "!triopen studio"
+	},
+	{
+		"info": "!project no.9"
+	},
+	{
+		"info": "!yomiuri brand studio"
+	},
+	{
+		"info": "!bergamo"
+	},
+	{
+		"info": "!d.n. dream partners"
+	},
+	{
+		"info": "!signal.md"
+	},
+	{
+		"info": "!sublimation"
+	},
+	{
+		"info": "!comix wave"
+	},
+	{
+		"info": "!story inc."
+	},
+	{
+		"info": "!bushiroad music"
+	},
+	{
+		"info": "!bibury animation studios"
+	},
+	{
+		"info": "!magnet"
+	},
+	{
+		"info": "!grantdesign"
+	},
+	{
+		"info": "!amg music"
+	},
+	{
+		"info": "!studio kai"
+	},
+	{
+		"info": "!domerica"
+	},
+	{
+		"info": "!namu animation"
+	},
+	{
+		"info": "!okuruto noboru"
+	},
+	{
+		"info": "!dive ii entertainment"
+	},
+	{
+		"info": "!index"
+	},
+	{
+		"info": "!anima&co. "
+	},
+	{
+		"info": "!plum"
+	},
+	{
+		"info": "!aic spirits"
+	},
+	{
+		"info": "!dugout"
+	},
+	{
+		"info": "!platinum vision"
+	},
+	{
+		"info": "!smile company"
+	},
+	{
+		"info": "!enishiya inc."
+	},
+	{
+		"info": "!firebug"
+	},
+	{
+		"info": "!top marshal"
+	},
+	{
+		"info": "!front wing"
+	},
+	{
+		"info": "!amuse"
+	},
+	{
+		"info": "!daiichi kosho company"
+	},
+	{
+		"info": "!animatic"
+	},
+	{
+		"info": "!radio osaka"
+	},
+	{
+		"info": "!parco"
+	},
+	{
+		"info": "!teichiku entertainment"
+	},
+	{
+		"info": "!e-notion"
+	},
+	{
+		"info": "!caanimation"
+	},
+	{
+		"info": "!emoto entertainment"
+	},
+	{
+		"info": "!kamikaze douga"
+	},
+	{
+		"info": "!hot zipang "
+	},
+	{
+		"info": "!asahi shimbun"
+	},
+	{
+		"info": "!age"
+	},
+	{
+		"info": "!cover corp"
+	},
+	{
+		"info": "!nokid"
+	},
+	{
+		"info": "!uwan pictures"
+	},
+	{
+		"info": "!adnero"
+	},
+	{
+		"info": "!xenron"
+	},
+	{
+		"info": "!dle"
+	},
+	{
+		"info": "!bouncy"
+	},
+	{
+		"info": "!kimi to boku production partners"
+	},
+	{
+		"info": "!tsuburaya productions"
+	},
+	{
+		"info": "!xflag"
+	},
+	{
+		"info": "!studio gazelle"
+	},
+	{
+		"info": "!azone international"
+	},
+	{
+		"info": "!pokelabo"
+	},
+	{
+		"info": "!marui group"
+	},
+	{
+		"info": "!bushiroad creative"
+	},
+	{
+		"info": "!legs"
+	},
+	{
+		"info": "!idea factory"
+	},
+	{
+		"info": "!production doa"
+	},
+	{
+		"info": "!notes"
+	},
+	{
+		"info": "!crei"
+	},
+	{
+		"info": "!klab"
+	},
+	{
+		"info": "!project no name"
+	},
+	{
+		"info": "!project is"
+	},
+	{
+		"info": "!entama"
+	},
+	{
+		"info": "!studio pastoral"
+	},
+	{
+		"info": "!dream shift"
+	},
+	{
+		"info": "!arma bianca"
+	},
+	{
+		"info": "!yahoo! japan"
+	},
+	{
+		"info": "!revoroot"
+	},
+	{
+		"info": "!tms-kyokuchi"
+	},
+	{
+		"info": "!polygon pictures"
+	},
+	{
+		"info": "!palm studio"
+	},
+	{
+		"info": "!ascension"
+	},
+	{
+		"info": "!techno sound"
+	},
+	{
+		"info": "!chaos union"
+	},
+	{
+		"info": "!ntv music"
+	},
+	{
+		"info": "!flying ship studio"
+	},
+	{
+		"info": "!studio khara"
+	},
+	{
+		"info": "!3xcube"
+	},
+	{
+		"info": "!tms music"
+	},
+	{
+		"info": "!big firebird cultural media"
+	},
+	{
+		"info": "!heart company"
+	},
+	{
+		"info": "!juumonji"
+	},
+	{
+		"info": "!pink pineapple"
+	},
+	{
+		"info": "!grooove"
+	},
+	{
+		"info": "!studiorf inc."
+	},
+	{
+		"info": "!animate"
+	},
+	{
+		"info": "!ezo’la"
+	},
+	{
+		"info": "!sega games"
+	},
+	{
+		"info": "!oz"
+	},
+	{
+		"info": "!acc production"
+	},
+	{
+		"info": "!jormungand production partners"
+	},
+	{
+		"info": "!yamatoworks"
+	},
+	{
+		"info": "!rising force"
+	},
+	{
+		"info": "!primastea"
+	},
+	{
+		"info": "!larx entertainment"
+	},
+	{
+		"info": "!studio massket"
+	},
+	{
+		"info": "!jinnan studio"
+	},
+	{
+		"info": "!ashisuto"
+	},
+	{
+		"info": "!tsutaya"
+	},
+	{
+		"info": "!htc"
+	},
+	{
+		"info": "!g&g entertainment"
+	},
+	{
+		"info": "!studio bind"
+	},
+	{
+		"info": "!toy's factory"
+	},
+	{
+		"info": "!triangle staff"
+	},
+	{
+		"info": "!clap"
+	},
+	{
+		"info": "!rex entertainment "
+	},
+	{
+		"info": "!oniro"
+	},
+	{
+		"info": "!magia doraglier"
+	},
+	{
+		"info": "!electromagneticwave"
+	},
+	{
+		"info": "!tokyopop"
+	},
+	{
+		"info": "!marvy jack"
+	},
+	{
+		"info": "!a.c.g.t."
+	},
+	{
+		"info": "!studio a-cat"
+	},
+	{
+		"info": "!comico"
+	},
+	{
+		"info": "!incs toenter"
+	},
+	{
+		"info": "!atelier pontdarc"
+	},
+	{
+		"info": "!seikaisha"
+	},
+	{
+		"info": "!delightworks"
+	},
+	{
+		"info": "!daiei"
+	},
+	{
+		"info": "!bedream"
+	},
+	{
+		"info": "!studio lan"
+	},
+	{
+		"info": "!nippon victor"
+	},
+	{
+		"info": "!arts pro"
+	},
+	{
+		"info": "!the answer studio"
+	},
+	{
+		"info": "!bee train"
+	},
+	{
+		"info": "!studio gallop"
+	},
+	{
+		"info": "!madoka partners"
+	},
+	{
+		"info": "!bs asahi"
+	},
+	{
+		"info": "!f4samurai"
+	},
+	{
+		"info": "!c&i entertainment"
+	},
+	{
+		"info": "!truss"
+	},
+	{
+		"info": "!typhoon graphics"
+	},
+	{
+		"info": "!union creative"
+	},
+	{
+		"info": "!tsukisuzusha"
+	},
+	{
+		"info": "!got"
+	},
+	{
+		"info": "!yoshimoto music"
+	},
+	{
+		"info": "!toei agency"
+	},
+	{
+		"info": "!exa"
+	},
+	{
+		"info": "!a3"
+	},
+	{
+		"info": "!dynamic planning"
+	},
+	{
+		"info": "!gemba"
+	},
+	{
+		"info": "!koei"
+	},
+	{
+		"info": "!office nobu"
+	},
+	{
+		"info": "!gree entertainment"
+	},
+	{
+		"info": "!space neko company"
+	},
+	{
+		"info": "!doga productions"
+	},
+	{
+		"info": "!dmm.futureworks"
+	},
+	{
+		"info": "!mellow head"
+	},
+	{
+		"info": "!marubeni"
+	},
+	{
+		"info": "!iwatobi high school swimming club"
+	},
+	{
+		"info": "!artmic"
+	},
+	{
+		"info": "!po10tial"
+	},
+	{
+		"info": "!atlus"
+	},
+	{
+		"info": "!tapioca"
+	},
+	{
+		"info": "!studio mother"
+	},
+	{
+		"info": "!production ims"
+	},
+	{
+		"info": "!wolfsbane"
+	},
+	{
+		"info": "!maiden japan"
+	},
+	{
+		"info": "!nhk-bs2"
+	},
+	{
+		"info": "!crimson star media"
+	},
+	{
+		"info": "!procidis"
+	},
+	{
+		"info": "!eiken"
+	},
+	{
+		"info": "!craftar"
+	},
+	{
+		"info": "!warner bros. eiga"
+	},
+	{
+		"info": "!straight edge"
+	},
+	{
+		"info": "!s-wood"
+	},
+	{
+		"info": "!bushiroad media"
+	},
+	{
+		"info": "!fairy tale co."
+	},
+	{
+		"info": "!trans arts"
+	},
+	{
+		"info": "!rcc chugoku broadcasting"
+	},
+	{
+		"info": "!gen productions"
+	},
+	{
+		"info": "!topcraft"
+	},
+	{
+		"info": "!jacom"
+	},
+	{
+		"info": "!visual 80"
+	},
+	{
+		"info": "!yostar pictures"
+	},
+	{
+		"info": "!estream"
+	},
+	{
+		"info": "!anime r"
+	},
+	{
+		"info": "!beyond c."
+	},
+	{
+		"info": "!omega project"
+	},
+	{
+		"info": "!days"
+	},
+	{
+		"info": "!abc frontier"
+	},
+	{
+		"info": "!cyberconnect2"
+	},
+	{
+		"info": "!shufu to seikatsusha"
+	},
+	{
+		"info": "!crest"
+	},
+	{
+		"info": "!sun television"
+	},
+	{
+		"info": "!simplicity"
+	},
+	{
+		"info": "!digital frontier"
+	},
+	{
+		"info": "!studio puyukai"
+	},
+	{
+		"info": "!think corporation"
+	},
+	{
+		"info": "!kenmedia"
+	},
+	{
+		"info": "!mag garden"
+	},
+	{
+		"info": "!wawayu animation"
+	},
+	{
+		"info": "!yuewen animation & comics"
+	},
+	{
+		"info": "!china literature"
+	},
+	{
+		"info": "!k.pictures"
+	},
+	{
+		"info": "!colored pencil animation"
+	},
+	{
+		"info": "!twilight studio"
+	},
+	{
+		"info": "!tamakoshi"
+	},
+	{
+		"info": "!musicray`n"
+	},
+	{
+		"info": "!alice"
+	},
+	{
+		"info": "!u-next"
+	},
+	{
+		"info": "!flaggs"
+	},
+	{
+		"info": "!laulea works"
+	},
+	{
+		"info": "!softx"
+	},
+	{
+		"info": "!e&g films"
+	},
+	{
+		"info": "!b&t"
+	},
+	{
+		"info": "!enlight pictures"
+	},
+	{
+		"info": "!coloroom pictures"
+	},
+	{
+		"info": "!cartoon saloon"
+	},
+	{
+		"info": "!issen"
+	},
+	{
+		"info": "!toei"
+	},
+	{
+		"info": "!adk emotions"
+	},
+	{
+		"info": "!lidenfilms kyoto studio"
+	},
+	{
+		"info": "!m.o.e."
+	},
+	{
+		"info": "!soft garage"
+	},
+	{
+		"info": "!majin"
+	},
+	{
+		"info": "!majin petit"
+	},
+	{
+		"info": "!langmaor"
+	},
+	{
+		"info": "!alice soft"
+	},
+	{
+		"info": "!suiseisha"
+	},
+	{
+		"info": "!picante circus"
+	},
+	{
+		"info": "!rabbit gate"
+	},
+	{
+		"info": "!mary jane"
+	},
+	{
+		"info": "!studio eromatick"
+	},
+	{
+		"info": "!d3"
+	},
+	{
+		"info": "!studio 9 maiami"
+	},
+	{
+		"info": "!studio houkiboshi"
+	},
+	{
+		"info": "!studio 1st"
+	},
+	{
+		"info": "!44℃ baidoku"
+	},
+	{
+		"info": "!cosmos"
+	},
+	{
+		"info": "!poro"
+	},
+	{
+		"info": "!poro petit"
+	},
+	{
+		"info": "!dr movie"
+	},
+	{
+		"info": "!picture magic"
+	},
+	{
+		"info": "!kiyosumi high school mahjong club"
+	},
+	{
+		"info": "!dmm.com"
+	},
+	{
+		"info": "!studio flad"
+	},
+	{
+		"info": "!on-lead"
+	},
+	{
+		"info": "!ginga ya"
+	},
+	{
+		"info": "!alchemist"
+	},
+	{
+		"info": "!voyager entertainment"
+	},
+	{
+		"info": "!tokyo kids"
+	},
+	{
+		"info": "!minami machi bugyousho"
+	},
+	{
+		"info": "!production +h"
+	},
+	{
+		"info": "!hakuhodo"
+	},
+	{
+		"info": "!kakao japan"
+	},
+	{
+		"info": "!chuugai kougyou"
+	},
+	{
+		"info": "!sei young animation"
+	},
+	{
+		"info": "!korad"
+	},
+	{
+		"info": "!a-real"
+	},
+	{
+		"info": "!nippon shuppan hanbai (nippan) k.k."
+	},
+	{
+		"info": "!aiko"
+	},
+	{
+		"info": "!kaname production"
+	},
+	{
+		"info": "!b.cmay pictures"
+	},
+	{
+		"info": "!calf"
+	},
+	{
+		"info": "!children's playground entertainment"
+	},
+	{
+		"info": "!oh! production"
+	},
+	{
+		"info": "!agent 21"
+	},
+	{
+		"info": "!fenz"
+	},
+	{
+		"info": "!tianwen kadokawa"
+	},
+	{
+		"info": "!hmch"
+	},
+	{
+		"info": "!observatory animation"
+	},
+	{
+		"info": "!drop"
+	},
+	{
+		"info": "!kyotoma"
+	},
+	{
+		"info": "!quad"
+	},
+	{
+		"info": "!flex comics"
+	},
+	{
+		"info": "!starry cube"
+	},
+	{
+		"info": "!supa love"
+	},
+	{
+		"info": "!holoimua"
+	},
+	{
+		"info": "!annel"
+	},
+	{
+		"info": "!septeni holdings"
+	},
+	{
+		"info": "!ob planning"
+	},
+	{
+		"info": "!grouper productions"
+	},
+	{
+		"info": "!pie in the sky"
+	},
+	{
+		"info": "!kyoto seika university"
+	},
+	{
+		"info": "!wolf smoke"
+	},
+	{
+		"info": "!rikuentai"
+	},
+	{
+		"info": "!feng"
+	},
+	{
+		"info": "!foch"
+	},
+	{
+		"info": "!sky perfect"
+	},
+	{
+		"info": "!studio tulip"
+	},
+	{
+		"info": "!studio wombat"
+	},
+	{
+		"info": "!gust"
+	},
+	{
+		"info": "!studio ponoc"
+	},
+	{
+		"info": "!remic"
+	},
+	{
+		"info": "!nexon"
+	},
+	{
+		"info": "!hakoniwa academy student council"
+	},
+	{
+		"info": "!trinet entertainment"
+	},
+	{
+		"info": "!i will"
+	},
+	{
+		"info": "!yaoyorozu"
+	},
+	{
+		"info": "!tomason"
+	},
+	{
+		"info": "!nippon herald eiga"
+	},
+	{
+		"info": "!digital network animation"
+	},
+	{
+		"info": "!musashino art university"
+	},
+	{
+		"info": "!sunwoo entertainment"
+	},
+	{
+		"info": "!yellow film"
+	},
+	{
+		"info": "!y.o.u.c"
+	},
+	{
+		"info": "!office dci"
+	},
+	{
+		"info": "!azeta pictures"
+	},
+	{
+		"info": "!magilm pictures"
+	},
+	{
+		"info": "!djinn power"
+	},
+	{
+		"info": "!dazed "
+	},
+	{
+		"info": "!bestack"
+	},
+	{
+		"info": "!fabtone"
+	},
+	{
+		"info": "!lmd"
+	},
+	{
+		"info": "!saetta"
+	},
+	{
+		"info": "!taki corporation"
+	},
+	{
+		"info": "!studio saki makura"
+	},
+	{
+		"info": "!kitty media"
+	},
+	{
+		"info": "!venet"
+	},
+	{
+		"info": "!sunborn network technology"
+	},
+	{
+		"info": "!griffin & kryuger"
+	},
+	{
+		"info": "!gaga"
+	},
+	{
+		"info": "!rakuten"
+	},
+	{
+		"info": "!nice boat animation"
+	},
+	{
+		"info": "!gudong animation studio"
+	},
+	{
+		"info": "!filmony"
+	},
+	{
+		"info": "!otogi production"
+	},
+	{
+		"info": "!ebs"
+	},
+	{
+		"info": "!durufix"
+	},
+	{
+		"info": "!studio kikan"
+	},
+	{
+		"info": "!joy pictures"
+	},
+	{
+		"info": "!tencent games"
+	},
+	{
+		"info": "!team yokkyufuman"
+	},
+	{
+		"info": "!ldcx"
+	},
+	{
+		"info": "!marui"
+	},
+	{
+		"info": "!tv tokyo communications"
+	},
+	{
+		"info": "!ensky"
+	},
+	{
+		"info": "!goodshow animation"
+	},
+	{
+		"info": "!hot game studio"
+	},
+	{
+		"info": "!ibis capital partners"
+	},
+	{
+		"info": "!gyokkoudou"
+	},
+	{
+		"info": "!tv nagasaki"
+	},
+	{
+		"info": "!cloud"
+	},
+	{
+		"info": "!energy and system planning"
+	},
+	{
+		"info": "!team yamahitsuji"
+	},
+	{
+		"info": "!flat studio"
+	},
+	{
+		"info": "!trif studio"
+	},
+	{
+		"info": "!studio kyuuma"
+	},
+	{
+		"info": "!wanda film"
+	},
+	{
+		"info": "!sunac pictures"
+	},
+	{
+		"info": "!samsara studio"
+	},
+	{
+		"info": "!green monster team"
+	},
+	{
+		"info": "!spring"
+	},
+	{
+		"info": "!marvel entertainment"
+	},
+	{
+		"info": "!qubic pictures"
+	},
+	{
+		"info": "!cgcg studio inc."
+	},
+	{
+		"info": "!dwarf"
+	},
+	{
+		"info": "!tooniverse"
+	},
+	{
+		"info": "!tama art university"
+	},
+	{
+		"info": "!amuse soft entertainment"
+	},
+	{
+		"info": "!mook animation"
+	},
+	{
+		"info": "!robot"
+	},
+	{
+		"info": "!geidai animation"
+	},
+	{
+		"info": "!ai ga areba daijobu"
+	},
+	{
+		"info": "!tamura shigeru studio"
+	},
+	{
+		"info": "!vcrworks"
+	},
+	{
+		"info": "!studio junior"
+	},
+	{
+		"info": "!studio junio"
+	},
+	{
+		"info": "!jtb entertainment"
+	},
+	{
+		"info": "!wargaming japan"
+	},
+	{
+		"info": "!501st joint fighter wing"
+	},
+	{
+		"info": "!tsuchida productions"
+	},
+	{
+		"info": "!studio g-1neo"
+	},
+	{
+		"info": "!pastel"
+	},
+	{
+		"info": "!aeon entertainment"
+	},
+	{
+		"info": "!sav! the world productions"
+	},
+	{
+		"info": "!wolf smoke studio"
+	},
+	{
+		"info": "!making animation"
+	},
+	{
+		"info": "!l² studio"
+	},
+	{
+		"info": "!u17"
+	},
+	{
+		"info": "!unlimited partners"
+	},
+	{
+		"info": "!studio nue"
+	},
+	{
+		"info": "!hero"
+	},
+	{
+		"info": "!grasshoppa!"
+	},
+	{
+		"info": "!manga productions"
+	},
+	{
+		"info": "!indivision"
+	},
+	{
+		"info": "!aic takarazuka"
+	},
+	{
+		"info": "!animate film"
+	},
+	{
+		"info": "!enoki films"
+	},
+	{
+		"info": "!aubec"
+	},
+	{
+		"info": "!academy productions"
+	},
+	{
+		"info": "!jcf"
+	},
+	{
+		"info": "!echo"
+	},
+	{
+		"info": "!nihon ad systems"
+	},
+	{
+		"info": "!annapuru"
+	},
+	{
+		"info": "!office ao"
+	},
+	{
+		"info": "!dic entertainment"
+	},
+	{
+		"info": "!three fat samurai"
+	},
+	{
+		"info": "!character plan"
+	},
+	{
+		"info": "!ekura animal"
+	},
+	{
+		"info": "!nippon broadcasting system"
+	},
+	{
+		"info": "!liber entertainment"
+	},
+	{
+		"info": "!warrock"
+	},
+	{
+		"info": "!tv asahi music"
+	},
+	{
+		"info": "!universal music"
+	},
+	{
+		"info": "!studio izena"
+	},
+	{
+		"info": "!senran kagura partners"
+	},
+	{
+		"info": "!project team argos"
+	},
+	{
+		"info": "!creators dot com"
+	},
+	{
+		"info": "!teamkg"
+	},
+	{
+		"info": "!iyuno studios"
+	},
+	{
+		"info": "!moogoo"
+	},
+	{
+		"info": "!ac create"
+	},
+	{
+		"info": "!mmt"
+	},
+	{
+		"info": "!children's playground media"
+	},
+	{
+		"info": "!heartbit"
+	},
+	{
+		"info": "!tomoyasu murata company"
+	},
+	{
+		"info": "!automatic flowers studio"
+	},
+	{
+		"info": "!acid film"
+	},
+	{
+		"info": "!anpro"
+	},
+	{
+		"info": "!gosay studio"
+	},
+	{
+		"info": "!xebec zwei"
+	},
+	{
+		"info": "!sol blade"
+	},
+	{
+		"info": "!magical kingdom anime (hk)"
+	},
+	{
+		"info": "!production ace"
+	}
 ]
