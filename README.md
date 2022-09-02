@@ -3,7 +3,7 @@
 
 ## Starting Up
   Installation
-  1. Install the Kanshi. application ([Kanshi..apk](https://github.com/u-Kuro/Kanshi.Anime-Recommendation/raw/main/Kanshi..apk)) in an Android mobile.
+  1. Install the [Kanshi. Application](https://github.com/u-Kuro/Kanshi.Anime-Recommendation/raw/main/Kanshi..apk) in an Android mobile.
   2. Run the app and Enter a username of an Exsting anilist account (A properly rated list is highly recommended). If you don't have one, you can easily Create an account in their website ([Anilist](https://anilist.co/home)) or Export your List from MAL (MyAnimeList) if you have one ([MAL export](https://myanimelist.net/panel.php?go=export)) then Import the XML file in the Anilist settings ([Anilist Import](https://anilist.co/settings/import)).
   
   Additional Features
@@ -22,5 +22,5 @@
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score for recommendation was then calculated by multiplying the three factors [(UserScore * MostRecommendedWeight * GeneralRatings)] instead of averaged to estimate and avoid low scores for each.
   
 ## Requirements
-   - Anilist Account ([Anilist Website](https://anilist.co/home)).
+   - Anilist Account - [Anilist Website](https://anilist.co/home).
    - Anilist with list of Scored Anime (A properly rated list for the account is Necessary for Analysis).
