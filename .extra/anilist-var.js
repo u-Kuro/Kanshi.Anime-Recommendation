@@ -108,7 +108,7 @@ rl.question("Your Anilist Username: ", function (answer) {
 
       var varScheme = {}
       for(let i=0; i<animeEntries.length; i++){
-        if(animeEntries[i].score>5){
+        if(animeEntries[i].score>0){
           var weight = animeEntries[i].score
           var anime = animeEntries[i].media
           var format = {}
@@ -116,7 +116,7 @@ rl.question("Your Anilist Username: ", function (answer) {
           var season = {}
           var episodes = {}
           var episodetype
-          if(anime.episodes<2) episodetype = "Episode: 1"
+          if(anime.episodes===1) episodetype = "Episode: 1"
           else if (anime.episodes>1&&anime.episodes<7) episodetype = "Episode: 2-6"
           else if (anime.episodes>6&&anime.episodes<14) episodetype = "Episode: 7-13"
           else if (anime.episodes>13&&anime.episodes<27) episodetype = "Episode: 14-26"
@@ -430,54 +430,67 @@ rl.question("Your Anilist Username: ", function (answer) {
         }
       }
       // Fix Data JSON
-      var sum = 0
+      // Sum of every Dimension
+      var formatSum = 0
       for(let i=0; i<Object.keys(varScheme.format).length; i++){
         var formatKey = Object.keys(varScheme.format)
-        sum += varScheme.format[formatKey[i]].count
+        formatSum += varScheme.format[formatKey[i]].count
       }
+      var episodeSum = 0
       for(let i=0; i<Object.keys(varScheme.episodes).length; i++){
         var episodesKey = Object.keys(varScheme.episodes)
-        sum += varScheme.episodes[episodesKey[i]].count
+        episodeSum += varScheme.episodes[episodesKey[i]].count
       }
+      var yearSum = 0
       for(let i=0; i<Object.keys(varScheme.year).length; i++){
         var yearKey = Object.keys(varScheme.year)
-        sum += varScheme.year[yearKey[i]].count
+        yearSum += varScheme.year[yearKey[i]].count
       }
+      var seasonSum = 0
       for(let i=0; i<Object.keys(varScheme.season).length; i++){
         var seasonKey = Object.keys(varScheme.season)
-        sum += varScheme.season[seasonKey[i]].count
+        seasonSum += varScheme.season[seasonKey[i]].count
       }
+      var genresSum = 0
       for(let i=0; i<Object.keys(varScheme.genres).length; i++){
         var genresKey = Object.keys(varScheme.genres)
-        sum += varScheme.genres[genresKey[i]].count
+        genresSum += varScheme.genres[genresKey[i]].count
       }
+      var tagsSum = 0
       for(let i=0; i<Object.keys(varScheme.tags).length; i++){
         var tagsKey = Object.keys(varScheme.tags)
-        sum += varScheme.tags[tagsKey[i]].count
+        tagsSum += varScheme.tags[tagsKey[i]].count
       }
+      var tagsCategorySum = 0
       for(let i=0; i<Object.keys(varScheme.tagsCategory).length; i++){
         var tagsCategoryKey = Object.keys(varScheme.tagsCategory)
-        sum += varScheme.tagsCategory[tagsCategoryKey[i]].count
+        tagsCategorySum += varScheme.tagsCategory[tagsCategoryKey[i]].count
       }
+      var studiosSum = 0
       for(let i=0; i<Object.keys(varScheme.studios).length; i++){
         var studiosKey = Object.keys(varScheme.studios)
-        sum += varScheme.studios[studiosKey[i]].count
+        studiosSum += varScheme.studios[studiosKey[i]].count
       }
+      var staffSum = 0
       for(let i=0; i<Object.keys(varScheme.staff).length; i++){
         var staffKey = Object.keys(varScheme.staff)
-        sum += varScheme.staff[staffKey[i]].count
+        staffSum += varScheme.staff[staffKey[i]].count
       }
+      var staffRoleSum = 0
       for(let i=0; i<Object.keys(varScheme.staffRole).length; i++){
         var staffRoleKey = Object.keys(varScheme.staffRole)
-        sum += varScheme.staffRole[staffRoleKey[i]].count
+        staffRoleSum += varScheme.staffRole[staffRoleKey[i]].count
       }
       ///////////////////////////////////////////////////////////////////////////////////////////////
+      // Sum of all Dimension
+      var sum = formatSum + episodeSum + yearSum + seasonSum + genresSum + tagsSum + tagsCategorySum + studiosSum + staffSum + staffRoleSum
+      // Clean Data JSON
       var score, count, weight
       for(let i=0; i<Object.keys(varScheme.format).length; i++){
         var formatKey = Object.keys(varScheme.format)
         score = arrayMean(varScheme.format[formatKey[i]].weight)*10
         count = varScheme.format[formatKey[i]].count
-        weight = (1/sum)*count
+        weight = ((1/formatSum)*count)*((1/sum)*formatSum)
         varScheme.format[formatKey[i]] = {
           Score: score, 
           Count: count,
@@ -489,7 +502,7 @@ rl.question("Your Anilist Username: ", function (answer) {
         var episodesKey = Object.keys(varScheme.episodes)
         score = arrayMean(varScheme.episodes[episodesKey[i]].weight)*10
         count = varScheme.episodes[episodesKey[i]].count
-        weight = (1/sum)*count
+        weight = ((1/episodeSum)*count)*((1/sum)*episodeSum)
         varScheme.episodes[episodesKey[i]] = {
           Score: score, 
           Count: count,
@@ -501,7 +514,7 @@ rl.question("Your Anilist Username: ", function (answer) {
         var yearKey = Object.keys(varScheme.year)
         score = arrayMean(varScheme.year[yearKey[i]].weight)*10
         count = varScheme.year[yearKey[i]].count
-        weight = (1/sum)*count
+        weight = ((1/yearSum)*count)*((1/sum)*yearSum)
         varScheme.year[yearKey[i]] = {
           Score: arrayMean(varScheme.year[yearKey[i]].weight)*10, 
           Count: count,
@@ -513,7 +526,7 @@ rl.question("Your Anilist Username: ", function (answer) {
         var seasonKey = Object.keys(varScheme.season)
         score = arrayMean(varScheme.season[seasonKey[i]].weight)*10
         count = varScheme.season[seasonKey[i]].count
-        weight = (1/sum)*count
+        weight = ((1/seasonSum)*count)*((1/sum)*seasonSum)
         varScheme.season[seasonKey[i]] = {
           Score: score, 
           Count: count,
@@ -525,7 +538,7 @@ rl.question("Your Anilist Username: ", function (answer) {
         var genresKey = Object.keys(varScheme.genres)
         score = arrayMean(varScheme.genres[genresKey[i]].weight)*10
         count = varScheme.genres[genresKey[i]].count
-        weight = (1/sum)*count
+        weight = ((1/genresSum)*count)*((1/sum)*genresSum)
         varScheme.genres[genresKey[i]] = {
           Score: score, 
           Count: count,
@@ -537,7 +550,7 @@ rl.question("Your Anilist Username: ", function (answer) {
         var tagsKey = Object.keys(varScheme.tags)
         score = arrayMean(varScheme.tags[tagsKey[i]].weight)*10
         count = varScheme.tags[tagsKey[i]].count
-        weight = (1/sum)*count
+        weight = ((1/tagsSum)*count)*((1/sum)*tagsSum)
         varScheme.tags[tagsKey[i]] = {
           Score: score, 
           Count: count,
@@ -549,7 +562,7 @@ rl.question("Your Anilist Username: ", function (answer) {
         var tagsCategoryKey = Object.keys(varScheme.tagsCategory)
         score = arrayMean(varScheme.tagsCategory[tagsCategoryKey[i]].weight)*10
         count = varScheme.tagsCategory[tagsCategoryKey[i]].count
-        weight = (1/sum)*count
+        weight = ((1/tagsCategorySum)*count)*((1/sum)*tagsCategorySum)
         varScheme.tagsCategory[tagsCategoryKey[i]] = {
           Score: score, 
           Count: count,
@@ -561,7 +574,7 @@ rl.question("Your Anilist Username: ", function (answer) {
         var studiosKey = Object.keys(varScheme.studios)
         score = arrayMean(varScheme.studios[studiosKey[i]].weight)*10
         count = varScheme.studios[studiosKey[i]].count
-        weight = (1/sum)*count
+        weight = ((1/studiosSum)*count)*((1/sum)*studiosSum)
         varScheme.studios[studiosKey[i]] = {
           Score: score, 
           Count: count,
@@ -573,7 +586,7 @@ rl.question("Your Anilist Username: ", function (answer) {
         var staffKey = Object.keys(varScheme.staff)
         score = arrayMean(varScheme.staff[staffKey[i]].weight)*10
         count = varScheme.staff[staffKey[i]].count
-        weight = (1/sum)*count
+        weight = ((1/staffSum)*count)*((1/sum)*staffSum)
         varScheme.staff[staffKey[i]] = {
           Score: score, 
           Count: count,
@@ -585,7 +598,7 @@ rl.question("Your Anilist Username: ", function (answer) {
         var staffRoleKey = Object.keys(varScheme.staffRole)
         score = arrayMean(varScheme.staffRole[staffRoleKey[i]].weight)*10
         count = varScheme.staffRole[staffRoleKey[i]].count
-        weight = (1/sum)*count
+        weight = ((1/staffRoleSum)*count)*((1/sum)*staffRoleSum)
         varScheme.staffRole[staffRoleKey[i]] = {
           Score: score, 
           Count: count,
