@@ -1,4 +1,4 @@
-# Kanshi.-Anime-Recommendation (Kanshi.R and Kanshi.VI)
+# Kanshi. Anime Recommendation (Kanshi.VI and Kanshi.R)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anime Recommendation Apps that uses existing Anilist account analyzed based through User. Kanshi.VI is based on User's Likeability and Variable Importance while Kanshi.R is based on User's Likeability and Other Anilist User Recommendations.
 
 ## Starting Up
@@ -13,14 +13,16 @@
   4. The Anilist website in the app is available to show a more detailed information about a recommended Anime (Click the title of an Anime).
 
 ## Kanshi.VI
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Year, Season, Episode Count, Format, and Studios. Each variables or variable component are averaged. All anime in Anilist are then analyzed based on the Variable Importance from ones' rating.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Year, Season, Episode Count, Format, and Studios. Each variables or variable component are averaged and then all anime in Anilist are analyzed based on the Variable Importance Schema from ones' rating.
 
 ### Recommendation Algorithm
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The recommendation score is averaged through different variables based on user score to get each percent of Likeability. All anime are then analyzed based on the Variable Importance Schema from the ones' list and score high if most variable from an anime are liked by the user or low if most of the variables in an anime are disliked by the user. Steps for Calculation Below:
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The recommendation score is averaged through different variables based on user score to get each percent of Likeability. All anime are then analyzed based on the Variable Importance Schema from ones' anime list. Anime recommendation score will be high if most variable from an anime are liked by the user and a low score if most variables in it are disliked by the user. 
+  
+  Steps for Calculation:
   
   1. Getting Variable Importance Schema from User - User's scores for each Anime in ones' list is added to each of its own variable, and all of it are averaged.
-  2. Analyzing Anime for Recommendation Initial Score - Each Captured Variable in the Variable Importance Schema that is on an Anime available in Anilist are then averaged by the scores from variables' scores in the schema.
-  3. Adding Weight for Accuracy - In order to avoid bias to Anime with few variable, a weight is added for each shows calculated by [(1/SumOfAllVariableCountFromAllAnime)*SumOfAllVariableCountFromSpecificAnime].
+  2. Analyzing Anime for Initial Recommendation Score - Each available variable in the Variable Importance Schema that is in an Anime from Anilist are then averaged by the scores from variables' scores given in the analyzed Schema.
+  3. Adding Weight for Accuracy - In order to avoid bias to every anime with Few variable, a weight is added for each shows calculated by [(1/SumOfAllVariableCountFromAllAnime)*SumOfAllVariableCountFromSpecificAnime].
 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score for recommendation was then calculated by multiplying the Anime Weight to the Initial Score [InitialScore * AnimeWeight].
 
