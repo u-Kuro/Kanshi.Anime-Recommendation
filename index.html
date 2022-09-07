@@ -572,6 +572,7 @@
                                     </td>
                                 </tr>
                             `
+                            $("#animeRecommendationList").empty()
                             $("#animeRecommendationList").append(animeData)
                             $("#anime-table").trigger("update")
                         }
@@ -641,6 +642,7 @@
                                 </td>
                             </tr>
                         `
+                        $("#animeRecommendationList").empty()
                         $("#animeRecommendationList").append(animeData)
                     }
                     $('#anime-table').trigger('update')
@@ -1446,7 +1448,7 @@
                 }
                 savedFilters = filters
                 saveJSON(savedFilters, "savedFilters")
-                if((data!==null && typeof data==="object")) {
+                if((data.length>0)) {
                   // FilterOut User Includes and Excludes
                     // Include
                     var tempRecScheme = []
