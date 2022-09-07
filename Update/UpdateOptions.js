@@ -1,4 +1,5 @@
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+// const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const axios = require('axios').default;
 const path = require("path");
 const jsonfile = require('jsonfile')
 ////////////////////
@@ -7,82 +8,58 @@ var page=1
 var maxAnimePerPage = 50
 var maxRequest=90//MaxRequest-RequestsBefore
 var timeInterval=60000 //Minute
+var studiosArray = []
 recall(page)
 function recall(xpage){
-  var query = `
-      {
-        Page(page: ${xpage}, perPage: ${maxAnimePerPage}) {
-          media(
-            type: ANIME,
-            format_not_in:[MUSIC,MANGA,NOVEL,ONE_SHOT]) {
-            studios {
-              nodes {
-                name
+  axios({
+    method: 'post',
+    url: 'https://graphql.anilist.co',
+    data: {
+        query: `
+          {
+            Page(page: ${xpage}, perPage: ${maxAnimePerPage}) {
+              media(
+                type: ANIME,
+                format_not_in:[MUSIC,MANGA,NOVEL,ONE_SHOT]) {
+                studios {
+                  nodes {
+                    name
+                  }
+                }
               }
             }
           }
-        }
+        `
       }
-      `;
-
-      // Define the config we'll need for our Api request
-      var url = 'https://graphql.anilist.co',
-      options = {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-          },
-          body: JSON.stringify({
-              query: query
-          })
-      };
-
-      // Make the HTTP Api request
-      fetch(url, options).then(handleResponse)
-                        .then(handleData)
-                        .catch(handleError);
-
-      function handleResponse(response) {
-          return response.json().then(function (json) {
-              return response.ok ? json : Promise.reject(json);
-          });
-      }
-      function handleData(data) {
-        var studiosArray = []
-        var animeEntries = data.data.Page.media
-        //Concat Completed, Watching, Drop, etc.
-        if(animeEntries.length===0){
-          lastCleanUp(studiosArray)
-        } else {
-          for(let i=0; i<animeEntries.length; i++){
-            var anime = animeEntries[i]
-            for(let j=0; j<anime.studios.nodes.length; j++){
-              var name = anime.studios.nodes[j].name
-              console.log(animeEntries,animeEntries.length,name)
-              if(!studiosArray.includes(name)){
-                studiosArray.push(name)
-              }
-            }
+  }).then(data =>{
+    var animeEntries = data.data.data.Page.media
+    //Concat Completed, Watching, Drop, etc.
+    if(animeEntries.length===0){
+      lastCleanUp(studiosArray)
+    } else {
+      for(let i=0; i<animeEntries.length; i++){
+        var anime = animeEntries[i]
+        for(let j=0; j<anime.studios.nodes.length; j++){
+          var name = anime.studios.nodes[j].name
+          if(!studiosArray.includes(name)){
+            studiosArray.push(name)
           }
-          if(xpage%maxRequest===0){
-            setTimeout(()=>{
-                lastCleanUp(studiosArray)
-                console.log(xpage)
-                recall(++xpage)
-            },timeInterval)
-          } else {
-              lastCleanUp(studiosArray)
-              console.log("not90 ",xpage)
-              recall(++xpage)
-          }  
         }
-      }     
-        
-      function handleError(error) {
-          console.error(error);
       }
+      if(xpage%maxRequest===0){
+        setTimeout(()=>{
+            console.log(xpage)
+            recall(++xpage)
+        },timeInterval)
+      } else {
+          console.log("not90 ",xpage)
+          recall(++xpage)
+      }  
     }
+  }).catch(err =>{
+    console.log(err);
+  })
+}
 function lastCleanUp(studiosArray){
   if(typeof studiosArray==="undefined") return
   if(studiosArray===null) return

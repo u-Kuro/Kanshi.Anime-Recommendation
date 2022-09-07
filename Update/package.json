@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "fetch": "^1.1.0",
+    "axios": "^0.27.2",
     "jsonfile": "^6.1.0",
     "node-fetch": "^3.2.10"
   }
