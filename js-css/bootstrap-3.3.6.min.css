@@ -25,7 +25,7 @@ figure{margin:1em 40px}
 hr{height:0;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box}
 pre{overflow:auto}
 code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}
-button,input,optgroup,select,textarea{margin:0;font:inherit;color:inherit}
+button,input,optgroup,select,textarea{/* margin:0; */font:inherit;color:inherit}
 button{overflow:visible}
 button,select{text-transform:none}
 button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}

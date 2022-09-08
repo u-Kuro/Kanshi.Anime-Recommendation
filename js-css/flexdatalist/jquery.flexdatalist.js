@@ -1643,7 +1643,10 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                         timestamp: _this.unixtime(),
                         lifetime: (lifetime ? lifetime : false)
                     };
-                    localStorage.setItem(key, JSON.stringify(object));
+                    try {
+                        sessionStorage.setItem(key, JSON.stringify(object));
+                    }
+                    catch(ex){console.error(ex)}
                 }
             },
        /**
@@ -1655,14 +1658,17 @@ jQuery.fn.flexdatalist = function (_option, _value) {
             read: function (key, global) {
                 if (_this.cache.isSupported()) {
                     key = this.keyGen(key, undefined, global);
-                    var data = localStorage.getItem(key);
-                    if (data) {
-                        var object = JSON.parse(data);
-                        if (!this.expired(object)) {
-                            return object.value;
+                    try {
+                        var data = sessionStorage.getItem(key);
+                        if (data) {
+                            var object = JSON.parse(data);
+                            if (!this.expired(object)) {
+                                return object.value;
+                            }
+                            localStorage.removeItem(key);
                         }
-                        localStorage.removeItem(key);
                     }
+                    catch(ex){console.error(ex)}
                 }
                 return null;
             },
@@ -1698,11 +1704,14 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                 if (_this.cache.isSupported()) {
                     for (var key in localStorage){
                         if (key.indexOf(fid) > -1 || key.indexOf('global') > -1) {
-                            var data = localStorage.getItem(key);
-                            data = JSON.parse(data);
-                            if (this.expired(data)) {
-                                localStorage.removeItem(key);
+                            try {
+                                var data = sessionStorage.getItem(key);
+                                data = JSON.parse(data);
+                                if (this.expired(data)) {
+                                    localStorage.removeItem(key);
+                                }
                             }
+                            catch(ex){console.error(ex)}
                         }
                     }
                 }
