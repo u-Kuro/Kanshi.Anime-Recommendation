@@ -405,7 +405,7 @@
                 background-color: transparent;
                 height: fit-content;
                 border: transparent;
-                text-align: right;
+                text-align: center;
                 outline: none;
                 appearance: none;
                 -webkit-appearance: none;
@@ -490,7 +490,7 @@
                 <span id="prev" class="prev"><h5>Prev</h5></span>
                 <span id="selectPageNumber">
                     <select id="pageNumberOptions" class="custom-select pagenum" title="Select page number"></select>
-                    <div class="endPage"><span class="pagedisplay"></span></div>
+                    <!-- <div class="endPage"><span class="pagedisplay"></span></div> -->
                 </span>
                 <span id="next" class="next"><h5>Next</h5></span>
                 <span id="last" class="last"><h5>Last</h5></span>
@@ -692,8 +692,10 @@
                         return false
                     })
                     // Remove Loader
+                    setTimeout(()=>{
+                        $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                    },0)
                     $(".loader").fadeOut("slow")
-                    $("#pageNumberOptions :selected").append(` of ${$('#anime-table')[0].config.pager.totalPages}`)
                 })
             })
             // Event Listeners
@@ -1696,7 +1698,10 @@
                     }
                     $("#animeRecommendationList").empty()
                     $("#animeRecommendationList").append(animeData)
-                    $("#anime-table").trigger("update")
+                    await $("#anime-table").trigger("update")
+                    setTimeout(()=>{
+                        $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                    },0)
                 } else {
                     Update()
                 }
