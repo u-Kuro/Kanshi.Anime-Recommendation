@@ -605,7 +605,7 @@
                                 if(savedData.length>0){
                                     $("#showAllAnime").show()
                                 }
-                                LoadData(savedData)
+                                await LoadData(savedData)
                             } else {
                                 animeData = `
                                     <tr class="item" role="row">
@@ -617,7 +617,10 @@
                                 `
                                 $("#animeRecommendationList").empty()
                                 $("#animeRecommendationList").append(animeData)
-                                $("#anime-table").trigger("update")
+                                await $("#anime-table").trigger("update")
+                                setTimeout(()=>{
+                                    $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                                },0)
                             }
                         }   
                     },1)
@@ -637,15 +640,16 @@
                             output: '⠀of⠀{totalPages}⠀⠀⠀',
                             updateArrows: true,
                             page: savedTableStatus==="Unhidden"? savedTablePage[0]:savedTablePage[1],
+                            savePages: true,
                             size: 7,
                             pageReset: false,
-                            removeRows: false,
+                            removeRows: true,
                             cssNext: '.next', 
                             cssPrev: '.prev', 
                             cssFirst: '.first', 
                             cssLast: '.last',
                             cssGoto: '.pagenum',
-                            cssPageDisplay: '.pagedisplay', 
+                            cssPageDisplay: '.pagedisplay'
                         })
                     $("#next, #prev, #first, #last").on('click', async function(){
                         setTimeout(()=>{
@@ -667,7 +671,11 @@
                             $("#showAllAnime").show()
                         }
                         hiddenRow.remove()
-                        $("#anime-table").trigger("update")
+                        savedData = await retrieveJSON("savedData")
+                        await LoadData(savedData)
+                        setTimeout(()=>{
+                            $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                        },0)
                         return false
                     })
                     $('#anime-table').delegate('button.show-anime', 'click' , async function() {
@@ -691,7 +699,11 @@
                             $("#animeRecommendationList").append(animeData)
                         }
                         hiddenRow.remove()
-                        $("#anime-table").trigger("update")
+                        savedData = await retrieveJSON("savedData")
+                        await LoadData(savedData)
+                        setTimeout(()=>{
+                            $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                        },0)
                         return false
                     })
                     // Remove Loader
@@ -704,12 +716,16 @@
             // Event Listeners
             $("#username").on('keypress',async e =>{
                 savedData = await retrieveJSON("savedData") || []
-                if(e.which==13) LoadData(savedData)
+                if(e.which==13) {
+                    LoadData(savedData)
+                }
             })
             $("#searchBtn").on('click', async ()=>{
                 savedData = await retrieveJSON("savedData") || []
-                savedUpdateTime = await retrieveJSON("savedUpdateTime") || 420
-                if(savedData.length>0) LoadData(savedData)
+                savedUpdateTime = await retrieveJSON("savedUpdateTime") || 780
+                if(savedData.length>0) {
+                    LoadData(savedData)
+                }
                 else {
                     swal({
                     text: `Are you sure that you want to Update? 
@@ -718,14 +734,13 @@
                 })
                 .then((confirmed) => {
                     if(confirmed){
-                        LoadData(savedData)
                         Update()
                     }
                 })
             }
             })
             $("#updateBtn").on('click', async ()=>{
-                savedUpdateTime = await retrieveJSON("savedUpdateTime") || 420
+                savedUpdateTime = await retrieveJSON("savedUpdateTime") || 780
                 swal({
                     text: `Are you sure that you want to Update? 
                     The estimated time to finish is ${msToTime(savedUpdateTime*1000)}`,
@@ -733,8 +748,6 @@
                 })
                 .then(async (confirmed) => {
                     if(confirmed){
-                        savedData = await retrieveJSON("savedData") || []
-                        LoadData(savedData)
                         Update()
                     }
                 })
@@ -761,6 +774,9 @@
                             await $("#hiddenUnhiddenBtn").text("Hidden")
                             savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
                             await $('#anime-table').trigger("pageSet",savedTablePage[1])
+                            setTimeout(()=>{
+                                $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                            },0)
                             isRunning = false
                         } else {
                             if($(".flexdatalist-multiple-value").length){
@@ -778,6 +794,9 @@
                             $("#hiddenUnhiddenBtn").text("Unhidden")
                             savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
                             await $('#anime-table').trigger("pageSet",savedTablePage[0])
+                            setTimeout(()=>{
+                                $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                            },0)
                             isRunning = false
                         }
                     }
@@ -810,6 +829,9 @@
                         $("#hiddenUnhiddenBtn").text("Unhidden")
                         savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
                         await $('#anime-table').trigger("pageSet",savedTablePage[0])
+                        setTimeout(()=>{
+                            $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                        },0)
                         saveJSON("Unhidden","savedTableStatus")
                         saveJSON($('#anime-table')[0].config.pager.page,"savedTablePage")
                         $("#showAllAnime").hide()
@@ -910,9 +932,7 @@
                                         episodes
                                         genres
                                         tags {
-                                            category
                                             name
-                                            rank
                                         }
                                         studios {
                                             nodes {
@@ -955,7 +975,7 @@
                         }),
                         beforeSend: async () => {
                             requestIsRunning = true
-                            savedUpdateTime = await retrieveJSON("savedUpdateTime") || 420
+                            savedUpdateTime = await retrieveJSON("savedUpdateTime") || 780
                             $("#dataStatusSpinner").show(0, ()=>{
                                 $("#dataStatusContainer").fadeIn(2500).css("display","flex")
                                 for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
@@ -967,219 +987,18 @@
                                     },(savedUpdateTime-i)*1000)
                                     temp.push(timeout)
                                 }
-                                
                             })
                         },
                         success: (data)=> {
-                            //Concat Completed, Watching, Drop, etc.
-                            var animeList = data.data.MediaListCollection.lists
-                            var animeEntries = []
-                            for(let i=0; i<animeList.length-1; i++){
-                                animeEntries = animeList[i].entries.concat(animeList[++i].entries)
+                            var worker = new Worker("./js-css/worker/analyzeVariable.js")
+                            worker.postMessage(data)
+                            worker.onmessage = (message) => {
+                                const data = message.data
+                                const varScheme = data.varScheme
+                                const userListInfo = data.userListInfo
+                                analyzeAnime(username, varScheme, userListInfo)
+                                worker.terminate()
                             }
-                            var varScheme = {}
-                            // Check Watched
-                            var userListInfo = []
-                            for(let i=0; i<animeList.length; i++){
-                                for(let j=0; j<animeList[i].entries.length; j++){ 
-                                    userListInfo.push({
-                                        title: animeList[i].entries[j].media.title.userPreferred,
-                                        status: animeList[i].status
-                                    })
-                                }
-                            }
-                            // Analyze each Anime Variable
-                            for(let i=0; i<animeEntries.length; i++){
-                                if(animeEntries[i].score>0){
-                                    var userScore = animeEntries[i].score
-                                    var anime = animeEntries[i].media
-                                    var format = {}
-                                    var year = {}
-                                    var season = {}
-                                    var episodes = {}
-                                    var episodetype
-                                    if(anime.episodes===1) episodetype = "Episode: 1"
-                                    else if (anime.episodes>1&&anime.episodes<7) episodetype = "Episode: 2-6"
-                                    else if (anime.episodes>6&&anime.episodes<14) episodetype = "Episode: 7-13"
-                                    else if (anime.episodes>13&&anime.episodes<27) episodetype = "Episode: 14-26"
-                                    else if (anime.episodes>26&&anime.episodes<53) episodetype = "Episode: 27-52"
-                                    else if (anime.episodes>52&&anime.episodes<101) episodetype = "Episode: 53-100"
-                                    else if (anime.episodes>100) episodetype = "Episode: 101+"
-                                    else episodetype = "Episode: null"
-                                    var genres = {}
-                                    var tags = {}
-                                    var tagsCategory = {}
-                                    var studios = {}
-                                    var staff = {}
-                                    if(Object.keys(varScheme).length<1){
-                                        format = {["Format: "+anime.format]: [userScore]}
-                                        episodes = {[episodetype]: [userScore]}
-                                        year = {["Year: "+anime.seasonYear]: [userScore]}
-                                        season = {["Season: "+anime.season]: [userScore]}
-                                        for(let j=0; j<anime.genres.length; j++){
-                                            genres = {["Genre: "+anime.genres[j]]: [userScore]
-                                            }}
-                                        for(let j=0; j<anime.tags.length; j++){
-                                            tags = {["Tag: "+anime.tags[j].name]: [userScore]}
-                                            tagsCategory = {["Tag Category: "+anime.tags[j].category]: [userScore]}
-                                        }
-                                        for(let j=0; j<anime.studios.nodes.length; j++){
-                                            studios = {["Studio: "+anime.studios.nodes[j].name]: [userScore]}
-                                        }
-                                        for(let j=0; j<anime.staff.edges.length; j++){
-                                            var firstname = anime.staff.edges[j].node.name.first
-                                            var lastname = anime.staff.edges[j].node.name.last
-                                            var fullname = []
-                                            if(firstname==null&&lastname==null){
-                                                fullname = "null"
-                                            } else {
-                                                if(firstname!==null) fullname.push(firstname)
-                                                if(lastname!==null) fullname.push(lastname)
-                                                fullname = fullname.join(" ")
-                                            }
-                                            fullname = "Staff: "+fullname
-                                            staff = {[fullname]: [userScore]}
-                                        }
-                                        varScheme = {
-                                            // Key with userScores Array
-                                            format: format, episodes: episodes, 
-                                            year: year, season: season, genres: genres, tags: tags,
-                                            tagsCategory: tagsCategory, studios: studios, staff: staff,
-                                        }
-                                    } else {
-                                        var xformat = anime.format==null? "Format: null" : "Format: "+anime.format
-                                        if(Object.keys(varScheme.format).includes(xformat)){
-                                            varScheme.format[xformat].push(userScore)
-                                        }
-                                        else{
-                                            varScheme.format = {...varScheme.format, [xformat]: [userScore]}
-                                        }
-                                        if(Object.keys(varScheme.episodes).includes(episodetype)){
-                                            varScheme.episodes[episodetype].push(userScore)
-                                        }
-                                        else{
-                                            varScheme.episodes = {...varScheme.episodes, [episodetype]: [userScore]}
-                                        }
-                                        var xseasonYear = anime.seasonYear==null? "Year: null" : "Year: "+anime.seasonYear.toString()
-                                        if(Object.keys(varScheme.year).includes(xseasonYear)){
-                                            varScheme.year[xseasonYear].push(userScore)
-                                        }
-                                        else{
-                                        varScheme.year = {...varScheme.year, [xseasonYear]: [userScore]}
-                                        }
-                                        var xseason = anime.season==null? "Season: null" : "Season: "+anime.season
-                                        if(Object.keys(varScheme.season).includes(xseason)){
-                                            varScheme.season[xseason].push(userScore)
-                                        }
-                                        else{
-                                        varScheme.season = {...varScheme.season, [xseason]: [userScore]}
-                                        }
-                                        for(let j=0; j<anime.genres.length; j++){
-                                            var xgenres = anime.genres[j]==null? "Genre: null" : "Genre: "+anime.genres[j]
-                                            if(Object.keys(varScheme.genres).includes(xgenres)){
-                                                varScheme.genres[xgenres].push(userScore)
-                                            }
-                                            else{
-                                                varScheme.genres = {...varScheme.genres, [xgenres]: [userScore]}
-                                            }
-                                        }
-                                        for(let j=0; j<anime.tags.length; j++){
-                                            var xtags = anime.tags[j].name==null? "Tag: null" : "Tag: "+anime.tags[j].name
-                                            if(Object.keys(varScheme.tags).includes(xtags)){
-                                                varScheme.tags[xtags].push(userScore)
-                                            }
-                                            else {
-                                                varScheme.tags = {...varScheme.tags, [xtags]: [userScore]}
-                                            }
-                                            var xtagsCategory = anime.tags[j].category==null? "Tag Category: null" : "Tag Category: "+anime.tags[j].category
-                                            if(Object.keys(varScheme.tagsCategory).includes(xtagsCategory)){
-                                                varScheme.tagsCategory[xtagsCategory].push(userScore)
-                                            }
-                                            else {
-                                                varScheme.tagsCategory = {...varScheme.tagsCategory, [xtagsCategory]: [userScore]}
-                                            }
-                                        }
-                                        for(let j=0; j<anime.studios.nodes.length; j++){
-                                            var xstudios = anime.studios.nodes[j].name==null? "Studio: null" : "Studio: "+anime.studios.nodes[j].name
-                                            if(Object.keys(varScheme.studios).includes(xstudios)){
-                                                varScheme.studios[xstudios].push(userScore)
-                                            }
-                                            else {
-                                                varScheme.studios = {...varScheme.studios, [xstudios]: [userScore]}
-                                            }
-                                        }
-                                        for(let j=0; j<anime.staff.edges.length; j++){
-                                            var firstname = anime.staff.edges[j].node.name.first
-                                            var lastname = anime.staff.edges[j].node.name.last
-                                            var fullname = []
-                                            if(firstname==null&&lastname==null){
-                                                fullname = "null"
-                                            } else {
-                                                if(firstname!==null) fullname.push(firstname)
-                                                if(lastname!==null) fullname.push(lastname)
-                                                fullname = fullname.join(" ")
-                                            }
-                                            fullname = "Staff: "+fullname
-                                            var xfullname = fullname
-                                            if(Object.keys(varScheme.staff).includes(xfullname)){
-                                                varScheme.staff[xfullname].push(userScore)
-                                            }
-                                            else varScheme.staff = {...varScheme.staff, [xfullname]: [userScore]}
-                                        }
-                                    }
-                                }
-                            }
-                            // Clean Data JSON
-                            var score, count, weight
-                            for(let i=0; i<Object.keys(varScheme.format).length; i++){
-                                var formatKey = Object.keys(varScheme.format)
-                                varScheme.format[formatKey[i]] = arrayMean(varScheme.format[formatKey[i]])*10
-                            }
-                            for(let i=0; i<Object.keys(varScheme.episodes).length; i++){
-                                var episodesKey = Object.keys(varScheme.episodes)
-                                varScheme.episodes[episodesKey[i]] = arrayMean(varScheme.episodes[episodesKey[i]])*10
-                            }
-                            for(let i=0; i<Object.keys(varScheme.year).length; i++){
-                                var yearKey = Object.keys(varScheme.year)
-                                varScheme.year[yearKey[i]] = arrayMean(varScheme.year[yearKey[i]])*10
-                            }
-                            for(let i=0; i<Object.keys(varScheme.season).length; i++){
-                                var seasonKey = Object.keys(varScheme.season)
-                                varScheme.season[seasonKey[i]] = arrayMean(varScheme.season[seasonKey[i]])*10
-                            }
-                            for(let i=0; i<Object.keys(varScheme.genres).length; i++){
-                                var genresKey = Object.keys(varScheme.genres)
-                                varScheme.genres[genresKey[i]] = arrayMean(varScheme.genres[genresKey[i]])*10
-                            }
-                            for(let i=0; i<Object.keys(varScheme.tags).length; i++){
-                                var tagsKey = Object.keys(varScheme.tags)
-                                varScheme.tags[tagsKey[i]] = arrayMean(varScheme.tags[tagsKey[i]])*10
-                            }
-                            for(let i=0; i<Object.keys(varScheme.tagsCategory).length; i++){
-                                var tagsCategoryKey = Object.keys(varScheme.tagsCategory)
-                                varScheme.tagsCategory[tagsCategoryKey[i]] = arrayMean(varScheme.tagsCategory[tagsCategoryKey[i]])*10
-                            }
-                            for(let i=0; i<Object.keys(varScheme.studios).length; i++){
-                                var studiosKey = Object.keys(varScheme.studios)
-                                varScheme.studios[studiosKey[i]] = arrayMean(varScheme.studios[studiosKey[i]])*10
-                            }
-                            for(let i=0; i<Object.keys(varScheme.staff).length; i++){
-                                var staffKey = Object.keys(varScheme.staff)
-                                varScheme.staff[staffKey[i]] = arrayMean(varScheme.staff[staffKey[i]])*10
-                            }
-                            // Join Data
-                            var varKeys = Object.keys(varScheme)
-                            var tempVar = {}
-                            for(let i=0; i<varKeys.length; i++){
-                                    var scoreVar = varScheme[varKeys[i]]
-                                    for(let j=0; j<Object.keys(scoreVar).length; j++){
-                                    var scoreKeys = Object.keys(scoreVar)
-                                    var scoreVal = Object.values(scoreVar)
-                                    tempVar = {...tempVar, [scoreKeys[j]]:scoreVal[j]}
-                                }
-                            }
-                            varScheme = tempVar
-                            analyzeAnime(username, varScheme, userListInfo)
                         },
                         error: function(xhr, error) {
                             var err = JSON.parse(xhr.responseText).errors[0].message
@@ -1188,12 +1007,10 @@
                                     .empty()
                                     .append(`An Error has Occured!`)
                             })
-                            
-                                $("#dataStatusContainer").fadeOut(2500,()=>{
-                                    $("#dataStatusSpinner").show()
-                                    $("#dataStatus").empty()
-                                })
-                            
+                            $("#dataStatusContainer").fadeOut(2500,()=>{
+                                $("#dataStatusSpinner").show()
+                                $("#dataStatus").empty()
+                            })
                             if(err==="User not found"){
                                 $("#username")[0].setCustomValidity("Username is not found!")
                                 $("#username")[0].reportValidity()
@@ -1212,15 +1029,15 @@
             }
 
             function analyzeAnime(username, varImportance, userListInfo){
-                var page = 1
+                // Download Recommendation List json
                 var maxAnimePerPage = 50
                 var maxRequest = 90
                 var firstMaxRequest = maxRequest-1 //MaxRequest-RequestsBefore
-                var startDate = new Date
+                var startDate = new Date()
                 var recScheme = []
                 var sum = 0
-                recall(page)
-                function recall(){
+                recall(1) // First Page
+                function recall(page){
                     $.ajax({
                         type: 'POST',
                         url: 'https://graphql.anilist.co',
@@ -1229,13 +1046,12 @@
                             'Accept': 'application/json',
                         },
                         dataType: 'json',
-                        data: JSON.stringify({
+                        data: JSON.stringify({//genre_not_in: ["Hentai"]
                             query: `
                             {
                                 Page(page: ${page}, perPage: ${maxAnimePerPage}) {
                                     media(
                                         type: ANIME,
-                                        genre_not_in: ["Hentai"]
                                         status_in:[FINISHED, RELEASING],
                                         format_in:[TV,TV_SHORT,MOVIE,OVA,ONA,SPECIAL]) {
                                         title {
@@ -1247,7 +1063,6 @@
                                         episodes
                                         genres
                                         tags {
-                                            category
                                             name
                                         }
                                         studios {
@@ -1275,191 +1090,38 @@
                             `
                         }),
                         beforeSend: ()=> {
-                            startDate = new Date
+                            startDate = new Date(Date.now + 1000) // Allowance of 1sec
                         },
                         success: (result)=>{
                             var timeInterval = 60000 //Minute in ms
-                            console.log(timeInterval)
                             var animeEntries = result.data.Page.media
                             if(animeEntries.length>0){
-                                for(let i=0; i<animeEntries.length; i++){
-                                    var anime = animeEntries[i]
-                                    var count = 0
-                                    /////
-                                    var title = anime.title.userPreferred || "Title: N/A"
-                                    var url = anime.siteUrl
-                                    // var type = anime.type || "N/A"
-                                    var format = anime.format || "Format: N/A"
-                                    var year = anime.seasonYear || "Year: N/A"
-                                    var season = anime.season || "Season: N/A"
-                                    var studios = anime.studios.nodes
-                                    var tags = anime.tags
-                                    var genres = anime.genres
-                                    var anilistScore = anime.averageScore
-                                    var status = "UNWATCHED"
-                                    var score = []
-                                    // Arrange
-                                    var xformat = format!=="Format: N/A"?`Format: ${format}`:`${Math.random()}`
-                                    var episodetype = `${Math.random()}`
-                                    if(anime.episodes===1) episodetype = "Episode: 1"
-                                    else if (anime.episodes>1&&anime.episodes<7) episodetype = "Episode: 2-6"
-                                    else if (anime.episodes>6&&anime.episodes<14) episodetype = "Episode: 7-13"
-                                    else if (anime.episodes>13&&anime.episodes<27) episodetype = "Episode: 14-26"
-                                    else if (anime.episodes>26&&anime.episodes<53) episodetype = "Episode: 27-52"
-                                    else if (anime.episodes>52&&anime.episodes<101) episodetype = "Episode: 53-100"
-                                    else if (anime.episodes>100) episodetype = "Episode: 101+"
-                                    //
-                                    var xyear = year!=="Year: N/A"?"Year: "+year:`${Math.random()}`
-                                    var xseason = season!=="Season: N/A"?"Season: "+season:`${Math.random()}`
-                                    var xgenres = []
-                                    for(let j=0; j<genres.length; j++){
-                                        xgenres.push("Genre: "+genres[j])
-                                    }
-                                    var xtags = []
-                                    var xtagsCategory = []
-                                    for(let j=0; j<tags.length; j++){
-                                        xtags.push("Tag: "+tags[j].name)
-                                        xtagsCategory.push("Tag Category: "+tags[j].category)
-                                    }
-                                    var xstudios = []
-                                    for(let j=0; j<studios.length; j++){
-                                        xstudios.push("Studio: "+studios[j].name)
-                                    }
-                                    var xstaff = []
-                                    for(let j=0; j<anime.staff.edges.length; j++){
-                                        var firstname = anime.staff.edges[j].node.name.first==null?null:anime.staff.edges[j].node.name.first
-                                        var lastname = anime.staff.edges[j].node.name.last==null?null:anime.staff.edges[j].node.name.last
-                                        var fullname = `${Math.random()}`
-                                        if(firstname!=null&&lastname!=null)
-                                            fullname = firstname+" "+lastname
-                                        else if(firstname!=null&&lastname==null)
-                                            fullname = firstname
-                                        else if(firstname==null&&lastname!=null)
-                                            fullname = lastname
-                                        xstaff.push("Staff: "+fullname)
-                                    }
-                                    // Analyze
-                                    if(typeof varImportance[format]!=="undefined"){
-                                        score.push(varImportance[format])
-                                        count+=1
-                                        sum += 1
-                                    }
-                                    if(typeof varImportance[episodetype]!=="undefined") {
-                                        score.push(varImportance[episodetype])
-                                        sum += 1
-                                        count+=1
-                                    }
-                                    if(typeof varImportance[year]!=="undefined") {
-                                        score.push(varImportance[year])
-                                        sum += 1
-                                        count+=1
-                                    }
-                                    if(typeof varImportance[season]!=="undefined") {
-                                        score.push(varImportance[season])
-                                        sum+=1
-                                        count+=1
-                                    }
-                                    for(let j=0; j<xgenres.length; j++){
-                                        if(typeof varImportance[xgenres[j]]!=="undefined") {
-                                            score.push(varImportance[xgenres[j]])
-                                            sum+=1
-                                            count+=1
-                                        }
-                                    }
-                                    for(let j=0; j<xtags.length; j++){
-                                        if(typeof varImportance[xtags[j]]!=="undefined") {
-                                            score.push(varImportance[xtags[j]])
-                                            sum+=1
-                                            count+=1
-                                        }
-                                    }
-                                    for(let j=0; j<xtagsCategory.length; j++){
-                                        if(typeof varImportance[xtagsCategory[j]]!=="undefined") {
-                                            score.push(varImportance[xtagsCategory[j]])
-                                            sum+=1
-                                            count+=1
-                                        }
-                                    }
-                                    for(let j=0; j<xstudios.length; j++){
-                                        if(typeof varImportance[xstudios[j]]!=="undefined") {
-                                            score.push(varImportance[xstudios[j]])
-                                            sum+=1
-                                            count+=1
-                                        }
-                                    }
-                                    for(let j=0; j<xstaff.length; j++){
-                                        if(typeof varImportance[xstaff[j]]!=="undefined") {
-                                            score.push(varImportance[xstaff[j]])
-                                            sum+=1
-                                            count+=1
-                                        }
-                                    }
-                                    score = score.length===0?0:arrayMean(score)
-                                    //
-                                    for(let k=0; k<userListInfo.length; k++){
-                                        if(userListInfo[k].title===title){
-                                            status = userListInfo[k].status
-                                            break
-                                        }
-                                    }
-                                    var info = ""
-                                    for(let k=0; k<genres.length; k++){
-                                        var genreName = genres[k]==="null"||genres[k]===null||genres[k]===""?"N/A":genres[k]
-                                        if(k<genres.length-1) info = info+genreName+", "
-                                        else info = info+genreName
-                                    }
-                                    genres = info==""?'Genres: N/A':info
-                                    info = ""
-                                    for(let k=0; k<tags.length; k++){
-                                        var tagName = tags[k].name==="null"||tags[k].name===null||tags[k].name===""?"N/A":tags[k].name
-                                        if(k<tags.length-1) info = info+tagName+", "
-                                        else info = info+tagName
-                                    }
-                                    tags = info==""?'Tags: N/A':info
-                                    info = ""
-                                    for(let k=0; k<studios.length; k++){
-                                        var studioName = studios[k].name==="null"||studios[k].name===null||studios[k].name===""?"N/A":studios[k].name
-                                        if(k<studios.length-1) info = info+studioName+", "
-                                        else info = info+studioName
-                                    }
-                                    studios = info==""?'Studios: N/A':info
-                                    info = ""
-                                    // Add Recommendation Scheme
-                                    if(recScheme.length<1){
-                                    recScheme.push({
-                                        title: title, url: url, score: score, count: count,
-                                        status: status, genres: genres, tags: tags, year: year, 
-                                        season: season, format: format, studios: studios
-                                        })
-                                    }
-                                    else{
-                                        var hasValue = false
-                                        for(let k=0; k<recScheme.length; k++){
-                                            hasValue = recScheme[k].title==title || hasValue
-                                        }
-                                        if(!hasValue){
-                                            recScheme.push({
-                                            title: title, url: url, score: score, count: count,
-                                            status: status, genres: genres, tags: tags, year: year, 
-                                            season: season, format: format, studios: studios
-                                            })
-                                        }
-                                    }
-                                }
-                                if((page%(page===1?firstMaxRequest:maxRequest))===0){
-                                    console.log(timeInterval);
-                                    setTimeout(()=>{
+                                var worker = new Worker("./js-css/worker/analyzeAnime.js")
+                                worker.postMessage({
+                                    animeEntries: animeEntries,
+                                    recScheme: recScheme,
+                                    userListInfo: userListInfo,
+                                    varImportance: varImportance
+                                })
+                                worker.onmessage = (message) => {
+                                    const data = message.data
+                                    recScheme = data.recScheme
+                                    sum = data.sum
+                                    worker.terminate()
+                                    if((page%(page===1?firstMaxRequest:maxRequest))===0){
+                                        setTimeout(()=>{
+                                            recall(++page)
+                                        },timeInterval-((new Date).getTime()-startDate.getTime()))
+                                    } else {
                                         recall(++page)
-                                    },timeInterval-((new Date).getTime()-startDate.getTime()))
-                                } else {
-                                    recall(++page)
+                                    }
                                 }
                             } else {
                                 // Clean Analyzed Recommendations
                                 for(let i=0;i<recScheme.length;i++){
                                     var anime = recScheme[i]
                                     var weight = (1/sum)*anime.count
-                                    recScheme[i].score=anime.score*weight*10000
+                                    recScheme[i].score=anime.score*weight
                                 }
                                 // Saved New Username
                                 saveJSON(username,"savedUsername")
@@ -1477,55 +1139,54 @@
                                     $("#dataStatus")
                                         .empty()
                                         .append(`List has been Updated!`)
-                                })
-                                setTimeout(async()=>{
-                                    requestIntervalSeconds = await retrieveJSON("requestIntervalSeconds") || 60
-                                    $("#dataStatusContainer").fadeOut(2500,()=>{
-                                        $("#dataStatusSpinner").show()
-                                        $("#dataStatus").empty()
-                                        // Reload Request Interval
-                                        for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
-                                        $("#dataStatusSpinner").show(0, ()=>{
-                                            $("#dataStatusContainer").fadeIn(2500).css("display","flex")
-                                            for(let i=requestIntervalSeconds; i>=0; i--){
-                                                let timeout = setTimeout(()=>{
-                                                    if(i===0){
-                                                        saveJSON(60, "requestIntervalSeconds")
-                                                        requestPause = false
-                                                        saveJSON(requestPause,"requestPause")
-                                                        $("#dataStatusSpinner").hide(0,()=>{
+                                    setTimeout(()=>{
+                                        $("#dataStatusContainer").fadeOut(2500,()=>{
+                                            $("#dataStatusSpinner").show()
+                                            $("#dataStatus").empty()
+                                            // Reload Request Interval
+                                            for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
+                                            $("#dataStatusSpinner").show(0, async()=>{
+                                                $("#dataStatusContainer").fadeIn(2500).css("display","flex")
+                                                requestIntervalSeconds = await retrieveJSON("requestIntervalSeconds") || 60
+                                                for(let i=requestIntervalSeconds; i>=0; i--){
+                                                    let timeout = setTimeout(()=>{
+                                                        if(i===0){
+                                                            saveJSON(60, "requestIntervalSeconds")
+                                                            requestPause = false
+                                                            saveJSON(requestPause,"requestPause")
+                                                            $("#dataStatusSpinner").hide(0,()=>{
+                                                                $("#dataStatus")
+                                                                    .empty()
+                                                                    .append(`Update is now Available!`)
+                                                                $("#dataStatusContainer").fadeOut(2500,()=>{
+                                                                    $("#dataStatus").empty()
+                                                                })
+                                                            })
+                                                        } else {
                                                             $("#dataStatus")
                                                                 .empty()
-                                                                .append(`Update is now Available!`)
-                                                            $("#dataStatusContainer").fadeOut(2500,()=>{
-                                                                $("#dataStatus").empty()
-                                                            })
-                                                        })
-                                                    } else {
-                                                        $("#dataStatus")
-                                                            .empty()
-                                                            .append(`Please wait for another Request... Estimated Time: ${msToTime(i*1000)}`)
-                                                        saveJSON(i, "requestIntervalSeconds")
-                                                    }
-                                                },(requestIntervalSeconds-i)*1000)
-                                                temp.push(timeout)
-                                            }
+                                                                .append(`Please wait for another Request... Estimated Time: ${msToTime(i*1000)}`)
+                                                            saveJSON(i, "requestIntervalSeconds")
+                                                        }
+                                                    },(requestIntervalSeconds-i)*1000)
+                                                    temp.push(timeout)
+                                                }
+                                            })
                                         })
-                                    })
-                                }, 1000)
+                                    }, 1000)
+                                })
                             }
                         },
                         error: function(xhr, error) {
                             var timeInterval = 60000 //Minute in ms
                             var err = JSON.parse(xhr.responseText).errors[0].message
-                            console.log(err, xhr);
                             if(err==="Too Many Requests."){
                                 // Clean Analyzed Recommendations
                                 var temp = recScheme
                                 for(let i=0;i<temp.length;i++){
                                     var anime = temp[i]
                                     var weight = (1/sum)*anime.count
-                                    temp[i].score=anime.score*weight*10000
+                                    temp[i].score=anime.score*weight
                                 }
                                 // Saved New Username
                                 saveJSON(username,"savedUsername")
@@ -1537,205 +1198,69 @@
                                 // downloadObjectAsJson(recScheme,"NWVI-NWA")
                                 // Reload new Data
                                 LoadData(temp)
-                                console.log("---runnedx", timeInterval)
                                 setTimeout(()=>{
-                                    console.log("---runnedxx", timeInterval)
                                     recall(page)
                                 },timeInterval)
                             } else {
-                            setTimeout(()=>{
-                                $("#dataStatusContainer").fadeOut(2500,()=>{
-                                    $("#dataStatusSpinner").show()
-                                    $("#dataStatus").empty()
-                                    if(err==="User not found"){
-                                    $("#username")[0].setCustomValidity("Username is not found!")
-                                    $("#username")[0].reportValidity()
-                                    } else {
-                                        console.log("---runnedy", timeInterval)
-                                        setTimeout(()=>{
-                                            console.log("---runnedyy", timeInterval)
-                                            recall(page)
-                                        },timeInterval)
-                                        swal("Error", {
-                                            title: "Oops...Something Went Wrong!",
-                                            text: `Error: ${err}`,
-                                            icon: "error"
-                                        })
-                                        requestIsRunning = false
-                                    }
-                                })
-                            }, 1000)
+                                setTimeout(()=>{
+                                    $("#dataStatusContainer").fadeOut(2500,()=>{
+                                        $("#dataStatusSpinner").show()
+                                        $("#dataStatus").empty()
+                                        if(err==="User not found"){
+                                        $("#username")[0].setCustomValidity("Username is not found!")
+                                        $("#username")[0].reportValidity()
+                                        } else {
+                                            setTimeout(()=>{
+                                                recall(page)
+                                            },timeInterval)
+                                            swal("Error", {
+                                                title: "Oops...Something Went Wrong!",
+                                                text: `Error: ${err}`,
+                                                icon: "error"
+                                            })
+                                            requestIsRunning = false
+                                        }
+                                    })
+                                }, 1000)
                             }
                             console.error(error)
                         }                        
                     })
                 }
             }
-            async function LoadData(data){
-                var filterInputs = $(".flexdatalist-multiple > .value").children(".text")
-                var filters = []
-                var includes = []
-                var excludes = []
-                for(let i=0; i<filterInputs.length; i++){
-                    var filterName = filterInputs[i].textContent
-                    filters.push(filterName)
-                    if(filterName.charAt(0)==="!") excludes.push(filterName.slice(1))
-                    else includes.push(filterName)
-                }
-                saveJSON(filters, "savedFilters")
-                if((data.length>0)) {
-                  // FilterOut User Includes and Excludes
-                    // Include
-                    var tempRecScheme = []
-                    for(let i=0; i<includes.length; i++){
-                        for(let j=0; j<data.length; j++){
-                            var hasValue = false
-                            if(equalsNCS(includes[i],data[j].type)
-                            ||equalsNCS(includes[i],data[j].format)
-                            ||equalsNCS(includes[i],data[j].year)
-                            ||equalsNCS(includes[i],data[j].season)
-                            ||equalsNCS(includes[i],data[j].status)
-                            ||equalsNCS(includes[i],"hidden"))
-                            {
-                                tempRecScheme.push(data[j])
-                                continue
-                            }
-                            var temp = data[j].studios.split(", ")
-                            for(let k=0; k<temp.length; k++){
-                                if(equalsNCS(includes[i],temp[k])){
-                                    tempRecScheme.push(data[j])
-                                    hasValue = true
-                                    break
-                                }
-                            }
-                            if(hasValue) continue
-                            temp = data[j].genres.split(", ")
-                            for(let k=0; k<temp.length; k++){
-                                if(equalsNCS(includes[i],temp[k])){
-                                    tempRecScheme.push(data[j])
-                                    hasValue = true
-                                    break
-                                }
-                            }
-                            if(hasValue) continue
-                            temp = data[j].tags.split(", ")
-                            for(let k=0; k<temp.length; k++){
-                                if(equalsNCS(includes[i],temp[k])){
-                                    tempRecScheme.push(data[j])
-                                    hasValue = true
-                                    break
-                                }
-                            }
-                        }
-                        data = tempRecScheme
-                        tempRecScheme = []
+            async function LoadData(recScheme){
+                if((recScheme.length>0)) {
+                    var filterInputs = $(".flexdatalist-multiple > .value").children(".text")
+                    var filters = []
+                    var includes = []
+                    var excludes = []
+                    for(let i=0; i<filterInputs.length; i++){
+                        var filterName = filterInputs[i].textContent
+                        filters.push(filterName)
+                        if(filterName.charAt(0)==="!") excludes.push(filterName.slice(1))
+                        else includes.push(filterName)
                     }
-                    // Exclude
-                    for(let i=0; i<excludes.length; i++){
-                        for(let j=0; j<data.length; j++){
-                            var hasValue = false
-                            if(equalsNCS(excludes[i],data[j].type)
-                            ||equalsNCS(excludes[i],data[j].format)
-                            ||equalsNCS(excludes[i],data[j].year)
-                            ||equalsNCS(excludes[i],data[j].season)
-                            ||equalsNCS(excludes[i],data[j].status))
-                            {
-                                continue
-                            }
-                            temp = data[j].studios.split(", ")
-                            for(let k=0; k<temp.length; k++){
-                                if(equalsNCS(excludes[i],temp[k])){
-                                    hasValue = true
-                                    break
-                                }
-                            }
-                            if(hasValue) continue
-                            temp = data[j].genres.split(", ")
-                            for(let k=0; k<temp.length; k++){
-                                if(equalsNCS(excludes[i],temp[k])){
-                                    hasValue = true
-                                    break
-                                }
-                            }
-                            if(hasValue) continue
-                            temp = data[j].tags.split(", ")
-                            for(let k=0; k<temp.length; k++){
-                                if(equalsNCS(excludes[i],temp[k])){
-                                    hasValue = true
-                                    break
-                                }
-                            }
-                            if(hasValue==false)
-                                tempRecScheme.push(data[j])
-                        }
-                        data = tempRecScheme
-                        tempRecScheme = []
-                    }
-                    // Show Table
-                    var animeData = ""
+                    saveJSON(filters, "savedFilters")
                     savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
-                    $.each(data, (key, value) => {
-                        var score = parseFloat(value.score)
-                        if(includes.some(item=>equalsNCS(item,"hidden"))){                            
-                            if(savedHiddenAnimeTitles.includes(value.title)){
-                                animeData += `
-                                <tr class="item" role="row">
-                                    <td class="hide-anime-column">
-                                        <button 
-                                            style="margin:auto; padding: 5px 13px;" 
-                                            type="button" class="show-anime" 
-                                            title="Hide this Anime">Show</button>
-                                    </td>
-                                    <td class="anime-score" title="${score}">${score}</td>
-                                    <td id="animeTitle"><a href="${value.url}">${value.title}</a></td>
-                                    <td>${value.status}</td>
-                                    <td>${value.genres}</td>
-                                    <td>${value.tags}</td>
-                                    <td>${value.format}</td>
-                                    <td>${value.year}</td>
-                                    <td>${value.season}</td>
-                                    <td>${value.studios}</td>
-                                </tr>`
-                            }
-                        } else {
-                            if(!savedHiddenAnimeTitles.includes(value.title)){
-                                animeData += `
-                                <tr class="item" role="row">
-                                    <td class="hide-anime-column">
-                                        <button 
-                                            style="margin:auto; padding: 5px 13px;" 
-                                            type="button" class="hide-anime" 
-                                            title="Hide this Anime">Hide</button>
-                                    </td>
-                                    <td class="anime-score" title="${score}">${score}</td>
-                                    <td id="animeTitle"><a href="${value.url}">${value.title}</a></td>
-                                    <td>${value.status}</td>
-                                    <td>${value.genres}</td>
-                                    <td>${value.tags}</td>
-                                    <td>${value.format}</td>
-                                    <td>${value.year}</td>
-                                    <td>${value.season}</td>
-                                    <td>${value.studios}</td>
-                                </tr>`
-                            }
-                        }
+                    var worker = new Worker("./js-css/worker/loadData.js")
+                    worker.postMessage({
+                        recScheme: recScheme,
+                        savedHiddenAnimeTitles: savedHiddenAnimeTitles,
+                        includes: includes,
+                        excludes: excludes
                     })
-                    if(animeData===""){
-                        animeData = `
-                            <tr class="item" role="row">
-                                <td style="padding: 1.5em !important;" colspan="10">
-                                   <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                                   No Data
-                                </td>
-                            </tr>
-                        `
+                    worker.onmessage = async (message) => {
+                        const data = message.data
+                        const animeData = data.animeData
+                        worker.terminate()
+                        $("#animeRecommendationList").empty()
+                        $("#animeRecommendationList").append(animeData)
+                        await $("#anime-table").trigger("update")
+                        await $("#anime-table").trigger("pagerUpdate")
+                        setTimeout(()=>{
+                            $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                        },0)
                     }
-                    $("#animeRecommendationList").empty()
-                    $("#animeRecommendationList").append(animeData)
-                    await $("#anime-table").trigger("update")
-                    setTimeout(()=>{
-                        $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
-                    },0)
                 } else {
                     Update()
                 }
@@ -1774,7 +1299,6 @@
                             resolve(read.result)
                         }
                         read.onerror = (event) => {
-                            console.error("ruasdas")
                             resolve(JSON.parse(localStorage.getItem(name)))
                         }
                     } catch(ex){
