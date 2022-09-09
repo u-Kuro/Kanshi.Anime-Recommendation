@@ -648,6 +648,9 @@
                             cssPageDisplay: '.pagedisplay', 
                         })
                     $("#next, #prev, #first, #last").on('click', async function(){
+                        setTimeout(()=>{
+                            $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                        },0)
                         var page = $('#anime-table')[0].config.pager.page
                         savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
                         savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
@@ -1185,12 +1188,12 @@
                                     .empty()
                                     .append(`An Error has Occured!`)
                             })
-                            setTimeout(()=>{
+                            
                                 $("#dataStatusContainer").fadeOut(2500,()=>{
                                     $("#dataStatusSpinner").show()
                                     $("#dataStatus").empty()
                                 })
-                            })
+                            
                             if(err==="User not found"){
                                 $("#username")[0].setCustomValidity("Username is not found!")
                                 $("#username")[0].reportValidity()
@@ -1207,17 +1210,17 @@
                     })
                 }
             }
+
             function analyzeAnime(username, varImportance, userListInfo){
                 var page = 1
                 var maxAnimePerPage = 50
                 var maxRequest = 90
                 var firstMaxRequest = maxRequest-1 //MaxRequest-RequestsBefore
-                var timeInterval = 60000 //Minute in ms
-                var startDate
+                var startDate = new Date
                 var recScheme = []
                 var sum = 0
                 recall(page)
-                function recall(xpage){
+                function recall(){
                     $.ajax({
                         type: 'POST',
                         url: 'https://graphql.anilist.co',
@@ -1232,7 +1235,7 @@
                                 Page(page: ${page}, perPage: ${maxAnimePerPage}) {
                                     media(
                                         type: ANIME,
-                                        genre_not_in:["Hentai"],
+                                        genre_not_in: ["Hentai"]
                                         status_in:[FINISHED, RELEASING],
                                         format_in:[TV,TV_SHORT,MOVIE,OVA,ONA,SPECIAL]) {
                                         title {
@@ -1271,10 +1274,12 @@
                             }
                             `
                         }),
-                        beforeSend: function() {
-                            startDate = new Date(Date.now()+1000) //Delay 1 Second
+                        beforeSend: ()=> {
+                            startDate = new Date
                         },
                         success: (result)=>{
+                            var timeInterval = 60000 //Minute in ms
+                            console.log(timeInterval)
                             var animeEntries = result.data.Page.media
                             if(animeEntries.length>0){
                                 for(let i=0; i<animeEntries.length; i++){
@@ -1442,9 +1447,10 @@
                                     }
                                 }
                                 if((page%(page===1?firstMaxRequest:maxRequest))===0){
+                                    console.log(timeInterval);
                                     setTimeout(()=>{
                                         recall(++page)
-                                    },(timeInterval-((new Date).getTime()-startDate.getTime())))
+                                    },timeInterval-((new Date).getTime()-startDate.getTime()))
                                 } else {
                                     recall(++page)
                                 }
@@ -1510,30 +1516,58 @@
                             }
                         },
                         error: function(xhr, error) {
+                            var timeInterval = 60000 //Minute in ms
                             var err = JSON.parse(xhr.responseText).errors[0].message
-                            $("#dataStatus")
-                                .empty()
-                                .append(`An Error Occured!`)
+                            console.log(err, xhr);
+                            if(err==="Too Many Requests."){
+                                // Clean Analyzed Recommendations
+                                var temp = recScheme
+                                for(let i=0;i<temp.length;i++){
+                                    var anime = temp[i]
+                                    var weight = (1/sum)*anime.count
+                                    temp[i].score=anime.score*weight*10000
+                                }
+                                // Saved New Username
+                                saveJSON(username,"savedUsername")
+                                // Save new AnimeList json Data
+                                saveJSON(temp, "savedData")
+                                // Show Table Update Buttons
+                                $("#updateTableBtns").css("display","flex")
+                                // // Download Recommendation List json
+                                // downloadObjectAsJson(recScheme,"NWVI-NWA")
+                                // Reload new Data
+                                LoadData(temp)
+                                console.log("---runnedx", timeInterval)
+                                setTimeout(()=>{
+                                    console.log("---runnedxx", timeInterval)
+                                    recall(page)
+                                },timeInterval)
+                            } else {
                             setTimeout(()=>{
-                                $("#dataStatus").fadeOut(2500,()=>{
+                                $("#dataStatusContainer").fadeOut(2500,()=>{
+                                    $("#dataStatusSpinner").show()
                                     $("#dataStatus").empty()
                                     if(err==="User not found"){
                                     $("#username")[0].setCustomValidity("Username is not found!")
                                     $("#username")[0].reportValidity()
                                     } else {
+                                        console.log("---runnedy", timeInterval)
+                                        setTimeout(()=>{
+                                            console.log("---runnedyy", timeInterval)
+                                            recall(page)
+                                        },timeInterval)
                                         swal("Error", {
                                             title: "Oops...Something Went Wrong!",
                                             text: `Error: ${err}`,
                                             icon: "error"
                                         })
+                                        requestIsRunning = false
                                     }
                                 })
                             }, 1000)
+                            }
                             console.error(error)
-                        },
-                        complete: () => {
-                            requestIsRunning = false
-                        }
+                        }                        
                     })
                 }
             }

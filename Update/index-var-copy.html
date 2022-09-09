@@ -264,6 +264,9 @@
                 max-width: fit-content !important;
                 cursor: pointer;
             }
+            #updateTableBtns{
+                display: none;
+            }
             .anime-table-headers > th{
                 vertical-align: middle !important;
                 padding: 1em !important;
@@ -378,7 +381,7 @@
             }
             .tablesorter-pager .pagedisplay {
                 margin-block: auto;
-                text-align: center;
+                text-align: left;
             }
             .tablesorter-pager select {
                 margin: 0;
@@ -395,6 +398,26 @@
             .pagerSavedHeightSpacer{
                 display: none;
             }
+            .pagedisplay{
+                max-width: fit-content;
+            }
+            .pagenum{
+                background-color: transparent;
+                height: fit-content;
+                border: transparent;
+                text-align: center;
+                outline: none;
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+            }
+            .pagenum>*{
+                background-color: black;
+                color: white;
+            }
+            .endPage{
+                text-align: left;
+            }
         </style>
     </head>
     <body>
@@ -410,6 +433,10 @@
                 <div class="userInputContainer">
                     <input class="userInput" placeholder="Anilist Username" name="username" id="username" type="text">
                 </div>
+                <div id="updateTableBtns" class="btn-container">
+                    <button id="showAllAnime" class="btn show-hidden-btn show-all-anime" type="submit">Show All</button>
+                    <button id="updateBtn" class="btn" type="submit">Update</button>
+                </div>
                 <div class="filter-container">
                     <input type="text"
                         placeholder="Filter Genre/Tags/etc.(Exclude - add !)"
@@ -419,10 +446,6 @@
                         multiple="multiple"
                         data-min-length="1"
                         name="filter">
-                </div>
-                <div class="btn-container">
-                    <button id="showAllAnime" class="btn show-hidden-btn show-all-anime" type="submit">Show All</button>
-                    <button id="updateBtn" class="btn" type="submit">Update</button>
                 </div>
                 <div class="btn-container">
                     <button id="searchBtn" class="btn" type="submit">Search</button>
@@ -465,7 +488,10 @@
             <form class="pager-form">
                 <span id="first" class="first"><h5>First</h5></span>
                 <span id="prev" class="prev"><h5>Prev</h5></span>
-                <span class="pagedisplay"></span>
+                <span id="selectPageNumber">
+                    <select id="pageNumberOptions" class="custom-select pagenum" title="Select page number"></select>
+                    <!-- <div class="endPage"><span class="pagedisplay"></span></div> -->
+                </span>
                 <span id="next" class="next"><h5>Next</h5></span>
                 <span id="last" class="last"><h5>Last</h5></span>
             </form>
@@ -514,57 +540,146 @@
         </div>
 
         <script defer>
-            // Load Saved Data
-            var savedUsername = retrieveJSON("savedUsername") || ""
-            var savedData = retrieveJSON("savedJSON") || []
-            var savedFilters = retrieveJSON("savedFilters") || []
-            var savedHiddenAnimeTitles = retrieveJSON("savedHiddenAnimeTitles") || []
-            // Load Saved Website State
-            var savedYscroll = retrieveJSON("savedYscroll") || 0.0
-            var savedTablePage = retrieveJSON("savedTablePage") || 0
-            // Load Saved API Request State
-            var savedUpdateTime = retrieveJSON("savedUpdateTime") || 420
-            var requestPause = retrieveJSON("requestPause") || false
-            var requestIntervalSeconds = retrieveJSON("requestIntervalSeconds") || 60
-            var requestIsRunning = false
-            var updateStartTime
-            var temp = []
-            // Reload Saved Data
+            // Initialize Global Variables
+              // IndexDB
+            var request
+            var db
+              // Saved Data
+            var savedUsername, savedData, savedFilters,
+            savedHiddenAnimeTitles, savedYscroll, savedTablePage,
+              // Load Saved API Request State
+            savedUpdateTime, requestPause, requestIntervalSeconds,
+            updateStartTime, isRunning = false, requestIsRunning = false, temp = []
+            // Create IndexDB
             $(window).load(function() {
-                // Auto css
-                $(".table-responsive").css("margin-bottom",`${$("#pager").outerHeight()+43}px`)
-                // Reload saved Website Y-Position
-                $('body').animate({scrollTop: savedYscroll},1)
-                // Reload Name
-                if(savedUsername.length>0)
-                    $("#username").val(savedUsername)
-                // Reload Filters -> Data
-                // Check for FlexDatalist Availability
-                let x = setInterval(() => {
-                    if($(".flexdatalist-multiple-value > .flexdatalist-alias").length){
-                        clearInterval(x)
-                        // Reload Filters
-                        var filterInput
-                        for(let i=0; i<savedFilters.length; i++) {
-                            filterInput = $(".flexdatalist-multiple-value > .flexdatalist-alias")
-                            filterInput.val(savedFilters[i])
-                            var e = $.Event("keyup",{keyCode:13})
-                            filterInput.trigger(e)
-                        }
-                        // Check if the List shown is Hidden List or Unhidden List -> Rename th button
-                        var filters = $(".flexdatalist-multiple").children("li.value")
-                        for(let i=0; i<filters.length; i++) {
-                            var filterName = filters.eq(i).children(".text")[0].innerText
-                            if(filterName.toLowerCase()==="hidden"){
-                                $("#hiddenUnhiddenBtn").text("Unhidden")
+                new Promise((resolve)=>{
+                    request = window.indexedDB.open("MyIndexDB", 1)
+                    request.onerror = (event) => {
+                        console.error("MyIndexDB is Not Allowed! Using Locale Storage Instead")
+                    }
+                    request.onsuccess = (event) => {
+                        db = event.target.result
+                        resolve()
+                    }
+                    request.onupgradeneeded = (event) => {
+                        db = event.target.result;
+                        db.createObjectStore("MyObjectStore")
+                    }
+                }).then(async()=>{
+                    // Auto css
+                    $(".table-responsive").css("margin-bottom",`${$("#pager").outerHeight()+43}px`)
+                    // Reload Saved Data
+                    // Reload saved Website Y-Position
+                    savedYscroll = await retrieveJSON("savedYscroll") || 0.0
+                    $('body').animate({scrollTop: savedYscroll},1)
+                    // Reload Name
+                    savedUsername = await retrieveJSON("savedUsername") || ""
+                    if(savedUsername.length>0)
+                        $("#username").val(savedUsername)
+                    // Reload Filters -> Data
+                        // Check for FlexDatalist Availability
+                    let x = setInterval(async () => {
+                        if($(".flexdatalist-multiple-value > .flexdatalist-alias").length){
+                            clearInterval(x)
+                            // Reload Filters
+                            var filterInput
+                            savedFilters = await retrieveJSON("savedFilters") || []
+                            for(let i=0; i<savedFilters.length; i++) {
+                                filterInput = $(".flexdatalist-multiple-value > .flexdatalist-alias")
+                                filterInput.val(savedFilters[i])
+                                var e = $.Event("keyup",{keyCode:13})
+                                filterInput.trigger(e)
                             }
+                            // Check if the List shown is Hidden List or Unhidden List -> Rename th button
+                            var filters = $(".flexdatalist-multiple").children("li.value")
+                            for(let i=0; i<filters.length; i++) {
+                                var filterName = filters.eq(i).children(".text")[0].innerText
+                                if(filterName.toLowerCase()==="hidden"){
+                                    $("#hiddenUnhiddenBtn").text("Unhidden")
+                                }
+                            }
+                            // Reload Data Table
+                            savedData = await retrieveJSON("savedData") || []
+                            if(savedData.length>0){
+                                $("#updateTableBtns").css("display","flex")
+                                if(savedData.length>0){
+                                    $("#showAllAnime").show()
+                                }
+                                LoadData(savedData)
+                            } else {
+                                animeData = `
+                                    <tr class="item" role="row">
+                                        <td style="padding: 1.5em !important;" colspan="10">
+                                            <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                            No Data
+                                        </td>
+                                    </tr>
+                                `
+                                $("#animeRecommendationList").empty()
+                                $("#animeRecommendationList").append(animeData)
+                                $("#anime-table").trigger("update")
+                            }
+                        }   
+                    },1)
+                    
+                    // Load Functions
+                    savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
+                    savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
+                    $("#anime-table")
+                        .tablesorter({
+                            sortInitialOrder: "asc",
+                            headers: {
+                                0:{sortInitialOrder: "desc"}
+                            }
+                        })
+                        .tablesorterPager({
+                            container: $(".pager"),
+                            output: '⠀of⠀{totalPages}⠀⠀⠀',
+                            updateArrows: true,
+                            page: savedTableStatus==="Unhidden"? savedTablePage[0]:savedTablePage[1],
+                            size: 7,
+                            pageReset: false,
+                            removeRows: false,
+                            cssNext: '.next', 
+                            cssPrev: '.prev', 
+                            cssFirst: '.first', 
+                            cssLast: '.last',
+                            cssGoto: '.pagenum',
+                            cssPageDisplay: '.pagedisplay', 
+                        })
+                    $("#next, #prev, #first, #last").on('click', async function(){
+                        setTimeout(()=>{
+                            $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                        },0)
+                        var page = $('#anime-table')[0].config.pager.page
+                        savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
+                        savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
+                        saveJSON(savedTableStatus==="Unhidden"?[page,savedTablePage[1]]:[savedTablePage[0],page],"savedTablePage")
+                    })
+                    $('#anime-table').delegate('button.hide-anime', 'click' , async function() {
+                        var hiddenRow =  $(this).closest('tr')
+                        var hiddenAnimeTitle = hiddenRow.children("td#animeTitle").children("a")[0].textContent
+                        savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
+                        savedHiddenAnimeTitles.push(hiddenAnimeTitle)
+                        saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                        // Have a Hidden Anime
+                        if(savedHiddenAnimeTitles.length>0){
+                            $("#showAllAnime").show()
                         }
-                        // Reload Data Table
-                        if(savedData.length>0){
-                            $("#updateBtn").show()
-                            LoadData(savedData)
-                        } else {
-                            animeData = `
+                        hiddenRow.remove()
+                        $("#anime-table").trigger("update")
+                        return false
+                    })
+                    $('#anime-table').delegate('button.show-anime', 'click' , async function() {
+                        var hiddenRow = $(this).closest('tr')
+                        var hiddenAnimeTitle = hiddenRow.children("td#animeTitle").children("a")[0].textContent
+                        savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
+                        savedHiddenAnimeTitles = savedHiddenAnimeTitles.filter((v)=>v!==hiddenAnimeTitle)
+                        saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                        // No Hidden Anime
+                        if(savedHiddenAnimeTitles.length===0){
+                            $("#showAllAnime").hide()
+                            var animeData = `
                                 <tr class="item" role="row">
                                     <td style="padding: 1.5em !important;" colspan="10">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
@@ -574,88 +689,29 @@
                             `
                             $("#animeRecommendationList").empty()
                             $("#animeRecommendationList").append(animeData)
-                            $("#anime-table").trigger("update")
                         }
-                    }   
-                },1)
-                
-                // Load Functions  
-                var pagerOptions = {
-                    container: $(".pager"),
-                    output: '{page} of {totalPages}',
-                    updateArrows: true,
-                    page: savedTablePage,
-                    size: 7,
-                    savePages : true,
-                    storageKey:'tablesorter-pager',
-                    pageReset: 0,
-                    fixedHeight: true,
-                    removeRows: false,
-                    countChildRows: false,
-                    cssNext: '.next', 
-                    cssPrev: '.prev', 
-                    cssFirst: '.first', 
-                    cssLast: '.last',
-                    cssPageDisplay: '.pagedisplay', 
-                    cssPageSize: '.pagesize',
-                    cssDisabled: 'disabled', 
-                    cssErrorRow: 'tablesorter-errorRow'
-                };
-                $("#anime-table")
-                    .tablesorter({
-                        sortInitialOrder: "asc",
-                        headers: {
-                            0:{sortInitialOrder: "desc"}
-                        }
+                        hiddenRow.remove()
+                        $("#anime-table").trigger("update")
+                        return false
                     })
-                    .tablesorterPager(pagerOptions);
-                $("#next, #prev, #first, #last").on('click',function(){
-                    saveJSON($('#anime-table')[0].config.pager.page,"savedTablePage")
+                    // Remove Loader
+                    setTimeout(()=>{
+                        $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                    },0)
+                    $(".loader").fadeOut("slow")
                 })
-                $('#anime-table').delegate('button.hide-anime', 'click' ,function() {
-                    var hiddenRow =  $(this).closest('tr')
-                    var hiddenAnimeTitle = hiddenRow.children("td#animeTitle").children("a")[0].textContent
-                    savedHiddenAnimeTitles.push(hiddenAnimeTitle)
-                    saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
-                    // Have a Hidden Anime
-                    if(savedHiddenAnimeTitles.length>0){
-                        $("#showAllAnime").show()
-                    }
-                    hiddenRow.remove()
-                    $('#anime-table').trigger('update')
-                    return false
-                })
-                $('#anime-table').delegate('button.show-anime', 'click' ,function() {
-                    var hiddenRow =  $(this).closest('tr')
-                    var hiddenAnimeTitle = hiddenRow.children("td#animeTitle").children("a")[0].textContent
-                    savedHiddenAnimeTitles = savedHiddenAnimeTitles.filter((v)=>v!==hiddenAnimeTitle)
-                    saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
-                    hiddenRow.remove()
-                    // No Hidden Anime
-                    if(savedHiddenAnimeTitles.length===0){
-                        $("#showAllAnime").hide()
-                        var animeData = `
-                            <tr class="item" role="row">
-                                <td style="padding: 1.5em !important;" colspan="10">
-                                    <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                                    No Data
-                                </td>
-                            </tr>
-                        `
-                        $("#animeRecommendationList").empty()
-                        $("#animeRecommendationList").append(animeData)
-                    }
-                    $('#anime-table').trigger('update')
-                    return false
-                })
-                // Remove Loader
-                $(".loader").fadeOut("slow")
             })
             // Event Listeners
-            $("#username").on('keypress',e=>{if(e.which==13)LoadData(savedData)})
-            $("#searchBtn").on('click',()=>{LoadData(savedData)})
-            $("#updateBtn").on('click',()=>{
-                swal({
+            $("#username").on('keypress',async e =>{
+                savedData = await retrieveJSON("savedData") || []
+                if(e.which==13) LoadData(savedData)
+            })
+            $("#searchBtn").on('click', async ()=>{
+                savedData = await retrieveJSON("savedData") || []
+                savedUpdateTime = await retrieveJSON("savedUpdateTime") || 420
+                if(savedData.length>0) LoadData(savedData)
+                else {
+                    swal({
                     text: `Are you sure that you want to Update? 
                     The estimated time to finish is ${msToTime(savedUpdateTime*1000)}`,
                     buttons: true,
@@ -666,52 +722,96 @@
                         Update()
                     }
                 })
+            }
             })
-            $("#hiddenUnhiddenBtn").on('click',()=>{
-                if(savedUsername.length>0&&savedData.length>0){
-                    var state = $("#hiddenUnhiddenBtn").text()
-                    if(!equalsNCS($("#username"),savedUsername)){
-                        $("#username").val(savedUsername)
+            $("#updateBtn").on('click', async ()=>{
+                savedUpdateTime = await retrieveJSON("savedUpdateTime") || 420
+                swal({
+                    text: `Are you sure that you want to Update? 
+                    The estimated time to finish is ${msToTime(savedUpdateTime*1000)}`,
+                    buttons: true,
+                })
+                .then(async (confirmed) => {
+                    if(confirmed){
+                        savedData = await retrieveJSON("savedData") || []
+                        LoadData(savedData)
+                        Update()
                     }
-                    if(state==="Unhidden"){
-                        $("#hiddenUnhiddenBtn").text("Hidden")
-                        if($(".flexdatalist-multiple-value > .flexdatalist-alias").length){
-                            var filterInput = $(".flexdatalist-multiple-value > .flexdatalist-alias")
-                            filterInput.val("hidden")
-                            var e = $.Event("keyup",{keyCode:13})
-                            filterInput.trigger(e)
+                })
+            })
+            $("#hiddenUnhiddenBtn").on('click', async()=>{
+                if(!isRunning){
+                    isRunning = true
+                    savedUsername = await retrieveJSON("savedUsername") || ""
+                    savedData = await retrieveJSON("savedData") || []
+                    if(savedUsername.length>0&&savedData.length>0){
+                        var state = await $("#hiddenUnhiddenBtn").text()
+                        if(!equalsNCS($("#username"),savedUsername)){
+                            await $("#username").val(savedUsername)
                         }
-                        LoadData(savedData)
-                    } else {
-                        $("#hiddenUnhiddenBtn").text("Unhidden")
-                        if($(".flexdatalist-multiple-value").length){
-                            var filters = $(".flexdatalist-multiple").children("li.value")
-                            for(let i=0; i<filters.length; i++) {
-                                var filterName = filters.eq(i).children(".text")[0].innerText
-                                if(filterName.toLowerCase()==="hidden"){
-                                    filters.eq(i).children(".fdl-remove").trigger("click")
-                                    $(".flexdatalist-alias").blur()
-                                }
+                        if(state==="Unhidden"){
+                            if($(".flexdatalist-multiple-value > .flexdatalist-alias").length){
+                                var filterInput = await $(".flexdatalist-multiple-value > .flexdatalist-alias")
+                                await filterInput.val("hidden")
+                                var e = await $.Event("keyup",{keyCode:13})
+                                await filterInput.trigger(e)
                             }
-                        } 
-                        LoadData(savedData)
+                            saveJSON("Hidden","savedTableStatus")
+                            await LoadData(savedData)
+                            await $("#hiddenUnhiddenBtn").text("Hidden")
+                            savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
+                            await $('#anime-table').trigger("pageSet",savedTablePage[1])
+                            isRunning = false
+                        } else {
+                            if($(".flexdatalist-multiple-value").length){
+                                var filters = await $(".flexdatalist-multiple").children("li.value")
+                                for(let i=0; i<filters.length; i++) {
+                                    var filterName = await filters.eq(i).children(".text")[0].innerText
+                                    if(filterName.toLowerCase()==="hidden"){
+                                        await filters.eq(i).children(".fdl-remove").trigger("click")
+                                        await $(".flexdatalist-alias").blur()
+                                    }
+                                }
+                            } 
+                            saveJSON("Unhidden","savedTableStatus")
+                            await LoadData(savedData)
+                            $("#hiddenUnhiddenBtn").text("Unhidden")
+                            savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
+                            await $('#anime-table').trigger("pageSet",savedTablePage[0])
+                            isRunning = false
+                        }
                     }
                 }
-                
             })
-            $("#showAllAnime").on('click',()=>{
+            $("#showAllAnime").on('click', ()=>{       
                 swal({
                     text: "Are you sure that you want to show all hidden Anime?",
                     buttons: true,
                 })
-                .then((confirmed) => {
+                .then(async(confirmed) => {
                     if(confirmed){
+                        savedUsername = await retrieveJSON("savedUsername") || ""
                         if(!equalsNCS($("#username"),savedUsername)){
                             $("#username").val(savedUsername)
                         }
-                        savedHiddenAnimeTitles = []
-                        saveJSON(savedHiddenAnimeTitles, "savedHiddenAnimeTitles")
-                        LoadData(savedData)
+                        saveJSON([], "savedHiddenAnimeTitles")
+                        savedData = await retrieveJSON("savedData") || []
+                        if(await $(".flexdatalist-multiple-value").length){
+                            var filters = await $(".flexdatalist-multiple").children("li.value")
+                            for(let i=0; i<filters.length; i++) {
+                                var filterName = await filters.eq(i).children(".text")[0].innerText
+                                if(filterName.toLowerCase()==="hidden"){
+                                    await filters.eq(i).children(".fdl-remove").trigger("click")
+                                    await $(".flexdatalist-alias").blur()
+                                }
+                            }
+                        } 
+                        await LoadData(savedData)
+                        $("#hiddenUnhiddenBtn").text("Unhidden")
+                        savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
+                        await $('#anime-table').trigger("pageSet",savedTablePage[0])
+                        saveJSON("Unhidden","savedTableStatus")
+                        saveJSON($('#anime-table')[0].config.pager.page,"savedTablePage")
                         $("#showAllAnime").hide()
                         swal("Hidden Animes have been successfully added!", {
                             icon: "success",
@@ -719,13 +819,23 @@
                     }
                 })
             })
+            $("#anime-table").bind("update, pagerUpdate",()=>{
+                setTimeout(()=>{
+                    $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                },0)
+            })
+            $("#pageNumberOptions").change(()=>{
+                setTimeout(()=>{
+                    $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                },0)
+            })
             $("body").on('scroll', function () {
                 setTimeout(()=>{
                     saveJSON($("body").scrollTop(),"savedYscroll")
                 },1)
             })
             // Search Function
-            function Update(){
+            async function Update(){
                 updateStartTime = new Date
                 var filterInput = $(".filter-container > ul > .flexdatalist-multiple-value > input")
                 var username = $("#username").val()
@@ -738,25 +848,24 @@
                     filterInput[0].setCustomValidity("Select or Enter a word to Filter!")
                     filterInput[0].reportValidity()
                 } else {
+                    requestPause = await retrieveJSON("requestPause") || false
                     if(!requestPause){
                         // Search New Data
                         requestPause = true
                         saveJSON(requestPause,"requestPause")
-                        requestIntervalSeconds = 60
-                        saveJSON(requestIntervalSeconds, "requestIntervalSeconds")
+                        saveJSON(60, "requestIntervalSeconds")
                         analyzeVariables(username)
                     } else {
                         if(!requestIsRunning){
                             for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
-                            requestIntervalSeconds = retrieveJSON("requestIntervalSeconds")
                             $("#dataStatusSpinner").show(0,()=>{
                                 $("#dataStatusContainer").fadeIn(2500).css("display","flex")
                             })
+                            requestIntervalSeconds = await retrieveJSON("requestIntervalSeconds") || 60
                             for(let i=requestIntervalSeconds; i>=0; i--){
                                 let timeout = setTimeout(()=>{
                                     if(i===0){
-                                        requestIntervalSeconds = 60
-                                        saveJSON(requestIntervalSeconds, "requestIntervalSeconds")
+                                        saveJSON(60, "requestIntervalSeconds")
                                         requestPause = false
                                         saveJSON(requestPause,"requestPause")
                                         $("#dataStatusSpinner").hide(0,()=>{
@@ -784,7 +893,7 @@
 
             function analyzeVariables(username) {
                 // Check Parameters
-                if(typeof username==="string") {
+                if(username.length>0) {
                     // Initialize Anilist Graphql Data
                     var query = `
                     {
@@ -832,7 +941,6 @@
                         }
                     }
                     `;
-                    
                     // Request API
                     $.ajax({
                         type: 'POST',
@@ -845,23 +953,21 @@
                         data: JSON.stringify({
                             query: query
                         }),
-                        beforeSend: () => {
+                        beforeSend: async () => {
                             requestIsRunning = true
-                            $("#dataStatusSpinner").show(0,()=>{
+                            savedUpdateTime = await retrieveJSON("savedUpdateTime") || 420
+                            $("#dataStatusSpinner").show(0, ()=>{
                                 $("#dataStatusContainer").fadeIn(2500).css("display","flex")
-                                if(savedUpdateTime!==0){
-                                    for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
-                                    for(let i=savedUpdateTime; i>0; i--){
-                                        var timeout = setTimeout(()=>{
-                                            $("#dataStatus")
-                                                .empty()
-                                                .append(`Updating Data... Estimated Time: ${msToTime(i*1000)}`)
-                                        },(savedUpdateTime-i)*1000)
-                                        temp.push(timeout)
-                                    }
-                                } else {
-                                    $("#dataStatus").append(`Updating Data...`)
+                                for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
+                                for(let i=savedUpdateTime; i>0; i--){
+                                    var timeout = setTimeout(()=>{
+                                        $("#dataStatus")
+                                            .empty()
+                                            .append(`Updating Data... Estimated Time: ${msToTime(i*1000)}`)
+                                    },(savedUpdateTime-i)*1000)
+                                    temp.push(timeout)
                                 }
+                                
                             })
                         },
                         success: (data)=> {
@@ -1082,12 +1188,12 @@
                                     .empty()
                                     .append(`An Error has Occured!`)
                             })
-                            setTimeout(()=>{
+                            
                                 $("#dataStatusContainer").fadeOut(2500,()=>{
                                     $("#dataStatusSpinner").show()
                                     $("#dataStatus").empty()
                                 })
-                            })
+                            
                             if(err==="User not found"){
                                 $("#username")[0].setCustomValidity("Username is not found!")
                                 $("#username")[0].reportValidity()
@@ -1098,23 +1204,23 @@
                                     icon: "error"
                                 })
                             }
-                            console.log(error)
+                            console.error(error)
                             requestIsRunning = false
                         }
                     })
                 }
             }
+
             function analyzeAnime(username, varImportance, userListInfo){
                 var page = 1
                 var maxAnimePerPage = 50
                 var maxRequest = 90
                 var firstMaxRequest = maxRequest-1 //MaxRequest-RequestsBefore
-                var timeInterval = 60000 //Minute in ms
-                var startDate
+                var startDate = new Date
                 var recScheme = []
                 var sum = 0
                 recall(page)
-                function recall(xpage){
+                function recall(){
                     $.ajax({
                         type: 'POST',
                         url: 'https://graphql.anilist.co',
@@ -1129,6 +1235,7 @@
                                 Page(page: ${page}, perPage: ${maxAnimePerPage}) {
                                     media(
                                         type: ANIME,
+                                        genre_not_in: ["Hentai"]
                                         status_in:[FINISHED, RELEASING],
                                         format_in:[TV,TV_SHORT,MOVIE,OVA,ONA,SPECIAL]) {
                                         title {
@@ -1167,10 +1274,12 @@
                             }
                             `
                         }),
-                        beforeSend: function() {
-                            startDate = new Date(Date.now()+1000) //Delay 1 Second
+                        beforeSend: ()=> {
+                            startDate = new Date
                         },
                         success: (result)=>{
+                            var timeInterval = 60000 //Minute in ms
+                            console.log(timeInterval)
                             var animeEntries = result.data.Page.media
                             if(animeEntries.length>0){
                                 for(let i=0; i<animeEntries.length; i++){
@@ -1338,9 +1447,10 @@
                                     }
                                 }
                                 if((page%(page===1?firstMaxRequest:maxRequest))===0){
+                                    console.log(timeInterval);
                                     setTimeout(()=>{
                                         recall(++page)
-                                    },(timeInterval-((new Date).getTime()-startDate.getTime())))
+                                    },timeInterval-((new Date).getTime()-startDate.getTime()))
                                 } else {
                                     recall(++page)
                                 }
@@ -1352,37 +1462,35 @@
                                     recScheme[i].score=anime.score*weight*10000
                                 }
                                 // Saved New Username
-                                savedUsername = username
-                                saveJSON(savedUsername,"savedUsername")
+                                saveJSON(username,"savedUsername")
                                 // Save new AnimeList json Data
-                                savedData = recScheme
-                                saveJSON(savedData, "savedJSON")
+                                saveJSON(recScheme, "savedData")
+                                // Show Table Update Buttons
+                                $("#updateTableBtns").css("display","flex")
                                 // // Download Recommendation List json
                                 // downloadObjectAsJson(recScheme,"NWVI-NWA")
                                 // Reload new Data
                                 LoadData(recScheme)
                                 var timeInterval = (new Date).getTime()-updateStartTime.getTime()
-                                savedUpdateTime = Math.floor(timeInterval/1000)+1
-                                saveJSON(savedUpdateTime, "savedUpdateTime")
+                                saveJSON(Math.floor(timeInterval/1000)+1, "savedUpdateTime")
                                 $("#dataStatusSpinner").hide(0,()=>{
                                     $("#dataStatus")
                                         .empty()
                                         .append(`List has been Updated!`)
                                 })
-                                setTimeout(()=>{
+                                setTimeout(async()=>{
+                                    requestIntervalSeconds = await retrieveJSON("requestIntervalSeconds") || 60
                                     $("#dataStatusContainer").fadeOut(2500,()=>{
                                         $("#dataStatusSpinner").show()
                                         $("#dataStatus").empty()
                                         // Reload Request Interval
                                         for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
-                                        requestIntervalSeconds = retrieveJSON("requestIntervalSeconds")
-                                        $("#dataStatusSpinner").show(0,()=>{
+                                        $("#dataStatusSpinner").show(0, ()=>{
                                             $("#dataStatusContainer").fadeIn(2500).css("display","flex")
                                             for(let i=requestIntervalSeconds; i>=0; i--){
                                                 let timeout = setTimeout(()=>{
                                                     if(i===0){
-                                                        requestIntervalSeconds = 60
-                                                        saveJSON(requestIntervalSeconds, "requestIntervalSeconds")
+                                                        saveJSON(60, "requestIntervalSeconds")
                                                         requestPause = false
                                                         saveJSON(requestPause,"requestPause")
                                                         $("#dataStatusSpinner").hide(0,()=>{
@@ -1408,34 +1516,62 @@
                             }
                         },
                         error: function(xhr, error) {
+                            var timeInterval = 60000 //Minute in ms
                             var err = JSON.parse(xhr.responseText).errors[0].message
-                            $("#dataStatus")
-                                .empty()
-                                .append(`An Error Occured!`)
+                            console.log(err, xhr);
+                            if(err==="Too Many Requests."){
+                                // Clean Analyzed Recommendations
+                                var temp = recScheme
+                                for(let i=0;i<temp.length;i++){
+                                    var anime = temp[i]
+                                    var weight = (1/sum)*anime.count
+                                    temp[i].score=anime.score*weight*10000
+                                }
+                                // Saved New Username
+                                saveJSON(username,"savedUsername")
+                                // Save new AnimeList json Data
+                                saveJSON(temp, "savedData")
+                                // Show Table Update Buttons
+                                $("#updateTableBtns").css("display","flex")
+                                // // Download Recommendation List json
+                                // downloadObjectAsJson(recScheme,"NWVI-NWA")
+                                // Reload new Data
+                                LoadData(temp)
+                                console.log("---runnedx", timeInterval)
+                                setTimeout(()=>{
+                                    console.log("---runnedxx", timeInterval)
+                                    recall(page)
+                                },timeInterval)
+                            } else {
                             setTimeout(()=>{
-                                $("#dataStatus").fadeOut(2500,()=>{
+                                $("#dataStatusContainer").fadeOut(2500,()=>{
+                                    $("#dataStatusSpinner").show()
                                     $("#dataStatus").empty()
                                     if(err==="User not found"){
                                     $("#username")[0].setCustomValidity("Username is not found!")
                                     $("#username")[0].reportValidity()
                                     } else {
+                                        console.log("---runnedy", timeInterval)
+                                        setTimeout(()=>{
+                                            console.log("---runnedyy", timeInterval)
+                                            recall(page)
+                                        },timeInterval)
                                         swal("Error", {
                                             title: "Oops...Something Went Wrong!",
                                             text: `Error: ${err}`,
                                             icon: "error"
                                         })
+                                        requestIsRunning = false
                                     }
                                 })
                             }, 1000)
-                            console.log(error)
-                        },
-                        complete: () => {
-                            requestIsRunning = false
-                        }
+                            }
+                            console.error(error)
+                        }                        
                     })
                 }
             }
-            function LoadData(data){
+            async function LoadData(data){
                 var filterInputs = $(".flexdatalist-multiple > .value").children(".text")
                 var filters = []
                 var includes = []
@@ -1446,9 +1582,8 @@
                     if(filterName.charAt(0)==="!") excludes.push(filterName.slice(1))
                     else includes.push(filterName)
                 }
-                savedFilters = filters
-                saveJSON(savedFilters, "savedFilters")
-                if((data!==null && typeof data==="object")) {
+                saveJSON(filters, "savedFilters")
+                if((data.length>0)) {
                   // FilterOut User Includes and Excludes
                     // Include
                     var tempRecScheme = []
@@ -1538,6 +1673,7 @@
                     }
                     // Show Table
                     var animeData = ""
+                    savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
                     $.each(data, (key, value) => {
                         var score = parseFloat(value.score)
                         if(includes.some(item=>equalsNCS(item,"hidden"))){                            
@@ -1596,7 +1732,10 @@
                     }
                     $("#animeRecommendationList").empty()
                     $("#animeRecommendationList").append(animeData)
-                    $("#anime-table").trigger("update")
+                    await $("#anime-table").trigger("update")
+                    setTimeout(()=>{
+                        $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                    },0)
                 } else {
                     Update()
                 }
@@ -1604,11 +1743,45 @@
             //////////////////////////////////////////////////////////////////
             // Extra
             function saveJSON(data, name) {
-                localStorage.setItem(name, JSON.stringify(data))  
+                try {
+                    var write = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").openCursor()
+                    write.onsuccess = (event) => {
+                        const cursor = event.target.result;
+                        if (cursor) {
+                            if(cursor.key===name){
+                                cursor.update(data)
+                            }
+                            cursor.continue()
+                        } else {
+                            db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
+                        }
+                    }
+                } catch(ex) {
+                    try{
+                        console.error(ex)
+                        db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
+                    } catch(ex2){
+                        console.error(ex2)
+                        return localStorage.setItem(name, JSON.stringify(data))
+                    }
+                }
             }
-            function retrieveJSON(name) {
-                var retrievedObject = localStorage.getItem(name)
-                return JSON.parse(retrievedObject)
+            async function retrieveJSON(name) {
+                return new Promise((resolve)=>{
+                    try {
+                        var read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").get(name)
+                        read.onsuccess = (event) => {
+                            resolve(read.result)
+                        }
+                        read.onerror = (event) => {
+                            console.error("ruasdas")
+                            resolve(JSON.parse(localStorage.getItem(name)))
+                        }
+                    } catch(ex){
+                        console.error(ex)
+                        resolve(JSON.parse(localStorage.getItem(name)))
+                    }
+                })
             }
             function equalsNCS(str1, str2) {
                 var s1 = str1
