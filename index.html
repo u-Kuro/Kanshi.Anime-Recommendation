@@ -544,10 +544,10 @@
               // IndexDB
             var request, db,
               // Saved Data
-            savedUsername, savedData, savedFilters, savedUpdateTime,
+            savedUsername, savedData, savedFilters, savedUpdateTime, requestIntervalSeconds,
             savedHiddenAnimeTitles, savedYscroll, savedTablePage, savedTableStatus,
               // Load Saved API Request State
-            savedUpdateTime, savedLastRequestDate, requestPause, requestIntervalSeconds,
+            savedUpdateTime, savedLastRequestDate, requestPause,
             updateStartTime, isRunning = false, requestIsRunning = false, temp = []
             // Create IndexDB
             $(window).load(function() {
@@ -931,39 +931,36 @@
             })
             // Search Function
             async function Update(){
-                if(!requestIsRunning){
-                    requestIsRunning = true
-                    updateStartTime = new Date
-                    var filterInput = $(".filter-container > ul > .flexdatalist-multiple-value > input")
-                    var username = $("#username").val()
-                    var filter = filterInput.val()
-                    // Check Input Validity
-                    if(username===""||username===null||typeof username==="undefined"){
-                        $("#username")[0].setCustomValidity("Anilist Username is Required!")
-                        $("#username")[0].reportValidity()
-                    }else if($(".flexdatalist-multiple").children("li").length<2&&filterInput.val()!=""){
-                        filterInput[0].setCustomValidity("Select or Enter a word to Filter!")
-                        filterInput[0].reportValidity()
+                updateStartTime = new Date
+                var filterInput = $(".filter-container > ul > .flexdatalist-multiple-value > input")
+                var username = $("#username").val()
+                var filter = filterInput.val()
+                // Check Input Validity
+                if(username===""||username===null||typeof username==="undefined"){
+                    $("#username")[0].setCustomValidity("Anilist Username is Required!")
+                    $("#username")[0].reportValidity()
+                }else if($(".flexdatalist-multiple").children("li").length<2&&filterInput.val()!=""){
+                    filterInput[0].setCustomValidity("Select or Enter a word to Filter!")
+                    filterInput[0].reportValidity()
+                } else {
+                    requestPause = await retrieveJSON("requestPause") || false
+                    savedLastRequestDate = await retrieveJSON("savedLastRequestDate") || new Date(Date.now()-60001)
+                    if(!requestPause
+                    ||(((new Date().getTime())-savedLastRequestDate.getTime())>60000)){
+                        // Search New Data
+                        requestPause = true
+                        saveJSON(requestPause,"requestPause")
+                        analyzeVariables(username)
                     } else {
-                        requestPause = await retrieveJSON("requestPause") || false
-                        savedLastRequestDate = await retrieveJSON("savedLastRequestDate") || new Date(Date.now()-60001)
-                        if(!requestPause
-                        ||(((new Date().getTime())-savedLastRequestDate.getTime())>60000)){
-                            // Search New Data
-                            requestPause = true
-                            saveJSON(requestPause,"requestPause")
-                            saveJSON(60, "requestIntervalSeconds")
-                            analyzeVariables(username)
-                        } else {
+                        if(!requestIsRunning){
                             for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                             $("#dataStatusSpinner").show(0,()=>{
                                 $("#dataStatusContainer").fadeIn(2500).css("display","flex")
                             })
-                            requestIntervalSeconds = await retrieveJSON("requestIntervalSeconds") || 60
+                            requestIntervalSeconds = 60-(((new Date()).getTime()-savedLastRequestDate.getTime())/1000) || 60
                             for(let i=requestIntervalSeconds; i>=0; i--){
                                 let timeout = setTimeout(()=>{
                                     if(i===0){
-                                        saveJSON(60, "requestIntervalSeconds")
                                         requestPause = false
                                         saveJSON(requestPause,"requestPause")
                                         $("#dataStatusSpinner").hide(0,()=>{
@@ -979,7 +976,6 @@
                                         $("#dataStatus")
                                             .empty()
                                             .append(`Please wait for another Update... Estimated Time: ${msToTime(i*1000)}`)
-                                        saveJSON(i, "requestIntervalSeconds")
                                     }
                                 },(requestIntervalSeconds-i)*1000)
                                 temp.push(timeout)
@@ -1235,11 +1231,10 @@
                                         $("#dataStatusSpinner").show(0,()=>{
                                             $("#dataStatusContainer").fadeIn(2500).css("display","flex")
                                         })
-                                        requestIntervalSeconds = await retrieveJSON("requestIntervalSeconds") || 60
+                                        requestIntervalSeconds = 60-(((new Date()).getTime()-savedLastRequestDate.getTime())/1000) || 60
                                         for(let i=requestIntervalSeconds; i>=0; i--){
                                             let timeout = setTimeout(()=>{
                                                 if(i===0){
-                                                    saveJSON(60, "requestIntervalSeconds")
                                                     requestPause = false
                                                     saveJSON(requestPause,"requestPause")
                                                     $("#dataStatusSpinner").hide(0,()=>{
@@ -1254,7 +1249,6 @@
                                                     $("#dataStatus")
                                                         .empty()
                                                         .append(`Please wait for another Update... Estimated Time: ${msToTime(i*1000)}`)
-                                                    saveJSON(i, "requestIntervalSeconds")
                                                 }
                                             },(requestIntervalSeconds-i)*1000)
                                             temp.push(timeout)
