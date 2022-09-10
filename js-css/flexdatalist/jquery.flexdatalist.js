@@ -118,7 +118,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
         disabled: null,
         maxShownResults: 100,
         removeOnBackspace: true,
-        noResultsText: 'No results found for "{keyword}"',
+        noResultsText: 'Filter Word/Number (!Exclude/Score>N/etc.)',
         toggleSelected: false,
         allowDuplicateValues: false,
         redoSearchOnFocus: true,
@@ -163,7 +163,6 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                 if (_this.keyNum(event) === 9) {
                     _this.results.remove();
                 }
-                _this.action.keypressValue(event, 188);
                 _this.action.backSpaceKeyRemove(event);
             })
             // Keyup
@@ -1401,6 +1400,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                 if (!results) {
                     return;
                 } else if(results.length === 0) {
+                    // Not in the Datalist
                     this.empty(options.noResultsText);
                     return;
                 }

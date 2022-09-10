@@ -439,7 +439,7 @@
                 </div>
                 <div class="filter-container">
                     <input type="text"
-                        placeholder="Filter Genre/Tags/etc.(Exclude - add !)"
+                        placeholder="Filter Word/Number (!Exclude/Score>N/etc.)"
                         class="flexdatalist"
                         data-data="Options.json"
                         data-search-in="info"
@@ -547,7 +547,7 @@
             savedUsername, savedData, savedFilters, savedUpdateTime,
             savedHiddenAnimeTitles, savedYscroll, savedTablePage, savedTableStatus,
               // Load Saved API Request State
-            savedUpdateTime, requestPause, requestIntervalSeconds,
+            savedUpdateTime, savedLastRequestDate, requestPause, requestIntervalSeconds,
             updateStartTime, isRunning = false, requestIsRunning = false, temp = []
             // Create IndexDB
             $(window).load(function() {
@@ -647,9 +647,11 @@
 
                     // Reload saved Website Y-Position
                     savedYscroll = await retrieveJSON("savedYscroll") || 0.0
+                    var reloadSavedYScrollStartDate = new Date()
                     let reloadSavedYScroll = setInterval(()=>{
                         $('body').animate({scrollTop: savedYscroll},1)
-                        if($("body").scrollTop()===savedYscroll){
+                        if($("body").scrollTop()===savedYscroll||
+                        (((new Date()).getTime())-reloadSavedYScrollStartDate.getTime())>5000){
                             clearInterval(reloadSavedYScroll)
                         }
                     },1)
@@ -929,27 +931,30 @@
             })
             // Search Function
             async function Update(){
-                updateStartTime = new Date
-                var filterInput = $(".filter-container > ul > .flexdatalist-multiple-value > input")
-                var username = $("#username").val()
-                var filter = filterInput.val()
-                // Check Input Validity
-                if(username===""||username===null||typeof username==="undefined"){
-                    $("#username")[0].setCustomValidity("Anilist Username is Required!")
-                    $("#username")[0].reportValidity()
-                }else if($(".flexdatalist-multiple").children("li").length<2&&filterInput.val()!=""){
-                    filterInput[0].setCustomValidity("Select or Enter a word to Filter!")
-                    filterInput[0].reportValidity()
-                } else {
-                    requestPause = await retrieveJSON("requestPause") || false
-                    if(!requestPause){
-                        // Search New Data
-                        requestPause = true
-                        saveJSON(requestPause,"requestPause")
-                        saveJSON(60, "requestIntervalSeconds")
-                        analyzeVariables(username)
+                if(!requestIsRunning){
+                    requestIsRunning = true
+                    updateStartTime = new Date
+                    var filterInput = $(".filter-container > ul > .flexdatalist-multiple-value > input")
+                    var username = $("#username").val()
+                    var filter = filterInput.val()
+                    // Check Input Validity
+                    if(username===""||username===null||typeof username==="undefined"){
+                        $("#username")[0].setCustomValidity("Anilist Username is Required!")
+                        $("#username")[0].reportValidity()
+                    }else if($(".flexdatalist-multiple").children("li").length<2&&filterInput.val()!=""){
+                        filterInput[0].setCustomValidity("Select or Enter a word to Filter!")
+                        filterInput[0].reportValidity()
                     } else {
-                        if(!requestIsRunning){
+                        requestPause = await retrieveJSON("requestPause") || false
+                        savedLastRequestDate = await retrieveJSON("savedLastRequestDate") || new Date(Date.now()-60001)
+                        if(!requestPause
+                        ||(((new Date().getTime())-savedLastRequestDate.getTime())>60000)){
+                            // Search New Data
+                            requestPause = true
+                            saveJSON(requestPause,"requestPause")
+                            saveJSON(60, "requestIntervalSeconds")
+                            analyzeVariables(username)
+                        } else {
                             for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                             $("#dataStatusSpinner").show(0,()=>{
                                 $("#dataStatusContainer").fadeIn(2500).css("display","flex")
@@ -1094,7 +1099,6 @@
                                     })
                                 }
                                 console.error(error)
-                                requestIsRunning = false
                             } catch(ex) {
                                 console.error(ex)
                                 $("#dataStatusSpinner").hide(0,()=>{
@@ -1107,6 +1111,9 @@
                                     icon: "error"
                                 })
                             }
+                            requestIsRunning = false
+                        }, complete: ()=>{
+                            saveJSON(new Date(),"savedLastRequestDate")
                         }
                     })
                 }
@@ -1223,40 +1230,35 @@
                                     $("#dataStatus")
                                         .empty()
                                         .append(`List has been Updated!`)
-                                    setTimeout(()=>{
-                                        $("#dataStatusContainer").fadeOut(2500,async()=>{
-                                            $("#dataStatusSpinner").show()
-                                            $("#dataStatus").empty()
-                                            // Reload Request Interval
-                                            for(let i=0;i<temp.length;i++) await clearTimeout(temp[i])
-                                            $("#dataStatusSpinner").show(0,()=>{
-                                                $("#dataStatusContainer").fadeIn(2500).css("display","flex")
-                                            })
-                                            for(let i=60; i>=0; i--){
-                                                let timeout = setTimeout(()=>{
-                                                    if(i===0){
-                                                        saveJSON(60, "requestIntervalSeconds")
-                                                        requestPause = false
-                                                        saveJSON(requestPause,"requestPause")
-                                                        $("#dataStatusSpinner").hide(0,()=>{
-                                                            $("#dataStatus")
-                                                                .empty()
-                                                                .append(`Update is now Available!`)
-                                                            $("#dataStatusContainer").fadeOut(2500,()=>{
-                                                                $("#dataStatus").empty()
-                                                                Update()
-                                                            })
-                                                        })
-                                                    } else {
+                                    setTimeout(async()=>{
+                                        for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
+                                        $("#dataStatusSpinner").show(0,()=>{
+                                            $("#dataStatusContainer").fadeIn(2500).css("display","flex")
+                                        })
+                                        requestIntervalSeconds = await retrieveJSON("requestIntervalSeconds") || 60
+                                        for(let i=requestIntervalSeconds; i>=0; i--){
+                                            let timeout = setTimeout(()=>{
+                                                if(i===0){
+                                                    saveJSON(60, "requestIntervalSeconds")
+                                                    requestPause = false
+                                                    saveJSON(requestPause,"requestPause")
+                                                    $("#dataStatusSpinner").hide(0,()=>{
                                                         $("#dataStatus")
                                                             .empty()
-                                                            .append(`Please wait for another Update... Estimated Time: ${msToTime(i*1000)}`)
-                                                        saveJSON(i, "requestIntervalSeconds")
-                                                    }
-                                                },(requestIntervalSeconds-i)*1000)
-                                                temp.push(timeout)
-                                            }
-                                        })
+                                                            .append(`Update is now Available!`)
+                                                        $("#dataStatusContainer").fadeOut(2500,()=>{
+                                                            $("#dataStatus").empty()
+                                                        })
+                                                    })
+                                                } else {
+                                                    $("#dataStatus")
+                                                        .empty()
+                                                        .append(`Please wait for another Update... Estimated Time: ${msToTime(i*1000)}`)
+                                                    saveJSON(i, "requestIntervalSeconds")
+                                                }
+                                            },(requestIntervalSeconds-i)*1000)
+                                            temp.push(timeout)
+                                        }
                                     }, 1000)
                                 })
                             }
@@ -1307,7 +1309,9 @@
                                     icon: "error"
                                 })
                             }
-                        }                        
+                        }, complete: ()=>{
+                            saveJSON(new Date(),"savedLastRequestDate")
+                        }                   
                     })
                 }
             }
@@ -1394,13 +1398,11 @@
                 })
             }
             function equalsNCS(str1, str2) {
-                var s1 = str1
-                var s2 = str2
-                if(typeof str1=="number") s1 = str1.toString()
-                if(typeof str2=="number") s2 = str2.toString()
-                if(typeof str1=="string"&&typeof str2=="string")
-                    return str1.toLowerCase() == str2.toLowerCase()
-                else return s1==s2
+                var s1 = str1 || ""
+                var s2 = str2 || ""
+                if(typeof str1=="number") s1 = s1.toString()
+                if(typeof str2=="number") s2 = s2.toString()
+                return s1.trim().toLowerCase() == s2.trim().toLowerCase()
             }
             function arraySum(obj) {
                 return obj.reduce((a, b) => a + b, 0)

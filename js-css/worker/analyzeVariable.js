@@ -26,22 +26,22 @@ self.onmessage = (message) => {
             var year = {}
             var season = {}
             var episodes = {}
-            var episodetype
-            if(anime.episodes===1) episodetype = "Episode: 1"
-            else if (anime.episodes>1&&anime.episodes<7) episodetype = "Episode: 2-6"
-            else if (anime.episodes>6&&anime.episodes<14) episodetype = "Episode: 7-13"
-            else if (anime.episodes>13&&anime.episodes<27) episodetype = "Episode: 14-26"
-            else if (anime.episodes>26&&anime.episodes<53) episodetype = "Episode: 27-52"
-            else if (anime.episodes>52&&anime.episodes<101) episodetype = "Episode: 53-100"
-            else if (anime.episodes>100) episodetype = "Episode: 101+"
-            else episodetype = "Episode: null"
+            var xepisodetype
+            if(anime.episodes===1) xepisodetype = "Episode: 1"
+            else if (anime.episodes>1&&anime.episodes<7) xepisodetype = "Episode: 2-6"
+            else if (anime.episodes>6&&anime.episodes<14) xepisodetype = "Episode: 7-13"
+            else if (anime.episodes>13&&anime.episodes<27) xepisodetype = "Episode: 14-26"
+            else if (anime.episodes>26&&anime.episodes<53) xepisodetype = "Episode: 27-52"
+            else if (anime.episodes>52&&anime.episodes<101) xepisodetype = "Episode: 53-100"
+            else if (anime.episodes>100) xepisodetype = "Episode: 101+"
+            else xepisodetype = "Episode: null"
             var genres = {}
             var tags = {}
             var studios = {}
             var staff = {}
             if(Object.keys(varScheme).length<1){
                 format = {["Format: "+anime.format]: [userScore]}
-                episodes = {[episodetype]: [userScore]}
+                episodes = {[xepisodetype]: [userScore]}
                 year = {["Year: "+anime.seasonYear]: [userScore]}
                 season = {["Season: "+anime.season]: [userScore]}
                 for(let j=0; j<anime.genres.length; j++){
@@ -78,18 +78,18 @@ self.onmessage = (message) => {
                 else{
                     varScheme.format = {...varScheme.format, [xformat]: [userScore]}
                 }
-                if(Object.keys(varScheme.episodes).includes(episodetype)){
-                    varScheme.episodes[episodetype].push(userScore)
+                if(Object.keys(varScheme.episodes).includes(xepisodetype)){
+                    varScheme.episodes[xepisodetype].push(userScore)
                 }
                 else{
-                    varScheme.episodes = {...varScheme.episodes, [episodetype]: [userScore]}
+                    varScheme.episodes = {...varScheme.episodes, [xepisodetype]: [userScore]}
                 }
-                var xseasonYear = anime.seasonYear==null? "Year: null" : "Year: "+anime.seasonYear.toString()
-                if(Object.keys(varScheme.year).includes(xseasonYear)){
-                    varScheme.year[xseasonYear].push(userScore)
+                var xyear = anime.seasonYear==null? "Year: null" : "Year: "+anime.seasonYear.toString()
+                if(Object.keys(varScheme.year).includes(xyear)){
+                    varScheme.year[xyear].push(userScore)
                 }
                 else{
-                varScheme.year = {...varScheme.year, [xseasonYear]: [userScore]}
+                varScheme.year = {...varScheme.year, [xyear]: [userScore]}
                 }
                 var xseason = anime.season==null? "Season: null" : "Season: "+anime.season
                 if(Object.keys(varScheme.season).includes(xseason)){
@@ -137,11 +137,11 @@ self.onmessage = (message) => {
                         fullname = fullname.join(" ")
                     }
                     fullname = "Staff: "+fullname
-                    var xfullname = fullname
-                    if(Object.keys(varScheme.staff).includes(xfullname)){
-                        varScheme.staff[xfullname].push(userScore)
+                    var xstaff = fullname
+                    if(Object.keys(varScheme.staff).includes(xstaff)){
+                        varScheme.staff[xstaff].push(userScore)
                     }
-                    else varScheme.staff = {...varScheme.staff, [xfullname]: [userScore]}
+                    else varScheme.staff = {...varScheme.staff, [xstaff]: [userScore]}
                 }
             }
         }

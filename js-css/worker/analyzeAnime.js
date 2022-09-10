@@ -64,29 +64,34 @@ self.onmessage = (message) => {
         // Analyze
         if(typeof varImportance[xformat]!=="undefined"){
             score.push(varImportance[xformat])
-            count+=1
             sum += 1
+            count+=1
+            console.log("Format Item: ",xformat)
         }
         if(typeof varImportance[xepisodetype]!=="undefined") {
             score.push(varImportance[xepisodetype])
             sum += 1
             count+=1
+            console.log("Episode Item: ",xepisodetype)
         }
         if(typeof varImportance[xyear]!=="undefined") {
             score.push(varImportance[xyear])
             sum += 1
             count+=1
+            console.log("Year Item: ",xyear)
         }
         if(typeof varImportance[xseason]!=="undefined") {
             score.push(varImportance[xseason])
             sum+=1
             count+=1
+            console.log("Season Item: ",xseason)
         }
         for(let j=0; j<xgenres.length; j++){
             if(typeof varImportance[xgenres[j]]!=="undefined") {
                 score.push(varImportance[xgenres[j]])
                 sum+=1
                 count+=1
+                console.log("Genre Item: ",xgenres[j])
             }
         }
         for(let j=0; j<xtags.length; j++){
@@ -94,6 +99,7 @@ self.onmessage = (message) => {
                 score.push(varImportance[xtags[j]])
                 sum+=1
                 count+=1
+                console.log("Tag Item: ",xtags[j])
             }
         }
         for(let j=0; j<xstudios.length; j++){
@@ -101,6 +107,7 @@ self.onmessage = (message) => {
                 score.push(varImportance[xstudios[j]])
                 sum+=1
                 count+=1
+                console.log("Studio Item: ",xstudios[j])
             }
         }
         for(let j=0; j<xstaff.length; j++){
@@ -108,6 +115,7 @@ self.onmessage = (message) => {
                 score.push(varImportance[xstaff[j]])
                 sum+=1
                 count+=1
+                console.log("Staff Item: ",xstaff[j])
             }
         }
         score = score.length===0?0:arrayMean(score)

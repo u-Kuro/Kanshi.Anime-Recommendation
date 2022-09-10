@@ -16,11 +16,56 @@ self.onmessage = (message) => {
             ||equalsNCS(includes[i],recScheme[j].year)
             ||equalsNCS(includes[i],recScheme[j].season)
             ||equalsNCS(includes[i],recScheme[j].status)
+            ||equalsNCS(includes[i],recScheme[j].title)
             ||equalsNCS(includes[i],"hidden"))
             {
                 tempRecScheme.push(recScheme[j])
                 continue
             }
+            // Numbers
+              // Score
+            if(includes[i].toLowerCase().includes("score<=")){
+                var score=includes[i].replace("score<=", "")
+                if(!isNaN(score)) if(recScheme[j].score<=parseFloat(score)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("score>=")){
+                var score=includes[i].replace("score>=", "")
+                if(!isNaN(score)) if(recScheme[j].score>=parseFloat(score)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("score>")&&!includes[i].toLowerCase().includes("score>=")){
+                var score=includes[i].replace("score>", "")
+                if(!isNaN(score)) if(recScheme[j].score>parseFloat(score)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("score<")&&!includes[i].toLowerCase().includes("score<=")){
+                var score=includes[i].replace("score<", "")
+                if(!isNaN(score)) if(recScheme[j].score<parseFloat(score)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+              // Year
+            if(includes[i].toLowerCase().includes("year<=")){
+                var year=includes[i].replace("year<=", "")
+                if(!isNaN(year)) if(recScheme[j].year<=parseFloat(year)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("year>=")){
+                var year=includes[i].replace("year>=", "")
+                if(!isNaN(year)) if(recScheme[j].year>=parseFloat(year)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("year>")&&!includes[i].toLowerCase().includes("year>=")){
+                var year=includes[i].replace("year>", "")
+                if(!isNaN(year)) if(recScheme[j].year>parseFloat(year)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("year<")&&!includes[i].toLowerCase().includes("year<=")){
+                var year=includes[i].replace("year<", "")
+                if(!isNaN(year)) if(recScheme[j].year<parseFloat(year)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+            // Arrays
             var temp = recScheme[j].studios.split(", ")
             for(let k=0; k<temp.length; k++){
                 if(equalsNCS(includes[i],temp[k])){
@@ -59,6 +104,7 @@ self.onmessage = (message) => {
             ||equalsNCS(excludes[i],recScheme[j].format)
             ||equalsNCS(excludes[i],recScheme[j].year)
             ||equalsNCS(excludes[i],recScheme[j].season)
+            ||equalsNCS(excludes[i],recScheme[j].title)
             ||equalsNCS(excludes[i],recScheme[j].status))
             {
                 continue
@@ -157,12 +203,10 @@ self.onmessage = (message) => {
         animeData: animeData
     })
     function equalsNCS(str1, str2) {
-        var s1 = str1
-        var s2 = str2
-        if(typeof str1=="number") s1 = str1.toString()
-        if(typeof str2=="number") s2 = str2.toString()
-        if(typeof str1=="string"&&typeof str2=="string")
-            return str1.toLowerCase() == str2.toLowerCase()
-        else return s1==s2
+        var s1 = str1 || ""
+        var s2 = str2 || ""
+        if(typeof str1=="number") s1 = s1.toString()
+        if(typeof str2=="number") s2 = s2.toString()
+        return s1.trim().toLowerCase() == s2.trim().toLowerCase()
     }
 }
