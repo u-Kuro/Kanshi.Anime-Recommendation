@@ -1047,6 +1047,7 @@
                         }),
                         beforeSend: async () => {
                             requestIsRunning = true
+                            saveJSON(new Date(),"savedLastRequestDate")
                             savedUpdateTime = await retrieveJSON("savedUpdateTime") || 780
                             $("#dataStatusSpinner").show(0, ()=>{
                                 $("#dataStatusContainer").fadeIn(2500).css("display","flex")
@@ -1108,8 +1109,6 @@
                                 })
                             }
                             requestIsRunning = false
-                        }, complete: ()=>{
-                            saveJSON(new Date(),"savedLastRequestDate")
                         }
                     })
                 }
@@ -1177,6 +1176,7 @@
                             `
                         }),
                         beforeSend: ()=> {
+                            saveJSON(new Date(),"savedLastRequestDate")
                             startDate = new Date(Date.now + 1000) // Allowance of 1sec
                         },
                         success: (result)=>{
@@ -1231,6 +1231,7 @@
                                         $("#dataStatusSpinner").show(0,()=>{
                                             $("#dataStatusContainer").fadeIn(2500).css("display","flex")
                                         })
+                                        savedLastRequestDate = await retrieveJSON("savedLastRequestDate") || new Date(Date.now()-60001)
                                         requestIntervalSeconds = 60-(((new Date()).getTime()-savedLastRequestDate.getTime())/1000) || 60
                                         for(let i=requestIntervalSeconds; i>=0; i--){
                                             let timeout = setTimeout(()=>{
@@ -1303,9 +1304,7 @@
                                     icon: "error"
                                 })
                             }
-                        }, complete: ()=>{
-                            saveJSON(new Date(),"savedLastRequestDate")
-                        }                   
+                        }                  
                     })
                 }
             }
