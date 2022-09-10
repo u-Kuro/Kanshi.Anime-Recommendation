@@ -25,43 +25,43 @@ self.onmessage = (message) => {
             // Numbers
               // Score
             if(includes[i].toLowerCase().includes("score<=")){
-                var score=includes[i].replace("score<=", "")
+                var score=includes[i].toLowerCase().replace("score<=", "")
                 if(!isNaN(score)) if(recScheme[j].score<=parseFloat(score)) tempRecScheme.push(recScheme[j])
                 continue
             }
             if(includes[i].toLowerCase().includes("score>=")){
-                var score=includes[i].replace("score>=", "")
+                var score=includes[i].toLowerCase().replace("score>=", "")
                 if(!isNaN(score)) if(recScheme[j].score>=parseFloat(score)) tempRecScheme.push(recScheme[j])
                 continue
             }
             if(includes[i].toLowerCase().includes("score>")&&!includes[i].toLowerCase().includes("score>=")){
-                var score=includes[i].replace("score>", "")
+                var score=includes[i].toLowerCase().replace("score>", "")
                 if(!isNaN(score)) if(recScheme[j].score>parseFloat(score)) tempRecScheme.push(recScheme[j])
                 continue
             }
             if(includes[i].toLowerCase().includes("score<")&&!includes[i].toLowerCase().includes("score<=")){
-                var score=includes[i].replace("score<", "")
+                var score=includes[i].toLowerCase().replace("score<", "")
                 if(!isNaN(score)) if(recScheme[j].score<parseFloat(score)) tempRecScheme.push(recScheme[j])
                 continue
             }
               // Year
             if(includes[i].toLowerCase().includes("year<=")){
-                var year=includes[i].replace("year<=", "")
+                var year=includes[i].toLowerCase().replace("year<=", "")
                 if(!isNaN(year)) if(recScheme[j].year<=parseFloat(year)) tempRecScheme.push(recScheme[j])
                 continue
             }
             if(includes[i].toLowerCase().includes("year>=")){
-                var year=includes[i].replace("year>=", "")
+                var year=includes[i].toLowerCase().replace("year>=", "")
                 if(!isNaN(year)) if(recScheme[j].year>=parseFloat(year)) tempRecScheme.push(recScheme[j])
                 continue
             }
             if(includes[i].toLowerCase().includes("year>")&&!includes[i].toLowerCase().includes("year>=")){
-                var year=includes[i].replace("year>", "")
+                var year=includes[i].toLowerCase().replace("year>", "")
                 if(!isNaN(year)) if(recScheme[j].year>parseFloat(year)) tempRecScheme.push(recScheme[j])
                 continue
             }
             if(includes[i].toLowerCase().includes("year<")&&!includes[i].toLowerCase().includes("year<=")){
-                var year=includes[i].replace("year<", "")
+                var year=includes[i].toLowerCase().replace("year<", "")
                 if(!isNaN(year)) if(recScheme[j].year<parseFloat(year)) tempRecScheme.push(recScheme[j])
                 continue
             }
@@ -205,8 +205,10 @@ self.onmessage = (message) => {
     function equalsNCS(str1, str2) {
         var s1 = str1 || ""
         var s2 = str2 || ""
-        if(typeof str1=="number") s1 = s1.toString()
-        if(typeof str2=="number") s2 = s2.toString()
-        return s1.trim().toLowerCase() == s2.trim().toLowerCase()
+        if(typeof s1==="number") s1 = s1.toString()
+        if(typeof s2==="number") s2 = s2.toString()
+        if(typeof s1==="string") s1 = s1.toLowerCase()
+        if(typeof s2==="string") s2 = s2.toLowerCase()
+        return s1 === s2
     }
 }
