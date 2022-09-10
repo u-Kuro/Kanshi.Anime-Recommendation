@@ -1228,7 +1228,6 @@
                                             $("#dataStatusSpinner").show()
                                             $("#dataStatus").empty()
                                             // Reload Request Interval
-                                            console.log(temp)
                                             for(let i=0;i<temp.length;i++) await clearTimeout(temp[i])
                                             $("#dataStatusSpinner").show(0,()=>{
                                                 $("#dataStatusContainer").fadeIn(2500).css("display","flex")

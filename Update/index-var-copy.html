@@ -542,11 +542,10 @@
         <script defer>
             // Initialize Global Variables
               // IndexDB
-            var request
-            var db
+            var request, db,
               // Saved Data
-            var savedUsername, savedData, savedFilters,
-            savedHiddenAnimeTitles, savedYscroll, savedTablePage,
+            savedUsername, savedData, savedFilters, savedUpdateTime,
+            savedHiddenAnimeTitles, savedYscroll, savedTablePage, savedTableStatus,
               // Load Saved API Request State
             savedUpdateTime, requestPause, requestIntervalSeconds,
             updateStartTime, isRunning = false, requestIsRunning = false, temp = []
@@ -568,44 +567,51 @@
                 }).then(async()=>{
                     // Auto css
                     $(".table-responsive").css("margin-bottom",`${$("#pager").outerHeight()+43}px`)
-                    // Reload Saved Data
-                    // Reload saved Website Y-Position
-                    savedYscroll = await retrieveJSON("savedYscroll") || 0.0
-                    $('body').animate({scrollTop: savedYscroll},1)
                     // Reload Name
                     savedUsername = await retrieveJSON("savedUsername") || ""
                     if(savedUsername.length>0)
                         $("#username").val(savedUsername)
                     // Reload Filters -> Data
                         // Check for FlexDatalist Availability
-                    let x = setInterval(async () => {
+                    let reloadSavedData = setInterval(async () => {
                         if($(".flexdatalist-multiple-value > .flexdatalist-alias").length){
-                            clearInterval(x)
+                            clearInterval(reloadSavedData)
                             // Reload Filters
                             var filterInput
                             savedFilters = await retrieveJSON("savedFilters") || []
                             for(let i=0; i<savedFilters.length; i++) {
                                 filterInput = $(".flexdatalist-multiple-value > .flexdatalist-alias")
-                                filterInput.val(savedFilters[i])
-                                var e = $.Event("keyup",{keyCode:13})
-                                filterInput.trigger(e)
+                                await filterInput.val(savedFilters[i])
+                                var e = await $.Event("keyup",{keyCode:13})
+                                await filterInput.trigger(e)
+                                await filterInput.val("")
                             }
                             // Check if the List shown is Hidden List or Unhidden List -> Rename th button
                             var filters = $(".flexdatalist-multiple").children("li.value")
                             for(let i=0; i<filters.length; i++) {
                                 var filterName = filters.eq(i).children(".text")[0].innerText
                                 if(filterName.toLowerCase()==="hidden"){
-                                    $("#hiddenUnhiddenBtn").text("Unhidden")
+                                    $("#hiddenUnhiddenBtn").text("Hidden")
                                 }
                             }
                             // Reload Data Table
+                            await $("#animeRecommendationList").html(`
+                                <tr class="item" role="row">
+                                    <td style="padding: 1.5em !important;" colspan="10">
+                                        <div style="display:flex; align-items:center;">
+                                            <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                            <div>Loading...</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `)
                             savedData = await retrieveJSON("savedData") || []
                             if(savedData.length>0){
+                                await LoadData(savedData)
                                 $("#updateTableBtns").css("display","flex")
-                                if(savedData.length>0){
+                                if(savedHiddenAnimeTitles.length>0){
                                     $("#showAllAnime").show()
                                 }
-                                await LoadData(savedData)
                             } else {
                                 animeData = `
                                     <tr class="item" role="row">
@@ -624,11 +630,34 @@
                             }
                         }   
                     },1)
+
+                    // // Reload saved Table Page
+                    // savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
+                    // savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
+                    // let reloadSavedPage = setInterval(async()=>{
+                    //     try{
+                    //         $("#anime-table").trigger("pageSet",1+(savedTableStatus==="Unhidden"? savedTablePage[0]:savedTablePage[1]))
+                    //         console.log($('#anime-table')[0].config.pager.page,(savedTableStatus==="Unhidden"? savedTablePage[0]:savedTablePage[1]))
+                    //         if($('#anime-table')[0].config.pager.page===(savedTableStatus==="Unhidden"? savedTablePage[0]:savedTablePage[1])){
+                    //             clearInterval(reloadSavedPage)
+                    //         }
+                    //     }catch(e){}
+                    // },1)
+                    // // console.log($('#anime-table')[0].config.pager.page)
+
+                    // Reload saved Website Y-Position
+                    savedYscroll = await retrieveJSON("savedYscroll") || 0.0
+                    let reloadSavedYScroll = setInterval(()=>{
+                        $('body').animate({scrollTop: savedYscroll},1)
+                        if($("body").scrollTop()===savedYscroll){
+                            clearInterval(reloadSavedYScroll)
+                        }
+                    },1)
                     
                     // Load Functions
                     savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
                     savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
-                    $("#anime-table")
+                    await $("#anime-table")
                         .tablesorter({
                             sortInitialOrder: "asc",
                             headers: {
@@ -651,34 +680,42 @@
                             cssGoto: '.pagenum',
                             cssPageDisplay: '.pagedisplay'
                         })
-                    $("#next, #prev, #first, #last").on('click', async function(){
-                        setTimeout(()=>{
-                            $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
-                        },0)
-                        var page = $('#anime-table')[0].config.pager.page
-                        savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
-                        savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
-                        saveJSON(savedTableStatus==="Unhidden"?[page,savedTablePage[1]]:[savedTablePage[0],page],"savedTablePage")
-                    })
-                    $('#anime-table').delegate('button.hide-anime', 'click' , async function() {
-                        var hiddenRow =  $(this).closest('tr')
-                        var hiddenAnimeTitle = hiddenRow.children("td#animeTitle").children("a")[0].textContent
-                        savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
-                        savedHiddenAnimeTitles.push(hiddenAnimeTitle)
-                        saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
-                        // Have a Hidden Anime
-                        if(savedHiddenAnimeTitles.length>0){
-                            $("#showAllAnime").show()
-                        }
-                        hiddenRow.remove()
-                        savedData = await retrieveJSON("savedData")
-                        await LoadData(savedData)
-                        setTimeout(()=>{
-                            $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
-                        },0)
-                        return false
-                    })
-                    $('#anime-table').delegate('button.show-anime', 'click' , async function() {
+                        .bind('pageMoved', async function(){
+                            setTimeout(()=>{
+                                $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                            },0)
+                            var page = $('#anime-table')[0].config.pager.page
+                            savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
+                            savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
+                            saveJSON(savedTableStatus==="Unhidden"?[page,savedTablePage[1]||0]:[savedTablePage[0]||0,page],"savedTablePage")
+                        })
+                    await $('#anime-table')
+                        .delegate('button.hide-anime', 'click' , async function() {
+                            var hiddenRow =  $(this).closest('tr')
+                            var hiddenAnimeTitle = hiddenRow.children("td#animeTitle").children("a")[0].textContent
+                            savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
+                            savedHiddenAnimeTitles.push(hiddenAnimeTitle)
+                            saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                            // Have a Hidden Anime
+                            if(savedHiddenAnimeTitles.length>0){
+                                $("#showAllAnime").show()
+                            }
+                            await hiddenRow.html(`
+                                <td style="padding: 1.5em !important;" colspan="10">
+                                    <div style="display:flex; align-items:center;">
+                                        <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                        <div>Loading...</div>
+                                    </div>
+                                </td>
+                            `)
+                            savedData = await retrieveJSON("savedData")
+                            await LoadData(savedData)
+                            setTimeout(()=>{
+                                $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                            },0)
+                            return false
+                        })
+                    await $('#anime-table').delegate('button.show-anime', 'click' , async function() {
                         var hiddenRow = $(this).closest('tr')
                         var hiddenAnimeTitle = hiddenRow.children("td#animeTitle").children("a")[0].textContent
                         savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
@@ -687,18 +724,16 @@
                         // No Hidden Anime
                         if(savedHiddenAnimeTitles.length===0){
                             $("#showAllAnime").hide()
-                            var animeData = `
-                                <tr class="item" role="row">
-                                    <td style="padding: 1.5em !important;" colspan="10">
-                                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                                        No Data
-                                    </td>
-                                </tr>
-                            `
-                            $("#animeRecommendationList").empty()
-                            $("#animeRecommendationList").append(animeData)
+                        } else {
+                            await hiddenRow.html(`
+                                <td style="padding: 1.5em !important;" colspan="10">
+                                    <div style="display:flex; align-items:center;">
+                                        <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                        <div>Loading...</div>
+                                    </div>
+                                </td>
+                            `)
                         }
-                        hiddenRow.remove()
                         savedData = await retrieveJSON("savedData")
                         await LoadData(savedData)
                         setTimeout(()=>{
@@ -710,7 +745,9 @@
                     setTimeout(()=>{
                         $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
                     },0)
-                    $(".loader").fadeOut("slow")
+                    setTimeout(()=>{
+                        $(".loader").fadeOut("slow")
+                    },750)
                 })
             })
             // Event Listeners
@@ -724,6 +761,16 @@
                 savedData = await retrieveJSON("savedData") || []
                 savedUpdateTime = await retrieveJSON("savedUpdateTime") || 780
                 if(savedData.length>0) {
+                    await $("#animeRecommendationList").html(`
+                        <tr class="item" role="row">
+                            <td style="padding: 1.5em !important;" colspan="10">
+                                <div style="display:flex; align-items:center;">
+                                    <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                    <div>Loading...</div>
+                                </div>
+                            </td>
+                        </tr>
+                    `)
                     LoadData(savedData)
                 }
                 else {
@@ -768,12 +815,23 @@
                                 await filterInput.val("hidden")
                                 var e = await $.Event("keyup",{keyCode:13})
                                 await filterInput.trigger(e)
+                                await filterInput.val("")
                             }
                             saveJSON("Hidden","savedTableStatus")
+                            await $("#animeRecommendationList").html(`
+                                <tr class="item" role="row">
+                                    <td style="padding: 1.5em !important;" colspan="10">
+                                        <div style="display:flex; align-items:center;">
+                                            <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                            <div>Loading...</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `)
                             await LoadData(savedData)
                             await $("#hiddenUnhiddenBtn").text("Hidden")
                             savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
-                            await $('#anime-table').trigger("pageSet",savedTablePage[1])
+                            $("#anime-table").trigger("pageSet",1+savedTablePage[0])
                             setTimeout(()=>{
                                 $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
                             },0)
@@ -790,10 +848,21 @@
                                 }
                             } 
                             saveJSON("Unhidden","savedTableStatus")
+                            await $("#animeRecommendationList").html(`
+                                <tr class="item" role="row">
+                                    <td style="padding: 1.5em !important;" colspan="10">
+                                        <div style="display:flex; align-items:center;">
+                                            <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                            <div>Loading...</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `)
                             await LoadData(savedData)
                             $("#hiddenUnhiddenBtn").text("Unhidden")
                             savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
-                            await $('#anime-table').trigger("pageSet",savedTablePage[0])
+                            savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
+                            $("#anime-table").trigger("pageSet",1+savedTablePage[1])
                             setTimeout(()=>{
                                 $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
                             },0)
@@ -824,7 +893,19 @@
                                     await $(".flexdatalist-alias").blur()
                                 }
                             }
-                        } 
+                        }
+                        if($("#hiddenUnhiddenBtn").text()==="Hidden"){
+                            await $("#animeRecommendationList").html(`
+                                    <tr class="item" role="row">
+                                        <td style="padding: 1.5em !important;" colspan="10">
+                                            <div style="display:flex; align-items:center;">
+                                                <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                                <div>Loading...</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `)
+                        }
                         await LoadData(savedData)
                         $("#hiddenUnhiddenBtn").text("Unhidden")
                         savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
@@ -840,16 +921,6 @@
                         })
                     }
                 })
-            })
-            $("#anime-table").bind("update, pagerUpdate",()=>{
-                setTimeout(()=>{
-                    $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
-                },0)
-            })
-            $("#pageNumberOptions").change(()=>{
-                setTimeout(()=>{
-                    $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
-                },0)
             })
             $("body").on('scroll', function () {
                 setTimeout(()=>{
@@ -1001,28 +1072,41 @@
                             }
                         },
                         error: function(xhr, error) {
-                            var err = JSON.parse(xhr.responseText).errors[0].message
-                            $("#dataStatusSpinner").hide(0,()=>{
-                                $("#dataStatus")
-                                    .empty()
-                                    .append(`An Error has Occured!`)
-                            })
-                            $("#dataStatusContainer").fadeOut(2500,()=>{
-                                $("#dataStatusSpinner").show()
-                                $("#dataStatus").empty()
-                            })
-                            if(err==="User not found"){
-                                $("#username")[0].setCustomValidity("Username is not found!")
-                                $("#username")[0].reportValidity()
-                            } else {
+                            try{
+                                var err = JSON.parse(xhr.responseText).errors[0].message
+                                $("#dataStatusSpinner").hide(0,()=>{
+                                    $("#dataStatus")
+                                        .empty()
+                                        .append(`An Error has Occured!`)
+                                })
+                                $("#dataStatusContainer").fadeOut(2500,()=>{
+                                    $("#dataStatusSpinner").show()
+                                    $("#dataStatus").empty()
+                                })
+                                if(err==="User not found"){
+                                    $("#username")[0].setCustomValidity("Username is not found!")
+                                    $("#username")[0].reportValidity()
+                                } else {
+                                    swal("Error", {
+                                        title: "Oops...Something Went Wrong!",
+                                        text: `Error: ${err}`,
+                                        icon: "error"
+                                    })
+                                }
+                                console.error(error)
+                                requestIsRunning = false
+                            } catch(ex) {
+                                console.error(ex)
+                                $("#dataStatusSpinner").hide(0,()=>{
+                                    $("#dataStatus")
+                                        .empty()
+                                        .append(`An Error has Occured!`)
+                                })
                                 swal("Error", {
                                     title: "Oops...Something Went Wrong!",
-                                    text: `Error: ${err}`,
                                     icon: "error"
                                 })
                             }
-                            console.error(error)
-                            requestIsRunning = false
                         }
                     })
                 }
@@ -1140,90 +1224,89 @@
                                         .empty()
                                         .append(`List has been Updated!`)
                                     setTimeout(()=>{
-                                        $("#dataStatusContainer").fadeOut(2500,()=>{
+                                        $("#dataStatusContainer").fadeOut(2500,async()=>{
                                             $("#dataStatusSpinner").show()
                                             $("#dataStatus").empty()
                                             // Reload Request Interval
-                                            for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
-                                            $("#dataStatusSpinner").show(0, async()=>{
+                                            for(let i=0;i<temp.length;i++) await clearTimeout(temp[i])
+                                            $("#dataStatusSpinner").show(0,()=>{
                                                 $("#dataStatusContainer").fadeIn(2500).css("display","flex")
-                                                requestIntervalSeconds = await retrieveJSON("requestIntervalSeconds") || 60
-                                                for(let i=requestIntervalSeconds; i>=0; i--){
-                                                    let timeout = setTimeout(()=>{
-                                                        if(i===0){
-                                                            saveJSON(60, "requestIntervalSeconds")
-                                                            requestPause = false
-                                                            saveJSON(requestPause,"requestPause")
-                                                            $("#dataStatusSpinner").hide(0,()=>{
-                                                                $("#dataStatus")
-                                                                    .empty()
-                                                                    .append(`Update is now Available!`)
-                                                                $("#dataStatusContainer").fadeOut(2500,()=>{
-                                                                    $("#dataStatus").empty()
-                                                                })
-                                                            })
-                                                        } else {
+                                            })
+                                            for(let i=60; i>=0; i--){
+                                                let timeout = setTimeout(()=>{
+                                                    if(i===0){
+                                                        saveJSON(60, "requestIntervalSeconds")
+                                                        requestPause = false
+                                                        saveJSON(requestPause,"requestPause")
+                                                        $("#dataStatusSpinner").hide(0,()=>{
                                                             $("#dataStatus")
                                                                 .empty()
-                                                                .append(`Please wait for another Request... Estimated Time: ${msToTime(i*1000)}`)
-                                                            saveJSON(i, "requestIntervalSeconds")
-                                                        }
-                                                    },(requestIntervalSeconds-i)*1000)
-                                                    temp.push(timeout)
-                                                }
-                                            })
+                                                                .append(`Update is now Available!`)
+                                                            $("#dataStatusContainer").fadeOut(2500,()=>{
+                                                                $("#dataStatus").empty()
+                                                                Update()
+                                                            })
+                                                        })
+                                                    } else {
+                                                        $("#dataStatus")
+                                                            .empty()
+                                                            .append(`Please wait for another Update... Estimated Time: ${msToTime(i*1000)}`)
+                                                        saveJSON(i, "requestIntervalSeconds")
+                                                    }
+                                                },(requestIntervalSeconds-i)*1000)
+                                                temp.push(timeout)
+                                            }
                                         })
                                     }, 1000)
                                 })
                             }
                         },
                         error: function(xhr, error) {
-                            var timeInterval = 60000 //Minute in ms
-                            var err = JSON.parse(xhr.responseText).errors[0].message
-                            if(err==="Too Many Requests."){
-                                // Clean Analyzed Recommendations
-                                var temp = recScheme
-                                for(let i=0;i<temp.length;i++){
-                                    var anime = temp[i]
-                                    var weight = (1/sum)*anime.count
-                                    temp[i].score=anime.score*weight
+                            try {
+                                var timeInterval = 60000 //Minute in ms
+                                var err = JSON.parse(xhr.responseText).errors[0].message
+                                if(err==="Too Many Requests."){
+                                    setTimeout(()=>{
+                                        recall(page)
+                                    },timeInterval)
+                                } else {
+                                    setTimeout(()=>{
+                                        $("#dataStatusContainer").fadeOut(2500,()=>{
+                                            $("#dataStatusSpinner").show()
+                                            $("#dataStatus").empty()
+                                            if(err==="User not found"){
+                                                $("#username")[0].setCustomValidity("Username is not found!")
+                                                $("#username")[0].reportValidity()
+                                            } else {
+                                                setTimeout(()=>{
+                                                    recall(page)
+                                                },timeInterval)
+                                                swal("Error", {
+                                                    title: "Oops...Something Went Wrong!",
+                                                    text: `Error: ${err}`,
+                                                    icon: "error"
+                                                })
+                                                requestIsRunning = false
+                                            }
+                                        })
+                                    }, 1000)
                                 }
-                                // Saved New Username
-                                saveJSON(username,"savedUsername")
-                                // Save new AnimeList json Data
-                                saveJSON(temp, "savedData")
-                                // Show Table Update Buttons
-                                $("#updateTableBtns").css("display","flex")
-                                // // Download Recommendation List json
-                                // downloadObjectAsJson(recScheme,"NWVI-NWA")
-                                // Reload new Data
-                                LoadData(temp)
+                                console.error(error)
+                            } catch(ex) {
+                                console.error(ex)
                                 setTimeout(()=>{
                                     recall(page)
                                 },timeInterval)
-                            } else {
-                                setTimeout(()=>{
-                                    $("#dataStatusContainer").fadeOut(2500,()=>{
-                                        $("#dataStatusSpinner").show()
-                                        $("#dataStatus").empty()
-                                        if(err==="User not found"){
-                                        $("#username")[0].setCustomValidity("Username is not found!")
-                                        $("#username")[0].reportValidity()
-                                        } else {
-                                            setTimeout(()=>{
-                                                recall(page)
-                                            },timeInterval)
-                                            swal("Error", {
-                                                title: "Oops...Something Went Wrong!",
-                                                text: `Error: ${err}`,
-                                                icon: "error"
-                                            })
-                                            requestIsRunning = false
-                                        }
-                                    })
-                                }, 1000)
+                                $("#dataStatusSpinner").hide(0,()=>{
+                                    $("#dataStatus")
+                                        .empty()
+                                        .append(`An Error has Occured!`)
+                                })
+                                swal("Error", {
+                                    title: "Oops...Something Went Wrong!",
+                                    icon: "error"
+                                })
                             }
-                            console.error(error)
                         }                        
                     })
                 }
@@ -1257,6 +1340,9 @@
                         $("#animeRecommendationList").append(animeData)
                         await $("#anime-table").trigger("update")
                         await $("#anime-table").trigger("pagerUpdate")
+                        savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
+                        savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
+                        $("#anime-table").trigger("pageSet",1+(savedTableStatus==="Unhidden"? savedTablePage[0]:savedTablePage[1]))
                         setTimeout(()=>{
                             $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
                         },0)
