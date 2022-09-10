@@ -808,7 +808,7 @@
                     savedData = await retrieveJSON("savedData") || []
                     if(savedUsername.length>0&&savedData.length>0){
                         var state = await $("#hiddenUnhiddenBtn").text()
-                        if(!equalsNCS($("#username"),savedUsername)){
+                        if(!equalsNCS($("#username").val(),savedUsername)){
                             await $("#username").val(savedUsername)
                         }
                         if(state==="Unhidden"){
@@ -881,7 +881,7 @@
                 .then(async(confirmed) => {
                     if(confirmed){
                         savedUsername = await retrieveJSON("savedUsername") || ""
-                        if(!equalsNCS($("#username"),savedUsername)){
+                        if(!equalsNCS($("#username").val(),savedUsername)){
                             $("#username").val(savedUsername)
                         }
                         saveJSON([], "savedHiddenAnimeTitles")
@@ -960,7 +960,6 @@
                             requestIntervalSeconds = Math.round(60-(((new Date()).getTime()-savedLastRequestDate.getTime())/1000)) || 60
                             for(let i=requestIntervalSeconds; i>=0; i--){
                                 let timeout = setTimeout(()=>{
-                                    console.log(i)
                                     if(i===0){
                                         requestPause = false
                                         saveJSON(requestPause,"requestPause")
@@ -1324,6 +1323,7 @@
                     saveJSON(filters, "savedFilters")
                     savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
                     var worker = new Worker("./js-css/worker/loadData.js")
+                    
                     worker.postMessage({
                         recScheme: recScheme,
                         savedHiddenAnimeTitles: savedHiddenAnimeTitles,
@@ -1392,11 +1392,13 @@
                 })
             }
             function equalsNCS(str1, str2) {
-                var s1 = str1 || ""
-                var s2 = str2 || ""
-                if(typeof str1=="number") s1 = s1.toString()
-                if(typeof str2=="number") s2 = s2.toString()
-                return s1.trim().toLowerCase() == s2.trim().toLowerCase()
+                var s1 = str1
+                var s2 = str2
+                if(typeof s1==="number") s1 = s1.toString()
+                if(typeof s2==="number") s2 = s2.toString()
+                if(typeof s1==="string") s1 = s1.trim().toLowerCase()
+                if(typeof s2==="string") s2 = s2.trim().toLowerCase()
+                return s1 === s2
             }
             function arraySum(obj) {
                 return obj.reduce((a, b) => a + b, 0)
