@@ -957,9 +957,10 @@
                             $("#dataStatusSpinner").show(0,()=>{
                                 $("#dataStatusContainer").fadeIn(2500).css("display","flex")
                             })
-                            requestIntervalSeconds = 60-(((new Date()).getTime()-savedLastRequestDate.getTime())/1000) || 60
+                            requestIntervalSeconds = Math.round(60-(((new Date()).getTime()-savedLastRequestDate.getTime())/1000)) || 60
                             for(let i=requestIntervalSeconds; i>=0; i--){
                                 let timeout = setTimeout(()=>{
+                                    console.log(i)
                                     if(i===0){
                                         requestPause = false
                                         saveJSON(requestPause,"requestPause")
@@ -1232,7 +1233,7 @@
                                             $("#dataStatusContainer").fadeIn(2500).css("display","flex")
                                         })
                                         savedLastRequestDate = await retrieveJSON("savedLastRequestDate") || new Date(Date.now()-60001)
-                                        requestIntervalSeconds = 60-(((new Date()).getTime()-savedLastRequestDate.getTime())/1000) || 60
+                                        requestIntervalSeconds = Math.round(60-(((new Date()).getTime()-savedLastRequestDate.getTime())/1000)) || 60
                                         for(let i=requestIntervalSeconds; i>=0; i--){
                                             let timeout = setTimeout(()=>{
                                                 if(i===0){
