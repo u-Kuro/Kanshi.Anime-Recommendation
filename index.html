@@ -651,7 +651,7 @@
                     let reloadSavedYScroll = setInterval(()=>{
                         $('body').animate({scrollTop: savedYscroll},1)
                         if($("body").scrollTop()===savedYscroll||
-                        (((new Date()).getTime())-reloadSavedYScrollStartDate.getTime())>5000){
+                        (((new Date()).getTime())-reloadSavedYScrollStartDate.getTime())>1000){
                             clearInterval(reloadSavedYScroll)
                         }
                     },1)

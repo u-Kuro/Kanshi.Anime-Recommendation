@@ -141,7 +141,6 @@ self.onmessage = (message) => {
     // Show Table
     var animeData = ""
     
-    
     recScheme.forEach((value) => {
         var score = parseFloat(value.score)
         if(includes.some(item=>equalsNCS(item,"hidden"))){                            
