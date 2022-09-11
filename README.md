@@ -10,7 +10,6 @@
   1. Filters are available, insert Genres/Tags/Status/Format/Year/Season/Studios to include and/or exclude (adding !filterword) an anime in your recommendation list. Numeric Filters >,<,=>,<= for numbered column including Score and Year.
   2. Sort by Scores/Status/Year/etc. to the desired order.
   3. Hidden/Unhidden List to hide an Anime from ones' list or show it back to your list (Click Show All for immediate retrieval).
-  4. The Anilist website in the app is available to show a more detailed information about a recommended Anime (Click the title of an Anime).
 
 ## Kanshi.VI
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Year, Season, Episode Count, Format, and Studios. Each variables or variable component are averaged and then all anime in Anilist are analyzed based on the Variable Importance Schema from ones' rating.
