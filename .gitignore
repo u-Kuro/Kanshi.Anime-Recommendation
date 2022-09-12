@@ -1,3 +1,11 @@
 KanshiVI.jks
 .copy/
-Kanshi. Android/
+Kanshi. Android/*.iml
+Kanshi. Android/.gradle
+Kanshi. Android/local.properties
+Kanshi. Android/.idea/workspace.xml
+Kanshi. Android/.idea/libraries
+Kanshi. Android/.DS_Store
+Kanshi. Android/build
+Kanshi. Android/captures
+Kanshi. Android/.externalNativeBuild
