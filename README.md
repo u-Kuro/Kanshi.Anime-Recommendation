@@ -7,7 +7,7 @@
   2. Run the app and Enter a username of an Exsting anilist account (A properly rated list is highly recommended). If you don't have one, you can easily Create an account in their website ([Anilist](https://anilist.co/home)) or Export your List from MAL (MyAnimeList) if you have one ([MAL export](https://myanimelist.net/panel.php?go=export)) then Import the XML file in the Anilist settings ([Anilist Import](https://anilist.co/settings/import)).
   
   Additional Features
-  1. Filters are available, insert Genres/Tags/Status/Format/Year/Season/Studios to include and/or exclude (adding !filterword) an anime in your recommendation list. Numeric Filters >,<,=>,<= for numbered column including Score and Year.
+  1. Filters are available, insert Title/Genres/Tags/Status/Format/Year/Season/Studios to include and/or exclude (adding !filterword) an anime in your recommendation list. Numeric Filters >,<,=>,<= for numbered column including Score and Year.
   2. Sort by Scores/Status/Year/etc. to the desired order.
   3. Hidden/Unhidden List to hide an Anime from ones' list or show it back to your list (Click Show All for immediate retrieval).
 
