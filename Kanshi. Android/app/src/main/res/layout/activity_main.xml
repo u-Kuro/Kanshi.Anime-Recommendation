@@ -10,52 +10,45 @@
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="55dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/customActionBar">
+        app:layout_constraintStart_toStartOf="parent">
+<!--        android:layout_marginTop="55dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/customActionBar">-->
     </WebView>
 
-    <RelativeLayout
-        android:id="@+id/customActionBar"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="#EB000000"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:textSize="20dp"
-            android:layout_marginTop="7.5dp"
-            android:layout_marginBottom="7.5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true"
-            android:text="Kanshi."
-            android:textColor="@color/white">
-        </TextView>
-        <ImageView
-            android:layout_marginTop="7.5dp"
-            android:layout_marginBottom="7.5dp"
-            android:layout_marginRight="10dp"
-            android:id="@+id/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/img"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:layout_centerVertical="true"
-            ></ImageView>
-    </RelativeLayout>
-
-
-
-
-
-
-
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/customActionBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="55dp"-->
+<!--        android:background="#EB000000"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent">-->
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentLeft="true"-->
+<!--            android:textSize="20dp"-->
+<!--            android:layout_marginTop="7.5dp"-->
+<!--            android:layout_marginBottom="7.5dp"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:text="Kanshi."-->
+<!--            android:textColor="@color/white">-->
+<!--        </TextView>-->
+<!--        <ImageView-->
+<!--            android:layout_marginTop="7.5dp"-->
+<!--            android:layout_marginBottom="7.5dp"-->
+<!--            android:layout_marginRight="10dp"-->
+<!--            android:id="@+id/logo"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:src="@drawable/img"-->
+<!--            android:adjustViewBounds="true"-->
+<!--            android:scaleType="fitCenter"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            ></ImageView>-->
+<!--    </RelativeLayout>-->
 </androidx.constraintlayout.widget.ConstraintLayout>
