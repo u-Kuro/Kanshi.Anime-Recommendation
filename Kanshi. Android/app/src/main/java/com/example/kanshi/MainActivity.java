@@ -2,8 +2,13 @@ package com.example.kanshi;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -37,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             webSettings.setAllowUniversalAccessFromFileURLs(true);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("My Notification","My Notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
         if (!DetectConnection.checkInternetConnection(this)) {
             webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         }
@@ -45,8 +55,17 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                Log.d("MainWebsiteLogs", consoleMessage.message() + " -- From line " +
-                        consoleMessage.lineNumber() + " of " + consoleMessage.sourceId());
+                String message = consoleMessage.message();
+                String xmessage = "WebtoApp: List is Updated";
+                if(xmessage.equals(message)){
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "My Notification")
+                            .setContentTitle("List Has Been Updated!")
+                            .setContentText("Recommendations List has been Updated!")
+                            .setSmallIcon(R.drawable.img)
+                            .setAutoCancel(true);
+                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MainActivity.this);
+                    managerCompat.notify(1, builder.build());
+                }
                 return true;
             }
         });
