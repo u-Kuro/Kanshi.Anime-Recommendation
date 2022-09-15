@@ -264,9 +264,6 @@
                 max-width: fit-content !important;
                 cursor: pointer;
             }
-            #updateTableBtns{
-                display: none;
-            }
             .anime-table-headers > th{
                 vertical-align: middle !important;
                 padding: 1em !important;
@@ -470,7 +467,6 @@
                 -webkit-box-shadow: 0 3px 20px 0 #af6e7138 !important;
                 box-shadow: 0 3px 20px 0 #af6e7138 !important;
             }
-
         </style>
 </head>
 <body>
@@ -482,9 +478,11 @@
     <div>
         <button id="updateBtn">Update</button>
         <button id="showAllAnime">Show All</button>
-        <input type="file" id="importFile" style="display: none;"/>
+        <input type="file" id="importFile" style="display: none;" accept=".json"/>
         <button id="importBtn">Import</button>
         <button id="exportBtn">Export</button>
+        <button id="updateIntervalBtn">Update Every 4 hours</button>
+        <button id="exportIntervalBtn">Export Every 4 hours</button>
     </div>
 </div>
 <header>
@@ -550,9 +548,8 @@
         <span id="first" class="first"><h5>First</h5></span>
         <span id="prev" class="prev"><h5>Prev</h5></span>
         <span id="selectPageNumber">
-                    <select id="pageNumberOptions" class="custom-select pagenum" title="Select page number"></select>
-            <!-- <div class="endPage"><span class="pagedisplay"></span></div> -->
-                </span>
+            <select id="pageNumberOptions" class="custom-select pagenum" title="Select page number"></select>
+        </span>
         <span id="next" class="next"><h5>Next</h5></span>
         <span id="last" class="last"><h5>Last</h5></span>
     </form>
@@ -607,7 +604,8 @@
               // Saved Data
             savedUsername, savedData, savedFilters, savedUpdateTime, requestIntervalSeconds,
             savedHiddenAnimeTitles, savedYscroll, savedTablePage, savedTableStatus,
-            savedFilterOptionsJson, allFilterInfo,
+            savedFilterOptionsJson, allFilterInfo, exportIntervalIsActive, updateIntervalIsActive,
+            exportIntervalStartDate, updateIntervalStartDate,
               // Load Saved API Request State
             savedUpdateTime, savedLastRequestDate, requestPause,
             updateStartTime, isRunning = false, requestIsRunning = false, temp = []
@@ -697,7 +695,6 @@
                             if(savedData.length>0){
                                 $("#updateBtn").show()
                                 await LoadData(savedData,false)
-                                $("#updateTableBtns").css("display","flex")
                                 if(savedHiddenAnimeTitles.length>0){
                                     $("#showAllAnime").show()
                                 }
@@ -735,6 +732,44 @@
                             clearInterval(reloadSavedYScroll)
                         }
                     },1)
+
+                    // Auto Interval
+                      // Update
+                    updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
+                      if(updateIntervalIsActive){
+                        $("#updateIntervalBtn").css({background: "white",color:"black"})
+                        updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
+                        saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                        if((new Date).getTime()-(updateIntervalStartDate.getTime())>14400000){// 4hrs
+                            Update()
+                            updateIntervalStartDate = new Date()
+                            saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                        }
+                    }
+                    exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
+                      // Export
+                    if(exportIntervalIsActive){
+                        $("#exportIntervalBtn").css({background: "white",color:"black"})
+                        exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
+                        saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                        if((new Date).getTime()-(exportIntervalStartDate.getTime())>14400000){// 4hrs
+                            const savedUsername = await retrieveJSON("savedUsername")
+                            const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                            const allFilterInfo = await retrieveJSON("allFilterInfo")
+                            const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
+                            const savedData = await retrieveJSON("savedData")
+                            const backup = {
+                                savedUsername: savedUsername,
+                                savedHiddenAnimeTitles: savedHiddenAnimeTitles,
+                                allFilterInfo: allFilterInfo,
+                                savedFilterOptionsJson: savedFilterOptionsJson,
+                                savedData: savedData
+                            }
+                            downloadObjectAsJson(backup, "Kanshi-Backup")
+                            exportIntervalStartDate = new Date()
+                            saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                        }
+                    }
 
                     // Load Functions
                     savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
@@ -848,7 +883,7 @@
                     },0)
                     setTimeout(()=>{
                         $(".loader").fadeOut("slow")
-                    },750)
+                    },1000)
                 })
             })
             // Event Listeners
@@ -876,9 +911,12 @@
                 }
                 else {
                     swal({
-                        text: `Are you sure that you want to Update?
+                        text: `Do you want to continue and Update your Recommendations List?
                         The estimated time to finish is ${msToTime(savedUpdateTime*1000)}`,
-                        buttons: true,
+                        buttons: [
+                            'No',
+                            'Yes'
+                        ],
                     })
                     .then((confirmed) => {
                         if(confirmed){
@@ -890,21 +928,25 @@
             $("#menuIcon, #menuTitle").on("click",()=>{
                 var menu = $(".menu-container")
                 if(menu.css("display")=="none"){
-                    menu.fadeIn(500)
+                    menu.fadeIn(250)
                 } else {
-                    menu.fadeOut(500)
+                    menu.fadeOut(250)
                 }
             })
             $("#updateBtn").on('click', async ()=>{
                 savedUpdateTime = await retrieveJSON("savedUpdateTime") || 845
                 swal({
-                    text: `Are you sure that you want to Update?
+                    text: `Do you want to continue and Update your Recommendations List?
                     The estimated time to finish is ${msToTime(savedUpdateTime*1000)}`,
-                    buttons: true,
+                    buttons: [
+                        'No',
+                        'Yes'
+                    ],
                 })
                 .then(async (confirmed) => {
                     if(confirmed){
                         Update()
+                        $(".menu-container").fadeOut(250)
                     }
                 })
             })
@@ -992,8 +1034,11 @@
             })
             $("#showAllAnime").on('click', ()=>{
                 swal({
-                    text: "Are you sure that you want to show all hidden Anime?",
-                    buttons: true,
+                    text: "Do you want to show all your hidden Anime? This will remove all hidden Anime in the Hidden's List!",
+                    buttons: [
+                        'No',
+                        'Yes'
+                    ],
                 })
                 .then(async(confirmed) => {
                     if(confirmed){
@@ -1040,7 +1085,8 @@
                         saveJSON("Unhidden","savedTableStatus")
                         saveJSON($('#anime-table')[0].config.pager.page,"savedTablePage")
                         $("#showAllAnime").hide()
-                        swal("Hidden Animes have been successfully added!", {
+                        $(".menu-container").fadeOut(250)
+                        swal("All Hidden Animes has now been successfully Unidden!", {
                             icon: "success",
                         })
                     }
@@ -1060,29 +1106,42 @@
                         filename = filename.substring(1);
                     }
                     swal({
-                        text: `File has named "${filename}" been Detected, do you want to continue Uploading? It will remove your current Data!`,
-                        buttons: true,
+                        text: `File named [${filename}] been Detected, do you want to continue the Import? This will remove your current Data!`,
+                        buttons: [
+                            'No',
+                            'Yes'
+                        ],
                     })
                     .then(async (confirmed) => {
                         if(confirmed){
                             const reader = new FileReader();
-                            reader.onload = function() {
-                            const fileContent = JSON.parse(reader.result);
+                            reader.onload = () => {
+                                $("#importBtn").css({background: "black", color: "white"})
+                                const fileContent = JSON.parse(reader.result);
                                 const entries = Object.entries(fileContent)
-                                savedUsername = fileContent.savedUsername || savedUsername
+                                savedUsername = fileContent.savedUsername || ""
                                 saveJSON(savedUsername,"savedUsername")
-                                savedHiddenAnimeTitles = fileContent.savedHiddenAnimeTitles || savedHiddenAnimeTitles
+                                savedHiddenAnimeTitles = fileContent.savedHiddenAnimeTitles || []
                                 saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
                                 allFilterInfo = fileContent.allFilterInfo || allFilterInfo
                                 saveJSON(allFilterInfo,"allFilterInfo")
                                 savedFilterOptionsJson = fileContent.savedFilterOptionsJson || savedFilterOptionsJson
                                 saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
-                                savedData = fileContent.savedData || savedData
+                                savedData = fileContent.savedData || []
                                 saveJSON(savedData,"savedData")
+                                $("#username").val(savedUsername)
+                                $('.flexdatalist').flexdatalist({
+                                    data: savedFilterOptionsJson
+                                })
+                                if(savedHiddenAnimeTitles.length) $("#showAllAnime").show()
+                                else $("#showAllAnime").hide()
+                                if(savedData.length) $("#updateBtn").show()
+                                else $("#updateBtn").hide()
+                                LoadData(savedData)
+                                $(".menu-container").fadeOut(250)
                                 swal("Data has been Updated!", {
                                     icon: "success",
                                 })
-                                $("#importBtn").css({background: "black", color: "white"})
                             };
                             reader.readAsText(importedFile);
                         } else {
@@ -1094,8 +1153,11 @@
             })
             $("#exportBtn").on("click", async()=>{
                 swal({
-                    text: `Are you sure that you want to Export your Data?`,
-                    buttons: true,
+                    text: `Do you want to Export your Data?`,
+                    buttons: [
+                        'No',
+                        'Yes'
+                    ],
                 })
                 .then(async (confirmed) => {
                     if(confirmed){
@@ -1112,11 +1174,108 @@
                             savedData: savedData
                         }
                         downloadObjectAsJson(backup, "Kanshi-Backup")
+                        $(".menu-container").fadeOut(250)
                     }
                 })
             })
+            $("#updateIntervalBtn").on("click",async()=>{
+                updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
+                if(updateIntervalIsActive){
+                    swal({
+                        text: `Do you want to Disable Auto Update for your Recommendations List every 4 hours?`,
+                        buttons: [
+                            'No',
+                            'Yes'
+                        ],
+                    })
+                    .then(async (confirmed) => {
+                        if(confirmed){
+                            $("#updateIntervalBtn").css({background:"black",color:"white"})
+                            updateIntervalIsActive = false
+                            saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
+                        }
+                    })
+                } else {
+                    swal({
+                        text: `Do you want to Enable Auto Update for your Recommendations List every 4 hours?`,
+                        buttons: [
+                            'No',
+                            'Yes'
+                        ],
+                    })
+                    .then(async (confirmed) => {
+                        if(confirmed){
+                            $("#updateIntervalBtn").css({background:"white",color:"black"})
+                            updateIntervalIsActive = true
+                            saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
+                            updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
+                            saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                            if((new Date).getTime()-(updateIntervalStartDate.getTime())>14400000){// 4hrs
+                                Update()
+                                updateIntervalStartDate = new Date()
+                                saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                            }
+                        }
+                    })
+                }
+            })
+            $("#exportIntervalBtn").on("click",async()=>{
+                exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
+                if(exportIntervalIsActive){
+                    swal({
+                        text: `Do you want to Disable Data Back-Up every 4 hours?`,
+                        buttons: [
+                            'No',
+                            'Yes'
+                        ],
+                    })
+                    .then(async (confirmed) => {
+                        if(confirmed){
+                            $("#exportIntervalBtn").css({background:"black",color:"white"})
+                            exportIntervalIsActive = false
+                            saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
+                        }
+                    })
+                } else {
+                    swal({
+                        text: `Do you want to Enable Data Back-Up every 4 hours?`,
+                        buttons: [
+                            'No',
+                            'Yes'
+                        ],
+                    })
+                    .then(async (confirmed) => {
+                        if(confirmed){
+                            $("#exportIntervalBtn").css({background:"white",color:"black"})
+                            exportIntervalIsActive = true
+                            saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
+                            exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
+                            saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                            if((new Date).getTime()-(exportIntervalStartDate.getTime())>14400000){// 4hrs
+                                const savedUsername = await retrieveJSON("savedUsername")
+                                const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                                const allFilterInfo = await retrieveJSON("allFilterInfo")
+                                const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
+                                const savedData = await retrieveJSON("savedData")
+                                const backup = {
+                                    savedUsername: savedUsername,
+                                    savedHiddenAnimeTitles: savedHiddenAnimeTitles,
+                                    allFilterInfo: allFilterInfo,
+                                    savedFilterOptionsJson: savedFilterOptionsJson,
+                                    savedData: savedData
+                                }
+                                downloadObjectAsJson(backup, "Kanshi-Backup")
+                                exportIntervalStartDate = new Date()
+                                saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                            }
+                        }
+                    })
+
+                }
+            })
+
+            //
             $(".anime-table-headers").on('click', ()=>{
-                console.log("aaa")
                 setTimeout(()=>{
                     let setPageInfo = setInterval(()=>{
                         if(typeof $('#anime-table')[0].config!=="undefined"){
@@ -1182,6 +1341,11 @@
                                 },(requestIntervalSeconds-i)*1000)
                                 temp.push(timeout)
                             }
+                        } else {
+                            $(".menu-container").fadeOut(250)
+                            swal("List is Already Updating! Please wait a moment...", {
+                                icon: "info",
+                            })
                         }
                     }
                 }
@@ -1308,6 +1472,7 @@
                                     icon: "error"
                                 })
                             }
+                            console.log("WebtoApp: Update Error")
                             requestIsRunning = false
                         }
                     })
@@ -1417,8 +1582,6 @@
                                 saveJSON(username,"savedUsername")
                                 // Save new AnimeList json Data
                                 saveJSON(recScheme, "savedData")
-                                // Show Table Update Buttons
-                                $("#updateTableBtns").css("display","flex")
                                 // // Download Recommendation List json
                                 // downloadObjectAsJson(recScheme,"NWVI-NWA")
                                 var worker = new Worker("./js-css/worker/updateOptions.js")
@@ -1440,6 +1603,7 @@
                                     swal("List has been Updated!", {
                                         icon: "success",
                                     })
+                                    requestIsRunning = false
                                     setTimeout(async()=>{
                                         for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                                         $("#dataStatusSpinner").show(0,()=>{
@@ -1499,6 +1663,7 @@
                                         $("#dataStatusSpinner").show()
                                         $("#dataStatus").empty()
                                     })
+                                    console.log("WebtoApp: Update Error")
                                     requestIsRunning = false
                                 }
                             } catch(ex) {
@@ -1508,6 +1673,7 @@
                                     text: `Error 103: ${typeof err==="string"?err:"Please Try Again..."}`,
                                     icon: "error"
                                 })
+                                console.log("WebtoApp: Update Error")
                                 requestIsRunning = false
                             }
                         }
@@ -1666,9 +1832,6 @@
                     fileReader.readAsText(file)
                 })
             }
-            function importFile() {
-
-            }
         </script>
 </body>
-</html>
+</html>//28-32
