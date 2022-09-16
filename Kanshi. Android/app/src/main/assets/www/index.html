@@ -137,6 +137,17 @@
                 max-width: 100%;
             }
             /* Additional */
+            body{
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            .example {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
             button {
                 background-color: black;
                 color: white;
@@ -252,10 +263,10 @@
             a {
                 color: #B06D70;
             }
+            #updateIntervalBtn,
+            #chooseExportPathBtn,
+            #updateBtn,
             #showAllAnime{
-                display: none;
-            }
-            #updateBtn{
                 display: none;
             }
             #hiddenUnhiddenBtn{
@@ -263,6 +274,10 @@
                 color: white !important;
                 max-width: fit-content !important;
                 cursor: pointer;
+            }
+            #searchBtn:hover,
+            #searchBtn:focus{
+                color: white;
             }
             .anime-table-headers > th{
                 vertical-align: middle !important;
@@ -481,6 +496,7 @@
         <input type="file" id="importFile" style="display: none;" accept=".json"/>
         <button id="importBtn">Import</button>
         <button id="exportBtn">Export</button>
+        <button id="chooseExportPathBtn">Change Export Folder</button>
         <button id="updateIntervalBtn">Update Every 4 hours</button>
         <button id="exportIntervalBtn">Export Every 4 hours</button>
     </div>
@@ -603,7 +619,7 @@
             var request, db,
               // Saved Data
             savedUsername, savedData, savedFilters, savedUpdateTime, requestIntervalSeconds,
-            savedHiddenAnimeTitles, savedYscroll, savedTablePage, savedTableStatus,
+            savedHiddenAnimeTitles, savedYscroll, savedTablePage, savedTableStatus, exportPathIsAvailable,
             savedFilterOptionsJson, allFilterInfo, exportIntervalIsActive, updateIntervalIsActive,
             exportIntervalStartDate, updateIntervalStartDate,
               // Load Saved API Request State
@@ -629,8 +645,10 @@
                     $(".table-responsive").css("margin-bottom",`${$("#pager").outerHeight()+43}px`)
                     // Reload Name
                     savedUsername = await retrieveJSON("savedUsername") || ""
-                    if(savedUsername.length>0)
+                    if(savedUsername.length>0){
                         $("#username").val(savedUsername)
+                        $("#updateIntervalBtn").show()
+                    }
                     // Reload FilterOptions
                     savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson") || []
                     allFilterInfo = await retrieveJSON("allFilterInfo") || {}
@@ -740,7 +758,7 @@
                         $("#updateIntervalBtn").css({background: "white",color:"black"})
                         updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
                         saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                        if((new Date).getTime()-(updateIntervalStartDate.getTime())>14400000){// 4hrs
+                        if((new Date).getTime()-(updateIntervalStartDate.getTime())>5000){// 4hrs
                             Update()
                             updateIntervalStartDate = new Date()
                             saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
@@ -752,7 +770,7 @@
                         $("#exportIntervalBtn").css({background: "white",color:"black"})
                         exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                         saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                        if((new Date).getTime()-(exportIntervalStartDate.getTime())>14400000){// 4hrs
+                        if((new Date).getTime()-(exportIntervalStartDate.getTime())>5000){// 4hrs
                             const savedUsername = await retrieveJSON("savedUsername")
                             const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                             const allFilterInfo = await retrieveJSON("allFilterInfo")
@@ -771,6 +789,12 @@
                         }
                     }
 
+                    // Export Path is Available
+                    exportPathIsAvailable = await retrieveJSON("exportPathIsAvailable")
+                    if(exportPathIsAvailable){
+                        $("#chooseExportPathBtn").show()
+                    }
+
                     // Load Functions
                     savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
                     savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
@@ -786,7 +810,7 @@
                             updateArrows: true,
                             page: savedTableStatus==="Unhidden"? savedTablePage[0]:savedTablePage[1],
                             savePages: true,
-                            size: 7,
+                            size: 8,
                             pageReset: false,
                             removeRows: true,
                             cssNext: '.next',
@@ -956,11 +980,14 @@
                     savedUsername = await retrieveJSON("savedUsername") || ""
                     savedData = await retrieveJSON("savedData") || []
                     if(savedUsername.length>0&&savedData.length>0){
+                        console.log("run3")
                         var state = await $("#hiddenUnhiddenBtn").text()
                         if(!equalsNCS($("#username").val(),savedUsername)){
                             await $("#username").val(savedUsername)
+                            console.log("run4")
                         }
                         if(state==="Unhidden"){
+                            console.log("run5")
                             if($(".flexdatalist-multiple-value > .flexdatalist-alias").length){
                                 var filterInput = await $(".flexdatalist-multiple-value > .flexdatalist-alias")
                                 await filterInput.val("hidden")
@@ -993,6 +1020,7 @@
                             },0)
                             isRunning = false
                         } else {
+                            console.log("run6")
                             if($(".flexdatalist-multiple-value").length){
                                 var filters = await $(".flexdatalist-multiple").children("li.value")
                                 for(let i=0; i<filters.length; i++) {
@@ -1029,7 +1057,7 @@
                             },0)
                             isRunning = false
                         }
-                    }
+                    } else isRunning = false
                 }
             })
             $("#showAllAnime").on('click', ()=>{
@@ -1097,16 +1125,83 @@
             })
             $("#importFile").on("change",(event)=>{
                 if($("#importFile")[0].value != ""){
-                    $("#importBtn").css({background: "white", color: "black"})
-                    const fullPath = $("#importFile")[0].value
-                    const importedFile = $("#importFile")[0].files[0]
-                    const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-                    var filename = fullPath.substring(startIndex);
-                    if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                        filename = filename.substring(1);
-                    }
+                    try {
+                        const importedFile = $("#importFile")[0].files[0]
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            const fullPath = $("#importFile")[0].value
+                            $("#importBtn").css({background: "white", color: "black"})
+                            const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                            var filename = fullPath.substring(startIndex);
+                            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                                filename = filename.substring(1);
+                            }
+                            swal({
+                                text: `File named [${filename}] been Detected, do you want to continue the Import? This will remove your current Data!`,
+                                buttons: [
+                                    'No',
+                                    'Yes'
+                                ],
+                            })
+                            .then(async (confirmed) => {
+                                if(confirmed){
+                                    $("#importBtn").css({background: "black", color: "white"})
+                                    const fileContent = JSON.parse(reader.result);
+                                    const entries = Object.entries(fileContent)
+                                    savedUsername = fileContent.savedUsername || ""
+                                    saveJSON(savedUsername,"savedUsername")
+                                    savedHiddenAnimeTitles = fileContent.savedHiddenAnimeTitles || []
+                                    saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                                    allFilterInfo = fileContent.allFilterInfo || allFilterInfo
+                                    saveJSON(allFilterInfo,"allFilterInfo")
+                                    savedFilterOptionsJson = fileContent.savedFilterOptionsJson || savedFilterOptionsJson
+                                    saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
+                                    savedData = fileContent.savedData || []
+                                    saveJSON(savedData,"savedData")
+                                    $("#username").val(savedUsername)
+                                    if(savedUsername.length) $("#updateIntervalBtn").show()
+                                    else $("#updateIntervalBtn").hide()
+                                    $('.flexdatalist').flexdatalist({
+                                        data: savedFilterOptionsJson
+                                    })
+                                    if(savedHiddenAnimeTitles.length) $("#showAllAnime").show()
+                                    else $("#showAllAnime").hide()
+                                    if(savedData.length) {
+                                        $("#updateBtn").show()
+                                        LoadData(savedData)
+                                    } else {
+                                        $("#updateBtn").hide()
+                                        animeData = `
+                                            <tr class="item" role="row">
+                                                <td style="padding: 1.5em !important;" colspan="10">
+                                                    <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                                    No Data
+                                                </td>
+                                            </tr>
+                                        `
+                                        $("#animeRecommendationList").empty()
+                                        $("#animeRecommendationList").append(animeData)
+                                        await $("#anime-table").trigger("update")
+                                    }
+                                    $(".menu-container").fadeOut(250)
+                                    swal("Data has been Updated!", {
+                                        icon: "success",
+                                    })
+                                } else {
+                                    $("#importBtn").css({background: "black", color: "white"})
+                                    $("#importFile")[0].value = "";
+                                }
+                            })
+                        }
+                        reader.readAsText(importedFile);
+                    }catch(ex){}
+                }
+            })
+            $("#exportBtn").on("click", async()=>{
+                exportPathIsAvailable = await retrieveJSON("exportPathIsAvailable") || false
+                if(exportPathIsAvailable) {
                     swal({
-                        text: `File named [${filename}] been Detected, do you want to continue the Import? This will remove your current Data!`,
+                        text: `Do you want to Export your Data?`,
                         buttons: [
                             'No',
                             'Yes'
@@ -1114,69 +1209,25 @@
                     })
                     .then(async (confirmed) => {
                         if(confirmed){
-                            const reader = new FileReader();
-                            reader.onload = () => {
-                                $("#importBtn").css({background: "black", color: "white"})
-                                const fileContent = JSON.parse(reader.result);
-                                const entries = Object.entries(fileContent)
-                                savedUsername = fileContent.savedUsername || ""
-                                saveJSON(savedUsername,"savedUsername")
-                                savedHiddenAnimeTitles = fileContent.savedHiddenAnimeTitles || []
-                                saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
-                                allFilterInfo = fileContent.allFilterInfo || allFilterInfo
-                                saveJSON(allFilterInfo,"allFilterInfo")
-                                savedFilterOptionsJson = fileContent.savedFilterOptionsJson || savedFilterOptionsJson
-                                saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
-                                savedData = fileContent.savedData || []
-                                saveJSON(savedData,"savedData")
-                                $("#username").val(savedUsername)
-                                $('.flexdatalist').flexdatalist({
-                                    data: savedFilterOptionsJson
-                                })
-                                if(savedHiddenAnimeTitles.length) $("#showAllAnime").show()
-                                else $("#showAllAnime").hide()
-                                if(savedData.length) $("#updateBtn").show()
-                                else $("#updateBtn").hide()
-                                LoadData(savedData)
-                                $(".menu-container").fadeOut(250)
-                                swal("Data has been Updated!", {
-                                    icon: "success",
-                                })
-                            };
-                            reader.readAsText(importedFile);
-                        } else {
-                            $("#importBtn").css({background: "black", color: "white"})
-                            $("#importFile")[0].value = "";
+                            const savedUsername = await retrieveJSON("savedUsername")
+                            const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                            const allFilterInfo = await retrieveJSON("allFilterInfo")
+                            const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
+                            const savedData = await retrieveJSON("savedData")
+                            const backup = {
+                                savedUsername: savedUsername,
+                                savedHiddenAnimeTitles: savedHiddenAnimeTitles,
+                                allFilterInfo: allFilterInfo,
+                                savedFilterOptionsJson: savedFilterOptionsJson,
+                                savedData: savedData
+                            }
+                            downloadObjectAsJson(backup, "Kanshi-Backup")
+                            $(".menu-container").fadeOut(250)
                         }
                     })
+                } else {
+                    console.log("WebtoApp: Choose an Export Path")
                 }
-            })
-            $("#exportBtn").on("click", async()=>{
-                swal({
-                    text: `Do you want to Export your Data?`,
-                    buttons: [
-                        'No',
-                        'Yes'
-                    ],
-                })
-                .then(async (confirmed) => {
-                    if(confirmed){
-                        const savedUsername = await retrieveJSON("savedUsername")
-                        const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
-                        const allFilterInfo = await retrieveJSON("allFilterInfo")
-                        const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
-                        const savedData = await retrieveJSON("savedData")
-                        const backup = {
-                            savedUsername: savedUsername,
-                            savedHiddenAnimeTitles: savedHiddenAnimeTitles,
-                            allFilterInfo: allFilterInfo,
-                            savedFilterOptionsJson: savedFilterOptionsJson,
-                            savedData: savedData
-                        }
-                        downloadObjectAsJson(backup, "Kanshi-Backup")
-                        $(".menu-container").fadeOut(250)
-                    }
-                })
             })
             $("#updateIntervalBtn").on("click",async()=>{
                 updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
@@ -1220,60 +1271,68 @@
                 }
             })
             $("#exportIntervalBtn").on("click",async()=>{
-                exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
-                if(exportIntervalIsActive){
-                    swal({
-                        text: `Do you want to Disable Data Back-Up every 4 hours?`,
-                        buttons: [
-                            'No',
-                            'Yes'
-                        ],
-                    })
-                    .then(async (confirmed) => {
-                        if(confirmed){
-                            $("#exportIntervalBtn").css({background:"black",color:"white"})
-                            exportIntervalIsActive = false
-                            saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
-                        }
-                    })
-                } else {
-                    swal({
-                        text: `Do you want to Enable Data Back-Up every 4 hours?`,
-                        buttons: [
-                            'No',
-                            'Yes'
-                        ],
-                    })
-                    .then(async (confirmed) => {
-                        if(confirmed){
-                            $("#exportIntervalBtn").css({background:"white",color:"black"})
-                            exportIntervalIsActive = true
-                            saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
-                            exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
-                            saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                            if((new Date).getTime()-(exportIntervalStartDate.getTime())>14400000){// 4hrs
-                                const savedUsername = await retrieveJSON("savedUsername")
-                                const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
-                                const allFilterInfo = await retrieveJSON("allFilterInfo")
-                                const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
-                                const savedData = await retrieveJSON("savedData")
-                                const backup = {
-                                    savedUsername: savedUsername,
-                                    savedHiddenAnimeTitles: savedHiddenAnimeTitles,
-                                    allFilterInfo: allFilterInfo,
-                                    savedFilterOptionsJson: savedFilterOptionsJson,
-                                    savedData: savedData
-                                }
-                                downloadObjectAsJson(backup, "Kanshi-Backup")
-                                exportIntervalStartDate = new Date()
-                                saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                exportPathIsAvailable = await retrieveJSON("exportPathIsAvailable") || false
+                exportPathIsAvailable = true
+                if(exportPathIsAvailable) {
+                    exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
+                    if(exportIntervalIsActive){
+                        swal({
+                            text: `Do you want to Disable Data Back-Up every 4 hours?`,
+                            buttons: [
+                                'No',
+                                'Yes'
+                            ],
+                        })
+                        .then(async (confirmed) => {
+                            if(confirmed){
+                                $("#exportIntervalBtn").css({background:"black",color:"white"})
+                                exportIntervalIsActive = false
+                                saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
                             }
-                        }
-                    })
+                        })
+                    } else {
+                        swal({
+                            text: `Do you want to Enable Data Back-Up every 4 hours?`,
+                            buttons: [
+                                'No',
+                                'Yes'
+                            ],
+                        })
+                        .then(async (confirmed) => {
+                            if(confirmed){
+                                $("#exportIntervalBtn").css({background:"white",color:"black"})
+                                exportIntervalIsActive = true
+                                saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
+                                exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
+                                saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                if((new Date).getTime()-(exportIntervalStartDate.getTime())>14400000){// 4hrs
+                                    const savedUsername = await retrieveJSON("savedUsername")
+                                    const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                                    const allFilterInfo = await retrieveJSON("allFilterInfo")
+                                    const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
+                                    const savedData = await retrieveJSON("savedData")
+                                    const backup = {
+                                        savedUsername: savedUsername,
+                                        savedHiddenAnimeTitles: savedHiddenAnimeTitles,
+                                        allFilterInfo: allFilterInfo,
+                                        savedFilterOptionsJson: savedFilterOptionsJson,
+                                        savedData: savedData
+                                    }
+                                    downloadObjectAsJson(backup, "Kanshi-Backup")
+                                    exportIntervalStartDate = new Date()
+                                    saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                }
+                            }
+                        })
 
+                    }
+                } else {
+                    console.log("WebtoApp: Choose an Export Path")
                 }
             })
-
+            $("#chooseExportPathBtn").on("click",()=>{
+                console.log("WebtoApp: Choose an Export Path")
+            })
             //
             $(".anime-table-headers").on('click', ()=>{
                 setTimeout(()=>{
@@ -1304,6 +1363,10 @@
                     filterInput[0].setCustomValidity("Select or Enter a word to Filter!")
                     filterInput[0].reportValidity()
                 } else {
+                    savedUsername = await retrieveJSON("savedUsername") || ""
+                    if(savedUsername.length===0){
+                        saveJSON(username,"savedUsername")
+                    }
                     requestPause = await retrieveJSON("requestPause") || false
                     savedLastRequestDate = await retrieveJSON("savedLastRequestDate") || new Date(Date.now()-60001)
                     if(!requestPause
@@ -1691,6 +1754,13 @@
                         filters.push(filterName)
                         if(filterName.charAt(0)==="!") excludes.push(filterName.slice(1))
                         else includes.push(filterName)
+                    }
+                    $("#hiddenUnhiddenBtn").text("Unhidden")
+                    for(let i=0; i<includes.length; i++){
+                        if(equalsNCS(includes[i],"hidden")){
+                            $("#hiddenUnhiddenBtn").text("Hidden")
+                            break;
+                        }
                     }
                     saveJSON(filters, "savedFilters")
                     savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []

@@ -274,23 +274,24 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Remove value on backspace key (multiple input only).
          */
             backSpaceKeyRemove: function (event) {
-                var options = _this.options.get();
-                if (options.removeOnBackspace && options.multiple) {
-                    var val = $alias.val(),
-                        $remove = $alias.data('_remove');
-                    if (_this.keyNum(event) === 8) {
-                        if (val.length === 0) {
-                            if ($remove) {
-                                _this.fvalue.remove($remove);
-                                $alias.data('_remove', null);
-                            } else {
-                                $alias.data('_remove', $alias.parents('li:eq(0)').prev());
-                            }
-                        } else {
-                            $alias.data('_remove', null);
-                        }
-                    }
-                }
+                // Just Removed BackSpace Removal
+                // var options = _this.options.get();
+                // if (options.removeOnBackspace && options.multiple) {
+                //     var val = $alias.val(),
+                //         $remove = $alias.data('_remove');
+                //     if (_this.keyNum(event) === 8) {
+                //         if (val.length === 0) {
+                //             if ($remove) {
+                //                 _this.fvalue.remove($remove);
+                //                 $alias.data('_remove', null);
+                //             } else {
+                //                 $alias.data('_remove', $alias.parents('li:eq(0)').prev());
+                //             }
+                //         } else {
+                //             $alias.data('_remove', null);
+                //         }
+                //     }
+                // }
             },
         /**
          * Show all results if minLength option is 0.
