@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         prefsEdit = prefs.edit();
          // Saved Data
             exportPath = prefs.getString("savedExportPath", "");
-        Log.d("TAG", exportPath);
         // Create WebView App Instance
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -109,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
                         String directoryPath = exportPath + File.separator;
                         File directory = new File(directoryPath);
                         if (!directory.exists()) {
-                            Log.d("DirCreate", String.valueOf(directory.canWrite()));
                             directory.mkdirs();
                         }
                         if (directory.isDirectory()) {
@@ -118,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
                                         .replace("%2B", "+");
                                 JSONObject obj = new JSONObject(json);
                                 String username = obj.has("savedUsername") ? obj.getString("savedUsername") : "Backup";
-                                Log.d("Username", username);
                                 Writer output = null;
                                 //String date = new SimpleDateFormat("GyyMMddHH").format(new Date());
                                 File file = new File(directoryPath + "Kanshi." + username + ".json");
@@ -160,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
                         startActivityForResult(Intent.createChooser(i, "Choose directory"), CHOOSE_EXPORT_PATH);
                         Toast.makeText(getApplicationContext(), "Select or Create a Directory!", Toast.LENGTH_LONG).show();
                     }
-                    Log.d(exportPath,exportPath);
                 }
             }
         });

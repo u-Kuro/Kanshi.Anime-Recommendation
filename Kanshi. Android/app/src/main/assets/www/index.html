@@ -980,14 +980,11 @@
                     savedUsername = await retrieveJSON("savedUsername") || ""
                     savedData = await retrieveJSON("savedData") || []
                     if(savedUsername.length>0&&savedData.length>0){
-                        console.log("run3")
                         var state = await $("#hiddenUnhiddenBtn").text()
                         if(!equalsNCS($("#username").val(),savedUsername)){
                             await $("#username").val(savedUsername)
-                            console.log("run4")
                         }
                         if(state==="Unhidden"){
-                            console.log("run5")
                             if($(".flexdatalist-multiple-value > .flexdatalist-alias").length){
                                 var filterInput = await $(".flexdatalist-multiple-value > .flexdatalist-alias")
                                 await filterInput.val("hidden")
@@ -1020,7 +1017,6 @@
                             },0)
                             isRunning = false
                         } else {
-                            console.log("run6")
                             if($(".flexdatalist-multiple-value").length){
                                 var filters = await $(".flexdatalist-multiple").children("li.value")
                                 for(let i=0; i<filters.length; i++) {
