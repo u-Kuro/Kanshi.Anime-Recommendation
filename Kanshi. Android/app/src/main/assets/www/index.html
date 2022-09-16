@@ -758,7 +758,7 @@
                         $("#updateIntervalBtn").css({background: "white",color:"black"})
                         updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
                         saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                        if((new Date).getTime()-(updateIntervalStartDate.getTime())>5000){// 4hrs
+                        if((new Date).getTime()-(updateIntervalStartDate.getTime())>14400000){// 4hrs
                             Update()
                             updateIntervalStartDate = new Date()
                             saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
@@ -770,7 +770,7 @@
                         $("#exportIntervalBtn").css({background: "white",color:"black"})
                         exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                         saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                        if((new Date).getTime()-(exportIntervalStartDate.getTime())>5000){// 4hrs
+                        if((new Date).getTime()-(exportIntervalStartDate.getTime())>14400000){// 4hrs
                             const savedUsername = await retrieveJSON("savedUsername")
                             const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                             const allFilterInfo = await retrieveJSON("allFilterInfo")
@@ -919,7 +919,7 @@
             })
             $("#searchBtn").on('click', async ()=>{
                 savedData = await retrieveJSON("savedData") || []
-                savedUpdateTime = await retrieveJSON("savedUpdateTime") || 845
+                savedUpdateTime = await retrieveJSON("savedUpdateTime") || 1800
                 if(savedData.length>0) {
                     await $("#animeRecommendationList").html(`
                         <tr class="item" role="row">
@@ -958,7 +958,7 @@
                 }
             })
             $("#updateBtn").on('click', async ()=>{
-                savedUpdateTime = await retrieveJSON("savedUpdateTime") || 845
+                savedUpdateTime = await retrieveJSON("savedUpdateTime") || 1800
                 swal({
                     text: `Do you want to continue and Update your Recommendations List?
                     The estimated time to finish is ${msToTime(savedUpdateTime*1000)}`,
@@ -1477,7 +1477,7 @@
                         beforeSend: async () => {
                             requestIsRunning = true
                             saveJSON(new Date(),"savedLastRequestDate")
-                            savedUpdateTime = await retrieveJSON("savedUpdateTime") || 845
+                            savedUpdateTime = await retrieveJSON("savedUpdateTime") || 1800
                             $("#dataStatusSpinner").show(0, ()=>{
                                 $("#dataStatusContainer").fadeIn(2500).css("display","flex")
                                 for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
