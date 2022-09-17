@@ -237,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             webView.loadUrl("file:///android_asset/www/index.html");
         }
+
     }
 
     // Activity Results

@@ -34,35 +34,35 @@ self.onmessage = (message) => {
             else if (anime.episodes>26&&anime.episodes<53) xepisodetype = "Episode: 27-52"
             else if (anime.episodes>52&&anime.episodes<101) xepisodetype = "Episode: 53-100"
             else if (anime.episodes>100) xepisodetype = "Episode: 101+"
-            else xepisodetype = "Episode: null"
+            else xepisodetype = null
             var genres = {}
             var tags = {}
             var studios = {}
             var staff = {}
             if(Object.keys(varScheme).length<1){
-                format = {["Format: "+anime.format]: [userScore]}
-                episodes = {[xepisodetype]: [userScore]}
-                year = {["Year: "+anime.seasonYear]: [userScore]}
-                season = {["Season: "+anime.season]: [userScore]}
+                format = anime.format==null?{}:{["Format: "+anime.format]: [userScore]}
+                episodes = xepisodetype===null?{}:{[xepisodetype]: [userScore]}
+                year = anime.seasonYear===null?{}:{["Year: "+anime.seasonYear]: [userScore]}
+                season = anime.season===null?{}:{["Season: "+anime.season]: [userScore]}
                 for(let j=0; j<anime.genres.length; j++){
-                    genres = {["Genre: "+anime.genres[j]]: [userScore]}
+                    genres = anime.genres[j]===null?{}:{["Genre: "+anime.genres[j]]: [userScore]}
                 }
                 for(let j=0; j<anime.studios.nodes.length; j++){
-                    studios = {["Studio: "+anime.studios.nodes[j].name]: [userScore]}
+                    studios = anime.studios.nodes[j].name===null?{}:{["Studio: "+anime.studios.nodes[j].name]: [userScore]}
                 }
                 for(let j=0; j<anime.staff.edges.length; j++){
                     var firstname = anime.staff.edges[j].node.name.first
                     var lastname = anime.staff.edges[j].node.name.last
                     var fullname = []
                     if(firstname==null&&lastname==null){
-                        fullname = "null"
+                        fullname = null
                     } else {
                         if(firstname!==null) fullname.push(firstname)
                         if(lastname!==null) fullname.push(lastname)
                         fullname = fullname.join(" ")
+                        fullname = "Staff: "+fullname
                     }
-                    fullname = "Staff: "+fullname
-                    staff = {[fullname]: [userScore]}
+                    staff = fullname===null?{}:{[fullname]: [userScore]}
                 }
                 varScheme = {
                     // Key with userScores Array
@@ -71,58 +71,72 @@ self.onmessage = (message) => {
                     studios: studios, staff: staff,
                 }
             } else {
-                var xformat = anime.format==null? "Format: null" : "Format: "+anime.format
-                if(Object.keys(varScheme.format).includes(xformat)){
-                    varScheme.format[xformat].push(userScore)
-                }
-                else{
-                    varScheme.format = {...varScheme.format, [xformat]: [userScore]}
-                }
-                if(Object.keys(varScheme.episodes).includes(xepisodetype)){
-                    varScheme.episodes[xepisodetype].push(userScore)
-                }
-                else{
-                    varScheme.episodes = {...varScheme.episodes, [xepisodetype]: [userScore]}
-                }
-                var xyear = anime.seasonYear==null? "Year: null" : "Year: "+anime.seasonYear.toString()
-                if(Object.keys(varScheme.year).includes(xyear)){
-                    varScheme.year[xyear].push(userScore)
-                }
-                else{
-                varScheme.year = {...varScheme.year, [xyear]: [userScore]}
-                }
-                var xseason = anime.season==null? "Season: null" : "Season: "+anime.season
-                if(Object.keys(varScheme.season).includes(xseason)){
-                    varScheme.season[xseason].push(userScore)
-                }
-                else{
-                varScheme.season = {...varScheme.season, [xseason]: [userScore]}
-                }
-                for(let j=0; j<anime.genres.length; j++){
-                    var xgenres = anime.genres[j]==null? "Genre: null" : "Genre: "+anime.genres[j]
-                    if(Object.keys(varScheme.genres).includes(xgenres)){
-                        varScheme.genres[xgenres].push(userScore)
+                var xformat = anime.format===null? null : "Format: "+anime.format
+                if(xformat!==null){
+                    if(Object.keys(varScheme.format).includes(xformat)){
+                        varScheme.format[xformat].push(userScore)
                     }
                     else{
-                        varScheme.genres = {...varScheme.genres, [xgenres]: [userScore]}
+                        varScheme.format = {...varScheme.format, [xformat]: [userScore]}
+                    }
+                }
+                if(xepisodetype!==null){
+                    if(Object.keys(varScheme.episodes).includes(xepisodetype)){
+                        varScheme.episodes[xepisodetype].push(userScore)
+                    }
+                    else{
+                        varScheme.episodes = {...varScheme.episodes, [xepisodetype]: [userScore]}
+                    }
+                }
+                var xyear = anime.seasonYear===null? null : "Year: "+anime.seasonYear.toString()
+                if(xyear!==null){
+                    if(Object.keys(varScheme.year).includes(xyear)){
+                        varScheme.year[xyear].push(userScore)
+                    }
+                    else{
+                        varScheme.year = {...varScheme.year, [xyear]: [userScore]}
+                    }
+                }
+                var xseason = anime.season===null? null : "Season: "+anime.season
+                if(xseason!==null){
+                    if(Object.keys(varScheme.season).includes(xseason)){
+                        varScheme.season[xseason].push(userScore)
+                    }
+                    else{
+                        varScheme.season = {...varScheme.season, [xseason]: [userScore]}
+                    }
+                }
+                for(let j=0; j<anime.genres.length; j++){
+                    var xgenres = anime.genres[j]===null? null : "Genre: "+anime.genres[j]
+                    if(xgenres!==null){
+                        if(Object.keys(varScheme.genres).includes(xgenres)){
+                            varScheme.genres[xgenres].push(userScore)
+                        }
+                        else{
+                            varScheme.genres = {...varScheme.genres, [xgenres]: [userScore]}
+                        }
                     }
                 }
                 for(let j=0; j<anime.tags.length; j++){
-                    var xtags = anime.tags[j].name==null? "Tag: null" : "Tag: "+anime.tags[j].name
-                    if(Object.keys(varScheme.tags).includes(xtags)){
-                        varScheme.tags[xtags].push(userScore)
-                    }
-                    else {
-                        varScheme.tags = {...varScheme.tags, [xtags]: [userScore]}
+                    var xtags = anime.tags[j].name===null? null : "Tag: "+anime.tags[j].name
+                    if(xtags!==null){
+                        if(Object.keys(varScheme.tags).includes(xtags)){
+                            varScheme.tags[xtags].push(userScore)
+                        }
+                        else {
+                            varScheme.tags = {...varScheme.tags, [xtags]: [userScore]}
+                        }
                     }
                 }
                 for(let j=0; j<anime.studios.nodes.length; j++){
-                    var xstudios = anime.studios.nodes[j].name==null? "Studio: null" : "Studio: "+anime.studios.nodes[j].name
-                    if(Object.keys(varScheme.studios).includes(xstudios)){
-                        varScheme.studios[xstudios].push(userScore)
-                    }
-                    else {
-                        varScheme.studios = {...varScheme.studios, [xstudios]: [userScore]}
+                    var xstudios = anime.studios.nodes[j].name===null? null : "Studio: "+anime.studios.nodes[j].name
+                    if(xstudios!==null){
+                        if(Object.keys(varScheme.studios).includes(xstudios)){
+                            varScheme.studios[xstudios].push(userScore)
+                        }
+                        else {
+                            varScheme.studios = {...varScheme.studios, [xstudios]: [userScore]}
+                        }
                     }
                 }
                 for(let j=0; j<anime.staff.edges.length; j++){
@@ -130,58 +144,94 @@ self.onmessage = (message) => {
                     var lastname = anime.staff.edges[j].node.name.last
                     var fullname = []
                     if(firstname==null&&lastname==null){
-                        fullname = "null"
+                        fullname = null
                     } else {
                         if(firstname!==null) fullname.push(firstname)
                         if(lastname!==null) fullname.push(lastname)
                         fullname = fullname.join(" ")
+                        fullname = "Staff: "+fullname
                     }
-                    fullname = "Staff: "+fullname
-                    var xstaff = fullname
-                    if(Object.keys(varScheme.staff).includes(xstaff)){
-                        varScheme.staff[xstaff].push(userScore)
+                    var xstaff = fullname===null?null:fullname
+                    if(xstaff!==null){
+                        if(Object.keys(varScheme.staff).includes(xstaff)){
+                            varScheme.staff[xstaff].push(userScore)
+                        }
+                        else varScheme.staff = {...varScheme.staff, [xstaff]: [userScore]}
                     }
-                    else varScheme.staff = {...varScheme.staff, [xstaff]: [userScore]}
                 }
             }
         }
     }
     // Clean Data JSON
+    var meanFormat = []
+    var meanEpisodetype = []
+    var meanYear = []
+    var meanSeason = []
+    var meanGenres = []
+    var meanTags = []
+    var meanStaff = []
+    var meanStudios = []
     for(let i=0; i<Object.keys(varScheme.format).length; i++){
         var formatKey = Object.keys(varScheme.format)
-        varScheme.format[formatKey[i]] = arrayMean(varScheme.format[formatKey[i]])*10
+        var tempScore =  arrayMean(varScheme.format[formatKey[i]])*10
+        meanFormat.push(tempScore)
+        varScheme.format[formatKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.episodes).length; i++){
         var episodesKey = Object.keys(varScheme.episodes)
-        varScheme.episodes[episodesKey[i]] = arrayMean(varScheme.episodes[episodesKey[i]])*10
+        var tempScore = arrayMean(varScheme.episodes[episodesKey[i]])*10
+        meanEpisodetype.push(tempScore)
+        varScheme.episodes[episodesKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.year).length; i++){
         var yearKey = Object.keys(varScheme.year)
-        varScheme.year[yearKey[i]] = arrayMean(varScheme.year[yearKey[i]])*10
+        var tempScore = arrayMean(varScheme.year[yearKey[i]])*10
+        meanYear.push(tempScore)
+        varScheme.year[yearKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.season).length; i++){
         var seasonKey = Object.keys(varScheme.season)
-        varScheme.season[seasonKey[i]] = arrayMean(varScheme.season[seasonKey[i]])*10
+        var tempScore = arrayMean(varScheme.season[seasonKey[i]])*10
+        meanSeason.push(tempScore)
+        varScheme.season[seasonKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.genres).length; i++){
         var genresKey = Object.keys(varScheme.genres)
-        varScheme.genres[genresKey[i]] = arrayMean(varScheme.genres[genresKey[i]])*10
+        var tempScore = arrayMean(varScheme.genres[genresKey[i]])*10
+        meanGenres.push(tempScore)
+        var eto = varScheme.genres[genresKey[i]]
+        varScheme.genres[genresKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.tags).length; i++){
         var tagsKey = Object.keys(varScheme.tags)
-        varScheme.tags[tagsKey[i]] = arrayMean(varScheme.tags[tagsKey[i]])*10
+        var tempScore = arrayMean(varScheme.tags[tagsKey[i]])*10
+        meanTags.push(tempScore)
+        varScheme.tags[tagsKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.studios).length; i++){
         var studiosKey = Object.keys(varScheme.studios)
-        varScheme.studios[studiosKey[i]] = arrayMean(varScheme.studios[studiosKey[i]])*10
+        var tempScore = arrayMean(varScheme.studios[studiosKey[i]])*10
+        meanStudios.push(tempScore)
+        varScheme.studios[studiosKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.staff).length; i++){
         var staffKey = Object.keys(varScheme.staff)
-        varScheme.staff[staffKey[i]] = arrayMean(varScheme.staff[staffKey[i]])*10
+        var tempScore = arrayMean(varScheme.staff[staffKey[i]])*10
+        meanStaff.push(tempScore)
+        varScheme.staff[staffKey[i]] = tempScore
     }
     // Join Data
     var varSchemeKeys = Object.keys(varScheme)
-    var tempVar = {}
+    var tempVar = {
+        meanFormat: arrayMean(meanFormat),
+        meanEpisodetype: arrayMean(meanEpisodetype),
+        meanYear: arrayMean(meanYear),
+        meanSeason: arrayMean(meanSeason),
+        meanGenres: arrayMean(meanGenres),
+        meanTags: arrayMean(meanTags),
+        meanStaff: arrayMean(meanStaff),
+        meanStudios: arrayMean(meanStudios),
+    }
     for(let i=0; i<varSchemeKeys.length; i++){
             var variables = varScheme[varSchemeKeys[i]]
             for(let j=0; j<Object.keys(variables).length; j++){

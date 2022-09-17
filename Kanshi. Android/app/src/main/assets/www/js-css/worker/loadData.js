@@ -91,6 +91,15 @@ self.onmessage = (message) => {
                     break
                 }
             }
+            if(hasValue) continue
+            temp = recScheme[j].variablesIncluded.split(", ")
+            for(let k=0; k<temp.length; k++){
+                if(equalsNCS(includes[i],temp[k])){
+                    tempRecScheme.push(recScheme[j])
+                    hasValue = true
+                    break
+                }
+            }
         }
         recScheme = tempRecScheme
         tempRecScheme = []
@@ -130,6 +139,14 @@ self.onmessage = (message) => {
                     break
                 }
             }
+            if(hasValue) continue
+            temp = recScheme[j].variablesIncluded.split(", ")
+            for(let k=0; k<temp.length; k++){
+                if(equalsNCS(excludes[i],temp[k])){
+                    hasValue = true
+                    break
+                }
+            }
             if(hasValue==false)
                 tempRecScheme.push(recScheme[j])
         }
@@ -160,6 +177,7 @@ self.onmessage = (message) => {
                     <td>${value.year}</td>
                     <td>${value.season}</td>
                     <td>${value.studios}</td>
+                    <td>${value.variablesIncluded}</td>
                 </tr>`
             }
         } else {
@@ -181,6 +199,7 @@ self.onmessage = (message) => {
                     <td>${value.year}</td>
                     <td>${value.season}</td>
                     <td>${value.studios}</td>
+                    <td>${value.variablesIncluded}</td>
                 </tr>`
             }
         }
