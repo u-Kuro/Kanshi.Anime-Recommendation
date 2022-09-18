@@ -5,11 +5,13 @@ self.onmessage = (message) => {
     var userListInfo = data.userListInfo
     var varImportance = data.varImportance
     var allFilterInfo = data.allFilterInfo
-    var sum = 0
+    var sumForWeight = 0
     //
     for(let i=0; i<animeEntries.length; i++){
+        console.log("anime:",i+1)
+        // console.log("anime:",i+1)
         var anime = animeEntries[i]
-        var count = 0
+        var countForWeight = 0
         /////
         var title = anime.title.userPreferred || "Title: N/A"
         var url = anime.siteUrl
@@ -82,95 +84,117 @@ self.onmessage = (message) => {
             xstaff.push("Staff: "+fullname)
         }
         // Analyze
+        var formatsIncluded = []
+        var episodesIncluded = []
+        var yearsIncluded = []
+        var seasonsIncluded = []
+        var genresIncluded = []
+        var tagsIncluded = []
+        var studiosIncluded = []
+        var staffsIncluded = []
         var variablesIncluded = []
+        //
+        var zformat = []
         if(typeof varImportance[xformat]!=="undefined"){
-            // zformat
-            score.push(varImportance[xformat])
-            sum += 1
-            count+=1
+            zformat.push(varImportance[xformat])
+            if(varImportance[xformat]>=varImportance.meanFormat
+                &&!formatsIncluded.includes(xformat)){
+                formatsIncluded.push(xformat)
+            }
         }
+        var zepisodetype = []
         if(typeof varImportance[xepisodetype]!=="undefined") {
-            // zepisodetype
-            score.push(varImportance[xepisodetype])
-            sum += 1
-            count+=1
+            zepisodetype.push(varImportance[xepisodetype])
+            if(varImportance[xepisodetype]>=varImportance.meanEpisodetype
+                &&!episodesIncluded.includes(xepisodetype)){
+                episodesIncluded.push(xepisodetype)
+            }
         }
+        var zyear = []
         if(typeof varImportance[xyear]!=="undefined") {
-            // zyear
-            score.push(varImportance[xyear])
-            sum += 1
-            count+=1
+            zyear.push(varImportance[xyear])
+            if(varImportance[xyear]>=varImportance.meanYear
+                &&!yearsIncluded.includes(xyear)){
+                yearsIncluded.push(xyear)
+            }
         }
+        var zseason = []
         if(typeof varImportance[xseason]!=="undefined") {
-            // zseason
-            score.push(varImportance[xseason])
-            sum+=1
-            count+=1
+            zseason.push(varImportance[xseason])
+            if(varImportance[xseason]>=varImportance.meanSeason
+                &&!seasonsIncluded.includes(xseason)){
+                seasonsIncluded.push(xseason)
+            }
         }
+        var zgenres = []
         for(let j=0; j<xgenres.length; j++){
             if(typeof varImportance[xgenres[j]]!=="undefined") {
-                // zgenres
-                score.push(varImportance[xgenres[j]])
-                if(varImportance[xgenres[j]]>=varImportance.meanGenres){
+                zgenres.push(varImportance[xgenres[j]])
+                if(varImportance[xgenres[j]]>=varImportance.meanGenres
+                    &&!variablesIncluded.includes([xgenres[j],varImportance[xgenres[j]]])){
                     variablesIncluded.push([
                         xgenres[j],
                         varImportance[xgenres[j]]
                     ])
                 }
-                sum+=1
-                count+=1
+                if(varImportance[xgenres[j]]>=varImportance.meanGenres
+                    &&!genresIncluded.includes(xgenres[j])){
+                    genresIncluded.push(xgenres[j])
+                }
             }
         }
+        var ztags = []
         for(let j=0; j<xtags.length; j++){
             if(typeof varImportance[xtags[j]]!=="undefined") {
-                // ztags
-                score.push(varImportance[xtags[j]])
-                if(varImportance[xtags[j]]>=varImportance.meanTags){
+                ztags.push(varImportance[xtags[j]])
+                if(varImportance[xtags[j]]>=varImportance.meanTags
+                    &&!variablesIncluded.includes([xtags[j],varImportance[xtags[j]]])){
                     variablesIncluded.push([
                         xtags[j],
                         varImportance[xtags[j]]
                     ])
                 }
-                sum+=1
-                count+=1
+                if(varImportance[xtags[j]]>=varImportance.meanTags
+                    &&!tagsIncluded.includes(xtags[j])){
+                    tagsIncluded.push(xtags[j])
+                }
             }
         }
+        var zstudios = []
         for(let j=0; j<xstudios.length; j++){
             if(typeof varImportance[xstudios[j]]!=="undefined") {
-                // zstudios
-                score.push(varImportance[xstudios[j]])
-                if(varImportance[xstudios[j]]>=varImportance.meanStudios){
+                zstudios.push(varImportance[xstudios[j]])
+                if(varImportance[xstudios[j]]>=varImportance.meanStudios
+                    &&!variablesIncluded.includes([xstudios[j],varImportance[xstudios[j]]])){
                     variablesIncluded.push([
                         xstudios[j],
                         varImportance[xstudios[j]]
                     ])
                 }
-                sum+=1
-                count+=1
+                if(varImportance[xstudios[j]]>=varImportance.meanStudios
+                    &&!studiosIncluded.includes(xstudios[j])){
+                    studiosIncluded.push(xstudios[j])
+                }
             }
         }
+        var zstaff = []
         for(let j=0; j<xstaff.length; j++){
             if(typeof varImportance[xstaff[j]]!=="undefined") {
-                // zstaff
-                score.push(varImportance[xstaff[j]])
-                if(varImportance[xstaff[j]]>=varImportance.meanStaff){
-                    variablesIncluded.push([
-                        xstaff[j],
-                        varImportance[xstaff[j]]
-                    ])
+                zstaff.push(varImportance[xstaff[j]])
+                if(varImportance[xseason]>=varImportance.meanStaff
+                    &&!staffsIncluded.includes(xstaff[j])){
+                    staffsIncluded.push(xstaff[j])
                 }
-                sum+=1
-                count+=1
             }
         }
-        // zformat = zformat.length===0?0:arrayMean(zformat)
-        // zepisodetype = zepisodetype.length===0?0:arrayMean(zepisodetype)
-        // zyear = zyear.length===0?0:arrayMean(zyear)
-        // zseason = zseason.length===0?0:arrayMean(zseason)
-        // zgenres = zgenres.length===0?0:arrayMean(zgenres)
-        // ztags = ztags.length===0?0:arrayMean(ztags)
-        // zstaff = zstaff.length===0?0:arrayMean(zstaff)
-        score = arrayMean(score)
+        zformat = zformat.length===0?0:arrayMean(zformat)
+        zepisodetype = zepisodetype.length===0?0:arrayMean(zepisodetype)
+        zyear = zyear.length===0?0:arrayMean(zyear)
+        zseason = zseason.length===0?0:arrayMean(zseason)
+        zgenres = zgenres.length===0?0:arrayMean(zgenres)
+        ztags = ztags.length===0?0:arrayMean(ztags)
+        zstaff = zstaff.length===0?0:arrayMean(zstaff)
+        score = arrayMean([zformat,zepisodetype,zyear,zseason,zgenres,ztags,zstaff])
         // Other Anime Recommendation Info
         for(let k=0; k<userListInfo.length; k++){
             if(userListInfo[k].title===title){
@@ -196,11 +220,43 @@ self.onmessage = (message) => {
         for(let i=0;i<variablesIncluded.length;i++){
             tempVariablesIncluded.push(variablesIncluded[i][0])
         }
+        formatsIncluded = formatsIncluded.length
+        episodesIncluded = episodesIncluded.length
+        yearsIncluded = yearsIncluded.length
+        seasonsIncluded = seasonsIncluded.length
+        genresIncluded = genresIncluded.length
+        tagsIncluded = tagsIncluded.length
+        studiosIncluded = studiosIncluded.length
+        staffsIncluded = staffsIncluded.length
+        variablesIncluded = variablesIncluded.length
+        sumForWeight += arrayMean([
+            formatsIncluded,
+            episodesIncluded,
+            yearsIncluded,
+            seasonsIncluded,
+            genresIncluded,
+            tagsIncluded,
+            studiosIncluded,
+            staffsIncluded,
+            variablesIncluded,
+        ])
+        countForWeight = arrayMean([
+            formatsIncluded,
+            episodesIncluded,
+            yearsIncluded,
+            seasonsIncluded,
+            genresIncluded,
+            tagsIncluded,
+            studiosIncluded,
+            staffsIncluded,
+            variablesIncluded,
+        ])
         variablesIncluded = tempVariablesIncluded.length>0?tempVariablesIncluded.join(", "):"Top Similarities: N/A"
         // Add Recommendation Scheme
         if(!recScheme.some((rec)=>rec.title===title)){
             recScheme.push({
-                title: title, url: url, score: score, count: count,
+                title: title, url: url, score: score, weightedScore: 0,
+                countForWeight: countForWeight,
                 status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, 
                 variablesIncluded: variablesIncluded
@@ -210,8 +266,12 @@ self.onmessage = (message) => {
     // Clean Analyzed Recommendations
     for(let i=0;i<recScheme.length;i++){
         var anime = recScheme[i]
-        var weight = (1/sum)*anime.count
-        recScheme[i].score=anime.score*weight
+        if(anime.countForWeight<(sumForWeight/animeEntries.length)){
+            var weight = (1/sumForWeight)*anime.countForWeight
+            recScheme[i].weightedScore=anime.score*weight
+        } else {
+            recScheme[i].weightedScore=anime.score
+        }
     }
     self.postMessage({
         recScheme: recScheme,

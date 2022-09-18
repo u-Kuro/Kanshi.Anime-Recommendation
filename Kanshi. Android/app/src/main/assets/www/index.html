@@ -531,12 +531,13 @@
         </div>
     </div>
     <div class="table-responsive">
-        <table id="anime-table" class="tablesorter {sortlist: [[1,1]]} table table-bordered table-striped">
+        <table id="anime-table" class="tablesorter {sortlist: [[2,1]]} table table-bordered table-striped">
             <thead>
             <tr class="anime-table-headers">
                 <th id="hiddenUnhiddenBtn" class="trigger-btn sorter-false show-hidden-anime-btn">Unhidden</th>
-                <th>Score</th>
                 <th>Title</th>
+                <th>WScore</th>
+                <th>Score</th>
                 <th>Status</th>
                 <th>Genres</th>
                 <th>Tags</th>
@@ -614,14 +615,15 @@
     <span><h1 id="loaderText">Loading...</h1></span>
 </div>
 
-    <script defer>
+<script defer>
         // Initialize Global Variables
             // IndexDB
         var request, db,
             // Saved Data
         savedUsername, savedData, savedFilters, savedUpdateTime, requestIntervalSeconds,
-        savedHiddenAnimeTitles, savedYscroll, savedTablePage, savedTableStatus, exportPathIsAvailable,
-        savedFilterOptionsJson, allFilterInfo, exportIntervalIsActive, updateIntervalIsActive,
+        savedHiddenAnimeTitles, savedYscroll, savedTablePage, savedTableStatus, savedSort,
+        exportPathIsAvailable, savedFilterOptionsJson, allFilterInfo,
+        exportIntervalIsActive, updateIntervalIsActive,
         exportIntervalStartDate, updateIntervalStartDate,
             // Load Saved API Request State
         savedUpdateTime, savedLastRequestDate, requestPause,
@@ -741,6 +743,16 @@
                     }
                 },1)
 
+                // Reload Saved Sort
+                let setSavedSort = setInterval(async()=>{
+                    if(typeof $('#anime-table')[0].config!=="undefined"){
+                        clearInterval(setSavedSort)
+                        savedSort = await retrieveJSON("savedSort") || [2,1]
+                        $.tablesorter.sortOn($('#anime-table')[0].config, [savedSort])
+                        $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                    }
+                },1)
+
                 // Reload saved Website Y-Position
                 savedYscroll = await retrieveJSON("savedYscroll") || 0.0
                 var reloadSavedYScrollStartDate = new Date()
@@ -803,7 +815,12 @@
                     .tablesorter({
                         sortInitialOrder: "asc",
                         headers: {
-                            0:{sortInitialOrder: "desc"}
+                            2:{sortInitialOrder: "desc"},
+                            3:{sortInitialOrder: "desc"}
+                        },
+                        widgets: ["saveSort"],
+                        widgetOptions : {
+                            saveSort : true
                         }
                     })
                     .tablesorterPager({
@@ -1196,6 +1213,7 @@
         })
         $("#exportBtn").on("click", async()=>{
             exportPathIsAvailable = await retrieveJSON("exportPathIsAvailable") || false
+            exportPathIsAvailable = true
             if(exportPathIsAvailable) {
                 swal({
                     text: `Do you want to Export your Data?`,
@@ -1331,10 +1349,12 @@
             console.log("WebtoApp: Choose an Export Path")
         })
         //
+        
         $(".anime-table-headers").on('click', ()=>{
             setTimeout(()=>{
                 let setPageInfo = setInterval(()=>{
                     if(typeof $('#anime-table')[0].config!=="undefined"){
+                        saveJSON($('#anime-table')[0].config.sortList[0],"savedSort")
                         clearInterval(setPageInfo)
                         $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
                     }
@@ -1496,7 +1516,6 @@
                             const data = message.data
                             const varScheme = data.varScheme
                             const userListInfo = data.userListInfo
-                            saveJSON(varScheme, "varScheme")
                             analyzeAnime(username, varScheme, userListInfo)
                         }
                     },
@@ -1551,6 +1570,7 @@
             var sum = 0
             recall(1) // First Page
             function recall(page){
+                console.log("page:",page)
                 $.ajax({
                     type: 'POST',
                     url: 'https://graphql.anilist.co',
@@ -1559,7 +1579,7 @@
                         'Accept': 'application/json',
                     },
                     dataType: 'json',
-                    data: JSON.stringify({//genre_not_in: ["Hentai"]
+                    data: JSON.stringify({
                         query: `
                         {
                             Page(page: ${page}, perPage: ${maxAnimePerPage}) {
@@ -1612,16 +1632,14 @@
                         var tempAnimeEntries = result.data.Page.media
                         if(tempAnimeEntries.length>0){
                             animeEntries = animeEntries.concat(tempAnimeEntries)
-                            recall(++page);
-                            // if((page%(page===1?firstMaxRequest:maxRequest))===0){
-                            //     setTimeout(()=>{
-                            //         recall(++page);
-                            //     },timeInterval-((new Date).getTime()-startDate.getTime()))
-                            // } else {
-                            //     recall(++page)
-                            // }
+                            if((page%(page===1?firstMaxRequest:maxRequest))===0){
+                                setTimeout(()=>{
+                                    recall(++page);
+                                },timeInterval-((new Date).getTime()-startDate.getTime()))
+                            } else {
+                                recall(++page)
+                            }
                         } else {
-                            saveJSON(animeEntries, "animeEntries")
                             var worker = new Worker("./js-css/worker/analyzeAnime.js")
                             worker.postMessage({
                                 animeEntries: animeEntries,
@@ -1658,39 +1676,14 @@
                                     var timeInterval = (new Date).getTime()-updateStartTime.getTime()
                                     saveJSON(Math.floor(timeInterval/1000)+1, "savedUpdateTime")
                                     console.log("WebtoApp: List is Updated")
+                                    $("#dataStatusContainer").fadeOut(2500,()=>{
+                                        $("#dataStatus").empty()
+                                        $("#dataStatusContainer").hide()
+                                    })
                                     swal("List has been Updated!", {
                                         icon: "success",
                                     })
                                     requestIsRunning = false
-                                    setTimeout(async()=>{
-                                        for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
-                                        $("#dataStatusSpinner").show(0,()=>{
-                                            $("#dataStatusContainer").fadeIn(2500).css("display","flex")
-                                        })
-                                        savedLastRequestDate = await retrieveJSON("savedLastRequestDate") || new Date(Date.now()-60001)
-                                        requestIntervalSeconds = Math.round(60-(((new Date()).getTime()-savedLastRequestDate.getTime())/1000)) || 60
-                                        for(let i=requestIntervalSeconds; i>=0; i--){
-                                            let timeout = setTimeout(()=>{
-                                                if(i===0){
-                                                    requestPause = false
-                                                    saveJSON(requestPause,"requestPause")
-                                                    $("#dataStatusSpinner").hide(0,()=>{
-                                                        $("#dataStatus")
-                                                            .empty()
-                                                            .append(`Update is now Available!`)
-                                                        $("#dataStatusContainer").fadeOut(2500,()=>{
-                                                            $("#dataStatus").empty()
-                                                        })
-                                                    })
-                                                } else {
-                                                    $("#dataStatus")
-                                                        .empty()
-                                                        .append(`Please wait for another Update... Estimated Time: ${msToTime(i*1000)}`)
-                                                }
-                                            },(requestIntervalSeconds-i)*1000)
-                                            temp.push(timeout)
-                                        }
-                                    }, 1)
                                     worker2.terminate()
                                 }
                             }
@@ -1705,10 +1698,9 @@
                                 console.error(JSON.parse(xhr.responseText))
                             }
                             if(err==="Too Many Requests."){
-                                recall(page)
-                                // setTimeout(()=>{
-                                //     recall(page)
-                                // },timeInterval)
+                                setTimeout(()=>{
+                                    recall(page)
+                                },timeInterval)
                             } else {
                                 if(err==="User not found"){
                                     $("#username")[0].setCustomValidity("Username is not found!")

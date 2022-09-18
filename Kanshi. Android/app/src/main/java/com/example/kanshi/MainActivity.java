@@ -21,6 +21,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.DownloadListener;
 import android.webkit.ValueCallback;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private ValueCallback<Uri[]> mUploadMessage;
     private String exportPath;
     private WebView webView;
+    public boolean wasInBackground;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setDomStorageEnabled(true);
         webSettings.setAllowFileAccess(true);
         webSettings.setAllowContentAccess(true);
+        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             webSettings.setAllowUniversalAccessFromFileURLs(true);
         }
@@ -226,6 +229,9 @@ public class MainActivity extends AppCompatActivity {
                         .setPriority(NotificationCompat.PRIORITY_MAX);
                     NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MainActivity.this);
                     managerCompat.notify(1, builder.build());
+                } else if(message.contains("WebtoApp: Keep Alive")){
+                    String javascript = message.replace("WebtoApp: Keep Alive","");
+                    webView.loadUrl("javascript:"+javascript);
                 }
                 Log.d("WebConsole",message);
                 return true;
@@ -237,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             webView.loadUrl("file:///android_asset/www/index.html");
         }
-
     }
 
     // Activity Results
@@ -279,6 +284,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        webView.resumeTimers();
+        webView.setNetworkAvailable(true);
+        webView.onResume();
+    }
+
     // Save App States
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -312,8 +325,4 @@ public class MainActivity extends AppCompatActivity {
                     .setNegativeButton("Later", null).show();
         }
     }
-
-        // Extra Functions
-
-
 }

@@ -43,6 +43,27 @@ self.onmessage = (message) => {
                 if(!isNaN(score)) if(recScheme[j].score<parseFloat(score)) tempRecScheme.push(recScheme[j])
                 continue
             }
+              // Weighted Score
+            if(includes[i].toLowerCase().includes("wscore<=")){
+                var score=includes[i].toLowerCase().replace("wscore<=", "")
+                if(!isNaN(score)) if(recScheme[j].weightedScore<=parseFloat(score)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("wscore>=")){
+                var score=includes[i].toLowerCase().replace("wscore>=", "")
+                if(!isNaN(score)) if(recScheme[j].weightedScore>=parseFloat(score)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("wscore>")&&!includes[i].toLowerCase().includes("wscore>=")){
+                var score=includes[i].toLowerCase().replace("wscore>", "")
+                if(!isNaN(score)) if(recScheme[j].weightedScore>parseFloat(score)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("wscore<")&&!includes[i].toLowerCase().includes("wscore<=")){
+                var score=includes[i].toLowerCase().replace("wscore<", "")
+                if(!isNaN(score)) if(recScheme[j].weightedScore<parseFloat(score)) tempRecScheme.push(recScheme[j])
+                continue
+            }
               // Year
             if(includes[i].toLowerCase().includes("year<=")){
                 var year=includes[i].toLowerCase().replace("year<=", "")
@@ -158,6 +179,7 @@ self.onmessage = (message) => {
     
     recScheme.forEach((value) => {
         var score = parseFloat(value.score)
+        var weightedScore = parseFloat(value.weightedScore)
         if(includes.some(item=>equalsNCS(item,"hidden"))){                            
             if(savedHiddenAnimeTitles.includes(value.title)){
                 animeData += `
@@ -168,8 +190,9 @@ self.onmessage = (message) => {
                             type="button" class="show-anime" 
                             title="Hide this Anime">Show</button>
                     </td>
-                    <td class="anime-score" title="${score}">${score}</td>
                     <td id="animeTitle"><a href="${value.url}">${value.title}</a></td>
+                    <td class="anime-score" title="${weightedScore}">${weightedScore}</td>
+                    <td class="anime-score" title="${score}">${score}</td>
                     <td>${value.status}</td>
                     <td>${value.genres}</td>
                     <td>${value.tags}</td>
@@ -190,8 +213,9 @@ self.onmessage = (message) => {
                             type="button" class="hide-anime" 
                             title="Hide this Anime">Hide</button>
                     </td>
-                    <td class="anime-score" title="${score}">${score}</td>
                     <td id="animeTitle"><a href="${value.url}">${value.title}</a></td>
+                    <td class="anime-score" title="${weightedScore}">${weightedScore}</td>
+                    <td class="anime-score" title="${score}">${score}</td>
                     <td>${value.status}</td>
                     <td>${value.genres}</td>
                     <td>${value.tags}</td>
