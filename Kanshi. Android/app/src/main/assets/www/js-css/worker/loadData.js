@@ -44,22 +44,22 @@ self.onmessage = (message) => {
                 continue
             }
               // Score
-            if(includes[i].toLowerCase().includes("score<=")){
+            if(includes[i].toLowerCase().includes("score<=")&&!includes[i].toLowerCase().includes("wscore<=")){
                 var score=includes[i].toLowerCase().replace("score<=", "")
                 if(!isNaN(score)) if(recScheme[j].score<=parseFloat(score)) tempRecScheme.push(recScheme[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("score>=")){
+            if(includes[i].toLowerCase().includes("score>=")&&!includes[i].toLowerCase().includes("wscore>=")){
                 var score=includes[i].toLowerCase().replace("score>=", "")
                 if(!isNaN(score)) if(recScheme[j].score>=parseFloat(score)) tempRecScheme.push(recScheme[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("score>")&&!includes[i].toLowerCase().includes("score>=")){
+            if(includes[i].toLowerCase().includes("score>")&&!includes[i].toLowerCase().includes("score>=")&&!includes[i].toLowerCase().includes("wscore>")){
                 var score=includes[i].toLowerCase().replace("score>", "")
                 if(!isNaN(score)) if(recScheme[j].score>parseFloat(score)) tempRecScheme.push(recScheme[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("score<")&&!includes[i].toLowerCase().includes("score<=")){
+            if(includes[i].toLowerCase().includes("score<")&&!includes[i].toLowerCase().includes("score<=")&&!includes[i].toLowerCase().includes("wscore<")){
                 var score=includes[i].toLowerCase().replace("score<", "")
                 if(!isNaN(score)) if(recScheme[j].score<parseFloat(score)) tempRecScheme.push(recScheme[j])
                 continue
