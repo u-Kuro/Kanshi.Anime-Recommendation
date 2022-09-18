@@ -531,7 +531,7 @@
         </div>
     </div>
     <div class="table-responsive">
-        <table id="anime-table" class="tablesorter {sortlist: [[2,1]]} table table-bordered table-striped">
+        <table id="anime-table" class="tablesorter table table-bordered table-striped">
             <thead>
             <tr class="anime-table-headers">
                 <th id="hiddenUnhiddenBtn" class="trigger-btn sorter-false show-hidden-anime-btn">Unhidden</th>
@@ -1570,7 +1570,6 @@
             var sum = 0
             recall(1) // First Page
             function recall(page){
-                console.log("page:",page)
                 $.ajax({
                     type: 'POST',
                     url: 'https://graphql.anilist.co',

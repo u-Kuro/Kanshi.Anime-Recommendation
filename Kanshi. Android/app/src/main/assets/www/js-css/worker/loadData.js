@@ -22,27 +22,6 @@ self.onmessage = (message) => {
                 continue
             }
             // Numbers
-              // Score
-            if(includes[i].toLowerCase().includes("score<=")){
-                var score=includes[i].toLowerCase().replace("score<=", "")
-                if(!isNaN(score)) if(recScheme[j].score<=parseFloat(score)) tempRecScheme.push(recScheme[j])
-                continue
-            }
-            if(includes[i].toLowerCase().includes("score>=")){
-                var score=includes[i].toLowerCase().replace("score>=", "")
-                if(!isNaN(score)) if(recScheme[j].score>=parseFloat(score)) tempRecScheme.push(recScheme[j])
-                continue
-            }
-            if(includes[i].toLowerCase().includes("score>")&&!includes[i].toLowerCase().includes("score>=")){
-                var score=includes[i].toLowerCase().replace("score>", "")
-                if(!isNaN(score)) if(recScheme[j].score>parseFloat(score)) tempRecScheme.push(recScheme[j])
-                continue
-            }
-            if(includes[i].toLowerCase().includes("score<")&&!includes[i].toLowerCase().includes("score<=")){
-                var score=includes[i].toLowerCase().replace("score<", "")
-                if(!isNaN(score)) if(recScheme[j].score<parseFloat(score)) tempRecScheme.push(recScheme[j])
-                continue
-            }
               // Weighted Score
             if(includes[i].toLowerCase().includes("wscore<=")){
                 var score=includes[i].toLowerCase().replace("wscore<=", "")
@@ -62,6 +41,27 @@ self.onmessage = (message) => {
             if(includes[i].toLowerCase().includes("wscore<")&&!includes[i].toLowerCase().includes("wscore<=")){
                 var score=includes[i].toLowerCase().replace("wscore<", "")
                 if(!isNaN(score)) if(recScheme[j].weightedScore<parseFloat(score)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+              // Score
+            if(includes[i].toLowerCase().includes("score<=")){
+                var score=includes[i].toLowerCase().replace("score<=", "")
+                if(!isNaN(score)) if(recScheme[j].score<=parseFloat(score)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("score>=")){
+                var score=includes[i].toLowerCase().replace("score>=", "")
+                if(!isNaN(score)) if(recScheme[j].score>=parseFloat(score)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("score>")&&!includes[i].toLowerCase().includes("score>=")){
+                var score=includes[i].toLowerCase().replace("score>", "")
+                if(!isNaN(score)) if(recScheme[j].score>parseFloat(score)) tempRecScheme.push(recScheme[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("score<")&&!includes[i].toLowerCase().includes("score<=")){
+                var score=includes[i].toLowerCase().replace("score<", "")
+                if(!isNaN(score)) if(recScheme[j].score<parseFloat(score)) tempRecScheme.push(recScheme[j])
                 continue
             }
               // Year

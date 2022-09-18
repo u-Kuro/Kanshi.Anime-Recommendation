@@ -8,8 +8,6 @@ self.onmessage = (message) => {
     var sumForWeight = 0
     //
     for(let i=0; i<animeEntries.length; i++){
-        console.log("anime:",i+1)
-        // console.log("anime:",i+1)
         var anime = animeEntries[i]
         var countForWeight = 0
         /////
