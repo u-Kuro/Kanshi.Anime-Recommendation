@@ -1203,7 +1203,7 @@
                                 })
                             } else {
                                 $("#importBtn").css({background: "black", color: "white"})
-                                $("#importFile")[0].value = "";
+                                $("#importFile")[0].value = ""
                             }
                         })
                     }
@@ -1213,7 +1213,6 @@
         })
         $("#exportBtn").on("click", async()=>{
             exportPathIsAvailable = await retrieveJSON("exportPathIsAvailable") || false
-            exportPathIsAvailable = true
             if(exportPathIsAvailable) {
                 swal({
                     text: `Do you want to Export your Data?`,
@@ -1446,8 +1445,13 @@
                                         userPreferred
                                     }
                                     averageScore
-                                    format
                                     episodes
+                                    duration
+                                    averageScore
+                                    trending
+                                    popularity
+                                    favourites
+                                    format
                                     genres
                                     tags {
                                         name
@@ -1468,7 +1472,6 @@
                                                     first
                                                     last
                                                 }
-                                                siteUrl
                                             }
                                         }
                                     }
@@ -1592,8 +1595,13 @@
                                     }
                                     siteUrl
                                     averageScore
-                                    format
                                     episodes
+                                    duration
+                                    averageScore
+                                    trending
+                                    popularity
+                                    favourites
+                                    format
                                     genres
                                     tags {
                                         name
@@ -1639,6 +1647,8 @@
                                 recall(++page)
                             }
                         } else {
+                            // Download Anime List json
+                                downloadObjectAsJson(animeEntries,"ANIME-LIST")
                             var worker = new Worker("./js-css/worker/analyzeAnime.js")
                             worker.postMessage({
                                 animeEntries: animeEntries,
@@ -1652,13 +1662,11 @@
                                 const data = message.data
                                 recScheme = data.recScheme
                                 allFilterInfo = data.allFilterInfo
-                                saveJSON(allFilterInfo,"allFilterInfo")   
+                                saveJSON(allFilterInfo,"allFilterInfo")
                                 // Saved New Username
                                 saveJSON(username,"savedUsername")
                                 // Save new AnimeList json Data
                                 saveJSON(recScheme, "savedData")
-                                // // Download Recommendation List json
-                                // downloadObjectAsJson(recScheme,"NWVI-NWA")
                                 var worker2 = new Worker("./js-css/worker/updateOptions.js")
                                 worker2.postMessage({
                                     allFilterInfo: allFilterInfo
@@ -1666,9 +1674,25 @@
                                 worker2.onmessage = (message) => {
                                     const data = message.data
                                     savedFilterOptionsJson = data.savedFilterOptionsJson
+                                    // Save and Reload Filters
                                     saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
                                     $('.flexdatalist').flexdatalist({
                                         data: savedFilterOptionsJson
+                                    })
+                                    let reloadSavedData = setInterval(async () => {
+                                        if($(".flexdatalist-multiple-value > .flexdatalist-alias").length){
+                                            clearInterval(reloadSavedData)
+                                            // Reload Filters
+                                            var filterInput
+                                            savedFilters = await retrieveJSON("savedFilters") || []
+                                            for(let i=0; i<savedFilters.length; i++) {
+                                                filterInput = $(".flexdatalist-multiple-value > .flexdatalist-alias")
+                                                await filterInput.val(savedFilters[i])
+                                                var e = await $.Event("keyup",{keyCode:13})
+                                                await filterInput.trigger(e)
+                                                await filterInput.val("")
+                                            }
+                                        }
                                     })
                                     // Reload new Data
                                     LoadData(recScheme, true)

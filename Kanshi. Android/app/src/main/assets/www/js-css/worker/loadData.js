@@ -176,7 +176,6 @@ self.onmessage = (message) => {
     }
     // Show Table
     var animeData = ""
-    
     recScheme.forEach((value) => {
         var score = parseFloat(value.score)
         var weightedScore = parseFloat(value.weightedScore)
@@ -190,7 +189,7 @@ self.onmessage = (message) => {
                             type="button" class="show-anime" 
                             title="Hide this Anime">Show</button>
                     </td>
-                    <td id="animeTitle"><a href="${value.url}">${value.title}</a></td>
+                    <td id="animeTitle"><a href="${value.animeUrl||"javascript:;"}">${value.title}</a></td>
                     <td class="anime-score" title="${weightedScore}">${weightedScore}</td>
                     <td class="anime-score" title="${score}">${score}</td>
                     <td>${value.status}</td>
@@ -213,7 +212,7 @@ self.onmessage = (message) => {
                             type="button" class="hide-anime" 
                             title="Hide this Anime">Hide</button>
                     </td>
-                    <td id="animeTitle"><a href="${value.url}">${value.title}</a></td>
+                    <td id="animeTitle"><a href="${value.animeUrl||"javascript:;"}">${value.title}</a></td>
                     <td class="anime-score" title="${weightedScore}">${weightedScore}</td>
                     <td class="anime-score" title="${score}">${score}</td>
                     <td>${value.status}</td>

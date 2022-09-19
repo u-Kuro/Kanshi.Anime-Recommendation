@@ -11,19 +11,19 @@
   2. Sort by Scores/Status/Year/etc. to the desired order.
   3. Hidden/Unhidden List to hide an Anime from ones' list or show it back to your list (Click Show All for immediate retrieval).
 
-## Kanshi.VI
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Year, Season, Episode Count, Format, and Studios. Each variables or variable component are averaged and then all anime in Anilist are analyzed based on the Variable Importance Schema from ones' rating.
+## Kanshi.VI (Recommended)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Year, Season, Format, and Studios for Categories for Nominal. Each variables or variable component are averaged. Numeric variables including Anilist Average-Score, Popularity, Favourites, Episodes, Trending, Duration have their own Linear Regression Model to be predicted. Finally, all anime in Anilist are then analyzed based on the Variable Importance Schema from ones' rating.
 
 ### Recommendation Algorithm
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The recommendation score is averaged through different variables based on user score to get each percent of Likeability. All anime are then analyzed based on the Variable Importance Schema from ones' anime list. Anime recommendation score will be high if most variable from an anime are liked by the user and a low score if most variables in it are disliked by the user. 
   
   Steps for Calculation:
   
-  1. Getting Variable Importance Schema from User - User's scores for each Anime in ones' list is added to each of its own variable, and all of it are averaged.
-  2. Analyzing Anime for Initial Recommendation Score - Each available variable in the Variable Importance Schema that is in an Anime from Anilist are then averaged by the scores from variables' scores given in the analyzed Schema.
-  3. Adding Weight for Accuracy - In order to avoid bias to every anime with Few variable, a weight is added for each shows calculated by [(1/SumOfAllVariableCountFromAllAnime)*SumOfAllVariableCountFromSpecificAnime].
+  1. Getting Variable Importance Schema from User - User's scores for each Anime in ones' list is added to each of its own categoric variable all and of it are averaged, while Numeric Variables are built with Linear Regression Model to predict each scores later.
+  2. Analyzing Anime for Initial Recommendation Score - Each available variable in the Variable Importance Schema that is in an Anime from Anilist are then averaged by the scores from variables' scores or Predicted by the created Models given in the analyzed Schema.
+  3. Adding Weight (Wscore) for Accuracy - In order to avoid bias to every anime with very Few variables, a weight is added for each shows calculated by [(SumOfAllSimilarVariableCountFromSpecificAnime/SumOfAllSimilarVariableCountFromAllAnime)].
 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score for recommendation was then calculated by multiplying the Anime Weight to the Initial Score [InitialScore * AnimeWeight].
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score is Wscore for recommendation was then calculated by multiplying the Anime Weight to the Initial Score [InitialScore * AnimeWeight] while the unweighted Score is also included to still see Top Anime that is in the margin of error.
 
 ## Kanshi.R
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that also uses existing Anilist account analyzed based on three factors. The User Score to evaluate ones' Likability, the Amount of recommendations for a specific anime to Improve recommendation Accuracy, and the General ratings for a recommended anime to Identify a well-received Show.
@@ -40,3 +40,9 @@
 ## Requirements
    - Anilist Account - [Anilist Website](https://anilist.co/home).
    - Anilist with list of Scored Anime (A properly rated list for the account is Necessary for Analysis).
+
+## Limitations
+   - The App only runs on WebView for the moment so update pauses when app is not visible.
+   - Anilist Request Limits can slow down UPDATE for Recommendations.
+   - Kanshi.VI calculates alot of Variables that also slows Down the UPDATE.
+   - App Kanshi.VI is also slow due to the Amount of Anime 10000+ being Loaded. (This can be temporarily fixed by adding filters for i.e score>=N)

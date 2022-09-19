@@ -17,6 +17,13 @@ self.onmessage = (message) => {
             })
         }
     }
+    // For Linear Regression Models
+    var episodes = []
+    var duration = []
+    var averageScore = []
+    var trending = []
+    var popularity = []
+    var favourites = []
     // Analyze each Anime Variable
     for(let i=0; i<animeEntries.length; i++){
         if(animeEntries[i].score>0){
@@ -25,23 +32,13 @@ self.onmessage = (message) => {
             var format = {}
             var year = {}
             var season = {}
-            var episodes = {}
-            var xepisodetype
-            if(anime.episodes===1) xepisodetype = "Episode: 1"
-            else if (anime.episodes>1&&anime.episodes<7) xepisodetype = "Episode: 2-6"
-            else if (anime.episodes>6&&anime.episodes<14) xepisodetype = "Episode: 7-13"
-            else if (anime.episodes>13&&anime.episodes<27) xepisodetype = "Episode: 14-26"
-            else if (anime.episodes>26&&anime.episodes<53) xepisodetype = "Episode: 27-52"
-            else if (anime.episodes>52&&anime.episodes<101) xepisodetype = "Episode: 53-100"
-            else if (anime.episodes>100) xepisodetype = "Episode: 101+"
-            else xepisodetype = null
             var genres = {}
             var tags = {}
             var studios = {}
             var staff = {}
             if(Object.keys(varScheme).length<1){
+                // Categories
                 format = anime.format==null?{}:{["Format: "+anime.format]: [userScore]}
-                episodes = xepisodetype===null?{}:{[xepisodetype]: [userScore]}
                 year = anime.seasonYear===null?{}:{["Year: "+anime.seasonYear]: [userScore]}
                 season = anime.season===null?{}:{["Season: "+anime.season]: [userScore]}
                 for(let j=0; j<anime.genres.length; j++){
@@ -65,10 +62,7 @@ self.onmessage = (message) => {
                     staff = fullname===null?{}:{[fullname]: [userScore]}
                 }
                 varScheme = {
-                    // Key with userScores Array
-                    format: format, episodes: episodes, 
-                    year: year, season: season, genres: genres, tags: tags,
-                    studios: studios, staff: staff,
+                    format: format, year: year, season: season, genres: genres, tags: tags, studios: studios, staff: staff,
                 }
             } else {
                 var xformat = anime.format===null? null : "Format: "+anime.format
@@ -78,14 +72,6 @@ self.onmessage = (message) => {
                     }
                     else{
                         varScheme.format = {...varScheme.format, [xformat]: [userScore]}
-                    }
-                }
-                if(xepisodetype!==null){
-                    if(Object.keys(varScheme.episodes).includes(xepisodetype)){
-                        varScheme.episodes[xepisodetype].push(userScore)
-                    }
-                    else{
-                        varScheme.episodes = {...varScheme.episodes, [xepisodetype]: [userScore]}
                     }
                 }
                 var xyear = anime.seasonYear===null? null : "Year: "+anime.seasonYear.toString()
@@ -160,11 +146,29 @@ self.onmessage = (message) => {
                     }
                 }
             }
+            // Number
+            if(anime.episodes!==null){
+                episodes.push({userScore: userScore, episodes: anime.episodes})
+            }
+            if(anime.duration!==null){
+                duration.push({userScore: userScore, duration: anime.duration})
+            }
+            if(anime.averageScore!==null){
+                averageScore.push({userScore: userScore, averageScore: anime.averageScore})
+            }
+            if(anime.trending!==null){
+                trending.push({userScore: userScore, trending: anime.trending})
+            }
+            if(anime.popularity!==null){
+                popularity.push({userScore: userScore, popularity: anime.popularity})
+            }
+            if(anime.favourites!==null){
+                favourites.push({userScore: userScore, favourites: anime.favourites})
+            }
         }
     }
     // Clean Data JSON
     var meanFormat = []
-    var meanEpisodetype = []
     var meanYear = []
     var meanSeason = []
     var meanGenres = []
@@ -176,12 +180,6 @@ self.onmessage = (message) => {
         var tempScore =  arrayMean(varScheme.format[formatKey[i]])*10
         meanFormat.push(tempScore)
         varScheme.format[formatKey[i]] = tempScore
-    }
-    for(let i=0; i<Object.keys(varScheme.episodes).length; i++){
-        var episodesKey = Object.keys(varScheme.episodes)
-        var tempScore = arrayMean(varScheme.episodes[episodesKey[i]])*10
-        meanEpisodetype.push(tempScore)
-        varScheme.episodes[episodesKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.year).length; i++){
         var yearKey = Object.keys(varScheme.year)
@@ -199,7 +197,6 @@ self.onmessage = (message) => {
         var genresKey = Object.keys(varScheme.genres)
         var tempScore = arrayMean(varScheme.genres[genresKey[i]])*10
         meanGenres.push(tempScore)
-        var eto = varScheme.genres[genresKey[i]]
         varScheme.genres[genresKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.tags).length; i++){
@@ -224,7 +221,6 @@ self.onmessage = (message) => {
     var varSchemeKeys = Object.keys(varScheme)
     var tempVar = {
         meanFormat: arrayMean(meanFormat),
-        meanEpisodetype: arrayMean(meanEpisodetype),
         meanYear: arrayMean(meanYear),
         meanSeason: arrayMean(meanSeason),
         meanGenres: arrayMean(meanGenres),
@@ -233,12 +229,49 @@ self.onmessage = (message) => {
         meanStudios: arrayMean(meanStudios),
     }
     for(let i=0; i<varSchemeKeys.length; i++){
-            var variables = varScheme[varSchemeKeys[i]]
-            for(let j=0; j<Object.keys(variables).length; j++){
+        var variables = varScheme[varSchemeKeys[i]]
+        for(let j=0; j<Object.keys(variables).length; j++){
             var varEntries = Object.entries(variables)
             tempVar = {...tempVar, [varEntries[j][0]]:varEntries[j][1]}
         }
     }
+    // Create Model for Numbers| y is predicted so userscore
+    var episodesX = [], episodesY = []
+    for(let i=0; i<episodes.length;i++){
+        episodesX.push(episodes[i].episodes)
+        episodesY.push(episodes[i].userScore)
+    }
+    tempVar = {...tempVar, episodesModel:linearRegression(episodesX,episodesY)}
+    var durationX = [], durationY = []
+    for(let i=0; i<duration.length;i++){
+        durationX.push(duration[i].duration)
+        durationY.push(duration[i].userScore)
+    }
+    tempVar = {...tempVar, durationModel:linearRegression(durationX,durationY)}
+    var averageScoreX = [], averageScoreY = []
+    for(let i=0; i<averageScore.length;i++){
+        averageScoreX.push(averageScore[i].averageScore)
+        averageScoreY.push(averageScore[i].userScore)
+    }
+    tempVar = {...tempVar, averageScoreModel:linearRegression(averageScoreX,averageScoreY)}
+    var trendingX = [], trendingY = []
+    for(let i=0; i<trending.length;i++){
+        trendingX.push(trending[i].trending)
+        trendingY.push(trending[i].userScore)
+    }
+    tempVar = {...tempVar, trendingModel:linearRegression(trendingX,trendingY)}
+    var popularityX = [], popularityY = []
+    for(let i=0; i<popularity.length;i++){
+        popularityX.push(popularity[i].popularity)
+        popularityY.push(popularity[i].userScore)
+    }
+    tempVar = {...tempVar, popularityModel:linearRegression(popularityX,popularityY)}
+    var favouritesX = [], favouritesY = []
+    for(let i=0; i<favourites.length;i++){
+        favouritesX.push(favourites[i].favourites)
+        favouritesY.push(favourites[i].userScore)
+    }
+    tempVar = {...tempVar, favouritesModel:linearRegression(favouritesX,favouritesY)}
     varScheme = tempVar
     self.postMessage({
         varScheme: varScheme, 
@@ -250,5 +283,26 @@ self.onmessage = (message) => {
     }
     function arraySum(obj) {
         return obj.reduce((a, b) => a + b, 0)
+    }
+        // Linear Regression
+    function linearRegression(x,y){
+        var lr = {};
+        var n = y.length;
+        var sum_x = 0;
+        var sum_y = 0;
+        var sum_xy = 0;
+        var sum_xx = 0;
+        var sum_yy = 0;
+        for (var i = 0; i < y.length; i++) {
+            sum_x += x[i];
+            sum_y += y[i];
+            sum_xy += (x[i]*y[i]);
+            sum_xx += (x[i]*x[i]);
+            sum_yy += (y[i]*y[i]);
+        } 
+        lr['slope'] = (n * sum_xy - sum_x * sum_y) / (n*sum_xx - sum_x * sum_x);
+        lr['intercept'] = (sum_y - lr.slope * sum_x)/n;
+        lr['r2'] = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
+        return lr;
     }
 }

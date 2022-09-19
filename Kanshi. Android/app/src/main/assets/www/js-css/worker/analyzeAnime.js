@@ -12,7 +12,7 @@ self.onmessage = (message) => {
         var countForWeight = 0
         /////
         var title = anime.title.userPreferred || "Title: N/A"
-        var url = anime.siteUrl
+        var animeUrl = anime.siteUrl
         // var type = anime.type || "N/A"
         var format = anime.format || "Format: N/A"
         var year = anime.seasonYear || "Year: N/A"
@@ -20,7 +20,6 @@ self.onmessage = (message) => {
         var studios = anime.studios.nodes
         var tags = anime.tags
         var genres = anime.genres
-        // var anilistScore = anime.averageScore
         var status = "UNWATCHED"
         allFilterInfo = allFilterInfo = {
             ...allFilterInfo,
@@ -32,15 +31,6 @@ self.onmessage = (message) => {
         var score = []
         // Arrange
         var xformat = format!=="Format: N/A"?`Format: ${format}`:`${Math.random()}`
-        var xepisodetype = `${Math.random()}`
-        if(anime.episodes===1) xepisodetype = "Episode: 1"
-        else if (anime.episodes>1&&anime.episodes<7) xepisodetype = "Episode: 2-6"
-        else if (anime.episodes>6&&anime.episodes<14) xepisodetype = "Episode: 7-13"
-        else if (anime.episodes>13&&anime.episodes<27) xepisodetype = "Episode: 14-26"
-        else if (anime.episodes>26&&anime.episodes<53) xepisodetype = "Episode: 27-52"
-        else if (anime.episodes>52&&anime.episodes<101) xepisodetype = "Episode: 53-100"
-        else if (anime.episodes>100) xepisodetype = "Episode: 101+"
-        //
         var xyear = year!=="Year: N/A"?"Year: "+year:`x${Math.random()}`
         var xseason = season!=="Season: N/A"?"Season: "+season:`${Math.random()}`
         var xgenres = []
@@ -83,7 +73,6 @@ self.onmessage = (message) => {
         }
         // Analyze
         var formatsIncluded = []
-        var episodesIncluded = []
         var yearsIncluded = []
         var seasonsIncluded = []
         var genresIncluded = []
@@ -98,14 +87,6 @@ self.onmessage = (message) => {
             if(varImportance[xformat]>=varImportance.meanFormat
                 &&!formatsIncluded.includes(xformat)){
                 formatsIncluded.push(xformat)
-            }
-        }
-        var zepisodetype = []
-        if(typeof varImportance[xepisodetype]!=="undefined") {
-            zepisodetype.push(varImportance[xepisodetype])
-            if(varImportance[xepisodetype]>=varImportance.meanEpisodetype
-                &&!episodesIncluded.includes(xepisodetype)){
-                episodesIncluded.push(xepisodetype)
             }
         }
         var zyear = []
@@ -186,13 +167,22 @@ self.onmessage = (message) => {
             }
         }
         zformat = zformat.length===0?0:arrayMean(zformat)
-        zepisodetype = zepisodetype.length===0?0:arrayMean(zepisodetype)
         zyear = zyear.length===0?0:arrayMean(zyear)
         zseason = zseason.length===0?0:arrayMean(zseason)
         zgenres = zgenres.length===0?0:arrayMean(zgenres)
         ztags = ztags.length===0?0:arrayMean(ztags)
         zstaff = zstaff.length===0?0:arrayMean(zstaff)
-        score = arrayMean([zformat,zepisodetype,zyear,zseason,zgenres,ztags,zstaff])
+        // Linear Models
+        zepisodes = anime.episodes===null?0:LRpredict(varImportance.episodesModel,anime.episodes)
+        zduration = anime.duration===null?0:LRpredict(varImportance.durationModel,anime.duration)
+        zaverageScore = anime.averageScore===null?0:LRpredict(varImportance.averageScoreModel,anime.averageScore)
+        ztrending = anime.trending===null?0:LRpredict(varImportance.trendingModel,anime.trending)
+        zpopularity = anime.popularity===null?0:LRpredict(varImportance.popularityModel,anime.popularity)
+        zfavourites = anime.favourites===null?0:LRpredict(varImportance.favouritesModel,anime.favourites)
+        score = arrayMean([
+            zformat,zyear,zseason,zgenres,ztags,zstaff,
+            zepisodes,zduration,zaverageScore,ztrending,zpopularity,zfavourites
+        ])
         // Other Anime Recommendation Info
         for(let k=0; k<userListInfo.length; k++){
             if(userListInfo[k].title===title){
@@ -219,7 +209,6 @@ self.onmessage = (message) => {
             tempVariablesIncluded.push(variablesIncluded[i][0])
         }
         formatsIncluded = formatsIncluded.length
-        episodesIncluded = episodesIncluded.length
         yearsIncluded = yearsIncluded.length
         seasonsIncluded = seasonsIncluded.length
         genresIncluded = genresIncluded.length
@@ -229,7 +218,6 @@ self.onmessage = (message) => {
         variablesIncluded = variablesIncluded.length
         sumForWeight += arrayMean([
             formatsIncluded,
-            episodesIncluded,
             yearsIncluded,
             seasonsIncluded,
             genresIncluded,
@@ -240,7 +228,6 @@ self.onmessage = (message) => {
         ])
         countForWeight = arrayMean([
             formatsIncluded,
-            episodesIncluded,
             yearsIncluded,
             seasonsIncluded,
             genresIncluded,
@@ -253,10 +240,10 @@ self.onmessage = (message) => {
         // Add Recommendation Scheme
         if(!recScheme.some((rec)=>rec.title===title)){
             recScheme.push({
-                title: title, url: url, score: score, weightedScore: 0,
+                title: title, animeUrl: animeUrl, score: score, weightedScore: 0,
                 countForWeight: countForWeight,
                 status: status, genres: genres, tags: tags, year: year, 
-                season: season, format: format, studios: studios, 
+                season: season, format: format, studios: studios,
                 variablesIncluded: variablesIncluded
             })
         }
@@ -281,6 +268,13 @@ self.onmessage = (message) => {
     }
     function arrayMean(obj) {
         return (arraySum(obj) / obj.length) || 0
+    }
+    // Linear Regression
+    function LRpredict(modelObj, x){
+        if(modelObj===undefined) return null
+        if(modelObj.slope===undefined||modelObj.intercept===undefined) return null
+        if(isNaN(modelObj.slope)||isNaN(modelObj.intercept)) return null
+        return (parseFloat(modelObj.slope)*x)+parseFloat(modelObj.intercept)
     }
     // function sortObj(obj,sort){
     //     let sortable = [];
