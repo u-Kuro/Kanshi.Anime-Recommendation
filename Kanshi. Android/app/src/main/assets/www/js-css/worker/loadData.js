@@ -1,6 +1,6 @@
 self.onmessage = (message) => {
     var data = message.data
-    var recScheme = data.recScheme
+    var recList = data.recList
     var savedHiddenAnimeTitles = data.savedHiddenAnimeTitles
     var includes = data.includes
     var excludes = data.excludes
@@ -9,135 +9,135 @@ self.onmessage = (message) => {
       // Include
     var tempRecScheme = []
     for(let i=0; i<includes.length; i++){
-        for(let j=0; j<recScheme.length; j++){
+        for(let j=0; j<recList.length; j++){
             var hasValue = false
-            if(equalsNCS(includes[i],recScheme[j].format)
-            ||equalsNCS(includes[i],recScheme[j].year)
-            ||equalsNCS(includes[i],recScheme[j].season)
-            ||equalsNCS(includes[i],recScheme[j].status)
-            ||equalsNCS(includes[i],recScheme[j].title)
+            if(equalsNCS(includes[i],recList[j].format)
+            ||equalsNCS(includes[i],recList[j].year)
+            ||equalsNCS(includes[i],recList[j].season)
+            ||equalsNCS(includes[i],recList[j].status)
+            ||equalsNCS(includes[i],recList[j].title)
             ||equalsNCS(includes[i],"hidden"))
             {
-                tempRecScheme.push(recScheme[j])
+                tempRecScheme.push(recList[j])
                 continue
             }
             // Numbers
-              // Weighted Score
-            if(includes[i].toLowerCase().includes("wscore<=")){
-                var score=includes[i].toLowerCase().replace("wscore<=", "")
-                if(!isNaN(score)) if(recScheme[j].weightedScore<=parseFloat(score)) tempRecScheme.push(recScheme[j])
-                continue
-            }
-            if(includes[i].toLowerCase().includes("wscore>=")){
-                var score=includes[i].toLowerCase().replace("wscore>=", "")
-                if(!isNaN(score)) if(recScheme[j].weightedScore>=parseFloat(score)) tempRecScheme.push(recScheme[j])
-                continue
-            }
-            if(includes[i].toLowerCase().includes("wscore>")&&!includes[i].toLowerCase().includes("wscore>=")){
-                var score=includes[i].toLowerCase().replace("wscore>", "")
-                if(!isNaN(score)) if(recScheme[j].weightedScore>parseFloat(score)) tempRecScheme.push(recScheme[j])
-                continue
-            }
-            if(includes[i].toLowerCase().includes("wscore<")&&!includes[i].toLowerCase().includes("wscore<=")){
-                var score=includes[i].toLowerCase().replace("wscore<", "")
-                if(!isNaN(score)) if(recScheme[j].weightedScore<parseFloat(score)) tempRecScheme.push(recScheme[j])
-                continue
-            }
+            //   // Weighted Score
+            // if(includes[i].toLowerCase().includes("wscore<=")){
+            //     var score=includes[i].toLowerCase().replace("wscore<=", "")
+            //     if(!isNaN(score)) if(recList[j].weightedScore<=parseFloat(score)) tempRecScheme.push(recList[j])
+            //     continue
+            // }
+            // if(includes[i].toLowerCase().includes("wscore>=")){
+            //     var score=includes[i].toLowerCase().replace("wscore>=", "")
+            //     if(!isNaN(score)) if(recList[j].weightedScore>=parseFloat(score)) tempRecScheme.push(recList[j])
+            //     continue
+            // }
+            // if(includes[i].toLowerCase().includes("wscore>")&&!includes[i].toLowerCase().includes("wscore>=")){
+            //     var score=includes[i].toLowerCase().replace("wscore>", "")
+            //     if(!isNaN(score)) if(recList[j].weightedScore>parseFloat(score)) tempRecScheme.push(recList[j])
+            //     continue
+            // }
+            // if(includes[i].toLowerCase().includes("wscore<")&&!includes[i].toLowerCase().includes("wscore<=")){
+            //     var score=includes[i].toLowerCase().replace("wscore<", "")
+            //     if(!isNaN(score)) if(recList[j].weightedScore<parseFloat(score)) tempRecScheme.push(recList[j])
+            //     continue
+            // }
               // Score
-            if(includes[i].toLowerCase().includes("score<=")&&!includes[i].toLowerCase().includes("wscore<=")){
+            if(includes[i].toLowerCase().includes("score<=")){//&&!includes[i].toLowerCase().includes("wscore<=")){
                 var score=includes[i].toLowerCase().replace("score<=", "")
-                if(!isNaN(score)) if(recScheme[j].score<=parseFloat(score)) tempRecScheme.push(recScheme[j])
+                if(!isNaN(score)) if(recList[j].score<=parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("score>=")&&!includes[i].toLowerCase().includes("wscore>=")){
+            if(includes[i].toLowerCase().includes("score>=")){//&&!includes[i].toLowerCase().includes("wscore>=")){
                 var score=includes[i].toLowerCase().replace("score>=", "")
-                if(!isNaN(score)) if(recScheme[j].score>=parseFloat(score)) tempRecScheme.push(recScheme[j])
+                if(!isNaN(score)) if(recList[j].score>=parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("score>")&&!includes[i].toLowerCase().includes("score>=")&&!includes[i].toLowerCase().includes("wscore>")){
+            if(includes[i].toLowerCase().includes("score>")){//&&!includes[i].toLowerCase().includes("score>=")&&!includes[i].toLowerCase().includes("wscore>")){
                 var score=includes[i].toLowerCase().replace("score>", "")
-                if(!isNaN(score)) if(recScheme[j].score>parseFloat(score)) tempRecScheme.push(recScheme[j])
+                if(!isNaN(score)) if(recList[j].score>parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("score<")&&!includes[i].toLowerCase().includes("score<=")&&!includes[i].toLowerCase().includes("wscore<")){
+            if(includes[i].toLowerCase().includes("score<")){//&&!includes[i].toLowerCase().includes("score<=")&&!includes[i].toLowerCase().includes("wscore<")){
                 var score=includes[i].toLowerCase().replace("score<", "")
-                if(!isNaN(score)) if(recScheme[j].score<parseFloat(score)) tempRecScheme.push(recScheme[j])
+                if(!isNaN(score)) if(recList[j].score<parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
               // Year
             if(includes[i].toLowerCase().includes("year<=")){
                 var year=includes[i].toLowerCase().replace("year<=", "")
-                if(!isNaN(year)) if(recScheme[j].year<=parseFloat(year)) tempRecScheme.push(recScheme[j])
+                if(!isNaN(year)) if(recList[j].year<=parseFloat(year)) tempRecScheme.push(recList[j])
                 continue
             }
             if(includes[i].toLowerCase().includes("year>=")){
                 var year=includes[i].toLowerCase().replace("year>=", "")
-                if(!isNaN(year)) if(recScheme[j].year>=parseFloat(year)) tempRecScheme.push(recScheme[j])
+                if(!isNaN(year)) if(recList[j].year>=parseFloat(year)) tempRecScheme.push(recList[j])
                 continue
             }
             if(includes[i].toLowerCase().includes("year>")&&!includes[i].toLowerCase().includes("year>=")){
                 var year=includes[i].toLowerCase().replace("year>", "")
-                if(!isNaN(year)) if(recScheme[j].year>parseFloat(year)) tempRecScheme.push(recScheme[j])
+                if(!isNaN(year)) if(recList[j].year>parseFloat(year)) tempRecScheme.push(recList[j])
                 continue
             }
             if(includes[i].toLowerCase().includes("year<")&&!includes[i].toLowerCase().includes("year<=")){
                 var year=includes[i].toLowerCase().replace("year<", "")
-                if(!isNaN(year)) if(recScheme[j].year<parseFloat(year)) tempRecScheme.push(recScheme[j])
+                if(!isNaN(year)) if(recList[j].year<parseFloat(year)) tempRecScheme.push(recList[j])
                 continue
             }
             // Arrays
-            var temp = recScheme[j].studios.split(", ")
+            var temp = recList[j].studios.split(", ")
             for(let k=0; k<temp.length; k++){
                 if(equalsNCS(includes[i],temp[k])){
-                    tempRecScheme.push(recScheme[j])
+                    tempRecScheme.push(recList[j])
                     hasValue = true
                     break
                 }
             }
             if(hasValue) continue
-            temp = recScheme[j].genres.split(", ")
+            temp = recList[j].genres.split(", ")
             for(let k=0; k<temp.length; k++){
                 if(equalsNCS(includes[i],temp[k])){
-                    tempRecScheme.push(recScheme[j])
+                    tempRecScheme.push(recList[j])
                     hasValue = true
                     break
                 }
             }
             if(hasValue) continue
-            temp = recScheme[j].tags.split(", ")
+            temp = recList[j].tags.split(", ")
             for(let k=0; k<temp.length; k++){
                 if(equalsNCS(includes[i],temp[k])){
-                    tempRecScheme.push(recScheme[j])
+                    tempRecScheme.push(recList[j])
                     hasValue = true
                     break
                 }
             }
             if(hasValue) continue
-            temp = recScheme[j].variablesIncluded.split(", ")
+            temp = recList[j].variablesIncluded.split(", ")
             for(let k=0; k<temp.length; k++){
                 if(equalsNCS(includes[i],temp[k])){
-                    tempRecScheme.push(recScheme[j])
+                    tempRecScheme.push(recList[j])
                     hasValue = true
                     break
                 }
             }
         }
-        recScheme = tempRecScheme
+        recList = tempRecScheme
         tempRecScheme = []
     }
     // Exclude
     for(let i=0; i<excludes.length; i++){
-        for(let j=0; j<recScheme.length; j++){
+        for(let j=0; j<recList.length; j++){
             var hasValue = false
-            if(equalsNCS(excludes[i],recScheme[j].format)
-            ||equalsNCS(excludes[i],recScheme[j].year)
-            ||equalsNCS(excludes[i],recScheme[j].season)
-            ||equalsNCS(excludes[i],recScheme[j].title)
-            ||equalsNCS(excludes[i],recScheme[j].status))
+            if(equalsNCS(excludes[i],recList[j].format)
+            ||equalsNCS(excludes[i],recList[j].year)
+            ||equalsNCS(excludes[i],recList[j].season)
+            ||equalsNCS(excludes[i],recList[j].title)
+            ||equalsNCS(excludes[i],recList[j].status))
             {
                 continue
             }
-            temp = recScheme[j].studios.split(", ")
+            temp = recList[j].studios.split(", ")
             for(let k=0; k<temp.length; k++){
                 if(equalsNCS(excludes[i],temp[k])){
                     hasValue = true
@@ -145,7 +145,7 @@ self.onmessage = (message) => {
                 }
             }
             if(hasValue) continue
-            temp = recScheme[j].genres.split(", ")
+            temp = recList[j].genres.split(", ")
             for(let k=0; k<temp.length; k++){
                 if(equalsNCS(excludes[i],temp[k])){
                     hasValue = true
@@ -153,7 +153,7 @@ self.onmessage = (message) => {
                 }
             }
             if(hasValue) continue
-            temp = recScheme[j].tags.split(", ")
+            temp = recList[j].tags.split(", ")
             for(let k=0; k<temp.length; k++){
                 if(equalsNCS(excludes[i],temp[k])){
                     hasValue = true
@@ -161,7 +161,7 @@ self.onmessage = (message) => {
                 }
             }
             if(hasValue) continue
-            temp = recScheme[j].variablesIncluded.split(", ")
+            temp = recList[j].variablesIncluded.split(", ")
             for(let k=0; k<temp.length; k++){
                 if(equalsNCS(excludes[i],temp[k])){
                     hasValue = true
@@ -169,16 +169,16 @@ self.onmessage = (message) => {
                 }
             }
             if(hasValue==false)
-                tempRecScheme.push(recScheme[j])
+                tempRecScheme.push(recList[j])
         }
-        recScheme = tempRecScheme
+        recList = tempRecScheme
         tempRecScheme = []
     }
     // Show Table
     var animeData = ""
-    recScheme.forEach((value) => {
+    recList.forEach((value) => {
         var score = parseFloat(value.score)
-        var weightedScore = parseFloat(value.weightedScore)
+        // var weightedScore = parseFloat(value.weightedScore)
         if(includes.some(item=>equalsNCS(item,"hidden"))){                            
             if(savedHiddenAnimeTitles.includes(value.title)){
                 animeData += `
@@ -190,7 +190,6 @@ self.onmessage = (message) => {
                             title="Hide this Anime">Show</button>
                     </td>
                     <td id="animeTitle"><a href="${value.animeUrl||"javascript:;"}">${value.title}</a></td>
-                    <td class="anime-score" title="${weightedScore}">${weightedScore}</td>
                     <td class="anime-score" title="${score}">${score}</td>
                     <td>${value.status}</td>
                     <td>${value.genres}</td>
@@ -213,7 +212,6 @@ self.onmessage = (message) => {
                             title="Hide this Anime">Hide</button>
                     </td>
                     <td id="animeTitle"><a href="${value.animeUrl||"javascript:;"}">${value.title}</a></td>
-                    <td class="anime-score" title="${weightedScore}">${weightedScore}</td>
                     <td class="anime-score" title="${score}">${score}</td>
                     <td>${value.status}</td>
                     <td>${value.genres}</td>
