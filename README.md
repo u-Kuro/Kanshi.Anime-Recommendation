@@ -21,9 +21,8 @@
   
   1. Getting Variable Importance Schema from User - User's scores for each Anime in ones' list is added to each of its own categoric variable all and of it are averaged, while Numeric Variables are built with Linear Regression Model to predict each scores later.
   2. Analyzing Anime for Initial Recommendation Score - Each available variable in the Variable Importance Schema that is in an Anime from Anilist are then averaged by the scores from variables' scores or Predicted by the created Models given in the analyzed Schema.
-  3. Adding Weight (Wscore) for Accuracy - In order to avoid bias to every anime with very Few variables, a weight is added for each shows calculated by [(SumOfAllSimilarVariableCountFromSpecificAnime/SumOfAllSimilarVariableCountFromAllAnime)].
 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score is Wscore for recommendation was then calculated by multiplying the Anime Weight to the Initial Score [InitialScore * AnimeWeight] while the unweighted Score is also included to still see Top Anime that is in the margin of error.
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score is the column score for recommendation calculated by different variables with some margin of error.
 
 ## Kanshi.R
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that also uses existing Anilist account analyzed based on three factors. The User Score to evaluate ones' Likability, the Amount of recommendations for a specific anime to Improve recommendation Accuracy, and the General ratings for a recommended anime to Identify a well-received Show.
