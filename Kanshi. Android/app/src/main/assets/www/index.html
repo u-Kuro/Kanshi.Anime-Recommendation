@@ -497,10 +497,10 @@
         <button id="importBtn">Import</button>
         <button id="exportBtn">Export</button>
         <button id="chooseExportPathBtn">Change Export Folder</button>
+        <button id="deepUpdateBtn">Deep Update</button>
+        <button id="hideKidsAnimeBtn">Hide Kids Anime</button>
         <button id="updateIntervalBtn">Update Every 4 hours</button>
         <button id="exportIntervalBtn">Export Every 4 hours</button>
-        <button id="hideKidsAnimeBtn">Hide Kids Anime</button>
-        <button id="deepUpdateBtn">Deep Update</button>
     </div>
 </div>
 <header>
@@ -894,7 +894,7 @@
                             </td>
                         `)
                         savedRecScheme = await retrieveJSON("savedRecScheme") || {}
-                        await kidsAnimeIsHidden(savedRecScheme)
+                        await LoadData(savedRecScheme)
                         setTimeout(()=>{
                             let setPageInfo = setInterval(()=>{
                                 if(typeof $('#anime-table')[0].config!=="undefined"){
@@ -1015,7 +1015,7 @@
             })
         })
         $("#deepUpdateBtn").on("click", async ()=>{
-            savedUpdateTimeLong = await retrieveJSON("savedUpdateTimeLong") || 1800
+            savedUpdateTimeLong = await retrieveJSON("savedUpdateTimeLong") || 2700
             swal({
                 text: `Do you want to continue and Update All Data in your Recommendations List?
                 The estimated time to finish is ${msToTime(savedUpdateTimeLong*1000)}`,
@@ -1222,7 +1222,7 @@
                                 saveJSON(savedLatestAnimeTitle,"savedLatestAnimeTitle")
                                 savedUserList = fileContent.savedUserList || {}
                                 saveJSON(savedUserList,"savedUserList")
-                                savedUpdateTimeLong = fileContent.savedUpdateTimeLong || 1800
+                                savedUpdateTimeLong = fileContent.savedUpdateTimeLong || 2700
                                 saveJSON(savedUpdateTimeLong,"savedUpdateTimeLong")
                                 savedUpdateTime = fileContent.savedUpdateTime || 500
                                 saveJSON(savedUpdateTime,"savedUpdateTime")
@@ -1267,7 +1267,7 @@
         })
         $("#exportBtn").on("click", async()=>{
             exportPathIsAvailable = await retrieveJSON("exportPathIsAvailable") || false
-            if(exportPathIsAvailable||true) {
+            if(exportPathIsAvailable) {
                 swal({
                     text: `Do you want to Export your Data?`,
                     buttons: [
@@ -1647,7 +1647,7 @@
 
         async function updateAllAnimeList(username, varImportance, userListStatus, alteredVariables){
             var savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle") || ""
-            var savedUpdateTimeLong = await retrieveJSON("savedUpdateTimeLong") || 1800
+            var savedUpdateTimeLong = await retrieveJSON("savedUpdateTimeLong") || 2700
             $.ajax({
                 type: 'POST',
                 url: 'https://graphql.anilist.co',
