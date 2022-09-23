@@ -7,6 +7,7 @@ self.onmessage = (message) => {
         {"info": "genres: n/a"},
         {"info": "tags: n/a"},
         {"info": "studios: n/a"},
+        {"info": "staff: n/a"},
         {"info": "top similarities: n/a"},
         {"info": "action"},
         {"info": "adventure"},
@@ -2270,6 +2271,7 @@ self.onmessage = (message) => {
         {"info": "!genres: n/a"},
         {"info": "!tags: n/a"},
         {"info": "!studios: n/a"},
+        {"info": "!staff: n/a"},
         {"info": "!top similarities: n/a"},
         {"info": "!action"},
         {"info": "!adventure"},
@@ -4528,7 +4530,7 @@ self.onmessage = (message) => {
     ]
     var allFilterInfo = {}
     for(let i=0;i<savedFilterOptionsJson.length;i++){
-        allFilterInfo = {...allFilterInfo,[savedFilterOptionsJson[i].info]: true}
+        allFilterInfo[savedFilterOptionsJson[i].info] = true
     }
     self.postMessage({
         savedFilterOptionsJson:  savedFilterOptionsJson,

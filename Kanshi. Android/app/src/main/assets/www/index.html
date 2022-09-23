@@ -336,7 +336,9 @@
                 border-top: 2px solid #B06D70;
                 border-radius: 50%;
                 width: 13px;
+                min-width: 13px;
                 height: 13px;
+                min-height: 13px;
                 animation: spin 2s linear infinite;
             }
             @keyframes spin {
@@ -494,13 +496,13 @@
         <button id="updateBtn">Update</button>
         <button id="showAllAnime">Show All</button>
         <input type="file" id="importFile" style="display: none;" accept=".json"/>
+        <button id="deepUpdateBtn">Deep Update</button>
         <button id="importBtn">Import</button>
         <button id="exportBtn">Export</button>
         <button id="chooseExportPathBtn">Change Export Folder</button>
-        <button id="deepUpdateBtn">Deep Update</button>
         <button id="hideKidsAnimeBtn">Hide Kids Anime</button>
-        <button id="updateIntervalBtn">Update Every 4 hours</button>
-        <button id="exportIntervalBtn">Export Every 4 hours</button>
+        <button id="updateIntervalBtn">Update Every 1 hour</button>
+        <button id="exportIntervalBtn">Export Every 1 hours</button>
     </div>
 </div>
 <header>
@@ -537,8 +539,9 @@
             <thead>
             <tr class="anime-table-headers">
                 <th id="hiddenUnhiddenBtn" class="trigger-btn sorter-false show-hidden-anime-btn">Unhidden</th>
-                <th>Title</th>
                 <th>Score</th>
+                <th>Title</th>
+                <th>Top Similarities</th>
                 <th>Status</th>
                 <th>Genres</th>
                 <th>Tags</th>
@@ -546,12 +549,12 @@
                 <th>Year</th>
                 <th>Season</th>
                 <th>Studios</th>
-                <th>Similarities</th>
+                <th>Staff</th>
             </tr>
             </thead>
             <tbody id="animeRecommendationList">
             <tr class="item" role="row">
-                <td style="padding: 1.5em !important;" colspan="10">
+                <td style="padding: 1.5em !important;" colspan="11">
                     <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                     No Data
                 </td>
@@ -621,14 +624,15 @@
             // IndexDB
         var request, db,
             // Saved Data
-        savedUsername, savedRecScheme, savedFilters, savedUserList, savedAnimeEntries,
-        savedUpdateTime, requestIntervalSeconds, savedHiddenAnimeTitles, 
+        savedUsername, savedRecScheme, savedFilters, savedUserList, savedAnimeEntries, savedHiddenAnimeTitles,
         savedYscroll, savedTablePage, savedTableStatus, savedSort,
         exportPathIsAvailable, savedFilterOptionsJson, allFilterInfo,
         exportIntervalIsActive, updateIntervalIsActive, exportIntervalStartDate, updateIntervalStartDate,
+        exportIntervalTimeout, updateIntervalTimeout,
         kidsAnimeIsHidden,
             // Load Saved API Request State
-        savedUpdateTime, savedLastRequestDate, requestPause,
+        savedAnalyzeVariableTime, savedUpdateAnalyzeAnimeTime, savedDeepUpdateTime, 
+        deepUpdateStartTime, isDeepUpdate, requestIntervalSeconds, savedLastRequestDate, requestPause,
         updateStartTime, isRunning = false, requestIsRunning = false, temp = []
         // Create IndexDB
         $(window).load(function() {
@@ -707,7 +711,7 @@
                         // Reload Data Table
                         await $("#animeRecommendationList").html(`
                             <tr class="item" role="row">
-                                <td style="padding: 1.5em !important;" colspan="10">
+                                <td style="padding: 1.5em !important;" colspan="11">
                                     <div style="display:flex; align-items:center;">
                                         <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                         <div>Loading...</div>
@@ -734,7 +738,7 @@
                         } else {
                             animeData = `
                                 <tr class="item" role="row">
-                                    <td style="padding: 1.5em !important;" colspan="10">
+                                    <td style="padding: 1.5em !important;" colspan="11">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                         No Data
                                     </td>
@@ -759,7 +763,7 @@
                 let setSavedSort = setInterval(async()=>{
                     if(typeof $('#anime-table')[0].config!=="undefined"){
                         clearInterval(setSavedSort)
-                        savedSort = await retrieveJSON("savedSort") || [2,1]
+                        savedSort = await retrieveJSON("savedSort") || [1,1]
                         $.tablesorter.sortOn($('#anime-table')[0].config, [savedSort])
                         $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
                     }
@@ -783,10 +787,18 @@
                     $("#updateIntervalBtn").css({background: "white",color:"black"})
                     updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
                     saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                    if((new Date).getTime()-(updateIntervalStartDate.getTime())>14400000){// 4hrs
+                    if((new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hr
                         Update()
                         updateIntervalStartDate = new Date()
                         saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                    } else {
+                        for(let i=0;i<updateIntervalTimeout.length;i++) clearTimeout(updateIntervalTimeout[i])
+                        var saveUpdateIntervalTimeout = setTimeout(()=>{
+                            Update()
+                            updateIntervalStartDate = new Date()
+                            saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                        },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
+                        updateIntervalTimeout.push(saveUpdateIntervalTimeout)
                     }
                 }
                 exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
@@ -795,7 +807,7 @@
                     $("#exportIntervalBtn").css({background: "white",color:"black"})
                     exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                     saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                    if((new Date).getTime()-(exportIntervalStartDate.getTime())>14400000){// 4hrs
+                    if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
                         const savedUsername = await retrieveJSON("savedUsername")
                         const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                         const savedUserList = await retrieveJSON("savedUserList")
@@ -804,8 +816,10 @@
                         const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
                         const savedRecScheme = await retrieveJSON("savedRecScheme")
                         const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
-                        const savedUpdateTimeLong = await retrieveJSON("savedUpdateTimeLong")
-                        const savedUpdateTime = await retrieveJSON("savedUpdateTime")
+                        const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                        const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                        const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                        const lastAnilistPage = await retrieveJSON("lastAnilistPage")
                         const backup = {
                             savedUsername: savedUsername,
                             savedHiddenAnimeTitles: savedHiddenAnimeTitles,
@@ -815,12 +829,48 @@
                             savedAnimeEntries: savedAnimeEntries,
                             savedLatestAnimeTitle: savedLatestAnimeTitle,
                             savedUserList: savedUserList,
-                            savedUpdateTimeLong: savedUpdateTimeLong,
-                            savedUpdateTime: savedUpdateTime
+                            savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                            savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                            savedDeepUpdateTime: savedDeepUpdateTime,
+                            lastAnilistPage: lastAnilistPage
                         }
                         downloadObjectAsJson(backup, "Kanshi-Backup")
                         exportIntervalStartDate = new Date()
                         saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                    } else {
+                        for(let i=0;i<exportIntervalTimeout.length;i++) clearTimeout(exportIntervalTimeout[i])
+                        var saveExportIntervalTimeout = setTimeout(async()=>{
+                            const savedUsername = await retrieveJSON("savedUsername")
+                            const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                            const savedUserList = await retrieveJSON("savedUserList")
+                            const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
+                            const allFilterInfo = await retrieveJSON("allFilterInfo")
+                            const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
+                            const savedRecScheme = await retrieveJSON("savedRecScheme")
+                            const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
+                            const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                            const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                            const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                            const lastAnilistPage = await retrieveJSON("lastAnilistPage")
+                            const backup = {
+                                savedUsername: savedUsername,
+                                savedHiddenAnimeTitles: savedHiddenAnimeTitles,
+                                allFilterInfo: allFilterInfo,
+                                savedFilterOptionsJson: savedFilterOptionsJson,
+                                savedRecScheme: savedRecScheme,
+                                savedAnimeEntries: savedAnimeEntries,
+                                savedLatestAnimeTitle: savedLatestAnimeTitle,
+                                savedUserList: savedUserList,
+                                savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                                savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                                savedDeepUpdateTime: savedDeepUpdateTime,
+                                lastAnilistPage: lastAnilistPage
+                            }
+                            downloadObjectAsJson(backup, "Kanshi-Backup")
+                            exportIntervalStartDate = new Date()
+                            saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                        },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
+                        exportIntervalTimeout.push(saveExportIntervalTimeout)
                     }
                 }
 
@@ -886,7 +936,7 @@
                             $("#showAllAnime").show()
                         }
                         await hiddenRow.html(`
-                            <td style="padding: 1.5em !important;" colspan="10">
+                            <td style="padding: 1.5em !important;" colspan="11">
                                 <div style="display:flex; align-items:center;">
                                     <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                     <div>Loading...</div>
@@ -916,7 +966,7 @@
                         $("#showAllAnime").hide()
                     } else {
                         await hiddenRow.html(`
-                            <td style="padding: 1.5em !important;" colspan="10">
+                            <td style="padding: 1.5em !important;" colspan="11">
                                 <div style="display:flex; align-items:center;">
                                     <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                     <div>Loading...</div>
@@ -958,12 +1008,12 @@
             }
         })
         $("#searchBtn").on('click', async ()=>{
+            savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || 320
             savedRecScheme = await retrieveJSON("savedRecScheme") || {}
-            savedUpdateTime = await retrieveJSON("savedUpdateTime") || 500
             if(Object.keys(savedRecScheme).length>0) {
                 await $("#animeRecommendationList").html(`
                     <tr class="item" role="row">
-                        <td style="padding: 1.5em !important;" colspan="10">
+                        <td style="padding: 1.5em !important;" colspan="11">
                             <div style="display:flex; align-items:center;">
                                 <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                 <div>Loading...</div>
@@ -976,7 +1026,7 @@
             else {
                 swal({
                     text: `Do you want to continue and Update your Recommendations List?
-                    The estimated time to finish is ${msToTime(savedUpdateTime*1000)}`,
+                    The estimated time to finish is ${msToTime(savedDeepUpdateTime*1000)}`,
                     buttons: [
                         'No',
                         'Yes'
@@ -984,6 +1034,8 @@
                 })
                 .then((confirmed) => {
                     if(confirmed){
+                        deepUpdateStartTime = new Date()
+                        isDeepUpdate = true
                         Update()
                     }
                 })
@@ -998,10 +1050,10 @@
             }
         })
         $("#updateBtn").on('click', async ()=>{
-            savedUpdateTime = await retrieveJSON("savedUpdateTime") || 500
+            var savedUpdateTime = (await retrieveJSON("savedAnalyzeVariableTime") || 20) + (await retrieveJSON("savedUpdateAnalyzeAnimeTime") || 3) 
             swal({
                 text: `Do you want to continue and Update your Recommendations List?
-                The estimated time to finish is ${msToTime(savedUpdateTime*1000)}`,
+                This may take ${msToTime(savedUpdateTime*1000)} to finish.`,
                 buttons: [
                     'No',
                     'Yes'
@@ -1015,10 +1067,10 @@
             })
         })
         $("#deepUpdateBtn").on("click", async ()=>{
-            savedUpdateTimeLong = await retrieveJSON("savedUpdateTimeLong") || 2700
+            savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || 320
             swal({
                 text: `Do you want to continue and Update All Data in your Recommendations List?
-                The estimated time to finish is ${msToTime(savedUpdateTimeLong*1000)}`,
+                This may take ${msToTime(savedDeepUpdateTime*1000)} to finish.`,
                 buttons: [
                     'No',
                     'Yes'
@@ -1026,12 +1078,14 @@
             })
             .then(async (confirmed) => {
                 if(confirmed){
+                    deepUpdateStartTime = new Date()
+                    isDeepUpdate = true
                     // Reset Anime-List
                     saveJSON("","savedLatestAnimeTitle")
                     // Reset All Anime Recommendations
                     savedRecScheme = {}
                     saveJSON(savedRecScheme,"savedRecScheme")
-                    Update()
+                    await Update()
                     $(".menu-container").fadeOut(250)
                 }
             })
@@ -1057,7 +1111,7 @@
                         saveJSON("Hidden","savedTableStatus")
                         await $("#animeRecommendationList").html(`
                             <tr class="item" role="row">
-                                <td style="padding: 1.5em !important;" colspan="10">
+                                <td style="padding: 1.5em !important;" colspan="11">
                                     <div style="display:flex; align-items:center;">
                                         <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                         <div>Loading...</div>
@@ -1092,7 +1146,7 @@
                         saveJSON("Unhidden","savedTableStatus")
                         await $("#animeRecommendationList").html(`
                             <tr class="item" role="row">
-                                <td style="padding: 1.5em !important;" colspan="10">
+                                <td style="padding: 1.5em !important;" colspan="11">
                                     <div style="display:flex; align-items:center;">
                                         <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                         <div>Loading...</div>
@@ -1147,7 +1201,7 @@
                     if($("#hiddenUnhiddenBtn").text()==="Hidden"){
                         await $("#animeRecommendationList").html(`
                                 <tr class="item" role="row">
-                                    <td style="padding: 1.5em !important;" colspan="10">
+                                    <td style="padding: 1.5em !important;" colspan="11">
                                         <div style="display:flex; align-items:center;">
                                             <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                             <div>Loading...</div>
@@ -1222,10 +1276,12 @@
                                 saveJSON(savedLatestAnimeTitle,"savedLatestAnimeTitle")
                                 savedUserList = fileContent.savedUserList || {}
                                 saveJSON(savedUserList,"savedUserList")
-                                savedUpdateTimeLong = fileContent.savedUpdateTimeLong || 2700
-                                saveJSON(savedUpdateTimeLong,"savedUpdateTimeLong")
-                                savedUpdateTime = fileContent.savedUpdateTime || 500
-                                saveJSON(savedUpdateTime,"savedUpdateTime")
+                                savedAnalyzeVariableTime = fileContent.savedAnalyzeVariableTime || 20
+                                saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
+                                savedUpdateAnalyzeAnimeTime = fileContent.savedUpdateAnalyzeAnimeTime || 3
+                                saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
+                                lastAnilistPage = fileContent.lastAnilistPage || 284
+                                saveJSON(lastAnilistPage,"lastAnilistPage")
                                 $("#username").val(savedUsername)
                                 $('.flexdatalist').flexdatalist({
                                     data: savedFilterOptionsJson
@@ -1241,7 +1297,7 @@
                                     $("#updateIntervalBtn").hide()
                                     animeData = `
                                         <tr class="item" role="row">
-                                            <td style="padding: 1.5em !important;" colspan="10">
+                                            <td style="padding: 1.5em !important;" colspan="11">
                                                 <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                                 No Data
                                             </td>
@@ -1285,8 +1341,10 @@
                         const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
                         const savedRecScheme = await retrieveJSON("savedRecScheme")
                         const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
-                        const savedUpdateTimeLong = await retrieveJSON("savedUpdateTimeLong")
-                        const savedUpdateTime = await retrieveJSON("savedUpdateTime")
+                        const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                        const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                        const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                        const lastAnilistPage = await retrieveJSON("lastAnilistPage")
                         const backup = {
                             savedUsername: savedUsername,
                             savedHiddenAnimeTitles: savedHiddenAnimeTitles,
@@ -1296,8 +1354,10 @@
                             savedAnimeEntries: savedAnimeEntries,
                             savedLatestAnimeTitle: savedLatestAnimeTitle,
                             savedUserList: savedUserList,
-                            savedUpdateTimeLong: savedUpdateTimeLong,
-                            savedUpdateTime: savedUpdateTime
+                            savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                            savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                            savedDeepUpdateTime: savedDeepUpdateTime,
+                            lastAnilistPage: lastAnilistPage
                         }
                         downloadObjectAsJson(backup, "Kanshi-Backup")
                         $(".menu-container").fadeOut(250)
@@ -1311,7 +1371,7 @@
             updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
             if(updateIntervalIsActive){
                 swal({
-                    text: `Do you want to Disable Auto Update for your Recommendations List every 4 hours?`,
+                    text: `Do you want to Disable Auto Update for your Recommendations List every 1 hour?`,
                     buttons: [
                         'No',
                         'Yes'
@@ -1326,7 +1386,7 @@
                 })
             } else {
                 swal({
-                    text: `Do you want to Enable Auto Update for your Recommendations List every 4 hours?`,
+                    text: `Do you want to Enable Auto Update for your Recommendations List every 1 hour?`,
                     buttons: [
                         'No',
                         'Yes'
@@ -1339,10 +1399,18 @@
                         saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
                         updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
                         saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                        if((new Date).getTime()-(updateIntervalStartDate.getTime())>14400000){// 4hrs
+                        if((new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hrs
                             Update()
                             updateIntervalStartDate = new Date()
                             saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                        } else {
+                            for(let i=0;i<updateIntervalTimeout.length;i++) clearTimeout(updateIntervalTimeout[i])
+                            var saveUpdateIntervalTimeout = setTimeout(()=>{
+                                Update()
+                                updateIntervalStartDate = new Date()
+                                saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                            },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
+                            updateIntervalTimeout.push(saveUpdateIntervalTimeout)
                         }
                     }
                 })
@@ -1355,7 +1423,7 @@
                 exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
                 if(exportIntervalIsActive){
                     swal({
-                        text: `Do you want to Disable Data Back-Up every 4 hours?`,
+                        text: `Do you want to Disable Data Back-Up every 1 hours?`,
                         buttons: [
                             'No',
                             'Yes'
@@ -1370,7 +1438,7 @@
                     })
                 } else {
                     swal({
-                        text: `Do you want to Enable Data Back-Up every 4 hours?`,
+                        text: `Do you want to Enable Data Back-Up every 1 hours?`,
                         buttons: [
                             'No',
                             'Yes'
@@ -1383,22 +1451,70 @@
                             saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
                             exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                             saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                            if((new Date).getTime()-(exportIntervalStartDate.getTime())>14400000){// 4hrs
+                            if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
                                 const savedUsername = await retrieveJSON("savedUsername")
                                 const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                                const savedUserList = await retrieveJSON("savedUserList")
+                                const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                                 const allFilterInfo = await retrieveJSON("allFilterInfo")
                                 const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
                                 const savedRecScheme = await retrieveJSON("savedRecScheme")
+                                const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
+                                const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                                const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                                const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                                const lastAnilistPage = await retrieveJSON("lastAnilistPage")
                                 const backup = {
                                     savedUsername: savedUsername,
                                     savedHiddenAnimeTitles: savedHiddenAnimeTitles,
                                     allFilterInfo: allFilterInfo,
                                     savedFilterOptionsJson: savedFilterOptionsJson,
-                                    savedRecScheme: savedRecScheme
+                                    savedRecScheme: savedRecScheme,
+                                    savedAnimeEntries: savedAnimeEntries,
+                                    savedLatestAnimeTitle: savedLatestAnimeTitle,
+                                    savedUserList: savedUserList,
+                                    savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                                    savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                                    savedDeepUpdateTime: savedDeepUpdateTime,
+                                    lastAnilistPage: lastAnilistPage
                                 }
                                 downloadObjectAsJson(backup, "Kanshi-Backup")
                                 exportIntervalStartDate = new Date()
                                 saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                            } else {
+                                for(let i=0;i<exportIntervalTimeout.length;i++) clearTimeout(exportIntervalTimeout[i])
+                                var saveExportIntervalTimeout = setTimeout(async()=>{
+                                    const savedUsername = await retrieveJSON("savedUsername")
+                                    const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                                    const savedUserList = await retrieveJSON("savedUserList")
+                                    const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
+                                    const allFilterInfo = await retrieveJSON("allFilterInfo")
+                                    const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
+                                    const savedRecScheme = await retrieveJSON("savedRecScheme")
+                                    const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
+                                    const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                                    const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                                    const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                                    const lastAnilistPage = await retrieveJSON("lastAnilistPage")
+                                    const backup = {
+                                        savedUsername: savedUsername,
+                                        savedHiddenAnimeTitles: savedHiddenAnimeTitles,
+                                        allFilterInfo: allFilterInfo,
+                                        savedFilterOptionsJson: savedFilterOptionsJson,
+                                        savedRecScheme: savedRecScheme,
+                                        savedAnimeEntries: savedAnimeEntries,
+                                        savedLatestAnimeTitle: savedLatestAnimeTitle,
+                                        savedUserList: savedUserList,
+                                        savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                                        savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                                        savedDeepUpdateTime: savedDeepUpdateTime,
+                                        lastAnilistPage: lastAnilistPage
+                                    }
+                                    downloadObjectAsJson(backup, "Kanshi-Backup")
+                                    exportIntervalStartDate = new Date()
+                                    saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
+                                exportIntervalTimeout.push(saveExportIntervalTimeout)
                             }
                         }
                     })
@@ -1428,7 +1544,6 @@
             }
         })
         //
-        
         $(".anime-table-headers").on('click', ()=>{
             setTimeout(()=>{
                 let setPageInfo = setInterval(()=>{
@@ -1511,6 +1626,8 @@
         }
 
         async function analyzeVariables(username) {
+            var savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || 20
+            var AnalyzeVariableStartTime = new Date()
             // Check Parameters
             if(username.length>0) {
                 // Initialize Anilist Graphql Data
@@ -1546,12 +1663,9 @@
                                     seasonYear
                                     season
                                     staff {
-                                        edges {
-                                            node {
-                                                name {
-                                                    first
-                                                    last
-                                                }
+                                        nodes {
+                                            name {
+                                                userPreferred
                                             }
                                         }
                                     }
@@ -1577,16 +1691,16 @@
                     }),
                     beforeSend: async () => {
                         requestIsRunning = true
-                        savedUpdateTime = await retrieveJSON("savedUpdateTime") || 500
+                        savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || 20
                         $("#dataStatusSpinner").show(0, ()=>{
                             $("#dataStatusContainer").fadeIn(2500).css("display","flex")
                             for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
-                            for(let i=savedUpdateTime; i>0; i--){
+                            for(let i=savedAnalyzeVariableTime; i>0; i--){
                                 var timeout = setTimeout(()=>{
                                     $("#dataStatus")
                                         .empty()
-                                        .append(`Updating Data... Estimated Time: ${msToTime(i*1000)}`)
-                                },(savedUpdateTime-i)*1000)
+                                        .append(`Analyzing Variables... Estimated Time: ${msToTime(i*1000)}`)
+                                },(savedAnalyzeVariableTime-i)*1000)
                                 temp.push(timeout)
                             }
                         })
@@ -1602,6 +1716,8 @@
                             const varScheme = data.varScheme
                             const userListStatus = data.userListStatus
                             const alteredVariables = data.alteredVariables
+                            var timeInterval = (new Date).getTime()-AnalyzeVariableStartTime.getTime()
+                            saveJSON(Math.max(Math.ceil(timeInterval/1000),savedAnalyzeVariableTime), "savedAnalyzeVariableTime")
                             updateAllAnimeList(username, varScheme, userListStatus, alteredVariables)
                         }
                     },
@@ -1639,6 +1755,7 @@
                             })
                         }
                         console.log("WebtoApp: Update Error")
+                        for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                         requestIsRunning = false
                     }
                 })
@@ -1647,7 +1764,7 @@
 
         async function updateAllAnimeList(username, varImportance, userListStatus, alteredVariables){
             var savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle") || ""
-            var savedUpdateTimeLong = await retrieveJSON("savedUpdateTimeLong") || 2700
+            var lastAnilistPage = await retrieveJSON("lastAnilistPage") || 284
             $.ajax({
                 type: 'POST',
                 url: 'https://graphql.anilist.co',
@@ -1667,29 +1784,21 @@
                     }
                     `
                 }),
+                beforeSend: ()=>{
+                    for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
+                    $("#dataStatus")
+                        .empty()
+                        .append(`Checking for Anilist Updates...`)
+                },
                 success: (xresult)=>{
                     var latestAnime = xresult.data.Media.title.userPreferred
                     if(latestAnime!==savedLatestAnimeTitle){
-                        saveJSON(latestAnime,"savedLatestAnimeTitle")
                         var maxAnimePerPage = 50
                         var maxRequest = 90
-                        var firstMaxRequest = maxRequest-1 //MaxRequest-RequestsBefore
-                        var startDate = new Date()
+                        var startDate = new Date(Date.now() + 1000) // Allowance of 1sec
                         var animeEntries = []
                         var sum = 0
                         recall(1) // First Page
-                        $("#dataStatusSpinner").show(0, ()=>{
-                            $("#dataStatusContainer").fadeIn(2500).css("display","flex")
-                            for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
-                            for(let i=savedUpdateTime; i>0; i--){
-                                var timeout = setTimeout(()=>{
-                                    $("#dataStatus")
-                                        .empty()
-                                        .append(`Updating Data... Estimated Time: ${msToTime(i*1000)}`)
-                                },(savedUpdateTime-i)*1000)
-                                temp.push(timeout)
-                            }
-                        })
                         async function recall(page){
                             $.ajax({
                                 type: 'POST',
@@ -1727,6 +1836,7 @@
                                                 studios {
                                                     nodes {
                                                         name
+                                                        siteUrl
                                                     }
                                                 }
                                                 format
@@ -1734,13 +1844,11 @@
                                                 seasonYear
                                                 season
                                                 staff {
-                                                    edges {
-                                                        node {
-                                                            name {
-                                                                first
-                                                                last
-                                                            }
+                                                    nodes {
+                                                        name {
+                                                            userPreferred
                                                         }
+                                                        siteUrl
                                                     }
                                                 }
                                             }
@@ -1749,25 +1857,44 @@
                                     `
                                 }),
                                 beforeSend: ()=> {
+                                    for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
+                                    $("#dataStatus")
+                                        .empty()
+                                        .append(`Updating Anime from Anilist... Page ${page} of ${lastAnilistPage>=page?lastAnilistPage:page}`)
+                                    startDate = new Date(Date.now() + 1000) // Allowance of 1sec
                                     saveJSON(new Date(),"savedLastRequestDate")
-                                    startDate = new Date(Date.now + 1000) // Allowance of 1sec
                                 },
                                 success: (result)=>{
                                     var timeInterval = 60000 //Minute in ms
                                     var tempAnimeEntries = result.data.Page.media
                                     if(tempAnimeEntries.length>0){
                                         animeEntries = animeEntries.concat(tempAnimeEntries)
-                                        if((page%(page===1?firstMaxRequest:maxRequest))===0){
-                                            setTimeout(()=>{
-                                                recall(++page);
-                                            },timeInterval-((new Date).getTime()-startDate.getTime()))
-                                        } else {
-                                            recall(++page)
-                                        }
+                                        recall(++page)
+                                        // if((page%(maxRequest))===0){
+                                        //     // Next Request
+                                        //     var timeBeforeNextRequest = timeInterval-((new Date).getTime()-startDate.getTime())
+                                        //     setTimeout(()=>{
+                                        //         recall(++page);
+                                        //     },timeBeforeNextRequest)
+                                        //     //
+                                        //     var timeBeforeNextRequestSeconds = Math.ceil(timeBeforeNextRequest/1000)
+                                        //     for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
+                                        //     for(let i=timeBeforeNextRequestSeconds; i>0; i--){
+                                        //         var timeout = setTimeout(()=>{
+                                        //             $("#dataStatus")
+                                        //                 .empty()
+                                        //                 .append(`Limit Request, Continuing in ${msToTime(i*1000)}...  Page ${page} of ${lastAnilistPage>=page?lastAnilistPage:page}`)
+                                        //         },(timeBeforeNextRequestSeconds-i)*1000)
+                                        //         temp.push(timeout)
+                                        //     }
+                                            
+                                        // } else {
+                                        //     recall(++page)
+                                        // }
                                     } else {
-                                        var timeInterval = (new Date).getTime()-updateStartTime.getTime()+savedUpdateTime
-                                        saveJSON(Math.floor(timeInterval/1000)+1, "savedUpdateTimeLong")
+                                        saveJSON(latestAnime,"savedLatestAnimeTitle")
                                         saveJSON(animeEntries,"savedAnimeEntries")
+                                        saveJSON(page, "lastAnilistPage")
                                         analyzeAnime(animeEntries, varImportance, userListStatus, alteredVariables, username)
                                     }
                                 },
@@ -1780,9 +1907,20 @@
                                             console.error(JSON.parse(xhr.responseText))
                                         }
                                         if(err==="Too Many Requests."){
+                                            var timeBeforeNextRequest = timeInterval-((new Date).getTime()-startDate.getTime())
                                             setTimeout(()=>{
                                                 recall(page)
-                                            },timeInterval)
+                                            },timeBeforeNextRequest)
+                                            var timeBeforeNextRequestSeconds = Math.ceil(timeBeforeNextRequest/1000)
+                                            for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
+                                            for(let i=timeBeforeNextRequestSeconds; i>0; i--){
+                                                var timeout = setTimeout(()=>{
+                                                    $("#dataStatus")
+                                                        .empty()
+                                                        .append(`Limit Request, Continuing in ${msToTime(i*1000)}...  Page ${page} of ${lastAnilistPage>=page?lastAnilistPage:page}`)
+                                                },(timeBeforeNextRequestSeconds-i)*1000)
+                                                temp.push(timeout)
+                                            }
                                         } else {
                                             if(err==="User not found"){
                                                 $("#username")[0].setCustomValidity("Username is not found!")
@@ -1799,6 +1937,7 @@
                                                 $("#dataStatus").empty()
                                             })
                                             console.log("WebtoApp: Update Error")
+                                            for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                                             requestIsRunning = false
                                         }
                                     } catch(ex) {
@@ -1808,7 +1947,12 @@
                                             text: `Error 103: ${typeof err==="string"?err:"Please Try Again..."}`,
                                             icon: "error"
                                         })
+                                        $("#dataStatusContainer").fadeOut(2500,()=>{
+                                            $("#dataStatusSpinner").show()
+                                            $("#dataStatus").empty()
+                                        })
                                         console.log("WebtoApp: Update Error")
+                                        for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                                         requestIsRunning = false
                                     }
                                 }
@@ -1830,10 +1974,6 @@
                                 text: `Error 102: ${typeof err==="string"?err:"Please Try Again..."}`,
                                 icon: "error"
                             })
-                            $("#dataStatusContainer").fadeOut(2500,()=>{
-                                $("#dataStatusSpinner").show()
-                                $("#dataStatus").empty()
-                            })
                             console.log("WebtoApp: Update Error")
                         }
                     } catch(ex) {
@@ -1845,12 +1985,28 @@
                         })
                         console.log("WebtoApp: Update Error")
                     }
+                    $("#dataStatusContainer").fadeOut(2500,()=>{
+                        $("#dataStatusSpinner").show()
+                        $("#dataStatus").empty()
+                    })
+                    for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                     requestIsRunning = false
                 }
             })
         }
 
         async function analyzeAnime(animeEntries, varImportance, userListStatus, alteredVariables, username){
+            var UpdateAnalyzeAnimeStartTime = new Date()
+            var savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime") || 3
+            for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
+            for(let i=savedUpdateAnalyzeAnimeTime; i>0; i--){
+                var timeout = setTimeout(()=>{
+                    $("#dataStatus")
+                        .empty()
+                        .append(`Updating Recommendations List... Estimated Time: ${msToTime(i*1000)}`)
+                },(savedUpdateAnalyzeAnimeTime-i)*1000)
+                temp.push(timeout)
+            }
             if(animeEntries.length===0) animeEntries = await retrieveJSON("savedAnimeEntries") || []
             var savedUsername = await retrieveJSON("savedUsername") || ""
             if(username!==savedUsername) {
@@ -1907,11 +2063,16 @@
                                 await filterInput.val("")
                             }
                         }
-                    })
+                    },1)
                     // Reload new Data
                     LoadData(savedRecScheme)
-                    var timeInterval = (new Date).getTime()-updateStartTime.getTime()
-                    saveJSON(Math.floor(timeInterval/1000)+1, "savedUpdateTime")
+                    var timeInterval = (new Date).getTime()-UpdateAnalyzeAnimeStartTime.getTime()
+                    saveJSON(Math.max(Math.ceil(timeInterval/1000),savedUpdateAnalyzeAnimeTime), "savedUpdateAnalyzeAnimeTime")
+                    if(isDeepUpdate){
+                        isDeepUpdate = false
+                        var timeInterval = (new Date).getTime()-deepUpdateStartTime.getTime()
+                        saveJSON(Math.max(Math.ceil(timeInterval/1000),savedDeepUpdateTime),"savedDeepUpdateTime")
+                    }
                     console.log("WebtoApp: List is Updated")
                     $("#dataStatusContainer").fadeOut(2500,()=>{
                         $("#dataStatus").empty()
@@ -1925,6 +2086,7 @@
                 }
             }
         }
+
         async function LoadData(savedRecScheme){
             var recList = Object.values(savedRecScheme)
             if((recList.length>0)) {
@@ -1974,8 +2136,6 @@
                         },1)
                     },0)
                 }
-            } else {
-                Update()
             }
         }
         //////////////////////////////////////////////////////////////////

@@ -35,6 +35,11 @@ self.onmessage = (message) => {
     var trending = []
     var popularity = []
     var favourites = []
+    //
+    var genresCount = []
+    var tagsCount = []
+    var studiosCount = []
+    var staffCount = []
     // Analyze each Anime Variable
     for(let i=0; i<animeEntries.length; i++){
         if(animeEntries[i].score>0){
@@ -50,7 +55,7 @@ self.onmessage = (message) => {
             var newAnimeObjStr = JSON.stringify(editedEntry)
             if(savedUserList[title]===undefined){
                 isNewAnime = true
-                savedUserList = {...savedUserList, [title]: newAnimeObjStr}
+                savedUserList[title] = newAnimeObjStr
             }//sUL = {sUL}
             var format = {}
             var year = {}
@@ -64,56 +69,59 @@ self.onmessage = (message) => {
                 format = anime.format==null?{}:{["Format: "+anime.format]: [userScore]}
                 if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.format!==null){
                     savedUserList[title] = newAnimeObjStr
-                    alteredVariables.format_in = {...alteredVariables.format_in, ["Format: "+anime.format]:1}
+                    if(alteredVariables.format_in["Format: "+anime.format]===undefined){
+                        alteredVariables.format_in["Format: "+anime.format] = 1
+                    }
                 }
                 year = anime.seasonYear===null?{}:{["Year: "+anime.seasonYear]: [userScore]}
                 if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.seasonYear!==null){
                     savedUserList[title] = newAnimeObjStr
-                    alteredVariables.year_in = {...alteredVariables.year_in, ["Year: "+anime.seasonYear]:1}
+                    if(alteredVariables.year_in["Year: "+anime.seasonYear]===undefined){
+                        alteredVariables.year_in["Year: "+anime.seasonYear]=1
+                    }
                 }
                 season = anime.season===null?{}:{["Season: "+anime.season]: [userScore]}
                 if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.season!==null){
                     savedUserList[title] = newAnimeObjStr
-                    alteredVariables.season_in = {...alteredVariables.season_in, ["Season: "+anime.season]:1}
+                    if(alteredVariables.season_in["Season: "+anime.season]===undefined){
+                        alteredVariables.season_in["Season: "+anime.season] = 1
+                    }
                 }
                 for(let j=0; j<anime.genres.length; j++){
                     genres = anime.genres[j]===null?{}:{["Genre: "+anime.genres[j]]: [userScore]}
                     if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.genres[j]!==null){
                         savedUserList[title] = newAnimeObjStr
-                        alteredVariables.genres_in = {...alteredVariables.genres_in, ["Genre: "+anime.genres[j]]:1}
+                        if(alteredVariables.genres_in["Genre: "+anime.genres[j]]===undefined){
+                            alteredVariables.genres_in["Genre: "+anime.genres[j]] = 1
+                        }
                     }
                 }
                 for(let j=0; j<anime.tags.length; j++){
                     tags = anime.tags[j].name===null?{}:{["Tag: "+anime.tags[j].name]: [userScore]}
                     if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.tags[j].name!==null){
                         savedUserList[title] = newAnimeObjStr
-                        alteredVariables.tags_in = {...alteredVariables.tags_in, ["Tag: "+anime.tags[j].name]:1}
+                        if(alteredVariables.tags_in["Tag: "+anime.tags[j].name]===undefined){
+                            alteredVariables.tags_in["Tag: "+anime.tags[j].name] = 1
+                        }
                     }
                 }
                 for(let j=0; j<anime.studios.nodes.length; j++){
                     studios = anime.studios.nodes[j].name===null?{}:{["Studio: "+anime.studios.nodes[j].name]: [userScore]}
                     if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.studios.nodes[j].name!==null){
                         savedUserList[title] = newAnimeObjStr
-                        alteredVariables.studios_in = {...alteredVariables.studios_in, ["Studio: "+anime.studios.nodes[j].name]:1}
-                    }
-                }
-                for(let j=0; j<anime.staff.edges.length; j++){
-                    var firstname = anime.staff.edges[j].node.name.first
-                    var lastname = anime.staff.edges[j].node.name.last
-                    var fullname = []
-                    if(firstname==null&&lastname==null){
-                        fullname = null
-                    } else {
-                        if(firstname!==null) fullname.push(firstname)
-                        if(lastname!==null) fullname.push(lastname)
-                        fullname = fullname.join(" ")
-                        fullname = "Staff: "+fullname
-                        if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&fullname!==null){
-                            savedUserList[title] = newAnimeObjStr
-                            alteredVariables.staff_in = {...alteredVariables.staff_in, [fullname]:1}
+                        if(alteredVariables.studios_in["Studio: "+anime.studios.nodes[j].name]===undefined){
+                            alteredVariables.studios_in["Studio: "+anime.studios.nodes[j].name] = 1
                         }
                     }
-                    staff = fullname===null?{}:{[fullname]: [userScore]}
+                }
+                for(let j=0; j<anime.staff.nodes.length; j++){
+                    staff = anime.staff.nodes[j].name.userPreferred===null?{}:{["Staff: "+anime.staff.nodes[j].name.userPreferred]: [userScore]}
+                    if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.staff.nodes[j].name.userPreferred!==null){
+                        savedUserList[title] = newAnimeObjStr
+                        if(alteredVariables.staff_in["Staff: "+anime.staff.nodes[j].name.userPreferred]===undefined){
+                            alteredVariables.staff_in["Staff: "+anime.staff.nodes[j].name.userPreferred] = 1
+                        }
+                    }
                 }
                 varScheme = {
                     format: format, year: year, season: season, genres: genres, tags: tags, studios: studios, staff: staff,
@@ -123,39 +131,45 @@ self.onmessage = (message) => {
                 if(xformat!==null){
                     if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
                         savedUserList[title] = newAnimeObjStr
-                        alteredVariables.format_in = {...alteredVariables.format_in, [xformat]:1}
+                        if(alteredVariables.format_in[xformat]===undefined){
+                            alteredVariables.format_in[xformat] = 1
+                        }
                     }
-                    if(Object.keys(varScheme.format).includes(xformat)){
+                    if(varScheme.format[xformat]!==undefined){
                         varScheme.format[xformat].push(userScore)
                     }
                     else{
-                        varScheme.format = {...varScheme.format, [xformat]: [userScore]}
+                        varScheme.format[xformat] = [userScore]
                     }
                 }
                 var xyear = anime.seasonYear===null? null : "Year: "+anime.seasonYear.toString()
                 if(xyear!==null){
                     if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
                         savedUserList[title] = newAnimeObjStr
-                        alteredVariables.year_in = {...alteredVariables.year_in, [xyear]:1}
+                        if(alteredVariables.year_in[xyear]===undefined){
+                            alteredVariables.year_in[xyear] = 1
+                        }
                     }
-                    if(Object.keys(varScheme.year).includes(xyear)){
+                    if(varScheme.year[xyear]!==undefined){
                         varScheme.year[xyear].push(userScore)
                     }
                     else{
-                        varScheme.year = {...varScheme.year, [xyear]: [userScore]}
+                        varScheme.year[xyear] = [userScore]
                     }
                 }
                 var xseason = anime.season===null? null : "Season: "+anime.season
                 if(xseason!==null){
                     if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
                         savedUserList[title] = newAnimeObjStr
-                        alteredVariables.season_in = {...alteredVariables.season_in, [xseason]:1}
+                        if(alteredVariables.season_in[xseason]===undefined){
+                            alteredVariables.season_in[xseason] = 1
+                        }
                     }
-                    if(Object.keys(varScheme.season).includes(xseason)){
+                    if(varScheme.season[xseason]!==undefined){
                         varScheme.season[xseason].push(userScore)
                     }
                     else{
-                        varScheme.season = {...varScheme.season, [xseason]: [userScore]}
+                        varScheme.season[xseason] = [userScore]
                     }
                 }
                 for(let j=0; j<anime.genres.length; j++){
@@ -163,13 +177,15 @@ self.onmessage = (message) => {
                     if(xgenres!==null){
                         if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
                             savedUserList[title] = newAnimeObjStr
-                            alteredVariables.genres_in = {...alteredVariables.genres_in, [xgenres]:1}
+                            if(alteredVariables.genres_in[xgenres]===undefined){
+                                alteredVariables.genres_in[xgenres] = 1
+                            }
                         }
-                        if(Object.keys(varScheme.genres).includes(xgenres)){
+                        if(varScheme.genres[xgenres]!==undefined){
                             varScheme.genres[xgenres].push(userScore)
                         }
                         else{
-                            varScheme.genres = {...varScheme.genres, [xgenres]: [userScore]}
+                            varScheme.genres[xgenres] = [userScore]
                         }
                     }
                 }
@@ -178,13 +194,15 @@ self.onmessage = (message) => {
                     if(xtags!==null){
                         if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
                             savedUserList[title] = newAnimeObjStr
-                            alteredVariables.tags_in = {...alteredVariables.tags_in, [xtags]:1}
+                            if(alteredVariables.tags_in[xtags]===undefined){
+                                alteredVariables.tags_in[xtags] = 1
+                            }
                         }
-                        if(Object.keys(varScheme.tags).includes(xtags)){
+                        if(varScheme.tags[xtags]!==undefined){
                             varScheme.tags[xtags].push(userScore)
                         }
                         else {
-                            varScheme.tags = {...varScheme.tags, [xtags]: [userScore]}
+                            varScheme.tags[xtags] = [userScore]
                         }
                     }
                 }
@@ -193,38 +211,31 @@ self.onmessage = (message) => {
                     if(xstudios!==null){
                         if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
                             savedUserList[title] = newAnimeObjStr
-                            alteredVariables.studios_in = {...alteredVariables.studios_in, [xstudios]:1}
+                            if(alteredVariables.studios_in[xstudios]===undefined){
+                                alteredVariables.studios_in[xstudios] = 1
+                            }
                         }
                         if(Object.keys(varScheme.studios).includes(xstudios)){
                             varScheme.studios[xstudios].push(userScore)
                         }
                         else {
-                            varScheme.studios = {...varScheme.studios, [xstudios]: [userScore]}
+                            varScheme.studios[xstudios] = [userScore]
                         }
                     }
                 }
-                for(let j=0; j<anime.staff.edges.length; j++){
-                    var firstname = anime.staff.edges[j].node.name.first
-                    var lastname = anime.staff.edges[j].node.name.last
-                    var fullname = []
-                    if(firstname==null&&lastname==null){
-                        fullname = null
-                    } else {
-                        if(firstname!==null) fullname.push(firstname)
-                        if(lastname!==null) fullname.push(lastname)
-                        fullname = fullname.join(" ")
-                        fullname = "Staff: "+fullname
-                    }
-                    var xstaff = fullname===null?null:fullname
+                for(let j=0; j<anime.staff.nodes.length; j++){
+                    var xstaff = anime.staff.nodes[j].name.userPreferred===null?null: "Staff: "+anime.staff.nodes[j].name.userPreferred
                     if(xstaff!==null){
                         if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
                             savedUserList[title] = newAnimeObjStr
-                            alteredVariables.staff_in = {...alteredVariables.staff_in, [xstaff]:1}
+                            if(alteredVariables.staff_in[xstaff]===undefined){
+                                alteredVariables.staff_in[xstaff] = 1
+                            }
                         }
-                        if(Object.keys(varScheme.staff).includes(xstaff)){
+                        if(varScheme.staff[xstaff]!==undefined){
                             varScheme.staff[xstaff].push(userScore)
                         }
-                        else varScheme.staff = {...varScheme.staff, [xstaff]: [userScore]}
+                        else varScheme.staff[xstaff] = [userScore]
                     }
                 }
             }
@@ -247,75 +258,77 @@ self.onmessage = (message) => {
             if(anime.favourites!==null){
                 favourites.push({userScore: userScore, favourites: anime.favourites})
             }
+            if(anime.genres!==null){
+                genresCount.push({userScore: userScore, genresCount: anime.genres.length})
+            }
+            if(anime.tags!==null){
+                tagsCount.push({userScore: userScore, tagsCount: anime.tags.length})
+            }
+            if(anime.studios.nodes!==null){
+                studiosCount.push({userScore: userScore, studiosCount: anime.studios.nodes.length})
+            }
+            if(anime.staff.nodes!==null){
+                staffCount.push({userScore: userScore, staffCount: anime.staff.nodes.length})
+            }
         }
     }
     // Clean Data JSON
-    // var meanFormat = []
-    // var meanYear = []
-    // var meanSeason = []
-    // var meanGenres = []
-    // var meanTags = []
-    // var meanStaff = []
-    // var meanStudios = []
+    var meanGenres = []
+    var meanTags = []
+    var meanStaff = []
+    var meanStudios = []
     for(let i=0; i<Object.keys(varScheme.format).length; i++){
         var formatKey = Object.keys(varScheme.format)
         var tempScore =  arrayMean(varScheme.format[formatKey[i]])*10
-        // meanFormat.push(tempScore)
         varScheme.format[formatKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.year).length; i++){
         var yearKey = Object.keys(varScheme.year)
         var tempScore = arrayMean(varScheme.year[yearKey[i]])*10
-        // meanYear.push(tempScore)
         varScheme.year[yearKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.season).length; i++){
         var seasonKey = Object.keys(varScheme.season)
         var tempScore = arrayMean(varScheme.season[seasonKey[i]])*10
-        // meanSeason.push(tempScore)
         varScheme.season[seasonKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.genres).length; i++){
         var genresKey = Object.keys(varScheme.genres)
         var tempScore = arrayMean(varScheme.genres[genresKey[i]])*10
-        // meanGenres.push(tempScore)
+        meanGenres.push(tempScore)
         varScheme.genres[genresKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.tags).length; i++){
         var tagsKey = Object.keys(varScheme.tags)
         var tempScore = arrayMean(varScheme.tags[tagsKey[i]])*10
-        // meanTags.push(tempScore)
+        meanTags.push(tempScore)
         varScheme.tags[tagsKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.studios).length; i++){
         var studiosKey = Object.keys(varScheme.studios)
         var tempScore = arrayMean(varScheme.studios[studiosKey[i]])*10
-        // meanStudios.push(tempScore)
+        meanStudios.push(tempScore)
         varScheme.studios[studiosKey[i]] = tempScore
     }
     for(let i=0; i<Object.keys(varScheme.staff).length; i++){
         var staffKey = Object.keys(varScheme.staff)
         var tempScore = arrayMean(varScheme.staff[staffKey[i]])*10
-        // meanStaff.push(tempScore)
+        meanStaff.push(tempScore)
         varScheme.staff[staffKey[i]] = tempScore
     }
     // Join Data
     var varSchemeKeys = Object.keys(varScheme)
-    var tempVar = {}//{
-    //     meanFormat: arrayMean(meanFormat),
-    //     meanYear: arrayMean(meanYear),
-    //     meanSeason: arrayMean(meanSeason),
-    //     meanGenres: arrayMean(meanGenres),
-    //     meanTags: arrayMean(meanTags),
-    //     meanStaff: arrayMean(meanStaff),
-    //     meanStudios: arrayMean(meanStudios),
-    // }
+    var tempVar = {
+        meanGenres: arrayMean(meanGenres),
+        meanTags: arrayMean(meanTags),
+        meanStaff: arrayMean(meanStaff),
+        meanStudios: arrayMean(meanStudios),
+    }
     for(let i=0; i<varSchemeKeys.length; i++){
         var variables = varScheme[varSchemeKeys[i]]
         for(let j=0; j<Object.keys(variables).length; j++){
             var varEntries = Object.entries(variables)
-
-            tempVar = {...tempVar, [varEntries[j][0]]:varEntries[j][1]}
+            tempVar[varEntries[j][0]] = varEntries[j][1]
         }
     }
     // Create Model for Numbers| y is predicted so userscore
@@ -324,37 +337,61 @@ self.onmessage = (message) => {
         episodesX.push(episodes[i].episodes)
         episodesY.push(episodes[i].userScore)
     }
-    tempVar = {...tempVar, episodesModel:linearRegression(episodesX,episodesY)}
+    tempVar["episodesModel"] = linearRegression(episodesX,episodesY)
     var durationX = [], durationY = []
     for(let i=0; i<duration.length;i++){
         durationX.push(duration[i].duration)
         durationY.push(duration[i].userScore)
     }
-    tempVar = {...tempVar, durationModel:linearRegression(durationX,durationY)}
+    tempVar["durationModel"] = linearRegression(durationX,durationY)
     var averageScoreX = [], averageScoreY = []
     for(let i=0; i<averageScore.length;i++){
         averageScoreX.push(averageScore[i].averageScore)
         averageScoreY.push(averageScore[i].userScore)
     }
-    tempVar = {...tempVar, averageScoreModel:linearRegression(averageScoreX,averageScoreY)}
+    tempVar["averageScoreModel"] = linearRegression(averageScoreX,averageScoreY)
     var trendingX = [], trendingY = []
     for(let i=0; i<trending.length;i++){
         trendingX.push(trending[i].trending)
         trendingY.push(trending[i].userScore)
     }
-    tempVar = {...tempVar, trendingModel:linearRegression(trendingX,trendingY)}
+    tempVar["trendingModel"] = linearRegression(trendingX,trendingY)
     var popularityX = [], popularityY = []
     for(let i=0; i<popularity.length;i++){
         popularityX.push(popularity[i].popularity)
         popularityY.push(popularity[i].userScore)
     }
-    tempVar = {...tempVar, popularityModel:linearRegression(popularityX,popularityY)}
+    tempVar["popularityModel"] = linearRegression(popularityX,popularityY)
     var favouritesX = [], favouritesY = []
     for(let i=0; i<favourites.length;i++){
         favouritesX.push(favourites[i].favourites)
         favouritesY.push(favourites[i].userScore)
     }
-    tempVar = {...tempVar, favouritesModel:linearRegression(favouritesX,favouritesY)}
+    tempVar["favouritesModel"] = linearRegression(favouritesX,favouritesY)
+    var genresCountX = [], genresCountY = []
+    for(let i=0; i<favourites.length;i++){
+        genresCountX.push(genresCount[i].genresCount)
+        genresCountY.push(genresCount[i].userScore)
+    }
+    tempVar["genresCountModel"] = linearRegression(genresCountX,genresCountY)
+    var tagsCountX = [], tagsCountY = []
+    for(let i=0; i<tagsCount.length;i++){
+        tagsCountX.push(tagsCount[i].tagsCount)
+        tagsCountY.push(tagsCount[i].userScore)
+    }
+    tempVar["tagsCountModel"] = linearRegression(tagsCountX,tagsCountY)
+    var studiosCountX = [], studiosCountY = []
+    for(let i=0; i<favourites.length;i++){
+        studiosCountX.push(studiosCount[i].studiosCount)
+        studiosCountY.push(studiosCount[i].userScore)
+    }
+    tempVar["studiosCountModel"] = linearRegression(studiosCountX,studiosCountY)
+    var staffCountX = [], staffCountY = []
+    for(let i=0; i<favourites.length;i++){
+        staffCountX.push(staffCount[i].staffCount)
+        staffCountY.push(staffCount[i].userScore)
+    }
+    tempVar["staffCountModel"] = linearRegression(staffCountX,staffCountY)
     varScheme = tempVar
     self.postMessage({
         varScheme: varScheme, 

@@ -86,7 +86,16 @@ self.onmessage = (message) => {
                 continue
             }
             // Arrays
-            var temp = recList[j].studios.split(", ")
+            var temp = Object.keys(recList[j].studios)
+            for(let k=0; k<temp.length; k++){
+                if(equalsNCS(includes[i],temp[k])){
+                    tempRecScheme.push(recList[j])
+                    hasValue = true
+                    break
+                }
+            }
+            if(hasValue) continue
+            var temp = Object.keys(recList[j].staff)
             for(let k=0; k<temp.length; k++){
                 if(equalsNCS(includes[i],temp[k])){
                     tempRecScheme.push(recList[j])
@@ -105,15 +114,6 @@ self.onmessage = (message) => {
             }
             if(hasValue) continue
             temp = recList[j].tags.split(", ")
-            for(let k=0; k<temp.length; k++){
-                if(equalsNCS(includes[i],temp[k])){
-                    tempRecScheme.push(recList[j])
-                    hasValue = true
-                    break
-                }
-            }
-            if(hasValue) continue
-            temp = recList[j].variablesIncluded.split(", ")
             for(let k=0; k<temp.length; k++){
                 if(equalsNCS(includes[i],temp[k])){
                     tempRecScheme.push(recList[j])
@@ -137,7 +137,15 @@ self.onmessage = (message) => {
             {
                 continue
             }
-            temp = recList[j].studios.split(", ")
+            temp = Object.keys(recList[j].studios)
+            for(let k=0; k<temp.length; k++){
+                if(equalsNCS(excludes[i],temp[k])){
+                    hasValue = true
+                    break
+                }
+            }
+            if(hasValue) continue
+            temp = Object.keys(recList[j].staff)
             for(let k=0; k<temp.length; k++){
                 if(equalsNCS(excludes[i],temp[k])){
                     hasValue = true
@@ -160,14 +168,6 @@ self.onmessage = (message) => {
                     break
                 }
             }
-            if(hasValue) continue
-            temp = recList[j].variablesIncluded.split(", ")
-            for(let k=0; k<temp.length; k++){
-                if(equalsNCS(excludes[i],temp[k])){
-                    hasValue = true
-                    break
-                }
-            }
             if(hasValue==false)
                 tempRecScheme.push(recList[j])
         }
@@ -179,7 +179,25 @@ self.onmessage = (message) => {
     recList.forEach((value) => {
         var score = parseFloat(value.score)
         // var weightedScore = parseFloat(value.weightedScore)
-        if(includes.some(item=>equalsNCS(item,"hidden"))){                            
+        var similarities = []
+        value.variablesIncluded.forEach((v)=>{
+            if(isJson(v)){
+                Object.entries(v).forEach(([name, url])=>{
+                    similarities.push(`<a href=${url||"javascript:;"}>${name}</a>`)
+                })
+            } else {
+                similarities.push(v)
+            }
+        })
+        var studios = []
+        Object.entries(value.studios).forEach(([name,url])=>{
+            studios.push(`<a href=${url||"javascript:;"}>${name}</a>`)
+        })
+        var staff = []
+        Object.entries(value.staff).forEach(([name,url])=>{
+            staff.push(`<a href=${url||"javascript:;"}>${name}</a>`)
+        })
+        if(includes.some(item=>equalsNCS(item,"hidden"))){                        
             if(savedHiddenAnimeTitles.includes(value.title)){
                 animeData += `
                 <tr class="item" role="row">
@@ -189,16 +207,26 @@ self.onmessage = (message) => {
                             type="button" class="show-anime" 
                             title="Hide this Anime">Show</button>
                     </td>
-                    <td id="animeTitle"><a href="${value.animeUrl||"javascript:;"}">${value.title}</a></td>
                     <td class="anime-score" title="${score}">${score}</td>
+                    <td id="animeTitle"><a href="${value.animeUrl||"javascript:;"}">${value.title}</a></td>
+                    <td>`
+                        animeData += similarities.length>0 ? similarities.join(", ") : "Top Similarities: N/A"
+                        animeData += `
+                    </td>
                     <td>${value.status}</td>
                     <td>${value.genres}</td>
                     <td>${value.tags}</td>
                     <td>${value.format}</td>
                     <td>${value.year}</td>
                     <td>${value.season}</td>
-                    <td>${value.studios}</td>
-                    <td>${value.variablesIncluded}</td>
+                    <td>`
+                        animeData += studios.length>0 ? studios.join(", ") : "Studios: N/A"
+                        animeData += `
+                    </td>
+                    <td>`
+                        animeData += staff.length>0 ? staff.join(", ") : "Studios: N/A"
+                        animeData += `
+                    </td>
                 </tr>`
             }
         } else {
@@ -211,16 +239,26 @@ self.onmessage = (message) => {
                             type="button" class="hide-anime" 
                             title="Hide this Anime">Hide</button>
                     </td>
-                    <td id="animeTitle"><a href="${value.animeUrl||"javascript:;"}">${value.title}</a></td>
                     <td class="anime-score" title="${score}">${score}</td>
+                    <td id="animeTitle"><a href="${value.animeUrl||"javascript:;"}">${value.title}</a></td>
+                    <td>`
+                        animeData += similarities.length>0 ? similarities.join(", ") : "Similarities: N/A"
+                        animeData += `
+                    </td>
                     <td>${value.status}</td>
                     <td>${value.genres}</td>
                     <td>${value.tags}</td>
                     <td>${value.format}</td>
                     <td>${value.year}</td>
                     <td>${value.season}</td>
-                    <td>${value.studios}</td>
-                    <td>${value.variablesIncluded}</td>
+                    <td>`
+                        animeData += studios.length>0 ? studios.join(", ") : "Studios: N/A"
+                        animeData += `
+                    </td>
+                    <td>`
+                        animeData += staff.length>0 ? staff.join(", ") : "Studios: N/A"
+                        animeData += `
+                    </td>
                 </tr>`
             }
         }
@@ -228,7 +266,7 @@ self.onmessage = (message) => {
     if(animeData===""){
         animeData = `
             <tr class="item" role="row">
-                <td style="padding: 1.5em !important;" colspan="10">
+                <td style="padding: 1.5em !important;" colspan="11">
                     <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                     No Data
                 </td>
@@ -247,5 +285,11 @@ self.onmessage = (message) => {
         if(typeof s1==="string") s1 = s1.toLowerCase()
         if(typeof s2==="string") s2 = s2.toLowerCase()
         return s1 === s2
+    }
+    function isJson(data) { 
+        if(data instanceof Array) {return false;}
+        if(typeof data==="string") {return false;}
+        try {return Object.entries(data).length>0;} 
+        catch (e) {return false;}
     }
 }
