@@ -12,7 +12,7 @@
   3. Hidden/Unhidden List to hide an Anime from ones' list or show it back to your list (Click Show All for immediate retrieval).
 
 ## Kanshi.VI (Recommended)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Year, Season, Format, and Studios for Categories for Nominal. Each variables or variable component are averaged. Numeric variables including Anilist Average-Score, Popularity, Favourites, Episodes, Trending, Duration have their own Linear Regression Model to be predicted. Finally, all anime in Anilist are then analyzed based on the Variable Importance Schema from ones' rating.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Year, Season, Format, and Studios for Categories. Each variables or variable component are averaged. Numeric variables including Anilist Average-Score, Popularity, Favourites, Episodes, Trending, Duration have their own Linear Regression Model to be predicted. Finally, all anime in Anilist are then analyzed based on the Variable Importance Schema from ones' rating.
 
 ### Recommendation Algorithm
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The recommendation score is averaged through different variables based on user score to get each percent of Likeability. All anime are then analyzed based on the Variable Importance Schema from ones' anime list. Anime recommendation score will be high if most variable from an anime are liked by the user and a low score if most variables in it are disliked by the user. 
