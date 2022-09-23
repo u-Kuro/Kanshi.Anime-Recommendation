@@ -22,44 +22,44 @@ self.onmessage = (message) => {
                 continue
             }
             // Numbers
-            //   // Weighted Score
-            // if(includes[i].toLowerCase().includes("wscore<=")){
-            //     var score=includes[i].toLowerCase().replace("wscore<=", "")
-            //     if(!isNaN(score)) if(recList[j].weightedScore<=parseFloat(score)) tempRecScheme.push(recList[j])
-            //     continue
-            // }
-            // if(includes[i].toLowerCase().includes("wscore>=")){
-            //     var score=includes[i].toLowerCase().replace("wscore>=", "")
-            //     if(!isNaN(score)) if(recList[j].weightedScore>=parseFloat(score)) tempRecScheme.push(recList[j])
-            //     continue
-            // }
-            // if(includes[i].toLowerCase().includes("wscore>")&&!includes[i].toLowerCase().includes("wscore>=")){
-            //     var score=includes[i].toLowerCase().replace("wscore>", "")
-            //     if(!isNaN(score)) if(recList[j].weightedScore>parseFloat(score)) tempRecScheme.push(recList[j])
-            //     continue
-            // }
-            // if(includes[i].toLowerCase().includes("wscore<")&&!includes[i].toLowerCase().includes("wscore<=")){
-            //     var score=includes[i].toLowerCase().replace("wscore<", "")
-            //     if(!isNaN(score)) if(recList[j].weightedScore<parseFloat(score)) tempRecScheme.push(recList[j])
-            //     continue
-            // }
+              // Weighted Score
+            if(includes[i].toLowerCase().includes("wscore<=")){
+                var score=includes[i].toLowerCase().replace("wscore<=", "")
+                if(!isNaN(score)) if(recList[j].weightedScore<=parseFloat(score)) tempRecScheme.push(recList[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("wscore>=")){
+                var score=includes[i].toLowerCase().replace("wscore>=", "")
+                if(!isNaN(score)) if(recList[j].weightedScore>=parseFloat(score)) tempRecScheme.push(recList[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("wscore>")&&!includes[i].toLowerCase().includes("wscore>=")){
+                var score=includes[i].toLowerCase().replace("wscore>", "")
+                if(!isNaN(score)) if(recList[j].weightedScore>parseFloat(score)) tempRecScheme.push(recList[j])
+                continue
+            }
+            if(includes[i].toLowerCase().includes("wscore<")&&!includes[i].toLowerCase().includes("wscore<=")){
+                var score=includes[i].toLowerCase().replace("wscore<", "")
+                if(!isNaN(score)) if(recList[j].weightedScore<parseFloat(score)) tempRecScheme.push(recList[j])
+                continue
+            }
               // Score
-            if(includes[i].toLowerCase().includes("score<=")){//&&!includes[i].toLowerCase().includes("wscore<=")){
+            if(includes[i].toLowerCase().includes("score<=")&&!includes[i].toLowerCase().includes("wscore<=")){
                 var score=includes[i].toLowerCase().replace("score<=", "")
                 if(!isNaN(score)) if(recList[j].score<=parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("score>=")){//&&!includes[i].toLowerCase().includes("wscore>=")){
+            if(includes[i].toLowerCase().includes("score>=")&&!includes[i].toLowerCase().includes("wscore>=")){
                 var score=includes[i].toLowerCase().replace("score>=", "")
                 if(!isNaN(score)) if(recList[j].score>=parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("score>")){//&&!includes[i].toLowerCase().includes("score>=")&&!includes[i].toLowerCase().includes("wscore>")){
+            if(includes[i].toLowerCase().includes("score>")&&!includes[i].toLowerCase().includes("score>=")&&!includes[i].toLowerCase().includes("wscore>")){
                 var score=includes[i].toLowerCase().replace("score>", "")
                 if(!isNaN(score)) if(recList[j].score>parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("score<")){//&&!includes[i].toLowerCase().includes("score<=")&&!includes[i].toLowerCase().includes("wscore<")){
+            if(includes[i].toLowerCase().includes("score<")&&!includes[i].toLowerCase().includes("score<=")&&!includes[i].toLowerCase().includes("wscore<")){
                 var score=includes[i].toLowerCase().replace("score<", "")
                 if(!isNaN(score)) if(recList[j].score<parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
@@ -178,7 +178,7 @@ self.onmessage = (message) => {
     var animeData = ""
     recList.forEach((value) => {
         var score = parseFloat(value.score)
-        // var weightedScore = parseFloat(value.weightedScore)
+        var weightedScore = parseFloat(value.weightedScore)
         var similarities = []
         value.variablesIncluded.forEach((v)=>{
             if(isJson(v)){
@@ -207,12 +207,13 @@ self.onmessage = (message) => {
                             type="button" class="show-anime" 
                             title="Hide this Anime">Show</button>
                     </td>
-                    <td class="anime-score" title="${score}">${score}</td>
+                    <td class="anime-score" title="${weightedScore}">${weightedScore}</td>
                     <td id="animeTitle"><a href="${value.animeUrl||"javascript:;"}">${value.title}</a></td>
                     <td>`
                         animeData += similarities.length>0 ? similarities.join(", ") : "Top Similarities: N/A"
                         animeData += `
                     </td>
+                    <td class="anime-score" title="${score}">${score}</td>
                     <td>${value.status}</td>
                     <td>${value.genres}</td>
                     <td>${value.tags}</td>
@@ -224,7 +225,7 @@ self.onmessage = (message) => {
                         animeData += `
                     </td>
                     <td>`
-                        animeData += staff.length>0 ? staff.join(", ") : "Studios: N/A"
+                        animeData += staff.length>0 ? staff.join(", ") : "Staff: N/A"
                         animeData += `
                     </td>
                 </tr>`
@@ -239,12 +240,13 @@ self.onmessage = (message) => {
                             type="button" class="hide-anime" 
                             title="Hide this Anime">Hide</button>
                     </td>
-                    <td class="anime-score" title="${score}">${score}</td>
+                    <td class="anime-score" title="${weightedScore}">${weightedScore}</td>
                     <td id="animeTitle"><a href="${value.animeUrl||"javascript:;"}">${value.title}</a></td>
                     <td>`
                         animeData += similarities.length>0 ? similarities.join(", ") : "Similarities: N/A"
                         animeData += `
                     </td>
+                    <td class="anime-score" title="${score}">${score}</td>
                     <td>${value.status}</td>
                     <td>${value.genres}</td>
                     <td>${value.tags}</td>
@@ -256,7 +258,7 @@ self.onmessage = (message) => {
                         animeData += `
                     </td>
                     <td>`
-                        animeData += staff.length>0 ? staff.join(", ") : "Studios: N/A"
+                        animeData += staff.length>0 ? staff.join(", ") : "Staff: N/A"
                         animeData += `
                     </td>
                 </tr>`

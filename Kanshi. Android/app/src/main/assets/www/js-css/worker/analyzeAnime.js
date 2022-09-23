@@ -7,6 +7,7 @@ self.onmessage = (message) => {
     var varImportance = data.varImportance
     var allFilterInfo = data.allFilterInfo
     var alteredVariables = data.alteredVariables
+    var savedAnalyzedVariablesCount = data.savedAnalyzedVariablesCount || {}
     //
     for(let i=0; i<animeEntries.length; i++){
         var animeShallUpdate = false
@@ -156,11 +157,15 @@ self.onmessage = (message) => {
                 }
             }
         }
+        savedAnalyzedVariablesCount[title] = (zgenres.length+ztags.length+zstudios.length+zstaff.length)
+        var analyzedVariableCount = (zgenres.length+ztags.length+zstudios.length+zstaff.length)
+        count = (zgenres.length+ztags.length+zstudios.length+zstaff.length)
         zformat = zformat.length===0?0:arrayMean(zformat)
         zyear = zyear.length===0?0:arrayMean(zyear)
         zseason = zseason.length===0?0:arrayMean(zseason)
         zgenres = zgenres.length===0?0:arrayMean(zgenres)
         ztags = ztags.length===0?0:arrayMean(ztags)
+        zstudios = zstudios.length===0?0:arrayMean(zstudios)
         zstaff = zstaff.length===0?0:arrayMean(zstaff)
         // Linear Models
         var zepisodes = anime.episodes===null?0:LRpredict(varImportance.episodesModel,anime.episodes)
@@ -197,7 +202,7 @@ self.onmessage = (message) => {
             xxstudios[studios[k].name] = studios[k].siteUrl
         }
         studios = studios.length>0? xxstudios : {}
-        var xxstaff = []
+        var xxstaff = {}
         for(let k=0; k<staff.length; k++){
             xxstaff[staff[k].name.userPreferred] = staff[k].siteUrl
         }
@@ -224,21 +229,28 @@ self.onmessage = (message) => {
         const limitShown = 10
         variablesIncluded = tempVariablesIncluded.length>0?tempVariablesIncluded.slice(0,limitShown) : []
         savedRecScheme[title] = {
-            title: title, animeUrl: animeUrl, score: score,
+            title: title, animeUrl: animeUrl, score: score, weightedScore: score, 
             status: status, genres: genres, tags: tags, year: year, 
             season: season, format: format, studios: studios, staff: staff,
-            variablesIncluded: variablesIncluded
+            variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount
         }
     }
     // Clean Analyzed Recommendations
     var savedRecSchemeEntries = Object.keys(savedRecScheme)
+    var analyzedVariableSum = arraySum(Object.values(savedAnalyzedVariablesCount))
+    var analyzedVariableMean = arrayMean(Object.values(savedAnalyzedVariablesCount))
     for(let i=0;i<savedRecSchemeEntries.length;i++){
         var anime = savedRecScheme[savedRecSchemeEntries[i]]
-        savedRecScheme[savedRecSchemeEntries[i]].score=anime.score
+        if(anime.analyzedVariableCount<analyzedVariableMean){
+            savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
+                (anime.analyzedVariableCount/analyzedVariableSum)*anime.score
+            )
+        }
     }
     self.postMessage({
         savedRecScheme: savedRecScheme,
-        allFilterInfo: allFilterInfo
+        allFilterInfo: allFilterInfo,
+        savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
     })
     //
     function arraySum(obj) {
