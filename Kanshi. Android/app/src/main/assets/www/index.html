@@ -915,7 +915,7 @@
                     await $("#updateIntervalBtn").css({background: "white",color:"black"})
                     updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
                     await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                    if(await (new Date).getTime()-(updateIntervalStartDate.getTime())>5000){// 1hr
+                    if(await (new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hr
                         await Update()
                         updateIntervalStartDate = await new Date()
                         await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
@@ -925,7 +925,7 @@
                             await Update()
                             updateIntervalStartDate = await new Date()
                             await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                        },await 5000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
+                        },await 3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                         await updateIntervalTimeout.push(saveUpdateIntervalTimeout)
                     }
                 }
@@ -937,7 +937,7 @@
                     await $("#exportIntervalBtn").css({background: "white",color:"black"})
                     exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                     await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                    if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>5000)){// 1hrs
+                    if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hrs
                         const savedUsername = await retrieveJSON("savedUsername")
                         const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                         const savedUserList = await retrieveJSON("savedUserList")
@@ -1003,7 +1003,7 @@
                             await downloadObjectAsJson(backup, "Kanshi-Backup")
                             exportIntervalStartDate = await new Date()
                             await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                        },await 5000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
+                        },await 3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
                         await exportIntervalTimeout.push(saveExportIntervalTimeout)
                     }
                 }
@@ -1413,7 +1413,7 @@
                         saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
                         updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
                         saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                        if((new Date).getTime()-(updateIntervalStartDate.getTime())>5000){// 1hrs
+                        if((new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hrs
                             Update()
                             updateIntervalStartDate = new Date()
                             saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
@@ -1423,7 +1423,7 @@
                                 Update()
                                 updateIntervalStartDate = new Date()
                                 saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                            },5000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
+                            },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                             updateIntervalTimeout.push(saveUpdateIntervalTimeout)
                         }
                     }
@@ -1464,7 +1464,7 @@
                             saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
                             exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                             saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                            if((new Date).getTime()-(exportIntervalStartDate.getTime())>5000){// 1hrs
+                            if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
                                 const savedUsername = await retrieveJSON("savedUsername")
                                 const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                                 const savedUserList = await retrieveJSON("savedUserList")
@@ -1530,7 +1530,7 @@
                                     downloadObjectAsJson(backup, "Kanshi-Backup")
                                     exportIntervalStartDate = new Date()
                                     saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                                },5000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
+                                },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
                                 exportIntervalTimeout.push(saveExportIntervalTimeout)
                             }
                         }
