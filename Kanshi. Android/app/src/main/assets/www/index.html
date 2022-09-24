@@ -554,12 +554,12 @@
             </tr>
             </thead>
             <tbody id="animeRecommendationList">
-            <tr class="item" role="row">
-                <td style="padding: 1.5em !important;" colspan="11">
-                    <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                    No Data
-                </td>
-            </tr>
+                <tr class="item" role="row">
+                    <td style="padding: 1.5em !important;" colspan="13">
+                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                        No Data
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -658,8 +658,9 @@
                     .tablesorter({
                         sortInitialOrder: "asc",
                         headers: {
-                            2:{sortInitialOrder: "desc"},
-                            3:{sortInitialOrder: "desc"}
+                            1:{sortInitialOrder: "desc"},
+                            4:{sortInitialOrder: "desc"},
+                            9:{sortInitialOrder: "desc"},
                         },
                         widgets: ["saveSort"],
                         widgetOptions : {
@@ -674,6 +675,7 @@
                         size: 8,
                         pageReset: false,
                         removeRows: true,
+                        fixedHeight: true,
                         cssNext: '.next',
                         cssPrev: '.prev',
                         cssFirst: '.first',
@@ -702,20 +704,23 @@
                         savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
                         await savedHiddenAnimeTitles.push(hiddenAnimeTitle)
                         await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                        hiddenRow.addClass("remove-me")
+                        $("#anime-table").trigger("pagerUpdate")
+                        if($("#anime-table")[0].config.rowsCopy.length===0){
+                            await $("#animeRecommendationList").empty()
+                            await $("#animeRecommendationList").append(`
+                                <tr class="item" role="row">
+                                    <td style="padding: 1.5em !important;" colspan="13">
+                                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                        No Data
+                                    </td>
+                                </tr>
+                            `)
+                        }
                         // Have a Hidden Anime
                         if(await savedHiddenAnimeTitles.length>0){
                             await $("#showAllAnime").show()
                         }
-                        await hiddenRow.html(`
-                            <td style="padding: 1.5em !important;" colspan="11">
-                                <div style="display:flex; align-items:center;">
-                                    <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
-                                    <div>Loading...</div>
-                                </div>
-                            </td>
-                        `)
-                        savedRecScheme = await retrieveJSON("savedRecScheme") || {}
-                        await LoadData(savedRecScheme)
                         await setTimeout(async()=>{
                             let setPageInfo = await setInterval(async()=>{
                                 if(typeof $('#anime-table')[0].config!=="undefined"){
@@ -733,20 +738,20 @@
                     savedHiddenAnimeTitles = await savedHiddenAnimeTitles.filter((v)=>v!==hiddenAnimeTitle)
                     await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
                     // No Hidden Anime
-                    if(await savedHiddenAnimeTitles.length===0){
-                        await $("#showAllAnime").hide()
-                    } else {
-                        await hiddenRow.html(`
-                            <td style="padding: 1.5em !important;" colspan="11">
-                                <div style="display:flex; align-items:center;">
-                                    <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
-                                    <div>Loading...</div>
-                                </div>
-                            </td>
+                    await hiddenRow.addClass("remove-me")
+                    await $("#anime-table").trigger("pagerUpdate")
+                    if(await savedHiddenAnimeTitles.length===0||$("#anime-table")[0].config.rowsCopy.length===0){
+                        await $("#animeRecommendationList").empty()
+                        await $("#animeRecommendationList").append(`
+                            <tr class="item" role="row">
+                                <td style="padding: 1.5em !important;" colspan="13">
+                                    <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                    No Data
+                                </td>
+                            </tr>
                         `)
+                        await $("#showAllAnime").hide()
                     }
-                    savedRecScheme = await retrieveJSON("savedRecScheme") || {}
-                    await LoadData(savedRecScheme)
                     await setTimeout(async()=>{
                         let setPageInfo = await setInterval(async()=>{
                             if(await (typeof $('#anime-table')[0].config!=="undefined")){
@@ -857,9 +862,10 @@
                             }
                         }
                         // Reload Data Table
-                        await $("#animeRecommendationList").html(`
+                        await $("#animeRecommendationList").empty()
+                        await $("#animeRecommendationList").append(`
                             <tr class="item" role="row">
-                                <td style="padding: 1.5em !important;" colspan="11">
+                                <td style="padding: 1.5em !important;" colspan="13">
                                     <div style="display:flex; align-items:center;">
                                         <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                         <div>Loading...</div>
@@ -886,7 +892,7 @@
                         } else {
                             animeData = `
                                 <tr class="item" role="row">
-                                    <td style="padding: 1.5em !important;" colspan="11">
+                                    <td style="padding: 1.5em !important;" colspan="13">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                         No Data
                                     </td>
@@ -1023,9 +1029,10 @@
             savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || 320
             savedRecScheme = await retrieveJSON("savedRecScheme") || {}
             if(Object.keys(savedRecScheme).length>0) {
-                await $("#animeRecommendationList").html(`
+                await $("#animeRecommendationList").empty()
+                await $("#animeRecommendationList").append(`
                     <tr class="item" role="row">
-                        <td style="padding: 1.5em !important;" colspan="11">
+                        <td style="padding: 1.5em !important;" colspan="13">
                             <div style="display:flex; align-items:center;">
                                 <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                 <div>Loading...</div>
@@ -1048,6 +1055,22 @@
                     if(confirmed){
                         deepUpdateStartTime = new Date()
                         isDeepUpdate = true
+                        // Reset Anime-List
+                        saveJSON("","savedLatestAnimeTitle")
+                        // Reset All Anime Recommendations
+                        savedRecScheme = {}
+                        saveJSON(savedRecScheme,"savedRecScheme")
+                        $("#animeRecommendationList").empty()
+                        $("#animeRecommendationList").append(`
+                            <tr class="item" role="row">
+                                <td style="padding: 1.5em !important;" colspan="13">
+                                    <div style="display:flex; align-items:center;">
+                                        <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                        <div>Updating...</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        `)
                         Update()
                     }
                 })
@@ -1097,6 +1120,17 @@
                     // Reset All Anime Recommendations
                     savedRecScheme = {}
                     saveJSON(savedRecScheme,"savedRecScheme")
+                    $("#animeRecommendationList").empty()
+                    $("#animeRecommendationList").append(`
+                        <tr class="item" role="row">
+                            <td style="padding: 1.5em !important;" colspan="13">
+                                <div style="display:flex; align-items:center;">
+                                    <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                    <div>Updating...</div>
+                                </div>
+                            </td>
+                        </tr>
+                    `)
                     await Update()
                     $(".menu-container").fadeOut(250)
                 }
@@ -1121,9 +1155,10 @@
                             await filterInput.val("")
                         }
                         saveJSON("Hidden","savedTableStatus")
-                        await $("#animeRecommendationList").html(`
+                        await $("#animeRecommendationList").empty()
+                        await $("#animeRecommendationList").append(`
                             <tr class="item" role="row">
-                                <td style="padding: 1.5em !important;" colspan="11">
+                                <td style="padding: 1.5em !important;" colspan="13">
                                     <div style="display:flex; align-items:center;">
                                         <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                         <div>Loading...</div>
@@ -1156,9 +1191,10 @@
                             }
                         }
                         saveJSON("Unhidden","savedTableStatus")
-                        await $("#animeRecommendationList").html(`
+                        await $("#animeRecommendationList").empty()
+                        await $("#animeRecommendationList").append(`
                             <tr class="item" role="row">
-                                <td style="padding: 1.5em !important;" colspan="11">
+                                <td style="padding: 1.5em !important;" colspan="13">
                                     <div style="display:flex; align-items:center;">
                                         <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                         <div>Loading...</div>
@@ -1199,7 +1235,6 @@
                         $("#username").val(savedUsername)
                     }
                     saveJSON([], "savedHiddenAnimeTitles")
-                    savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                     if(await $(".flexdatalist-multiple-value").length){
                         var filters = await $(".flexdatalist-multiple").children("li.value")
                         for(let i=0; i<filters.length; i++) {
@@ -1211,17 +1246,19 @@
                         }
                     }
                     if($("#hiddenUnhiddenBtn").text()==="Hidden"){
-                        await $("#animeRecommendationList").html(`
-                                <tr class="item" role="row">
-                                    <td style="padding: 1.5em !important;" colspan="11">
-                                        <div style="display:flex; align-items:center;">
-                                            <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
-                                            <div>Loading...</div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `)
+                        await $("#animeRecommendationList").empty()
+                        await $("#animeRecommendationList").append(`
+                            <tr class="item" role="row">
+                                <td style="padding: 1.5em !important;" colspan="13">
+                                    <div style="display:flex; align-items:center;">
+                                        <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                        <div>Loading...</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        `)
                     }
+                    savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                     await LoadData(savedRecScheme)
                     $("#hiddenUnhiddenBtn").text("Unhidden")
                     savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
@@ -1309,7 +1346,7 @@
                                     $("#updateIntervalBtn").hide()
                                     animeData = `
                                         <tr class="item" role="row">
-                                            <td style="padding: 1.5em !important;" colspan="11">
+                                            <td style="padding: 1.5em !important;" colspan="13">
                                                 <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                                 No Data
                                             </td>
@@ -2137,13 +2174,14 @@
                     worker.terminate()
                     const data = message.data
                     const animeData = data.animeData
-                    $("#animeRecommendationList").empty()
-                    $("#animeRecommendationList").append(animeData)
+                    await $("#animeRecommendationList").empty()
+                    await $("#animeRecommendationList").append(animeData).css({visibility:"hidden"})
                     await $("#anime-table").trigger("update")
                     await $("#anime-table").trigger("pagerUpdate")
+                    await $("#animeRecommendationList").css({visibility:"visible"})
                     savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
                     savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
-                    $("#anime-table").trigger("pageSet",1+(savedTableStatus==="Unhidden"? savedTablePage[0]:savedTablePage[1]))
+                    await $("#anime-table").trigger("pageSet",1+(savedTableStatus==="Unhidden"? savedTablePage[0]:savedTablePage[1]))
                     setTimeout(()=>{
                         let setPageInfo = setInterval(()=>{
                             if(typeof $('#anime-table')[0].config!=="undefined"){

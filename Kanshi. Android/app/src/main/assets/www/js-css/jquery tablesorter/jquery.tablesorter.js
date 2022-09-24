@@ -905,7 +905,6 @@
 					normalized: [] // array of normalized row data; last entry contains 'rowData' above
 					// colMax: #   // added at the end
 				};
-
 				totalRows = ( $tbody[ tbodyIndex ] && $tbody[ tbodyIndex ].rows.length ) || 0;
 				for ( rowIndex = 0; rowIndex < totalRows; ++rowIndex ) {
 					rowData = {

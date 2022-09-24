@@ -99,6 +99,11 @@ self.onmessage = (message) => {
             }
         }
         if(!animeShallUpdate) continue
+        // Initialize Anime Weight
+        if(savedAnalyzedVariablesCount[title]===undefined){
+            savedAnalyzedVariablesCount[title] = 0
+        }
+        var analyzedVariableCount = 0
         // Add to Show Variable Influence
         var genresIncluded = {}
         var tagsIncluded = {}
@@ -108,19 +113,27 @@ self.onmessage = (message) => {
         var zformat = []
         if(varImportance[xformat]!==undefined) {
             zformat.push(varImportance[xformat])
+            savedAnalyzedVariablesCount[title] += 1
+            analyzedVariableCount += 1
         }
         var zyear = []
         if(varImportance[xyear]!==undefined) {
             zyear.push(varImportance[xyear])
+            savedAnalyzedVariablesCount[title] += 1
+            analyzedVariableCount += 1
         }
         var zseason = []
         if(varImportance[xseason]!==undefined) {
             zseason.push(varImportance[xseason])
+            savedAnalyzedVariablesCount[title] += 1
+            analyzedVariableCount += 1
         }
         var zgenres = []
         for(let j=0; j<xgenres.length; j++){
             if(varImportance[xgenres[j]]!==undefined) {
                 zgenres.push(varImportance[xgenres[j]])
+                savedAnalyzedVariablesCount[title] += 1
+                analyzedVariableCount += 1
                 if(varImportance[xgenres[j]]>=varImportance.meanGenres
                     &&genresIncluded[xgenres[j]]===undefined){
                     genresIncluded[xgenres[j]] = [xgenres[j].replace("Genre: ",""),varImportance[xgenres[j]]]
@@ -131,6 +144,8 @@ self.onmessage = (message) => {
         for(let j=0; j<xtags.length; j++){
             if(varImportance[xtags[j]]!==undefined) {
                 ztags.push(varImportance[xtags[j]])
+                savedAnalyzedVariablesCount[title] += 1
+                analyzedVariableCount += 1
                 if(varImportance[xtags[j]]>=varImportance.meanTags
                     &&tagsIncluded[xtags[j]]===undefined){
                     tagsIncluded[xtags[j]] = [xtags[j].replace("Tag: ",""),varImportance[xtags[j]]]
@@ -141,6 +156,8 @@ self.onmessage = (message) => {
         for(let j=0; j<xstudios.length; j++){
             if(varImportance[xstudios[j]]!==undefined) {
                 zstudios.push(varImportance[xstudios[j]])
+                savedAnalyzedVariablesCount[title] += 1
+                analyzedVariableCount += 1
                 if(varImportance[xstudios[j]]>=varImportance.meanStudios
                     &&studiosIncluded[xstudios[j]]===undefined){
                     studiosIncluded[xstudios[j]] = [{[xstudios[j].replace("Studio: ","")]: studios[j].siteUrl},varImportance[xstudios[j]]]
@@ -151,15 +168,14 @@ self.onmessage = (message) => {
         for(let j=0; j<xstaff.length; j++){
             if(varImportance[xstaff[j]]!==undefined) {
                 zstaff.push(varImportance[xstaff[j]])
+                savedAnalyzedVariablesCount[title] += 1
+                analyzedVariableCount += 1
                 if(varImportance[xseason]>=varImportance.meanStaff
                     &&staffIncluded[xstaff[j]]===undefined){
                     staffIncluded[xstaff[j]] = [{[xstaff[j].replace("Staff: ","")]: staff[j].siteUrl},varImportance[xstaff[j]]]
                 }
             }
         }
-        savedAnalyzedVariablesCount[title] = (zgenres.length+ztags.length+zstudios.length+zstaff.length)
-        var analyzedVariableCount = (zgenres.length+ztags.length+zstudios.length+zstaff.length)
-        count = (zgenres.length+ztags.length+zstudios.length+zstaff.length)
         zformat = zformat.length===0?0:arrayMean(zformat)
         zyear = zyear.length===0?0:arrayMean(zyear)
         zseason = zseason.length===0?0:arrayMean(zseason)

@@ -268,7 +268,7 @@ self.onmessage = (message) => {
     if(animeData===""){
         animeData = `
             <tr class="item" role="row">
-                <td style="padding: 1.5em !important;" colspan="11">
+                <td style="padding: 1.5em !important;" colspan="13">
                     <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                     No Data
                 </td>
