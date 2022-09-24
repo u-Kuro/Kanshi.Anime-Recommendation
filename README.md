@@ -23,7 +23,7 @@
   2. Analyzing Anime for Initial Recommendation Score - Each available variable in the Variable Importance Schema that is in an Anime from Anilist are then averaged by the scores from variables' scores or Predicted by the created Models given in the analyzed Schema.
   3. Adding Weight (Wscore) for Accuracy - In order to avoid bias to every anime with very Few variables, a weight is added for each shows calculated by [(SumOfAnalyzedVariableFromSpecificAnime/SumOfAllAnalyzedVariableFromAllAnime)].
 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score for recommendation is WScore, calculated by multiplying the Anime Weight to the Initial Score [InitialScore * AnimeWeight]. Unweighted Score is still included in the app to see any High Scored Anime that may be set in the margin of error.
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score for recommendation is WScore, calculated by multiplying the Weight and the Initial Score [InitialScore * Weight]. Unweighted Score is still included in the app to see if there were any Highly recommended  Anime that was put in the margin of error.
 
 ## Kanshi.R
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that also uses existing Anilist account analyzed based on three factors. The User Score to evaluate ones' Likability, the Amount of recommendations for a specific anime to Improve recommendation Accuracy, and the General ratings for a recommended anime to Identify a well-received Show.
