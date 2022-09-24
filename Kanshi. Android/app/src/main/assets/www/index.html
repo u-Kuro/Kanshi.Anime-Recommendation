@@ -629,10 +629,10 @@
         savedYscroll, savedTablePage, savedTableStatus, savedSort,
         exportPathIsAvailable, savedFilterOptionsJson, allFilterInfo,
         exportIntervalIsActive, updateIntervalIsActive, exportIntervalStartDate, updateIntervalStartDate,
-        exportIntervalTimeout, updateIntervalTimeout,
+        exportIntervalTimeout = [], updateIntervalTimeout = [],
         kidsAnimeIsHidden,
             // Load Saved API Request State
-        savedAnalyzeVariableTime, savedUpdateAnalyzeAnimeTime, savedDeepUpdateTime, 
+        savedAnalyzeVariableTime, savedUpdateAnalyzeAnimeTime, savedDeepUpdateTime,
         deepUpdateStartTime, isDeepUpdate, requestIntervalSeconds, savedLastRequestDate, requestPause,
         updateStartTime, isRunning = false, requestIsRunning = false, temp = []
         // Create IndexDB
@@ -651,240 +651,6 @@
                     db.createObjectStore("MyObjectStore")
                 }
             }).then(async()=>{
-                // Auto css
-                $(".table-responsive").css("margin-bottom",`${$("#pager").outerHeight()+43}px`)
-                // Reload Name
-                savedUsername = await retrieveJSON("savedUsername") || ""
-                if(savedUsername.length>0){
-                    $("#username").val(savedUsername)
-                    $("#updateIntervalBtn").show()
-                }
-                // Reload FilterOptions
-                savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson") || []
-                allFilterInfo = await retrieveJSON("allFilterInfo") || {}
-                if(savedFilterOptionsJson.length===0){
-                    var worker = new Worker("./js-css/worker/getOptions.js")
-                    worker.postMessage("")
-                    worker.onmessage = (message) => {
-                        const data = message.data
-                        savedFilterOptionsJson = data.savedFilterOptionsJson
-                        saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
-                        allFilterInfo = data.allFilterInfo
-                        saveJSON(allFilterInfo,"allFilterInfo")
-                        $('.flexdatalist').flexdatalist({
-                            minLength: 1,
-                            searchIn: 'info',
-                            data: savedFilterOptionsJson
-                        })
-                        worker.terminate()
-                    }
-                } else {
-                    $('.flexdatalist').flexdatalist({
-                        minLength: 1,
-                        searchIn: 'info',
-                        data: savedFilterOptionsJson
-                    })
-                }
-
-                // Reload Filters -> Data
-                    // Check for FlexDatalist Availability
-                let reloadSavedData = setInterval(async () => {
-                    if($(".flexdatalist-multiple-value > .flexdatalist-alias").length){
-                        clearInterval(reloadSavedData)
-                        // Reload Filters
-                        var filterInput
-                        savedFilters = await retrieveJSON("savedFilters") || []
-                        for(let i=0; i<savedFilters.length; i++) {
-                            filterInput = $(".flexdatalist-multiple-value > .flexdatalist-alias")
-                            await filterInput.val(savedFilters[i])
-                            var e = await $.Event("keyup",{keyCode:13})
-                            await filterInput.trigger(e)
-                            await filterInput.val("")
-                        }
-                        // Check if the List shown is Hidden List or Unhidden List -> Rename th button
-                        var filters = $(".flexdatalist-multiple").children("li.value")
-                        for(let i=0; i<filters.length; i++) {
-                            var filterName = filters.eq(i).children(".text")[0].innerText
-                            if(filterName.toLowerCase()==="hidden"){
-                                $("#hiddenUnhiddenBtn").text("Hidden")
-                            }
-                        }
-                        // Reload Data Table
-                        await $("#animeRecommendationList").html(`
-                            <tr class="item" role="row">
-                                <td style="padding: 1.5em !important;" colspan="11">
-                                    <div style="display:flex; align-items:center;">
-                                        <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
-                                        <div>Loading...</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        `)
-                        kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden")
-                        if(kidsAnimeIsHidden===undefined) {
-                            kidsAnimeIsHidden = true
-                            saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
-                        }
-                        if(kidsAnimeIsHidden){
-                            $("#hideKidsAnimeBtn").css({background: "white",color:"black"})
-                        }
-                        savedRecScheme = await retrieveJSON("savedRecScheme") || {}
-                        if(Object.keys(savedRecScheme).length>0){
-                            $("#updateBtn").show()
-                            await LoadData(savedRecScheme)
-                            savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
-                            if(savedHiddenAnimeTitles.length>0){
-                                $("#showAllAnime").show()
-                            }
-                        } else {
-                            animeData = `
-                                <tr class="item" role="row">
-                                    <td style="padding: 1.5em !important;" colspan="11">
-                                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                                        No Data
-                                    </td>
-                                </tr>
-                            `
-                            $("#animeRecommendationList").empty()
-                            $("#animeRecommendationList").append(animeData)
-                            await $("#anime-table").trigger("update")
-                            setTimeout(()=>{
-                                let setPageInfo = setInterval(()=>{
-                                    if(typeof $('#anime-table')[0].config!=="undefined"){
-                                        clearInterval(setPageInfo)
-                                        $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
-                                    }
-                                },1)
-                            },0)
-                        }
-                    }
-                },1)
-
-                // Reload Saved Sort
-                let setSavedSort = setInterval(async()=>{
-                    if(typeof $('#anime-table')[0].config!=="undefined"){
-                        clearInterval(setSavedSort)
-                        savedSort = await retrieveJSON("savedSort") || [1,1]
-                        $.tablesorter.sortOn($('#anime-table')[0].config, [savedSort])
-                        $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
-                    }
-                },1)
-
-                // Reload saved Website Y-Position
-                savedYscroll = await retrieveJSON("savedYscroll") || 0.0
-                var reloadSavedYScrollStartDate = new Date()
-                let reloadSavedYScroll = setInterval(()=>{
-                    $('body').animate({scrollTop: savedYscroll},1)
-                    if($("body").scrollTop()===savedYscroll||
-                    (((new Date()).getTime())-reloadSavedYScrollStartDate.getTime())>1000){
-                        clearInterval(reloadSavedYScroll)
-                    }
-                },1)
-
-                // Auto Interval
-                    // Update
-                updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
-                    if(updateIntervalIsActive){
-                    $("#updateIntervalBtn").css({background: "white",color:"black"})
-                    updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
-                    saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                    if((new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hr
-                        Update()
-                        updateIntervalStartDate = new Date()
-                        saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                    } else {
-                        for(let i=0;i<updateIntervalTimeout.length;i++) clearTimeout(updateIntervalTimeout[i])
-                        var saveUpdateIntervalTimeout = setTimeout(()=>{
-                            Update()
-                            updateIntervalStartDate = new Date()
-                            saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                        },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
-                        updateIntervalTimeout.push(saveUpdateIntervalTimeout)
-                    }
-                }
-                exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
-                    // Export
-                if(exportIntervalIsActive){
-                    $("#exportIntervalBtn").css({background: "white",color:"black"})
-                    exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
-                    saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                    if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
-                        const savedUsername = await retrieveJSON("savedUsername")
-                        const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
-                        const savedUserList = await retrieveJSON("savedUserList")
-                        const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                        const allFilterInfo = await retrieveJSON("allFilterInfo")
-                        const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
-                        const savedRecScheme = await retrieveJSON("savedRecScheme")
-                        const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
-                        const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
-                        const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
-                        const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
-                        const lastAnilistPage = await retrieveJSON("lastAnilistPage")
-                        const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
-                        const backup = {
-                            savedUsername: savedUsername,
-                            savedHiddenAnimeTitles: savedHiddenAnimeTitles,
-                            allFilterInfo: allFilterInfo,
-                            savedFilterOptionsJson: savedFilterOptionsJson,
-                            savedRecScheme: savedRecScheme,
-                            savedAnimeEntries: savedAnimeEntries,
-                            savedLatestAnimeTitle: savedLatestAnimeTitle,
-                            savedUserList: savedUserList,
-                            savedAnalyzeVariableTime: savedAnalyzeVariableTime,
-                            savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
-                            savedDeepUpdateTime: savedDeepUpdateTime,
-                            lastAnilistPage: lastAnilistPage,
-                            savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
-                        }
-                        downloadObjectAsJson(backup, "Kanshi-Backup")
-                        exportIntervalStartDate = new Date()
-                        saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                    } else {
-                        for(let i=0;i<exportIntervalTimeout.length;i++) clearTimeout(exportIntervalTimeout[i])
-                        var saveExportIntervalTimeout = setTimeout(async()=>{
-                            const savedUsername = await retrieveJSON("savedUsername")
-                            const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
-                            const savedUserList = await retrieveJSON("savedUserList")
-                            const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                            const allFilterInfo = await retrieveJSON("allFilterInfo")
-                            const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
-                            const savedRecScheme = await retrieveJSON("savedRecScheme")
-                            const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
-                            const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
-                            const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
-                            const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
-                            const lastAnilistPage = await retrieveJSON("lastAnilistPage")
-                            const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
-                            const backup = {
-                                savedUsername: savedUsername,
-                                savedHiddenAnimeTitles: savedHiddenAnimeTitles,
-                                allFilterInfo: allFilterInfo,
-                                savedFilterOptionsJson: savedFilterOptionsJson,
-                                savedRecScheme: savedRecScheme,
-                                savedAnimeEntries: savedAnimeEntries,
-                                savedLatestAnimeTitle: savedLatestAnimeTitle,
-                                savedUserList: savedUserList,
-                                savedAnalyzeVariableTime: savedAnalyzeVariableTime,
-                                savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
-                                savedDeepUpdateTime: savedDeepUpdateTime,
-                                lastAnilistPage: lastAnilistPage,
-                                savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
-                            }
-                            downloadObjectAsJson(backup, "Kanshi-Backup")
-                            exportIntervalStartDate = new Date()
-                            saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                        },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
-                        exportIntervalTimeout.push(saveExportIntervalTimeout)
-                    }
-                }
-
-                // Export Path is Available
-                exportPathIsAvailable = await retrieveJSON("exportPathIsAvailable")
-                if(exportPathIsAvailable){
-                    $("#chooseExportPathBtn").show()
-                }
-
                 // Load Functions
                 savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
                 savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
@@ -916,29 +682,29 @@
                         cssPageDisplay: '.pagedisplay'
                     })
                     .bind('pageMoved', async function(){
-                        setTimeout(()=>{
-                            let setPageInfo = setInterval(()=>{
+                        await setTimeout(async()=>{
+                            let setPageInfo = await setInterval(async()=>{
                                 if(typeof $('#anime-table')[0].config!=="undefined"){
-                                    clearInterval(setPageInfo)
-                                    $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                                    await clearInterval(setPageInfo)
+                                    await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
                                 }
                             },1)
                         },0)
-                        var page = $('#anime-table')[0].config.pager.page
+                        var page = await $('#anime-table')[0].config.pager.page
                         savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
                         savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
-                        saveJSON(savedTableStatus==="Unhidden"?[page,savedTablePage[1]||0]:[savedTablePage[0]||0,page],"savedTablePage")
+                        await saveJSON(savedTableStatus==="Unhidden"?[page,savedTablePage[1]||0]:[savedTablePage[0]||0,page],"savedTablePage")
                     })
                 await $('#anime-table')
                     .delegate('button.hide-anime', 'click' , async function() {
-                        var hiddenRow =  $(this).closest('tr')
-                        var hiddenAnimeTitle = hiddenRow.children("td#animeTitle").children("a")[0].textContent
+                        var hiddenRow =  await $(this).closest('tr')
+                        var hiddenAnimeTitle = await hiddenRow.children("td#animeTitle").children("a")[0].textContent
                         savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
-                        savedHiddenAnimeTitles.push(hiddenAnimeTitle)
-                        saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                        await savedHiddenAnimeTitles.push(hiddenAnimeTitle)
+                        await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
                         // Have a Hidden Anime
-                        if(savedHiddenAnimeTitles.length>0){
-                            $("#showAllAnime").show()
+                        if(await savedHiddenAnimeTitles.length>0){
+                            await $("#showAllAnime").show()
                         }
                         await hiddenRow.html(`
                             <td style="padding: 1.5em !important;" colspan="11">
@@ -950,25 +716,25 @@
                         `)
                         savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                         await LoadData(savedRecScheme)
-                        setTimeout(()=>{
-                            let setPageInfo = setInterval(()=>{
+                        await setTimeout(async()=>{
+                            let setPageInfo = await setInterval(async()=>{
                                 if(typeof $('#anime-table')[0].config!=="undefined"){
-                                    clearInterval(setPageInfo)
-                                    $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                                    await clearInterval(setPageInfo)
+                                    await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
                                 }
                             },1)
                         },0)
                         return false
                     })
                 await $('#anime-table').delegate('button.show-anime', 'click' , async function() {
-                    var hiddenRow = $(this).closest('tr')
-                    var hiddenAnimeTitle = hiddenRow.children("td#animeTitle").children("a")[0].textContent
+                    var hiddenRow = await $(this).closest('tr')
+                    var hiddenAnimeTitle = await hiddenRow.children("td#animeTitle").children("a")[0].textContent
                     savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
-                    savedHiddenAnimeTitles = savedHiddenAnimeTitles.filter((v)=>v!==hiddenAnimeTitle)
-                    saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                    savedHiddenAnimeTitles = await savedHiddenAnimeTitles.filter((v)=>v!==hiddenAnimeTitle)
+                    await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
                     // No Hidden Anime
-                    if(savedHiddenAnimeTitles.length===0){
-                        $("#showAllAnime").hide()
+                    if(await savedHiddenAnimeTitles.length===0){
+                        await $("#showAllAnime").hide()
                     } else {
                         await hiddenRow.html(`
                             <td style="padding: 1.5em !important;" colspan="11">
@@ -981,28 +747,269 @@
                     }
                     savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                     await LoadData(savedRecScheme)
-                    setTimeout(()=>{
-                        let setPageInfo = setInterval(()=>{
-                            if(typeof $('#anime-table')[0].config!=="undefined"){
-                                clearInterval(setPageInfo)
-                                $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                    await setTimeout(async()=>{
+                        let setPageInfo = await setInterval(async()=>{
+                            if(await (typeof $('#anime-table')[0].config!=="undefined")){
+                                await clearInterval(setPageInfo)
+                                await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
                             }
                         },1)
                     },0)
                     return false
                 })
-                // Remove Loader
-                setTimeout(()=>{
-                    let setPageInfo = setInterval(()=>{
+                return
+            }).then(async()=>{
+                // Auto css
+                await $(".table-responsive").css("margin-bottom",`${$("#pager").outerHeight()+43}px`)
+                // Reload Name
+                savedUsername = await retrieveJSON("savedUsername") || ""
+                if(await savedUsername.length>0){
+                    await $("#username").val(savedUsername)
+                    await $("#updateIntervalBtn").show()
+                }
+                // Reload FilterOptions
+                savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson") || []
+                allFilterInfo = await retrieveJSON("allFilterInfo") || {}
+                if(await savedFilterOptionsJson.length===0){
+                    var worker = await new Worker("./js-css/worker/getOptions.js")
+                    await worker.postMessage("")
+                    worker.onmessage = async (message) => {
+                        const data = await message.data
+                        savedFilterOptionsJson = await data.savedFilterOptionsJson
+                        await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
+                        allFilterInfo = await data.allFilterInfo
+                        await saveJSON(allFilterInfo,"allFilterInfo")
+                        await $('.flexdatalist').flexdatalist({
+                            minLength: 1,
+                            searchIn: 'info',
+                            data: savedFilterOptionsJson
+                        })
+                        await worker.terminate()
+                    }
+                } else {
+                    await $('.flexdatalist').flexdatalist({
+                        minLength: 1,
+                        searchIn: 'info',
+                        data: savedFilterOptionsJson
+                    })
+                }
+
+                // Reload Saved Sort
+                let setSavedSort = await setInterval(async()=>{
+                    if(typeof $('#anime-table')[0].config!=="undefined"){
+                        await clearInterval(setSavedSort)
+                        savedSort = await retrieveJSON("savedSort") || [1,1]
+                        await $.tablesorter.sortOn($('#anime-table')[0].config, [savedSort])
+                        await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                    }
+                },1)
+
+                // Reload saved Website Y-Position
+                savedYscroll = await retrieveJSON("savedYscroll") || 0.0
+                var reloadSavedYScrollStartDate = await new Date()
+                let reloadSavedYScroll = await setInterval(async()=>{
+                    await $('body').animate({scrollTop: savedYscroll},1)
+                    if(await ($("body").scrollTop()===savedYscroll||
+                    (((new Date()).getTime())-reloadSavedYScrollStartDate.getTime())>1000)){
+                        await clearInterval(reloadSavedYScroll)
+                    }
+                },1)
+
+                // Export Path is Available
+                exportPathIsAvailable = await retrieveJSON("exportPathIsAvailable")
+                if(await exportPathIsAvailable){
+                    await $("#chooseExportPathBtn").show()
+                }
+
+                // Return Page CSS
+                await setTimeout(async()=>{
+                    let setPageInfo = await setInterval(async()=>{
                         if(typeof $('#anime-table')[0].config!=="undefined"){
-                            clearInterval(setPageInfo)
-                            $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                            await clearInterval(setPageInfo)
+                            await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
                         }
                     },1)
                 },0)
-                setTimeout(()=>{
-                    $(".loader").fadeOut("slow")
-                },1000)
+
+                return
+            }).then(async()=>{
+                // Reload Filters -> Data
+                    // Check for FlexDatalist Availability
+                let reloadSavedData = await setInterval(async () => {
+                    if(await $(".flexdatalist-multiple-value > .flexdatalist-alias").length){
+                        await clearInterval(reloadSavedData)
+                        // Reload Filters
+                        var filterInput
+                        savedFilters = await retrieveJSON("savedFilters") || []
+                        for(let i=0; i<savedFilters.length; i++) {
+                            filterInput = await $(".flexdatalist-multiple-value > .flexdatalist-alias")
+                            await filterInput.val(savedFilters[i])
+                            var e = await $.Event("keyup",{keyCode:13})
+                            await filterInput.trigger(e)
+                            await filterInput.val("")
+                        }
+                        // Check if the List shown is Hidden List or Unhidden List -> Rename th button
+                        var filters = await $(".flexdatalist-multiple").children("li.value")
+                        for(let i=0; i<filters.length; i++) {
+                            var filterName = await filters.eq(i).children(".text")[0].innerText
+                            if(await filterName.toLowerCase()==="hidden"){
+                                await $("#hiddenUnhiddenBtn").text("Hidden")
+                            }
+                        }
+                        // Reload Data Table
+                        await $("#animeRecommendationList").html(`
+                            <tr class="item" role="row">
+                                <td style="padding: 1.5em !important;" colspan="11">
+                                    <div style="display:flex; align-items:center;">
+                                        <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                        <div>Loading...</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        `)
+                        kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden")
+                        if(await kidsAnimeIsHidden===undefined) {
+                            kidsAnimeIsHidden = await true
+                            await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
+                        }
+                        if(await kidsAnimeIsHidden){
+                            await $("#hideKidsAnimeBtn").css({background: "white",color:"black"})
+                        }
+                        savedRecScheme = await retrieveJSON("savedRecScheme") || {}
+                        if(await Object.keys(savedRecScheme).length>0){
+                            await $("#updateBtn").show()
+                            await LoadData(savedRecScheme)
+                            savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
+                            if(await savedHiddenAnimeTitles.length>0){
+                                await $("#showAllAnime").show()
+                            }
+                        } else {
+                            animeData = `
+                                <tr class="item" role="row">
+                                    <td style="padding: 1.5em !important;" colspan="11">
+                                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                        No Data
+                                    </td>
+                                </tr>
+                            `
+                            await $("#animeRecommendationList").empty()
+                            await $("#animeRecommendationList").append(animeData)
+                            await $("#anime-table").trigger("update")
+                            setTimeout(async()=>{
+                                let setPageInfo = await setInterval(async()=>{
+                                    if(await typeof $('#anime-table')[0].config!=="undefined"){
+                                        await clearInterval(setPageInfo)
+                                        await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                                    }
+                                },1)
+                            },0)
+                        }
+                    }
+                },1)
+                return
+            }).then(async()=>{
+                // Auto Interval
+                    // Update
+                updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
+                if(await updateIntervalIsActive){
+                    await $("#updateIntervalBtn").css({background: "white",color:"black"})
+                    updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
+                    await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                    if(await (new Date).getTime()-(updateIntervalStartDate.getTime())>5000){// 1hr
+                        await Update()
+                        updateIntervalStartDate = await new Date()
+                        await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                    } else {
+                        for(let i=0;i<updateIntervalTimeout.length;i++) await clearTimeout(updateIntervalTimeout[i])
+                        var saveUpdateIntervalTimeout = setTimeout(async()=>{
+                            await Update()
+                            updateIntervalStartDate = await new Date()
+                            await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                        },await 5000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
+                        await updateIntervalTimeout.push(saveUpdateIntervalTimeout)
+                    }
+                }
+                return
+            }).then(async()=>{
+                    // Export
+                exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
+                if(await exportIntervalIsActive){
+                    await $("#exportIntervalBtn").css({background: "white",color:"black"})
+                    exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
+                    await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                    if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>5000)){// 1hrs
+                        const savedUsername = await retrieveJSON("savedUsername")
+                        const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                        const savedUserList = await retrieveJSON("savedUserList")
+                        const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
+                        const allFilterInfo = await retrieveJSON("allFilterInfo")
+                        const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
+                        const savedRecScheme = await retrieveJSON("savedRecScheme")
+                        const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
+                        const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                        const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                        const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                        const lastAnilistPage = await retrieveJSON("lastAnilistPage")
+                        const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
+                        const backup = await {
+                            savedUsername: savedUsername,
+                            savedHiddenAnimeTitles: savedHiddenAnimeTitles,
+                            allFilterInfo: allFilterInfo,
+                            savedFilterOptionsJson: savedFilterOptionsJson,
+                            savedRecScheme: savedRecScheme,
+                            savedAnimeEntries: savedAnimeEntries,
+                            savedLatestAnimeTitle: savedLatestAnimeTitle,
+                            savedUserList: savedUserList,
+                            savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                            savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                            savedDeepUpdateTime: savedDeepUpdateTime,
+                            lastAnilistPage: lastAnilistPage,
+                            savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
+                        }
+                        await downloadObjectAsJson(backup, "Kanshi-Backup")
+                        exportIntervalStartDate = await new Date()
+                        await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                    } else {
+                        for(let i=0;i<exportIntervalTimeout.length;i++) await clearTimeout(exportIntervalTimeout[i])
+                        var saveExportIntervalTimeout = await setTimeout(async()=>{
+                            const savedUsername = await retrieveJSON("savedUsername")
+                            const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                            const savedUserList = await retrieveJSON("savedUserList")
+                            const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
+                            const allFilterInfo = await retrieveJSON("allFilterInfo")
+                            const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
+                            const savedRecScheme = await retrieveJSON("savedRecScheme")
+                            const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
+                            const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                            const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                            const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                            const lastAnilistPage = await retrieveJSON("lastAnilistPage")
+                            const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
+                            const backup = await {
+                                savedUsername: savedUsername,
+                                savedHiddenAnimeTitles: savedHiddenAnimeTitles,
+                                allFilterInfo: allFilterInfo,
+                                savedFilterOptionsJson: savedFilterOptionsJson,
+                                savedRecScheme: savedRecScheme,
+                                savedAnimeEntries: savedAnimeEntries,
+                                savedLatestAnimeTitle: savedLatestAnimeTitle,
+                                savedUserList: savedUserList,
+                                savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                                savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                                savedDeepUpdateTime: savedDeepUpdateTime,
+                                lastAnilistPage: lastAnilistPage,
+                                savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
+                            }
+                            await downloadObjectAsJson(backup, "Kanshi-Backup")
+                            exportIntervalStartDate = await new Date()
+                            await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                        },await 5000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
+                        await exportIntervalTimeout.push(saveExportIntervalTimeout)
+                    }
+                }
+                return
+            }).then(()=>{
+                $(".loader").fadeOut("slow")
             })
         })
         // Event Listeners
@@ -1055,7 +1062,7 @@
             }
         })
         $("#updateBtn").on('click', async ()=>{
-            var savedUpdateTime = (await retrieveJSON("savedAnalyzeVariableTime") || 20) + (await retrieveJSON("savedUpdateAnalyzeAnimeTime") || 3) 
+            var savedUpdateTime = (await retrieveJSON("savedAnalyzeVariableTime") || 20) + (await retrieveJSON("savedUpdateAnalyzeAnimeTime") || 3)
             swal({
                 text: `Do you want to continue and Update your Recommendations List?
                 This may take ${msToTime(savedUpdateTime*1000)} to finish.`,
@@ -1406,7 +1413,7 @@
                         saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
                         updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
                         saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                        if((new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hrs
+                        if((new Date).getTime()-(updateIntervalStartDate.getTime())>5000){// 1hrs
                             Update()
                             updateIntervalStartDate = new Date()
                             saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
@@ -1416,7 +1423,7 @@
                                 Update()
                                 updateIntervalStartDate = new Date()
                                 saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                            },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
+                            },5000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                             updateIntervalTimeout.push(saveUpdateIntervalTimeout)
                         }
                     }
@@ -1457,7 +1464,7 @@
                             saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
                             exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                             saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                            if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
+                            if((new Date).getTime()-(exportIntervalStartDate.getTime())>5000){// 1hrs
                                 const savedUsername = await retrieveJSON("savedUsername")
                                 const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                                 const savedUserList = await retrieveJSON("savedUserList")
@@ -1523,7 +1530,7 @@
                                     downloadObjectAsJson(backup, "Kanshi-Backup")
                                     exportIntervalStartDate = new Date()
                                     saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                                },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
+                                },5000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
                                 exportIntervalTimeout.push(saveExportIntervalTimeout)
                             }
                         }

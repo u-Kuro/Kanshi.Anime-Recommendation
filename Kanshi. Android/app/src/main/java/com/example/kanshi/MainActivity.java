@@ -21,7 +21,6 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.DownloadListener;
 import android.webkit.ValueCallback;
@@ -126,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                                     file.delete();
                                 }
                                 output = new BufferedWriter(new FileWriter(file));
-                                output.write(obj.toString());
+                                output.write(json);
                                 output.close();
                                 Toast.makeText(getApplicationContext(), "Data was successfully Exported!", Toast.LENGTH_LONG).show();
                             } catch (Exception e) {
@@ -188,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
                 String message = consoleMessage.message();
+                int lineNumber = consoleMessage.lineNumber();
                 if("WebtoApp: Choose an Export Path".equals(message)){
                     if (!Environment.isExternalStorageManager()) {
                         new AlertDialog.Builder(MainActivity.this)
@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                     String javascript = message.replace("WebtoApp: Keep Alive","");
                     webView.loadUrl("javascript:"+javascript);
                 }
-                Log.d("WebConsole",message);
+                Log.d("WebConsole",message+"-"+lineNumber);
                 return true;
             }
         });
