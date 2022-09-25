@@ -17,11 +17,11 @@ self.onmessage = (message) => {
         var animeUrl = anime.siteUrl
         // var type = anime.type || "N/A"
         var format = anime.format || "Format: N/A"
-        if(alteredVariables.format_in["Format: "+format]===undefined&&!recSchemeIsNew) continue
+        if(alteredVariables.format_in["Format: "+format]!==undefined||recSchemeIsNew) animeShallUpdate=true
         var year = anime.seasonYear || "Year: N/A"
-        if(alteredVariables.year_in["Year: "+year]===undefined&&!recSchemeIsNew) continue
+        if((alteredVariables.year_in["Year: "+year]!==undefined&&!animeShallUpdate)||recSchemeIsNew) animeShallUpdate=true
         var season = anime.season || "Season: N/A"
-        if(alteredVariables.season_in["Season: "+season]===undefined&&!recSchemeIsNew) continue
+        if((alteredVariables.season_in["Season: "+season]!==undefined&&!animeShallUpdate)||recSchemeIsNew) animeShallUpdate=true
         var genres = anime.genres
         var tags = anime.tags
         var studios = anime.studios.nodes
@@ -62,10 +62,9 @@ self.onmessage = (message) => {
                 allFilterInfo["!"+genres[j].toLowerCase()] = true
             }
         }
-        if(!animeShallUpdate) continue
         var xtags = []
         for(let j=0; j<tags.length; j++){
-            if((alteredVariables.tags_in["Tag: "+tags[j].name]===undefined&&!animeShallUpdate)||recSchemeIsNew) {
+            if((alteredVariables.tags_in["Tag: "+tags[j].name]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
                 animeShallUpdate = true
             }
             xtags.push("Tag: "+tags[j].name)
@@ -74,7 +73,6 @@ self.onmessage = (message) => {
                 allFilterInfo["!"+(tags[j].name).toLowerCase()] = true
             }
         }
-        if(!animeShallUpdate) continue
         var xstudios = []
         for(let j=0; j<studios.length; j++){
             if((alteredVariables.studios_in["Studio: "+studios[j].name]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
@@ -86,7 +84,6 @@ self.onmessage = (message) => {
                 allFilterInfo["!"+(studios[j].name).toLowerCase()] = true
             }
         }
-        if(!animeShallUpdate) continue
         var xstaff = []
         for(let j=0; j<staff.length; j++){
             if((alteredVariables.staff_in["Staff: "+staff[j].name.userPreferred]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
@@ -98,11 +95,11 @@ self.onmessage = (message) => {
                 allFilterInfo["!"+(staff[j].name.userPreferred).toLowerCase()] = true
             }
         }
+        // Check if any variable is Altered, and continue
         if(!animeShallUpdate) continue
-        // Initialize Anime Weight
-        if(savedAnalyzedVariablesCount[title]===undefined){
-            savedAnalyzedVariablesCount[title] = 0
-        }
+        // Continue Analyzing Affected Anime
+        // Reset Anime Weight
+        savedAnalyzedVariablesCount[title] = 0
         var analyzedVariableCount = 0
         // Add to Show Variable Influence
         var genresIncluded = {}
@@ -170,7 +167,7 @@ self.onmessage = (message) => {
                 zstaff.push(varImportance[xstaff[j]])
                 savedAnalyzedVariablesCount[title] += 1
                 analyzedVariableCount += 1
-                if(varImportance[xseason]>=varImportance.meanStaff
+                if(varImportance[xstaff[j]]>=varImportance.meanStaff
                     &&staffIncluded[xstaff[j]]===undefined){
                     staffIncluded[xstaff[j]] = [{[xstaff[j].replace("Staff: ","")]: staff[j].siteUrl},varImportance[xstaff[j]]]
                 }
