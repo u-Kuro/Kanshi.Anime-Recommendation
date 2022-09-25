@@ -1503,6 +1503,8 @@
 					parsed = cache[ tbodyIndex ].normalized;
 					totalRows = parsed.length;
 					for ( rowIndex = 0; rowIndex < totalRows; rowIndex++ ) {
+						// Added by Kushii
+						if(parsed[ rowIndex ][ c.columns ].$row.hasClass(c.selectorRemove.slice(1))) continue
 						rows[rows.length] = parsed[ rowIndex ][ c.columns ].$row;
 						// removeRows used by the pager plugin; don't render if using ajax - fixes #411
 						if ( !c.appender || ( c.pager && !c.pager.removeRows && !c.pager.ajax ) ) {

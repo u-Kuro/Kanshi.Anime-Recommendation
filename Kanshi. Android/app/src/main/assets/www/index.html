@@ -699,11 +699,20 @@
                     })
                 await $('#anime-table')
                     .delegate('button.hide-anime', 'click' , async function() {
-                        var hiddenRow =  await $(this).closest('tr')
+                        var hiddenRow =  await $(this).closest('tr')                        
                         var hiddenAnimeTitle = await hiddenRow.children("td#animeTitle").children("a")[0].textContent
                         savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
                         await savedHiddenAnimeTitles.push(hiddenAnimeTitle)
                         await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                        await hiddenRow.empty()
+                        await hiddenRow.append(`
+                            <td style="padding: 1.5em !important;" colspan="13">
+                                <div style="display:flex; align-items:center;">
+                                    <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                    <div>Removing...</div>
+                                </div>
+                            </td>
+                        `)
                         hiddenRow.addClass("remove-me")
                         $("#anime-table").trigger("pagerUpdate")
                         if($("#anime-table")[0].config.rowsCopy.length===0){
@@ -737,6 +746,15 @@
                     savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
                     savedHiddenAnimeTitles = await savedHiddenAnimeTitles.filter((v)=>v!==hiddenAnimeTitle)
                     await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                    await hiddenRow.empty()
+                    await hiddenRow.append(`
+                        <td style="padding: 1.5em !important;" colspan="13">
+                            <div style="display:flex; align-items:center;">
+                                <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                <div>Removing...</div>
+                            </div>
+                        </td>
+                    `)
                     // No Hidden Anime
                     await hiddenRow.addClass("remove-me")
                     await $("#anime-table").trigger("pagerUpdate")
