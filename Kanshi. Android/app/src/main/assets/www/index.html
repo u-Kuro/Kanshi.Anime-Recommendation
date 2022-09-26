@@ -1664,7 +1664,14 @@
                         filters.push(filterName)
                     }
                     saveJSON(filters, "savedFilters")
-                    analyzeVariables(username)
+                    if(!requestIsRunning){
+                        requestIsRunning = true
+                        analyzeVariables(username)
+                    } else {
+                        swal("List is Already Updating! Please wait a moment...", {
+                            icon: "info",
+                        })
+                    }
                 } else {
                     if(!requestIsRunning){
                         for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
@@ -1695,7 +1702,6 @@
                             temp.push(timeout)
                         }
                     } else {
-                        $(".menu-container").fadeOut(250)
                         swal("List is Already Updating! Please wait a moment...", {
                             icon: "info",
                         })
@@ -1877,6 +1883,7 @@
                         var startDate = new Date(Date.now() + 1000) // Allowance of 1sec
                         var animeEntries = []
                         var sum = 0
+                        var recalls = []
                         recall(1) // First Page
                         async function recall(page){
                             $.ajax({
@@ -1966,9 +1973,11 @@
                                         }
                                         if(err==="Too Many Requests."){
                                             var timeBeforeNextRequest = timeInterval-((new Date).getTime()-startDate.getTime())
-                                            setTimeout(()=>{
+                                            for(let i=0;i<recalls.length;i++) clearTimeout(recalls[i])
+                                            let recall = setTimeout(()=>{
                                                 recall(page)
                                             },timeBeforeNextRequest)
+                                            recalls.push(recall)
                                             var timeBeforeNextRequestSeconds = Math.ceil(timeBeforeNextRequest/1000)
                                             for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                                             for(let i=timeBeforeNextRequestSeconds; i>0; i--){

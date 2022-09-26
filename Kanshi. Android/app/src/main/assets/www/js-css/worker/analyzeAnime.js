@@ -79,10 +79,11 @@ self.onmessage = (message) => {
                 animeShallUpdate = true
             }
             xstudios.push("Studio: "+studios[j].name)
-            if(allFilterInfo[(studios[j].name).toLowerCase()]===undefined){
-                allFilterInfo[(studios[j].name).toLowerCase()] = true  
-                allFilterInfo["!"+(studios[j].name).toLowerCase()] = true
-            }
+            // Remove Since It's Lagging on Too Much Filters
+            // if(allFilterInfo[(studios[j].name).toLowerCase()]===undefined){
+            //     allFilterInfo[(studios[j].name).toLowerCase()] = true  
+            //     allFilterInfo["!"+(studios[j].name).toLowerCase()] = true
+            // }
         }
         var xstaff = []
         for(let j=0; j<staff.length; j++){
@@ -90,10 +91,11 @@ self.onmessage = (message) => {
                 animeShallUpdate = true
             }
             xstaff.push("Staff: "+staff[j].name.userPreferred)
-            if(allFilterInfo[(staff[j].name.userPreferred).toLowerCase()]===undefined){
-                allFilterInfo[(staff[j].name.userPreferred).toLowerCase()] = true
-                allFilterInfo["!"+(staff[j].name.userPreferred).toLowerCase()] = true
-            }
+            // Remove Since It's Lagging on Too Much Filters
+            // if(allFilterInfo[(staff[j].name.userPreferred).toLowerCase()]===undefined){
+            //     allFilterInfo[(staff[j].name.userPreferred).toLowerCase()] = true
+            //     allFilterInfo["!"+(staff[j].name.userPreferred).toLowerCase()] = true
+            // }
         }
         // Check if any variable is Altered, and continue
         if(!animeShallUpdate) continue
