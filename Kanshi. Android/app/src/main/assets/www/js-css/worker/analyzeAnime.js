@@ -109,22 +109,34 @@ self.onmessage = (message) => {
         var staffIncluded = {}
         // Analyze
         var zformat = []
+        var zformatDense = []
         if(varImportance[xformat]!==undefined) {
             zformat.push(varImportance[xformat])
             savedAnalyzedVariablesCount[title] += 1
             analyzedVariableCount += 1
+            if(varImportance[xformat+"Dense"]!==undefined) {
+                zformatDense.push(varImportance[xformat+"Dense"])
+            }
         }
         var zyear = []
+        var zyearDense = []
         if(varImportance[xyear]!==undefined) {
             zyear.push(varImportance[xyear])
             savedAnalyzedVariablesCount[title] += 1
             analyzedVariableCount += 1
+            if(varImportance[xyear+"Dense"]!==undefined) {
+                zyearDense.push(varImportance[xyear+"Dense"])
+            }
         }
         var zseason = []
+        var zseasonDense = []
         if(varImportance[xseason]!==undefined) {
             zseason.push(varImportance[xseason])
             savedAnalyzedVariablesCount[title] += 1
             analyzedVariableCount += 1
+            if(varImportance[xseason+"Dense"]!==undefined) {
+                zseasonDense.push(varImportance[xseason+"Dense"])
+            }
         }
         var zgenres = []
         var zgenresDense = []
@@ -138,8 +150,8 @@ self.onmessage = (message) => {
                     genresIncluded[xgenres[j]] = [xgenres[j].replace("Genre: ",""),varImportance[xgenres[j]]]
                 }
             }
-            if(varImportance[xgenres[j]+"-Dense"]!==undefined) {
-                zgenresDense.push(varImportance[xgenres[j]+"-Dense"])
+            if(varImportance[xgenres[j]+"Dense"]!==undefined) {
+                zgenresDense.push(varImportance[xgenres[j]+"Dense"])
             }
         }
         var ztags = []
@@ -154,8 +166,8 @@ self.onmessage = (message) => {
                     tagsIncluded[xtags[j]] = [xtags[j].replace("Tag: ",""),varImportance[xtags[j]]]
                 }
             }
-            if(varImportance[xtags[j]+"-Dense"]!==undefined) {
-                ztagsDense.push(varImportance[xtags[j]+"-Dense"])
+            if(varImportance[xtags[j]+"Dense"]!==undefined) {
+                ztagsDense.push(varImportance[xtags[j]+"Dense"])
             }
         }
         var zstudios = []
@@ -170,8 +182,8 @@ self.onmessage = (message) => {
                     studiosIncluded[xstudios[j]] = [{[xstudios[j].replace("Studio: ","")]: studios[j].siteUrl},varImportance[xstudios[j]]]
                 }
             }
-            if(varImportance[xstudios[j]+"-Dense"]!==undefined) {
-                zstudiosDense.push(varImportance[xstudios[j]+"-Dense"])
+            if(varImportance[xstudios[j]+"Dense"]!==undefined) {
+                zstudiosDense.push(varImportance[xstudios[j]+"Dense"])
             }
         }
         var zstaff = []
@@ -186,10 +198,12 @@ self.onmessage = (message) => {
                     staffIncluded[xstaff[j]] = [{[xstaff[j].replace("Staff: ","")]: staff[j].siteUrl},varImportance[xstaff[j]]]
                 }
             }
-            if(varImportance[xstaff[j]+"-Dense"]!==undefined) {
-                zstaffDense.push(varImportance[xstaff[j]+"-Dense"])
+            if(varImportance[xstaff[j]+"Dense"]!==undefined) {
+                zstaffDense.push(varImportance[xstaff[j]+"Dense"])
             }
         }
+        // Original Scores
+          // Categorical
         zformat = zformat.length===0?0:arrayMean(zformat)
         zyear = zyear.length===0?0:arrayMean(zyear)
         zseason = zseason.length===0?0:arrayMean(zseason)
@@ -197,11 +211,7 @@ self.onmessage = (message) => {
         ztags = ztags.length===0?0:arrayMean(ztags)
         zstudios = zstudios.length===0?0:arrayMean(zstudios)
         zstaff = zstaff.length===0?0:arrayMean(zstaff)
-        zgenresDense = zgenresDense.length===0?0:arrayMean(zgenresDense)
-        ztagsDense = ztagsDense.length===0?0:arrayMean(ztagsDense)
-        zstudiosDense = zstudiosDense.length===0?0:arrayMean(zstudiosDense)
-        zstaffDense = zstaffDense.length===0?0:arrayMean(zstaffDense)
-        // Linear Models
+          // Linear Models
         var zepisodes = anime.episodes===null?0:LRpredict(varImportance.episodesModel,anime.episodes)
         var zduration = anime.duration===null?0:LRpredict(varImportance.durationModel,anime.duration)
         var zaverageScore = anime.averageScore===null?0:LRpredict(varImportance.averageScoreModel,anime.averageScore)
@@ -209,20 +219,60 @@ self.onmessage = (message) => {
         var zpopularity = anime.popularity===null?0:LRpredict(varImportance.popularityModel,anime.popularity)
         var zfavourites = anime.favourites===null?0:LRpredict(varImportance.favouritesModel,anime.favourites)
           // Variable Count
-        var zgenresCount = anime.genresCount===null?0:LRpredict(varImportance.genresCountModel,genresCount)
-        var ztagsCount = anime.tagsCount===null?0:LRpredict(varImportance.tagsCountModel,tagsCount)
-        var zstudiosCount = anime.studiosCount===null?0:LRpredict(varImportance.studiosCountModel,studiosCount)
-        var zstaffCount = anime.staffCount===null?0:LRpredict(varImportance.staffCountModel,staffCount)
+        var zgenresCount = genresCount===null?0:LRpredict(varImportance.genresCountModel,genresCount)
+        var ztagsCount = tagsCount===null?0:LRpredict(varImportance.tagsCountModel,tagsCount)
+        var zstudiosCount = studiosCount===null?0:LRpredict(varImportance.studiosCountModel,studiosCount)
+        var zstaffCount = staffCount===null?0:LRpredict(varImportance.staffCountModel,staffCount)
+        // Weighted
+            //
+        zformatDense = zformatDense.length===0?0:arrayMean(zformatDense)
+        zyearDense = zyearDense.length===0?0:arrayMean(zyearDense)
+        zseasonDense = zseasonDense.length===0?0:arrayMean(zseasonDense)
+        zgenresDense = zgenresDense.length===0?0:arrayMean(zgenresDense)
+        ztagsDense = ztagsDense.length===0?0:arrayMean(ztagsDense)
+        zstudiosDense = zstudiosDense.length===0?0:arrayMean(zstudiosDense)
+        zstaffDense = zstaffDense.length===0?0:arrayMean(zstaffDense)
+            //
+        var modelsDenseArray = []
+        if(varImportance.episodesModelDense!==undefined){
+            modelsDenseArray.push(zepisodes)
+        }
+        if(varImportance.durationModelDense!==undefined){
+            modelsDenseArray.push(zduration)
+        }
+        if(varImportance.averageScoreModelDense!==undefined){
+            modelsDenseArray.push(zaverageScore)
+        }
+        if(varImportance.trendingModelDense!==undefined){
+            modelsDenseArray.push(ztrending)
+        }
+        if(varImportance.popularityModelDense!==undefined){
+            modelsDenseArray.push(zpopularity)
+        }
+        if(varImportance.favouritesModelDense!==undefined){
+            modelsDenseArray.push(zfavourites)
+        }
+        if(varImportance.genresCountModelDense!==undefined){
+            modelsDenseArray.push(zgenresCount)
+        }
+        if(varImportance.tagsCountModelDense!==undefined){
+            modelsDenseArray.push(ztagsCount)
+        }
+        if(varImportance.studiosCountModelDense!==undefined){
+            modelsDenseArray.push(zstudiosCount)
+        }
+        if(varImportance.staffCountModelDense!==undefined){
+            modelsDenseArray.push(zstaffCount)
+        }
         score = arrayMean([
             zformat,zyear,zseason,zgenres,ztags,zstaff,zstudios,
             zepisodes,zduration,zaverageScore,ztrending,zpopularity,zfavourites,
             zgenresCount,ztagsCount,zstudiosCount,zstaffCount
         ])
-        weightedScore = arrayMean([
-            zformat,zyear,zseason,zgenresDense,ztagsDense,zstaffDense,zstudiosDense,
-            zepisodes,zduration,zaverageScore,ztrending,zpopularity,zfavourites,
-            zgenresCount,ztagsCount,zstudiosCount,zstaffCount
-        ])
+        weightedScore = arrayMean(
+            [zformatDense,zyearDense,zseasonDense,zgenresDense,ztagsDense,zstaffDense,zstudiosDense]
+            .concat(modelsDenseArray)
+        )
         // Other Anime Recommendation Info
         for(let k=0; k<userListStatus.length; k++){
             if(userListStatus[k].title===title){
@@ -295,6 +345,14 @@ self.onmessage = (message) => {
     }
     function arrayMean(obj) {
         return (arraySum(obj) / obj.length) || 0
+    }
+    function arrayMedian(obj) {
+        var sorted = Array.from(obj).sort((a, b) => a - b);
+        var middle = Math.floor(sorted.length / 2);
+        if (sorted.length % 2 === 0) {
+            return (sorted[middle - 1] + sorted[middle]) / 2;
+        }
+        return sorted[middle];
     }
     // Linear Regression
     function LRpredict(modelObj, x){
