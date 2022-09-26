@@ -40,6 +40,10 @@ self.onmessage = (message) => {
     var tagsCount = []
     var studiosCount = []
     var staffCount = []
+    var genresMeanCount = {}
+    var tagsMeanCount = {}
+    var studiosMeanCount = {}
+    var staffMeanCount = {}
     // For checking any deleted Anime
     var savedUserListTitles = Object.keys(savedUserList)
     // Analyze each Anime Variable
@@ -94,7 +98,19 @@ self.onmessage = (message) => {
                     }
                 }
                 for(let j=0; j<anime.genres.length; j++){
-                    genres = anime.genres[j]===null?{}:{["Genre: "+anime.genres[j]]: [userScore]}
+                    if(anime.genres[j]!==null){
+                        if(genres["Genre: "+anime.genres[j]]===undefined){
+                            genres["Genre: "+anime.genres[j]] = {userScore:[userScore],count:1}
+                        } else {
+                            genres["Genre: "+anime.genres[j]].userScore.push(userScore)
+                            genres["Genre: "+anime.genres[j]].count += 1
+                        }
+                        if(genresMeanCount["Genre: "+anime.genres[j]]===undefined){
+                            genresMeanCount["Genre: "+anime.genres[j]] = 1
+                        } else {
+                            genresMeanCount["Genre: "+anime.genres[j]] += 1
+                        }
+                    }
                     if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.genres[j]!==null){
                         savedUserList[title] = newAnimeObjStr
                         if(alteredVariables.genres_in["Genre: "+anime.genres[j]]===undefined){
@@ -103,7 +119,19 @@ self.onmessage = (message) => {
                     }
                 }
                 for(let j=0; j<anime.tags.length; j++){
-                    tags = anime.tags[j].name===null?{}:{["Tag: "+anime.tags[j].name]: [userScore]}
+                    if(anime.tags[j].name===null){
+                        if(tags["Tag: "+anime.tags[j].name]===undefined){
+                            tags["Tag: "+anime.tags[j].name] = {userScore:[userScore],count:1}
+                        } else {
+                            tags["Tag: "+anime.tags[j].name].userScore.push(userScore)
+                            tags["Tag: "+anime.tags[j].name].count += 1
+                        }
+                        if(tagsMeanCount["Tag: "+anime.tags[j].name]===undefined){
+                            tagsMeanCount["Tag: "+anime.tags[j].name] = 1
+                        } else {
+                            tagsMeanCount["Tag: "+anime.tags[j].name] += 1
+                        }
+                    }
                     if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.tags[j].name!==null){
                         savedUserList[title] = newAnimeObjStr
                         if(alteredVariables.tags_in["Tag: "+anime.tags[j].name]===undefined){
@@ -112,7 +140,19 @@ self.onmessage = (message) => {
                     }
                 }
                 for(let j=0; j<anime.studios.nodes.length; j++){
-                    studios = anime.studios.nodes[j].name===null?{}:{["Studio: "+anime.studios.nodes[j].name]: [userScore]}
+                    if(anime.studios.nodes[j].name!==null){
+                        if(studios["Studio: "+anime.studios.nodes[j].name]===undefined){
+                            studios["Studio: "+anime.studios.nodes[j].name] = {userScore:[userScore],count:1}
+                        } else {
+                            studios["Studio: "+anime.studios.nodes[j].name].userScore.push(userScore)
+                            studios["Studio: "+anime.studios.nodes[j].name].count += 1
+                        }
+                        if(studiosMeanCount["Studio: "+anime.studios.nodes[j].name]===undefined){
+                            studiosMeanCount["Studio: "+anime.studios.nodes[j].name] = 1
+                        } else {
+                            studiosMeanCount["Studio: "+anime.studios.nodes[j].name] += 1
+                        }
+                    }
                     if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.studios.nodes[j].name!==null){
                         savedUserList[title] = newAnimeObjStr
                         if(alteredVariables.studios_in["Studio: "+anime.studios.nodes[j].name]===undefined){
@@ -121,7 +161,19 @@ self.onmessage = (message) => {
                     }
                 }
                 for(let j=0; j<anime.staff.nodes.length; j++){
-                    staff = anime.staff.nodes[j].name.userPreferred===null?{}:{["Staff: "+anime.staff.nodes[j].name.userPreferred]: [userScore]}
+                    if(anime.staff.nodes[j].name.userPreferred!==null){
+                        if(staff["Staff: "+anime.staff.nodes[j].name.userPreferred]===undefined){
+                            staff["Staff: "+anime.staff.nodes[j].name.userPreferred] = {userScore:[userScore],count:1}
+                        } else {
+                            staff["Staff: "+anime.staff.nodes[j].name.userPreferred].userScore.push(userScore)
+                            staff["Staff: "+anime.staff.nodes[j].name.userPreferred].count += 1
+                        }
+                        if(staffMeanCount["Staff: "+anime.staff.nodes[j].name.userPreferred]===undefined){
+                            staffMeanCount["Staff: "+anime.staff.nodes[j].name.userPreferred] = 1
+                        } else {
+                            staffMeanCount["Staff: "+anime.staff.nodes[j].name.userPreferred] += 1
+                        }
+                    }
                     if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.staff.nodes[j].name.userPreferred!==null){
                         savedUserList[title] = newAnimeObjStr
                         if(alteredVariables.staff_in["Staff: "+anime.staff.nodes[j].name.userPreferred]===undefined){
@@ -188,10 +240,16 @@ self.onmessage = (message) => {
                             }
                         }
                         if(varScheme.genres[xgenres]!==undefined){
-                            varScheme.genres[xgenres].push(userScore)
+                            varScheme.genres[xgenres].userScore.push(userScore)
+                            varScheme.genres[xgenres].count += 1
                         }
                         else{
-                            varScheme.genres[xgenres] = [userScore]
+                            varScheme.genres[xgenres] = {userScore:[userScore],count:1}
+                        }
+                        if(genresMeanCount[xgenres]!==undefined){
+                            genresMeanCount[xgenres] += 1
+                        } else {
+                            genresMeanCount[xgenres] = 1
                         }
                     }
                 }
@@ -205,10 +263,16 @@ self.onmessage = (message) => {
                             }
                         }
                         if(varScheme.tags[xtags]!==undefined){
-                            varScheme.tags[xtags].push(userScore)
+                            varScheme.tags[xtags].userScore.push(userScore)
+                            varScheme.tags[xtags].count += 1
                         }
                         else {
-                            varScheme.tags[xtags] = [userScore]
+                            varScheme.tags[xtags] = {userScore:[userScore],count:1}
+                        }
+                        if(tagsMeanCount[xtags]!==undefined){
+                            tagsMeanCount[xtags] += 1
+                        } else {
+                            tagsMeanCount[xtags] = 1
                         }
                     }
                 }
@@ -222,10 +286,16 @@ self.onmessage = (message) => {
                             }
                         }
                         if(Object.keys(varScheme.studios).includes(xstudios)){
-                            varScheme.studios[xstudios].push(userScore)
+                            varScheme.studios[xstudios].userScore.push(userScore)
+                            varScheme.studios[xstudios].count += 1
                         }
                         else {
-                            varScheme.studios[xstudios] = [userScore]
+                            varScheme.studios[xstudios] = {userScore:[userScore],count:1}
+                        }
+                        if(studiosMeanCount[xstudios]!==undefined){
+                            studiosMeanCount[xstudios] += 1
+                        } else {
+                            studiosMeanCount[xstudios] = 1
                         }
                     }
                 }
@@ -239,9 +309,17 @@ self.onmessage = (message) => {
                             }
                         }
                         if(varScheme.staff[xstaff]!==undefined){
-                            varScheme.staff[xstaff].push(userScore)
+                            varScheme.staff[xstaff].userScore.push(userScore)
+                            varScheme.staff[xstaff].count += 1
                         }
-                        else varScheme.staff[xstaff] = [userScore]
+                        else {
+                            varScheme.staff[xstaff] = {userScore:[userScore],count:1}
+                        }
+                        if(staffMeanCount[xstaff]!==undefined){
+                            staffMeanCount[xstaff] += 1
+                        } else {
+                            staffMeanCount[xstaff] = 1
+                        }
                     }
                 }
             }
@@ -264,6 +342,7 @@ self.onmessage = (message) => {
             if(anime.favourites!==null){
                 favourites.push({userScore: userScore, favourites: anime.favourites})
             }
+            //
             if(anime.genres!==null){
                 genresCount.push({userScore: userScore, genresCount: anime.genres.length})
             }
@@ -315,6 +394,10 @@ self.onmessage = (message) => {
         delete savedUserList[savedUserListTitles[i]]
     }
     // Clean Data JSON
+    genresMeanCount = Object.values(genresMeanCount).length>0 ? arrayMean(Object.values(genresMeanCount)) : 0
+    tagsMeanCount = Object.values(tagsMeanCount).length>0 ? arrayMean(Object.values(tagsMeanCount)) : 0
+    studiosMeanCount = Object.values(studiosMeanCount).length>0 ? arrayMean(Object.values(studiosMeanCount)) : 0
+    staffMeanCount = Object.values(staffMeanCount).length>0 ? arrayMean(Object.values(staffMeanCount)) : 0
     var meanGenres = []
     var meanTags = []
     var meanStaff = []
@@ -334,28 +417,44 @@ self.onmessage = (message) => {
         var tempScore = arrayMean(varScheme.season[seasonKey[i]])*10
         varScheme.season[seasonKey[i]] = tempScore
     }
-    for(let i=0; i<Object.keys(varScheme.genres).length; i++){
-        var genresKey = Object.keys(varScheme.genres)
-        var tempScore = arrayMean(varScheme.genres[genresKey[i]])*10
+    var genresKey = Object.keys(varScheme.genres)
+    for(let i=0; i<genresKey.length; i++){
+        var tempScore = arrayMean(varScheme.genres[genresKey[i]].userScore)*10
         meanGenres.push(tempScore)
+        var count = varScheme.genres[genresKey[i]].count
+        if(count>=genresMeanCount){
+            varScheme.genres[genresKey[i]+"-Dense"] = tempScore
+        }
         varScheme.genres[genresKey[i]] = tempScore
     }
-    for(let i=0; i<Object.keys(varScheme.tags).length; i++){
-        var tagsKey = Object.keys(varScheme.tags)
-        var tempScore = arrayMean(varScheme.tags[tagsKey[i]])*10
+    var tagsKey = Object.keys(varScheme.tags)
+    for(let i=0; i<tagsKey.length; i++){
+        var tempScore = arrayMean(varScheme.tags[tagsKey[i]].userScore)*10
         meanTags.push(tempScore)
+        var count = varScheme.tags[tagsKey[i]].count
+        if(count>=tagsMeanCount){
+            varScheme.tags[tagsKey[i]+"-Dense"] = tempScore
+        }
         varScheme.tags[tagsKey[i]] = tempScore
     }
-    for(let i=0; i<Object.keys(varScheme.studios).length; i++){
-        var studiosKey = Object.keys(varScheme.studios)
-        var tempScore = arrayMean(varScheme.studios[studiosKey[i]])*10
+    var studiosKey = Object.keys(varScheme.studios)
+    for(let i=0; i<studiosKey.length; i++){
+        var tempScore = arrayMean(varScheme.studios[studiosKey[i]].userScore)*10
         meanStudios.push(tempScore)
+        var count = varScheme.studios[studiosKey[i]].count
+        if(count>=studiosMeanCount){
+            varScheme.studios[studiosKey[i]+"-Dense"] = tempScore
+        }
         varScheme.studios[studiosKey[i]] = tempScore
     }
-    for(let i=0; i<Object.keys(varScheme.staff).length; i++){
-        var staffKey = Object.keys(varScheme.staff)
-        var tempScore = arrayMean(varScheme.staff[staffKey[i]])*10
+    var staffKey = Object.keys(varScheme.staff)
+    for(let i=0; i<staffKey.length; i++){
+        var tempScore = arrayMean(varScheme.staff[staffKey[i]].userScore)*10
         meanStaff.push(tempScore)
+        var count = varScheme.staff[staffKey[i]].count
+        if(count>=staffMeanCount){
+            varScheme.staff[staffKey[i]+"-Dense"] = tempScore
+        }
         varScheme.staff[staffKey[i]] = tempScore
     }
     // Join Data
