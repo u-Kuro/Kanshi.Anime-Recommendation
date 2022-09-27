@@ -951,6 +951,7 @@
                         for(let i=0;i<updateIntervalTimeout.length;i++) await clearTimeout(updateIntervalTimeout[i])
                         var saveUpdateIntervalTimeout = setTimeout(async()=>{
                             if(!requestIsRunning){
+                                savedUsername = await retrieveJSON("savedUsername") || ""
                                 if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                                 await Update()
                                 updateIntervalStartDate = await new Date()
@@ -1089,17 +1090,6 @@
                             // Reset All Anime Recommendations
                             savedRecScheme = {}
                             saveJSON(savedRecScheme,"savedRecScheme")
-                            $("#animeRecommendationList").empty()
-                            $("#animeRecommendationList").append(`
-                                <tr class="item" role="row">
-                                    <td style="padding: 1.5em !important;" colspan="13">
-                                        <div style="display:flex; align-items:center;">
-                                            <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
-                                            <div>Updating...</div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `)
                             Update()
                         }
                     })
@@ -1132,7 +1122,7 @@
                 .then(async (confirmed) => {
                     if(confirmed){
                         var newUsername = await $("#username").val()
-                        savedUsername = await retrieveJSON("savedUsername")
+                        savedUsername = await retrieveJSON("savedUsername") || ""
                         if(newUsername!==savedUsername){
                             swal({
                                 text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
@@ -1520,6 +1510,7 @@
                         saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                         if((new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hrs
                             if(!requestIsRunning){
+                                savedUsername = await retrieveJSON("savedUsername") || ""
                                 if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                                 Update()
                                 updateIntervalStartDate = new Date()
@@ -1529,6 +1520,7 @@
                             for(let i=0;i<updateIntervalTimeout.length;i++) clearTimeout(updateIntervalTimeout[i])
                             var saveUpdateIntervalTimeout = setTimeout(async()=>{
                                 if(!requestIsRunning){
+                                    savedUsername = await retrieveJSON("savedUsername") || ""
                                     if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                                     Update()
                                     updateIntervalStartDate = new Date()
@@ -1720,7 +1712,6 @@
                         filters.push(filterName)
                     }
                     saveJSON(filters, "savedFilters")
-                    requestIsRunning = true
                     analyzeVariables(username)
                 } else {
                     if(!requestIsRunning){
@@ -1758,6 +1749,10 @@
         }
 
         async function analyzeVariables(username) {
+            // Allow One Instance
+            if(requestIsRunning)return
+            else requestIsRunning = true
+            //
             var savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || 20
             var AnalyzeVariableStartTime = new Date()
             // Check Parameters
@@ -1887,6 +1882,17 @@
                             })
                         }
                         console.log("WebtoApp: Update Error")
+                        if(Object.keys(savedRecScheme).length===0){
+                            $("#animeRecommendationList").empty()
+                            $("#animeRecommendationList").append(`
+                                <tr class="item" role="row">
+                                    <td style="padding: 1.5em !important;" colspan="13">
+                                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                        No Data
+                                    </td>
+                                </tr>
+                            `)
+                        }
                         for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                         requestIsRunning = false
                     }
@@ -2051,6 +2057,17 @@
                                                 $("#dataStatus").empty()
                                             })
                                             console.log("WebtoApp: Update Error")
+                                            if(Object.keys(savedRecScheme).length===0){
+                                                $("#animeRecommendationList").empty()
+                                                $("#animeRecommendationList").append(`
+                                                    <tr class="item" role="row">
+                                                        <td style="padding: 1.5em !important;" colspan="13">
+                                                            <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                                            No Data
+                                                        </td>
+                                                    </tr>
+                                                `)
+                                            }
                                             for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                                             requestIsRunning = false
                                         }
@@ -2066,6 +2083,17 @@
                                             $("#dataStatus").empty()
                                         })
                                         console.log("WebtoApp: Update Error")
+                                        if(Object.keys(savedRecScheme).length===0){
+                                            $("#animeRecommendationList").empty()
+                                            $("#animeRecommendationList").append(`
+                                                <tr class="item" role="row">
+                                                    <td style="padding: 1.5em !important;" colspan="13">
+                                                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                                        No Data
+                                                    </td>
+                                                </tr>
+                                            `)
+                                        }
                                         for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                                         requestIsRunning = false
                                     }
@@ -2103,6 +2131,17 @@
                         $("#dataStatusSpinner").show()
                         $("#dataStatus").empty()
                     })
+                    if(Object.keys(savedRecScheme).length===0){
+                        $("#animeRecommendationList").empty()
+                        $("#animeRecommendationList").append(`
+                            <tr class="item" role="row">
+                                <td style="padding: 1.5em !important;" colspan="13">
+                                    <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                    No Data
+                                </td>
+                            </tr>
+                        `)
+                    }
                     for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                     requestIsRunning = false
                 }

@@ -213,7 +213,6 @@
 		   ▀█▄ ██▀▀     ██   ██  ██ ██▀▀▀
 		█████▀ ██████   ██   ▀████▀ ██
 		*/
-
 		setup : function( table, c ) {
 			// if no thead or tbody, or tablesorter is already present, quit
 			if ( !table || !table.tHead || table.tBodies.length === 0 || table.hasInitialized === true ) {
@@ -226,7 +225,7 @@
 				}
 				return;
 			}
-
+			
 			var tmp = '',
 				$table = $( table ),
 				meta = $.metadata;
@@ -264,7 +263,6 @@
 				// make sure namespace starts with a period & doesn't have weird characters
 				c.namespace = '.' + c.namespace.replace( ts.regex.nonWord, '' );
 			}
-
 			c.table = table;
 			c.$table = $table
 				// add namespace to table to allow bindings on extra elements to target
@@ -345,7 +343,6 @@
 					}
 				});
 			}
-
 			// initialized
 			table.hasInitialized = true;
 			table.isProcessing = false;
@@ -366,7 +363,7 @@
 					'sorton appendCache updateCache applyWidgetId applyWidgets refreshWidgets destroy mouseup ' +
 					'mouseleave ' ).split( ' ' )
 					.join( namespace + ' ' );
-			// apply easy methods that trigger bound events
+			// apply easy methods that trigger bound events			
 			$table
 			.unbind( events.replace( ts.regex.spaces, ' ' ) )
 			.bind( 'sortReset' + namespace, function( e, callback ) {

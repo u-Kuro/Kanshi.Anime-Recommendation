@@ -41,7 +41,7 @@ legend{padding:0;border:0}
 textarea{overflow:auto}
 optgroup{font-weight:700}
 table{border-spacing:0;border-collapse:collapse}
-td,th{padding:0}
+td,th{padding:0;white-space: normal;}
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */@media print{*,:after,:before{color:#000!important;text-shadow:none!important;background:0 0!important;-webkit-box-shadow:none!important;box-shadow:none!important}
 a,a:visited{text-decoration:underline}
 a[href]:after{content:" (" attr(href) ")"}
