@@ -275,7 +275,48 @@ public class MainActivity extends AppCompatActivity {
                 prefsEdit.putString("savedExportPath",exportPath).apply();
                 webView.loadUrl("javascript:" +
                         "exportPathIsAvailable=true;" +
-                        "saveJSON(exportPathIsAvailable,'exportPathIsAvailable')"
+                        "saveJSON(exportPathIsAvailable,'exportPathIsAvailable');" +
+                        "swal({\n" +
+                        "    text: `Do you want to export your data?`,\n" +
+                        "    buttons: [\n" +
+                        "            'No',\n" +
+                        "            'Yes'\n" +
+                        "        ],\n" +
+                        "                })\n" +
+                        ".then(async(confirmed) => {\n" +
+                        "    if(confirmed){\n" +
+                        "        const savedUsername = await retrieveJSON('savedUsername');\n" +
+                        "        const savedHiddenAnimeTitles = await retrieveJSON('savedHiddenAnimeTitles');\n" +
+                        "        const savedUserList = await retrieveJSON('savedUserList');\n" +
+                        "        const savedAnimeEntries = await retrieveJSON('savedAnimeEntries');\n" +
+                        "        const allFilterInfo = await retrieveJSON('allFilterInfo');\n" +
+                        "        const savedFilterOptionsJson = await retrieveJSON('savedFilterOptionsJson');\n" +
+                        "        const savedRecScheme = await retrieveJSON('savedRecScheme');\n" +
+                        "        const savedLatestAnimeTitle = await retrieveJSON('savedLatestAnimeTitle');\n" +
+                        "        const savedAnalyzeVariableTime = await retrieveJSON('savedAnalyzeVariableTime');\n" +
+                        "        const savedUpdateAnalyzeAnimeTime = await retrieveJSON('savedUpdateAnalyzeAnimeTime');\n" +
+                        "        const savedDeepUpdateTime = await retrieveJSON('savedDeepUpdateTime');\n" +
+                        "        const lastAnilistPage = await retrieveJSON('lastAnilistPage');\n" +
+                        "        const savedAnalyzedVariablesCount = await retrieveJSON('savedAnalyzedVariablesCount');\n" +
+                        "        const backup = {\n" +
+                        "            savedUsername: savedUsername,\n" +
+                        "            savedHiddenAnimeTitles: savedHiddenAnimeTitles,\n" +
+                        "            allFilterInfo: allFilterInfo,\n" +
+                        "            savedFilterOptionsJson: savedFilterOptionsJson,\n" +
+                        "            savedRecScheme: savedRecScheme,\n" +
+                        "            savedAnimeEntries: savedAnimeEntries,\n" +
+                        "            savedLatestAnimeTitle: savedLatestAnimeTitle,\n" +
+                        "            savedUserList: savedUserList,\n" +
+                        "            savedAnalyzeVariableTime: savedAnalyzeVariableTime,\n" +
+                        "            savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,\n" +
+                        "            savedDeepUpdateTime: savedDeepUpdateTime,\n" +
+                        "            lastAnilistPage: lastAnilistPage,\n" +
+                        "            savedAnalyzedVariablesCount: savedAnalyzedVariablesCount\n" +
+                        "        };\n" +
+                        "        downloadObjectAsJson(backup,'Kanshi-Backup');\n" +
+                        "        $('.menu-container').fadeOut(250);\n" +
+                        "    }\n" +
+                        "});"
                     );
             }
         } catch (Exception e) {

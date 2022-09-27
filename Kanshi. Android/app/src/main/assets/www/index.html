@@ -940,15 +940,22 @@
                     updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
                     await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                     if(await (new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hr
-                        await Update()
-                        updateIntervalStartDate = await new Date()
-                        await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                    } else {
-                        for(let i=0;i<updateIntervalTimeout.length;i++) await clearTimeout(updateIntervalTimeout[i])
-                        var saveUpdateIntervalTimeout = setTimeout(async()=>{
+                        if(!requestIsRunning){
+                            savedUsername = await retrieveJSON("savedUsername") || ""
+                            if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                             await Update()
                             updateIntervalStartDate = await new Date()
                             await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                        }
+                    } else {
+                        for(let i=0;i<updateIntervalTimeout.length;i++) await clearTimeout(updateIntervalTimeout[i])
+                        var saveUpdateIntervalTimeout = setTimeout(async()=>{
+                            if(!requestIsRunning){
+                                if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
+                                await Update()
+                                updateIntervalStartDate = await new Date()
+                                await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                            }
                         },await 3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                         await updateIntervalTimeout.push(saveUpdateIntervalTimeout)
                     }
@@ -1061,20 +1068,118 @@
                 LoadData(savedRecScheme)
             }
             else {
+                if(!requestIsRunning){
+                    swal({
+                        text: `Do you want to continue and update your recommendations list?
+                        The estimated time to finish is ${msToTime(savedDeepUpdateTime*1000)}`,
+                        buttons: [
+                            'No',
+                            'Yes'
+                        ],
+                    })
+                    .then((confirmed) => {
+                        if(confirmed){
+                            deepUpdateStartTime = new Date()
+                            isDeepUpdate = true
+                            // Reset Anime-List
+                            saveJSON("","savedLatestAnimeTitle")
+                            // Reset User List
+                            savedUserList = {}
+                            saveJSON(savedUserList,"savedUserList")
+                            // Reset All Anime Recommendations
+                            savedRecScheme = {}
+                            saveJSON(savedRecScheme,"savedRecScheme")
+                            $("#animeRecommendationList").empty()
+                            $("#animeRecommendationList").append(`
+                                <tr class="item" role="row">
+                                    <td style="padding: 1.5em !important;" colspan="13">
+                                        <div style="display:flex; align-items:center;">
+                                            <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                            <div>Updating...</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `)
+                            Update()
+                        }
+                    })
+                } else {
+                    swal("List is already updating! Please wait a moment...", {
+                        icon: "info",
+                    })
+                }
+            }
+        })
+        $("#menuIcon, #menuTitle").on("click",()=>{
+            var menu = $(".menu-container")
+            if(menu.css("display")=="none"){
+                menu.fadeIn(250)
+            } else {
+                menu.fadeOut(250)
+            }
+        })
+        $("#updateBtn").on('click', async ()=>{
+            var savedUpdateTime = (await retrieveJSON("savedAnalyzeVariableTime") || 20) + (await retrieveJSON("savedUpdateAnalyzeAnimeTime") || 3)
+            if(!requestIsRunning){
                 swal({
-                    text: `Do you want to continue and Update your Recommendations List?
-                    The estimated time to finish is ${msToTime(savedDeepUpdateTime*1000)}`,
+                    text: `Do you want to continue and update your recommendations list?
+                    This may take ${msToTime(savedUpdateTime*1000)} to finish.`,
                     buttons: [
                         'No',
                         'Yes'
                     ],
                 })
-                .then((confirmed) => {
+                .then(async (confirmed) => {
+                    if(confirmed){
+                        var newUsername = await $("#username").val()
+                        savedUsername = await retrieveJSON("savedUsername")
+                        if(newUsername!==savedUsername){
+                            swal({
+                                text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
+                                buttons: [
+                                    'No',
+                                    'Yes'
+                                ]
+                            })
+                            .then(async (confirmed)=>{
+                                $(".menu-container").fadeOut(250)
+                                if(confirmed){
+                                    savedUserList = {}
+                                    await saveJSON(savedUserList,"savedUserList")
+                                    Update()
+                                } else {
+                                    $("#username").focus()
+                                }
+                            })
+                        }
+                    }
+                })
+            } else {
+                swal("List is already updating! Please wait a moment...", {
+                    icon: "info",
+                })
+            }
+        })
+        $("#deepUpdateBtn").on("click", async ()=>{
+            savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || 320
+            if(!requestIsRunning){
+                swal({
+                    text: `Do you want to continue and update all data in your recommendations list?
+                    This may take ${msToTime(savedDeepUpdateTime*1000)} to finish.`,
+                    buttons: [
+                        'No',
+                        'Yes'
+                    ],
+                })
+                .then(async (confirmed) => {
                     if(confirmed){
                         deepUpdateStartTime = new Date()
                         isDeepUpdate = true
                         // Reset Anime-List
                         saveJSON("","savedLatestAnimeTitle")
+                        // Reset User List
+                        savedUserList = {}
+                        saveJSON(savedUserList,"savedUserList")
                         // Reset All Anime Recommendations
                         savedRecScheme = {}
                         saveJSON(savedRecScheme,"savedRecScheme")
@@ -1089,70 +1194,15 @@
                                 </td>
                             </tr>
                         `)
-                        Update()
+                        await Update()
+                        $(".menu-container").fadeOut(250)
                     }
                 })
-            }
-        })
-        $("#menuIcon, #menuTitle").on("click",()=>{
-            var menu = $(".menu-container")
-            if(menu.css("display")=="none"){
-                menu.fadeIn(250)
             } else {
-                menu.fadeOut(250)
+                swal("List is already updating! Please wait a moment...", {
+                    icon: "info",
+                })
             }
-        })
-        $("#updateBtn").on('click', async ()=>{
-            var savedUpdateTime = (await retrieveJSON("savedAnalyzeVariableTime") || 20) + (await retrieveJSON("savedUpdateAnalyzeAnimeTime") || 3)
-            swal({
-                text: `Do you want to continue and Update your Recommendations List?
-                This may take ${msToTime(savedUpdateTime*1000)} to finish.`,
-                buttons: [
-                    'No',
-                    'Yes'
-                ],
-            })
-            .then(async (confirmed) => {
-                if(confirmed){
-                    Update()
-                    $(".menu-container").fadeOut(250)
-                }
-            })
-        })
-        $("#deepUpdateBtn").on("click", async ()=>{
-            savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || 320
-            swal({
-                text: `Do you want to continue and Update All Data in your Recommendations List?
-                This may take ${msToTime(savedDeepUpdateTime*1000)} to finish.`,
-                buttons: [
-                    'No',
-                    'Yes'
-                ],
-            })
-            .then(async (confirmed) => {
-                if(confirmed){
-                    deepUpdateStartTime = new Date()
-                    isDeepUpdate = true
-                    // Reset Anime-List
-                    saveJSON("","savedLatestAnimeTitle")
-                    // Reset All Anime Recommendations
-                    savedRecScheme = {}
-                    saveJSON(savedRecScheme,"savedRecScheme")
-                    $("#animeRecommendationList").empty()
-                    $("#animeRecommendationList").append(`
-                        <tr class="item" role="row">
-                            <td style="padding: 1.5em !important;" colspan="13">
-                                <div style="display:flex; align-items:center;">
-                                    <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
-                                    <div>Updating...</div>
-                                </div>
-                            </td>
-                        </tr>
-                    `)
-                    await Update()
-                    $(".menu-container").fadeOut(250)
-                }
-            })
         })
         $("#hiddenUnhiddenBtn").on('click', async()=>{
             if(!isRunning){
@@ -1240,7 +1290,7 @@
         })
         $("#showAllAnime").on('click', ()=>{
             swal({
-                text: "Do you want to show all your hidden Anime? This will remove all hidden Anime in the Hidden's List!",
+                text: "Do you want to show all your hidden anime? This will remove all hidden Anime in the hidden's list!",
                 buttons: [
                     'No',
                     'Yes'
@@ -1293,7 +1343,7 @@
                     saveJSON($('#anime-table')[0].config.pager.page,"savedTablePage")
                     $("#showAllAnime").hide()
                     $(".menu-container").fadeOut(250)
-                    swal("All Hidden Animes has now been successfully Unidden!", {
+                    swal("All hidden anime has now been successfully transferred to your List!", {
                         icon: "success",
                     })
                 }
@@ -1316,7 +1366,7 @@
                             filename = filename.substring(1);
                         }
                         swal({
-                            text: `File named [${filename}] been Detected, do you want to continue the Import? This will remove your current Data!`,
+                            text: `File named [${filename}] been detected, do you want to continue the import? This will remove your current data!`,
                             buttons: [
                                 'No',
                                 'Yes'
@@ -1375,7 +1425,7 @@
                                     await $("#anime-table").trigger("update")
                                 }
                                 $(".menu-container").fadeOut(250)
-                                swal("Data has been Updated!", {
+                                swal("Data has been updated!", {
                                     icon: "success",
                                 })
                             } else {
@@ -1392,7 +1442,7 @@
             exportPathIsAvailable = await retrieveJSON("exportPathIsAvailable") || false
             if(exportPathIsAvailable) {
                 swal({
-                    text: `Do you want to Export your Data?`,
+                    text: `Do you want to export your data?`,
                     buttons: [
                         'No',
                         'Yes'
@@ -1440,7 +1490,7 @@
             updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
             if(updateIntervalIsActive){
                 swal({
-                    text: `Do you want to Disable Auto Update for your Recommendations List every 1 hour?`,
+                    text: `Do you want to disable auto update for your recommendations list every 1 hour?`,
                     buttons: [
                         'No',
                         'Yes'
@@ -1455,7 +1505,7 @@
                 })
             } else {
                 swal({
-                    text: `Do you want to Enable Auto Update for your Recommendations List every 1 hour?`,
+                    text: `Do you want to enable auto update for your recommendations list every 1 hour?`,
                     buttons: [
                         'No',
                         'Yes'
@@ -1469,15 +1519,21 @@
                         updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
                         saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                         if((new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hrs
-                            Update()
-                            updateIntervalStartDate = new Date()
-                            saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                        } else {
-                            for(let i=0;i<updateIntervalTimeout.length;i++) clearTimeout(updateIntervalTimeout[i])
-                            var saveUpdateIntervalTimeout = setTimeout(()=>{
+                            if(!requestIsRunning){
+                                if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                                 Update()
                                 updateIntervalStartDate = new Date()
                                 saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                            }
+                        } else {
+                            for(let i=0;i<updateIntervalTimeout.length;i++) clearTimeout(updateIntervalTimeout[i])
+                            var saveUpdateIntervalTimeout = setTimeout(async()=>{
+                                if(!requestIsRunning){
+                                    if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
+                                    Update()
+                                    updateIntervalStartDate = new Date()
+                                    saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                                }
                             },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                             updateIntervalTimeout.push(saveUpdateIntervalTimeout)
                         }
@@ -1491,7 +1547,7 @@
                 exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
                 if(exportIntervalIsActive){
                     swal({
-                        text: `Do you want to Disable Data Back-Up every 1 hours?`,
+                        text: `Do you want to disable data back-up every 1 hour?`,
                         buttons: [
                             'No',
                             'Yes'
@@ -1506,7 +1562,7 @@
                     })
                 } else {
                     swal({
-                        text: `Do you want to Enable Data Back-Up every 1 hours?`,
+                        text: `Do you want to enable data Back-Up every 1 hour?`,
                         buttons: [
                             'No',
                             'Yes'
@@ -1664,14 +1720,8 @@
                         filters.push(filterName)
                     }
                     saveJSON(filters, "savedFilters")
-                    if(!requestIsRunning){
-                        requestIsRunning = true
-                        analyzeVariables(username)
-                    } else {
-                        swal("List is Already Updating! Please wait a moment...", {
-                            icon: "info",
-                        })
-                    }
+                    requestIsRunning = true
+                    analyzeVariables(username)
                 } else {
                     if(!requestIsRunning){
                         for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
@@ -1688,8 +1738,9 @@
                                         $("#dataStatus")
                                             .empty()
                                             .append(`Update is now Available!`)
-                                        $("#dataStatusContainer").fadeOut(2500,()=>{
+                                        $("#dataStatusContainer").fadeOut(2500,async()=>{
                                             $("#dataStatus").empty()
+                                            if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                                             Update()
                                         })
                                     })
@@ -1701,10 +1752,6 @@
                             },(requestIntervalSeconds-i)*1000)
                             temp.push(timeout)
                         }
-                    } else {
-                        swal("List is Already Updating! Please wait a moment...", {
-                            icon: "info",
-                        })
                     }
                 }
             }
@@ -1822,8 +1869,8 @@
                                 $("#username")[0].reportValidity()
                             } else {
                                 swal("Error", {
-                                    title: "Oops...Something Went Wrong!",
-                                    text: `Error 100: ${typeof err==="string"?err:"Please Try Again..."}`,
+                                    title: "Oops...Something went wrong!",
+                                    text: `Error 100: ${typeof err==="string"?err:"Please try again..."}`,
                                     icon: "error"
                                 })
                             }
@@ -1834,8 +1881,8 @@
                                 $("#dataStatus").empty()
                             })
                             swal("Error", {
-                                title: "Oops...Something Went Wrong!",
-                                text: `Error 101: ${typeof err==="string"?err:"Please Try Again..."}`,
+                                title: "Oops...Something went wrong!",
+                                text: `Error 101: ${typeof err==="string"?err:"Please try again..."}`,
                                 icon: "error"
                             })
                         }
@@ -1994,8 +2041,8 @@
                                                 $("#username")[0].reportValidity()
                                             } else {
                                                 swal("Error", {
-                                                    title: "Oops...Something Went Wrong!",
-                                                    text: `Error 102: ${typeof err==="string"?err:"Please Try Again..."}`,
+                                                    title: "Oops...Something went wrong!",
+                                                    text: `Error 102: ${typeof err==="string"?err:"Please try again..."}`,
                                                     icon: "error"
                                                 })
                                             }
@@ -2010,8 +2057,8 @@
                                     } catch(ex) {
                                         console.error(ex)
                                         swal("Error", {
-                                            title: "Oops...Something Went Wrong!",
-                                            text: `Error 103: ${typeof err==="string"?err:"Please Try Again..."}`,
+                                            title: "Oops...Something went wrong!",
+                                            text: `Error 103: ${typeof err==="string"?err:"Please try again..."}`,
                                             icon: "error"
                                         })
                                         $("#dataStatusContainer").fadeOut(2500,()=>{
@@ -2037,8 +2084,8 @@
                             console.error(JSON.parse(xhr.responseText))
                         } else {
                             swal("Error", {
-                                title: "Oops...Something Went Wrong!",
-                                text: `Error 102: ${typeof err==="string"?err:"Please Try Again..."}`,
+                                title: "Oops...Something went wrong!",
+                                text: `Error 102: ${typeof err==="string"?err:"Please try again..."}`,
                                 icon: "error"
                             })
                             console.log("WebtoApp: Update Error")
@@ -2046,8 +2093,8 @@
                     } catch(ex) {
                         console.error(ex)
                         swal("Error", {
-                            title: "Oops...Something Went Wrong!",
-                            text: `Error 103: ${typeof err==="string"?err:"Please Try Again..."}`,
+                            title: "Oops...Something went wrong!",
+                            text: `Error 103: ${typeof err==="string"?err:"Please try again..."}`,
                             icon: "error"
                         })
                         console.log("WebtoApp: Update Error")
@@ -2159,7 +2206,7 @@
                         $("#dataStatus").empty()
                         $("#dataStatusContainer").hide()
                     })
-                    swal("List has been Updated!", {
+                    swal("List has been updated!", {
                         icon: "success",
                     })
                     requestIsRunning = false
