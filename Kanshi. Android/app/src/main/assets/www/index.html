@@ -554,12 +554,12 @@
             </tr>
             </thead>
             <tbody id="animeRecommendationList">
-                <tr class="item" role="row">
-                    <td style="padding: 1.5em !important;" colspan="13">
-                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                        No Data
-                    </td>
-                </tr>
+            <tr class="item" role="row">
+                <td style="padding: 1.5em !important;" colspan="13">
+                    <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                    No Data
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -699,7 +699,7 @@
                     })
                 await $('#anime-table')
                     .delegate('button.hide-anime', 'click' , async function() {
-                        var hiddenRow =  await $(this).closest('tr')                        
+                        var hiddenRow =  await $(this).closest('tr')
                         var hiddenAnimeTitle = await hiddenRow.children("td#animeTitle").children("a")[0].textContent
                         savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
                         await savedHiddenAnimeTitles.push(hiddenAnimeTitle)
@@ -1141,6 +1141,9 @@
                                     $("#username").focus()
                                 }
                             })
+                        } else {
+                            Update()
+                            $(".menu-container").fadeOut(250)
                         }
                     }
                 })
