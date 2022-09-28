@@ -366,8 +366,8 @@ self.onmessage = (message) => {
         }
         const limitShown = 10
         variablesIncluded = tempVariablesIncluded.length>0?tempVariablesIncluded.slice(0,limitShown) : []
-        savedRecScheme[title] = {//delete this analyzedVariableCount on score
-            title: title, animeUrl: animeUrl, score: analyzedVariableCount, weightedScore: weightedScore, 
+        savedRecScheme[title] = {
+            title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
             status: status, genres: genres, tags: tags, year: year, 
             season: season, format: format, studios: studios, staff: staff,
             variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount,
@@ -376,7 +376,6 @@ self.onmessage = (message) => {
     var savedRecSchemeEntries = Object.keys(savedRecScheme)
     var analyzedVariableSum = arraySum(Object.values(savedAnalyzedVariablesCount))
     var analyzedVariableMean = arrayMean(Object.values(savedAnalyzedVariablesCount))
-    var analyzedVariableMedian = arrayMedian(Object.values(savedAnalyzedVariablesCount))
     for(let i=0;i<savedRecSchemeEntries.length;i++){
         var anime = savedRecScheme[savedRecSchemeEntries[i]]
         if(anime.analyzedVariableCount<analyzedVariableMean){
