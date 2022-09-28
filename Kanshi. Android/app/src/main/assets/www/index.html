@@ -305,6 +305,9 @@
             .item > td {
                 vertical-align: middle !important;
             }
+            .swal-modal{
+                user-select: none;
+            }
             .swal-text:first-child{
                 display: block !important;
                 margin-top: 20px !important;
@@ -444,6 +447,7 @@
                 background-color: rgb(0,0,0,0.925);
                 padding: 1em;
                 align-items: center;
+                user-select: none;
             }
             .nav > div{
                 flex: 1;
@@ -470,6 +474,7 @@
                 background-color: rgb(0, 0, 0, 0.925);
                 color: white;
                 display: none;
+                user-select: none;
             }
             .menu-container>div{
                 padding: 1em;
@@ -1719,25 +1724,22 @@
                 } else {
                     if(!requestIsRunning){
                         for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
-                        $("#dataStatusSpinner").show(0,()=>{
-                            $("#dataStatusContainer").fadeIn(2500).css("display","flex")
-                        })
+                        $("#dataStatusSpinner").show()
+                        $("#dataStatusContainer").fadeIn(2500).css("display","flex")
                         requestIntervalSeconds = Math.round(60-(((new Date()).getTime()-savedLastRequestDate.getTime())/1000)) || 60
                         for(let i=requestIntervalSeconds; i>=0; i--){
-                            let timeout = setTimeout(()=>{
+                            let timeout = setTimeout(async()=>{
                                 if(i===0){
                                     requestPause = false
                                     saveJSON(requestPause,"requestPause")
-                                    $("#dataStatusSpinner").hide(0,()=>{
-                                        $("#dataStatus")
-                                            .empty()
-                                            .append(`Update is now Available!`)
-                                        $("#dataStatusContainer").fadeOut(2500,async()=>{
-                                            $("#dataStatus").empty()
-                                            if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
-                                            Update()
-                                        })
-                                    })
+                                    $("#dataStatusSpinner").hide()
+                                    $("#dataStatus")
+                                        .empty()
+                                        .append(`Update is now Available!`)
+                                    $("#dataStatusContainer").fadeOut(2500)
+                                    $("#dataStatus").empty()
+                                    if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
+                                    Update()
                                 } else {
                                     $("#dataStatus")
                                         .empty()
@@ -1786,6 +1788,7 @@
                                     studios {
                                         nodes {
                                             name
+                                            isAnimationStudio
                                         }
                                     }
                                     format
@@ -1793,9 +1796,11 @@
                                     seasonYear
                                     season
                                     staff {
-                                        nodes {
-                                            name {
-                                                userPreferred
+                                        edges {
+                                            node {
+                                                name {
+                                                    userPreferred
+                                                }
                                             }
                                         }
                                     }
@@ -1979,6 +1984,7 @@
                                                     nodes {
                                                         name
                                                         siteUrl
+                                                        isAnimationStudio
                                                     }
                                                 }
                                                 format
@@ -1986,11 +1992,14 @@
                                                 seasonYear
                                                 season
                                                 staff {
-                                                    nodes {
-                                                        name {
-                                                            userPreferred
+                                                    edges {
+                                                        node {
+                                                            name {
+                                                                userPreferred
+                                                            }
+                                                            siteUrl
                                                         }
-                                                        siteUrl
+                                                        role
                                                     }
                                                 }
                                             }

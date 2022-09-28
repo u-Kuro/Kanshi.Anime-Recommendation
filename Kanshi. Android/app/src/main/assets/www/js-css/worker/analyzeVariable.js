@@ -179,7 +179,11 @@ self.onmessage = (message) => {
                         }
                     }
                 }
+                var includedStudio = {}
                 for(let j=0; j<anime.studios.nodes.length; j++){
+                    if(!anime.studios.nodes[j].isAnimationStudio) continue
+                    if(includedStudio[anime.studios.nodes[j].name]!==undefined) continue
+                    else includedStudio[anime.studios.nodes[j].name] = null
                     if(anime.studios.nodes[j].name!==null){
                         if(studios["Studio: "+anime.studios.nodes[j].name]===undefined){
                             studios["Studio: "+anime.studios.nodes[j].name] = {userScore:[userScore],count:1}
@@ -200,27 +204,59 @@ self.onmessage = (message) => {
                         }
                     }
                 }
-                for(let j=0; j<anime.staff.nodes.length; j++){
-                    if(anime.staff.nodes[j].name.userPreferred!==null){
-                        if(staff["Staff: "+anime.staff.nodes[j].name.userPreferred]===undefined){
-                            staff["Staff: "+anime.staff.nodes[j].name.userPreferred] = {userScore:[userScore],count:1}
+                //
+                var includedStaff = {}
+                for(let j=0; j<anime.staff.edges.length; j++){
+                    if(anime.staff.edges[j].node.name.userPreferred!==null){
+                        if(includedStaff[anime.staff.edges[j].node.name.userPreferred]!==undefined) continue
+                        else includedStaff[anime.staff.edges[j].node.name.userPreferred] = null
+                        if(staff["Staff: "+anime.staff.edges[j].node.name.userPreferred]===undefined){
+                            staff["Staff: "+anime.staff.edges[j].node.name.userPreferred] = {userScore:[userScore],count:1}
                         } else {
-                            staff["Staff: "+anime.staff.nodes[j].name.userPreferred].userScore.push(userScore)
-                            staff["Staff: "+anime.staff.nodes[j].name.userPreferred].count += 1
+                            staff["Staff: "+anime.staff.edges[j].node.name.userPreferred].userScore.push(userScore)
+                            staff["Staff: "+anime.staff.edges[j].node.name.userPreferred].count += 1
                         }
-                        if(staffMedianCount["Staff: "+anime.staff.nodes[j].name.userPreferred]===undefined){
-                            staffMedianCount["Staff: "+anime.staff.nodes[j].name.userPreferred] = 1
+                        if(staffMedianCount["Staff: "+anime.staff.edges[j].node.name.userPreferred]===undefined){
+                            staffMedianCount["Staff: "+anime.staff.edges[j].node.name.userPreferred] = 1
                         } else {
-                            staffMedianCount["Staff: "+anime.staff.nodes[j].name.userPreferred] += 1
+                            staffMedianCount["Staff: "+anime.staff.edges[j].node.name.userPreferred] += 1
                         }
                     }
-                    if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.staff.nodes[j].name.userPreferred!==null){
+                    if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.staff.edges[j].node.name.userPreferred!==null){
                         savedUserList[title] = newAnimeObjStr
-                        if(alteredVariables.staff_in["Staff: "+anime.staff.nodes[j].name.userPreferred]===undefined){
-                            alteredVariables.staff_in["Staff: "+anime.staff.nodes[j].name.userPreferred] = 1
+                        if(alteredVariables.staff_in["Staff: "+anime.staff.edges[j].node.name.userPreferred]===undefined){
+                            alteredVariables.staff_in["Staff: "+anime.staff.edges[j].node.name.userPreferred] = 1
                         }
                     }
                 }
+                //
+                // for(let j=0; j<anime.staff.edges.length; j++){
+                //     var name = anime.staff.edges[j].node.name.userPreferred
+                //         if(name!==null){
+                //             if(staff["Role: "+role]===undefined){
+                //                 staff["Role: "+role] = {["Staff: "+name]: {userScore:[userScore],count:1}}
+                //             } else {
+                //                 if(staff["Role: "+role]["Staff: "+name]===undefined){
+                //                     staff["Role: "+role]["Staff: "+name] = {userScore:[userScore],count:1}
+                //                 } else {
+                //                     staff["Role: "+role]["Staff: "+name].userScore.push(userScore)
+                //                     staff["Role: "+role]["Staff: "+name].count += 1
+                //                 }
+                //             }
+                //             if(staffMedianCount["Staff: "+name]===undefined){
+                //                 staffMedianCount["Staff: "+name] = 1
+                //             } else {
+                //                 staffMedianCount["Staff: "+name] += 1
+                //             }
+                //             if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
+                //                 savedUserList[title] = newAnimeObjStr
+                //                 if(alteredVariables.staff_in["Staff: "+name]===undefined){
+                //                     alteredVariables.staff_in["Staff: "+name] = 1
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
                 varScheme = {
                     format: format, year: year, season: season, genres: genres, tags: tags, studios: studios, staff: staff,
                 }
@@ -334,7 +370,11 @@ self.onmessage = (message) => {
                         }
                     }
                 }
+                var includedStudio = {}
                 for(let j=0; j<anime.studios.nodes.length; j++){
+                    if(!anime.studios.nodes[j].isAnimationStudio) continue
+                    if(includedStudio[anime.studios.nodes[j].name]!==undefined) continue
+                    else includedStudio[anime.studios.nodes[j].name] = null
                     var xstudios = anime.studios.nodes[j].name===null? null : "Studio: "+anime.studios.nodes[j].name
                     if(xstudios!==null){
                         if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
@@ -357,8 +397,11 @@ self.onmessage = (message) => {
                         }
                     }
                 }
-                for(let j=0; j<anime.staff.nodes.length; j++){
-                    var xstaff = anime.staff.nodes[j].name.userPreferred===null?null: "Staff: "+anime.staff.nodes[j].name.userPreferred
+                var includedStaff = {}
+                for(let j=0; j<anime.staff.edges.length; j++){
+                    if(includedStaff[anime.staff.edges[j].node.name.userPreferred]!==undefined) continue
+                    else includedStaff[anime.staff.edges[j].node.name.userPreferred] = null
+                    var xstaff = anime.staff.edges[j].node.name.userPreferred===null?null: "Staff: "+anime.staff.edges[j].node.name.userPreferred
                     if(xstaff!==null){
                         if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
                             savedUserList[title] = newAnimeObjStr
@@ -380,6 +423,36 @@ self.onmessage = (message) => {
                         }
                     }
                 }
+                // for(let j=0; j<anime.staff.edges.length; j++){
+                //     var staff = anime.staff.edges[j]
+                //     var xrole = staff.role===null?null:"Role: "+staff.role.split(" (")[0] //i.e Animator (Ep 1,2 etc)
+                //     var xstaff = staff.node.name.userPreferred===null?null:"Staff: "+staff.node.name.userPreferred
+                //     if(role!==null){
+                //         if(xstaff!==null){
+                //             if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
+                //                 savedUserList[title] = newAnimeObjStr
+                //                 if(alteredVariables.staff_in[xstaff]===undefined){
+                //                     alteredVariables.staff_in[xstaff] = 1
+                //                 }
+                //             }
+                //             if(varScheme.staff[xrole]!==undefined){
+                //                 if(varScheme.staff[xrole][xstaff]!==undefined){
+                //                     varScheme.staff[xrole][xstaff].userScore.push(userScore)
+                //                     varScheme.staff[xrole][xstaff].count += 1
+                //                 } else {
+                //                     varScheme.staff[xrole][xstaff] = {userScore:[userScore], count:1}     
+                //                 }
+                //             } else {
+                //                 varScheme.staff[xrole] = {[xstaff]: {userScore:[userScore], count:1}}
+                //             }
+                //             if(staffMedianCount[xstaff]!==undefined){
+                //                 staffMedianCount[xstaff] += 1
+                //             } else {
+                //                 staffMedianCount[xstaff] = 1
+                //             }
+                //         }
+                //     }
+                // }
             }
             // Number
             if(anime.episodes!==null){
@@ -408,10 +481,15 @@ self.onmessage = (message) => {
                 tagsCount.push({userScore: userScore, tagsCount: anime.tags.length})
             }
             if(anime.studios.nodes!==null){
-                studiosCount.push({userScore: userScore, studiosCount: anime.studios.nodes.length})
+                var studioLength = 0
+                for(let i=0;i<anime.studios.nodes.length;i++){
+                    if(!anime.studios.nodes[i].isAnimationStudio) continue
+                    studioLength++
+                }
+                studiosCount.push({userScore: userScore, studiosCount: studioLength})
             }
-            if(anime.staff.nodes!==null){
-                staffCount.push({userScore: userScore, staffCount: anime.staff.nodes.length})
+            if(anime.staff.edges!==null){
+                staffCount.push({userScore: userScore, staffCount: anime.staff.edges.length})
             }
         }
     }
@@ -439,13 +517,14 @@ self.onmessage = (message) => {
             }
         }
         for(let j=0; j<anime.studios.nodes.length; j++){
+            if(!anime.studios.nodes[j].isAnimationStudio) continue
             if(alteredVariables.studios_in["Studio: "+anime.studios.nodes[j].name]===undefined){
                 alteredVariables.studios_in["Studio: "+anime.studios.nodes[j].name] = 1
             }
         }
-        for(let j=0; j<anime.staff.nodes.length; j++){
-            if(alteredVariables.staff_in["Staff: "+anime.staff.nodes[j].name.userPreferred]===undefined){
-                alteredVariables.staff_in["Staff: "+anime.staff.nodes[j].name.userPreferred] = 1
+        for(let j=0; j<anime.staff.edges.length; j++){
+            if(alteredVariables.staff_in["Staff: "+anime.staff.edges[j].node.name.userPreferred]===undefined){
+                alteredVariables.staff_in["Staff: "+anime.staff.edges[j].node.name.userPreferred] = 1
             }
         }
         // Lastly delete the anime in the savedUserList
@@ -567,6 +646,28 @@ self.onmessage = (message) => {
         }
         varScheme.staff[staffKey[i]] = tempScore
     }
+    //
+    // var roleKey = Object.keys(varScheme.staff)
+    // var staffMean = []
+    // for(let i=0; i<roleKey.length; i++){
+    //     var staffKey = Object.keys(varScheme.staff[roleKey[i]])
+    //     for(let j=0;j<staffKey.length;j++){
+    //         if(i==0&&j==0)console.log(varScheme.staff[roleKey[i]][staffKey[j]])
+    //         staffMean.push(arrayMean(varScheme.staff[roleKey[i]][staffKey[j]].userScore))
+    //     }
+    // }
+    // staffMean = arrayMean(staffMean)
+    // for(let i=0; i<roleKey.length; i++){
+    //     var staffKey = Object.keys(varScheme.staff[roleKey[i]])
+    //     for(let j=0;j<staffKey.length;j++){
+    //         var tempScore = arrayMean(varScheme.staff[roleKey[i]][staffKey[j]].userScore)
+    //         var count = varScheme.staff[roleKey[i]][staffKey[j]].count
+    //         if(count>=staffMedianCount||tempScore<staffMean){
+    //             varScheme.staff[roleKey[i]][staffKey[j]+"Dense"] = tempScore
+    //         }
+    //         varScheme.staff[roleKey[i]][staffKey[j]] = tempScore
+    //     }
+    // }
     // Join Data
     var varSchemeKeys = Object.keys(varScheme)
     var tempVar = {
@@ -612,61 +713,62 @@ self.onmessage = (message) => {
     sortedAnimeLengthModels = sortedAnimeLengthModels[0]
     tempVar[sortedAnimeLengthModels[1]] = sortedAnimeLengthModels[0]
     // For Variable Count Model
-    var variableCountModels = []
+    var wellKnownAnimeModels = []
     var trendingX = [], trendingY = []
     for(let i=0; i<trending.length;i++){
         trendingX.push(trending[i].trending)
         trendingY.push(trending[i].userScore)
     }
-    variableCountModels.push([linearRegression(trendingX,trendingY),"trendingModel"])
+    wellKnownAnimeModels.push([linearRegression(trendingX,trendingY),"trendingModel"])
     var popularityX = [], popularityY = []
     for(let i=0; i<popularity.length;i++){
         popularityX.push(popularity[i].popularity)
         popularityY.push(popularity[i].userScore)
     }
-    variableCountModels.push([linearRegression(popularityX,popularityY),"popularityModel"])
+    wellKnownAnimeModels.push([linearRegression(popularityX,popularityY),"popularityModel"])
     var favouritesX = [], favouritesY = []
     for(let i=0; i<favourites.length;i++){
         favouritesX.push(favourites[i].favourites)
         favouritesY.push(favourites[i].userScore)
     }
-    variableCountModels.push([linearRegression(favouritesX,favouritesY),"favouritesModel"])
-    var sortedVariableCountModels = variableCountModels.sort(function(a, b) {
-        return b[0].r2 - a[0].r2;
-    })
-    sortedVariableCountModels = sortedVariableCountModels[0]
-    tempVar[sortedVariableCountModels[1]] = sortedVariableCountModels[0]
-    // For Well Known Model
-    var wellKnownAnimeModels = []
-    var genresCountX = [], genresCountY = []
-    for(let i=0; i<favourites.length;i++){
-        genresCountX.push(genresCount[i].genresCount)
-        genresCountY.push(genresCount[i].userScore)
-    }
-    wellKnownAnimeModels.push([linearRegression(genresCountX,genresCountY),"genresCountModel"])
-    var tagsCountX = [], tagsCountY = []
-    for(let i=0; i<tagsCount.length;i++){
-        tagsCountX.push(tagsCount[i].tagsCount)
-        tagsCountY.push(tagsCount[i].userScore)
-    }
-    wellKnownAnimeModels.push([linearRegression(tagsCountX,tagsCountY),"tagsCountModel"])
-    var studiosCountX = [], studiosCountY = []
-    for(let i=0; i<favourites.length;i++){
-        studiosCountX.push(studiosCount[i].studiosCount)
-        studiosCountY.push(studiosCount[i].userScore)
-    }
-    wellKnownAnimeModels.push([linearRegression(studiosCountX,studiosCountY),"studiosCountModel"])
-    var staffCountX = [], staffCountY = []
-    for(let i=0; i<favourites.length;i++){
-        staffCountX.push(staffCount[i].staffCount)
-        staffCountY.push(staffCount[i].userScore)
-    }
-    wellKnownAnimeModels.push([linearRegression(staffCountX,staffCountY),"staffCountModel"])
+    wellKnownAnimeModels.push([linearRegression(favouritesX,favouritesY),"favouritesModel"])
+    sortedWellKnownAnimeModels
     var sortedWellKnownAnimeModels = wellKnownAnimeModels.sort(function(a, b) {
         return b[0].r2 - a[0].r2;
     })
     sortedWellKnownAnimeModels = sortedWellKnownAnimeModels[0]
     tempVar[sortedWellKnownAnimeModels[1]] = sortedWellKnownAnimeModels[0]
+    // // For Variable Count Model
+    // var variableCountModels = []
+    // var genresCountX = [], genresCountY = []
+    // for(let i=0; i<genresCount.length;i++){
+    //     genresCountX.push(genresCount[i].genresCount)
+    //     genresCountY.push(genresCount[i].userScore)
+    // }
+    // variableCountModels.push([linearRegression(genresCountX,genresCountY),"genresCountModel"])
+    // var tagsCountX = [], tagsCountY = []
+    // for(let i=0; i<tagsCount.length;i++){
+    //     tagsCountX.push(tagsCount[i].tagsCount)
+    //     tagsCountY.push(tagsCount[i].userScore)
+    // }
+    // variableCountModels.push([linearRegression(tagsCountX,tagsCountY),"tagsCountModel"])
+    // var studiosCountX = [], studiosCountY = []
+    // for(let i=0; i<studiosCount.length;i++){
+    //     studiosCountX.push(studiosCount[i].studiosCount)
+    //     studiosCountY.push(studiosCount[i].userScore)
+    // }
+    // variableCountModels.push([linearRegression(studiosCountX,studiosCountY),"studiosCountModel"])
+    // var staffCountX = [], staffCountY = []
+    // for(let i=0; i<staffCount.length;i++){
+    //     staffCountX.push(staffCount[i].staffCount)
+    //     staffCountY.push(staffCount[i].userScore)
+    // }
+    // variableCountModels.push([linearRegression(staffCountX,staffCountY),"staffCountModel"])
+    // var sortedVariableCountModels = variableCountModels.sort(function(a, b) {
+    //     return b[0].r2 - a[0].r2;
+    // })
+    // sortedVariableCountModels = sortedVariableCountModels[0]
+    // tempVar[sortedVariableCountModels[1]] = sortedVariableCountModels[0]
     varScheme = tempVar
     // var meanR2 = arrayMedian([varScheme.episodesModel.r2,varScheme.durationModel.r2,varScheme.averageScoreModel.r2,
     //     varScheme.trendingModel.r2,varScheme.popularityModel.r2,varScheme.favouritesModel.r2,varScheme.genresCountModel.r2,
