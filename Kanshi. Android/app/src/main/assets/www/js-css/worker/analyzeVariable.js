@@ -459,73 +459,110 @@ self.onmessage = (message) => {
     tagsMedianCount = Object.values(tagsMedianCount).length>0 ? arrayMedian(Object.values(tagsMedianCount)) : 0
     studiosMedianCount = Object.values(studiosMedianCount).length>0 ? arrayMedian(Object.values(studiosMedianCount)) : 0
     staffMedianCount = Object.values(staffMedianCount).length>0 ? arrayMedian(Object.values(staffMedianCount)) : 0
-    var meanGenres = []
-    var meanTags = []
-    var meanStaff = []
-    var meanStudios = []
+    //
     var formatKey = Object.keys(varScheme.format)
+    var formatMean = []
+    //
     for(let i=0; i<formatKey.length; i++){
-        var tempScore = arrayMean(varScheme.format[formatKey[i]].userScore)*10
+        formatMean.push(arrayMean(varScheme.format[formatKey[i]].userScore))
+    }
+    formatMean = arrayMean(formatMean)
+    for(let i=0; i<formatKey.length; i++){
+        var tempScore = arrayMean(varScheme.format[formatKey[i]].userScore)
         var count = varScheme.format[formatKey[i]].count
-        if(count>=formatMedianCount){
+        // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
+        if(count>=formatMedianCount||tempScore<formatMean){ 
             varScheme.format[formatKey[i]+"Dense"] = tempScore
         }
         varScheme.format[formatKey[i]] = tempScore
     }
+    //
     var yearKey = Object.keys(varScheme.year)
+    var yearMean = []
     for(let i=0; i<yearKey.length; i++){
-        var tempScore = arrayMean(varScheme.year[yearKey[i]].userScore)*10
+        yearMean.push(arrayMean(varScheme.year[yearKey[i]].userScore))
+    }
+    yearMean = arrayMean(yearMean)
+    for(let i=0; i<yearKey.length; i++){
+        var tempScore = arrayMean(varScheme.year[yearKey[i]].userScore)
         var count = varScheme.year[yearKey[i]].count
-        if(count>=yearMedianCount){
+        // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
+        if(count>=yearMedianCount||tempScore<yearMean){
             varScheme.year[yearKey[i]+"Dense"] = tempScore
         }
         varScheme.year[yearKey[i]] = tempScore
     }
+    //
     var seasonKey = Object.keys(varScheme.season)
+    var seasonMean = []
     for(let i=0; i<seasonKey.length; i++){
-        var tempScore = arrayMean(varScheme.season[seasonKey[i]].userScore)*10
+        seasonMean.push(arrayMean(varScheme.season[seasonKey[i]].userScore))
+    }
+    seasonMean = arrayMean(seasonMean)
+    for(let i=0; i<seasonKey.length; i++){
+        var tempScore = arrayMean(varScheme.season[seasonKey[i]].userScore)
         var count = varScheme.season[seasonKey[i]].count
-        if(count>=seasonMedianCount){
+        if(count>=seasonMedianCount||tempScore<seasonMean){
             varScheme.season[seasonKey[i]+"Dense"] = tempScore
         }
         varScheme.season[seasonKey[i]] = tempScore
     }
+    //
     var genresKey = Object.keys(varScheme.genres)
+    var genresMean = []
     for(let i=0; i<genresKey.length; i++){
-        var tempScore = arrayMean(varScheme.genres[genresKey[i]].userScore)*10
-        meanGenres.push(tempScore)
+        genresMean.push(arrayMean(varScheme.genres[genresKey[i]].userScore))
+    }
+    genresMean = arrayMean(genresMean)
+    for(let i=0; i<genresKey.length; i++){
+        var tempScore = arrayMean(varScheme.genres[genresKey[i]].userScore)
         var count = varScheme.genres[genresKey[i]].count
-        if(count>=genresMedianCount){
+        if(count>=genresMedianCount||tempScore<genresMean){
             varScheme.genres[genresKey[i]+"Dense"] = tempScore
         }
         varScheme.genres[genresKey[i]] = tempScore
     }
+    //
     var tagsKey = Object.keys(varScheme.tags)
+    var tagsMean = []
     for(let i=0; i<tagsKey.length; i++){
-        var tempScore = arrayMean(varScheme.tags[tagsKey[i]].userScore)*10
-        meanTags.push(tempScore)
+        tagsMean.push(arrayMean(varScheme.tags[tagsKey[i]].userScore))
+    }
+    tagsMean = arrayMean(tagsMean)
+    for(let i=0; i<tagsKey.length; i++){
+        var tempScore = arrayMean(varScheme.tags[tagsKey[i]].userScore)
         var count = varScheme.tags[tagsKey[i]].count
-        if(count>=tagsMedianCount){
+        if(count>=tagsMedianCount||tempScore<tagsMean){
             varScheme.tags[tagsKey[i]+"Dense"] = tempScore
         }
         varScheme.tags[tagsKey[i]] = tempScore
     }
+    //
     var studiosKey = Object.keys(varScheme.studios)
+    var studiosMean = []
     for(let i=0; i<studiosKey.length; i++){
-        var tempScore = arrayMean(varScheme.studios[studiosKey[i]].userScore)*10
-        meanStudios.push(tempScore)
+        studiosMean.push(arrayMean(varScheme.studios[studiosKey[i]].userScore))
+    }
+    studiosMean = arrayMean(studiosMean)
+    for(let i=0; i<studiosKey.length; i++){
+        var tempScore = arrayMean(varScheme.studios[studiosKey[i]].userScore)
         var count = varScheme.studios[studiosKey[i]].count
-        if(count>=studiosMedianCount){
+        if(count>=studiosMedianCount||tempScore<studiosMean){
             varScheme.studios[studiosKey[i]+"Dense"] = tempScore
         }
         varScheme.studios[studiosKey[i]] = tempScore
     }
+    //
     var staffKey = Object.keys(varScheme.staff)
+    var staffMean = []
     for(let i=0; i<staffKey.length; i++){
-        var tempScore = arrayMean(varScheme.staff[staffKey[i]].userScore)*10
-        meanStaff.push(tempScore)
+        staffMean.push(arrayMean(varScheme.staff[staffKey[i]].userScore))
+    }
+    staffMean = arrayMean(staffMean)
+    for(let i=0; i<staffKey.length; i++){
+        var tempScore = arrayMean(varScheme.staff[staffKey[i]].userScore)
         var count = varScheme.staff[staffKey[i]].count
-        if(count>=staffMedianCount){
+        if(count>=staffMedianCount||tempScore<staffMean){
             varScheme.staff[staffKey[i]+"Dense"] = tempScore
         }
         varScheme.staff[staffKey[i]] = tempScore
@@ -533,10 +570,10 @@ self.onmessage = (message) => {
     // Join Data
     var varSchemeKeys = Object.keys(varScheme)
     var tempVar = {
-        meanGenres: arrayMean(meanGenres),
-        meanTags: arrayMean(meanTags),
-        meanStaff: arrayMean(meanStaff),
-        meanStudios: arrayMean(meanStudios),
+        meanGenres: genresMean,
+        meanTags: tagsMean,
+        meanStudios: studiosMean,
+        meanStaff: staffMean
     }
     for(let i=0; i<varSchemeKeys.length; i++){
         var variables = varScheme[varSchemeKeys[i]]
@@ -546,77 +583,101 @@ self.onmessage = (message) => {
         }
     }
     // Create Model for Numbers| y is predicted so userscore
-    var episodesX = [], episodesY = []
-    for(let i=0; i<episodes.length;i++){
-        episodesX.push(episodes[i].episodes)
-        episodesY.push(episodes[i].userScore)
-    }
-    tempVar["episodesModel"] = linearRegression(episodesX,episodesY)
-    var durationX = [], durationY = []
-    for(let i=0; i<duration.length;i++){
-        durationX.push(duration[i].duration)
-        durationY.push(duration[i].userScore)
-    }
-    tempVar["durationModel"] = linearRegression(durationX,durationY)
+    // Average Score Model
     var averageScoreX = [], averageScoreY = []
     for(let i=0; i<averageScore.length;i++){
         averageScoreX.push(averageScore[i].averageScore)
         averageScoreY.push(averageScore[i].userScore)
     }
-    tempVar["averageScoreModel"] = linearRegression(averageScoreX,averageScoreY)
+    if(averageScoreX.length>0&&averageScoreY.length>0){
+        tempVar["averageScoreModel"] = linearRegression(averageScoreX,averageScoreY)
+    }
+    // For Anime Length Model
+    var animeLengthModels = []
+    var episodesX = [], episodesY = []
+    for(let i=0; i<episodes.length;i++){
+        episodesX.push(episodes[i].episodes)
+        episodesY.push(episodes[i].userScore)
+    }
+    animeLengthModels.push([linearRegression(episodesX,episodesY),"episodesModel"])
+    var durationX = [], durationY = []
+    for(let i=0; i<duration.length;i++){
+        durationX.push(duration[i].duration)
+        durationY.push(duration[i].userScore)
+    }
+    animeLengthModels.push([linearRegression(durationX,durationY),"durationModel"])
+    var sortedAnimeLengthModels = animeLengthModels.sort(function(a, b) {
+        return b[0].r2 - a[0].r2;
+    })
+    sortedAnimeLengthModels = sortedAnimeLengthModels[0]
+    tempVar[sortedAnimeLengthModels[1]] = sortedAnimeLengthModels[0]
+    // For Variable Count Model
+    var variableCountModels = []
     var trendingX = [], trendingY = []
     for(let i=0; i<trending.length;i++){
         trendingX.push(trending[i].trending)
         trendingY.push(trending[i].userScore)
     }
-    tempVar["trendingModel"] = linearRegression(trendingX,trendingY)
+    variableCountModels.push([linearRegression(trendingX,trendingY),"trendingModel"])
     var popularityX = [], popularityY = []
     for(let i=0; i<popularity.length;i++){
         popularityX.push(popularity[i].popularity)
         popularityY.push(popularity[i].userScore)
     }
-    tempVar["popularityModel"] = linearRegression(popularityX,popularityY)
+    variableCountModels.push([linearRegression(popularityX,popularityY),"popularityModel"])
     var favouritesX = [], favouritesY = []
     for(let i=0; i<favourites.length;i++){
         favouritesX.push(favourites[i].favourites)
         favouritesY.push(favourites[i].userScore)
     }
-    tempVar["favouritesModel"] = linearRegression(favouritesX,favouritesY)
+    variableCountModels.push([linearRegression(favouritesX,favouritesY),"favouritesModel"])
+    var sortedVariableCountModels = variableCountModels.sort(function(a, b) {
+        return b[0].r2 - a[0].r2;
+    })
+    sortedVariableCountModels = sortedVariableCountModels[0]
+    tempVar[sortedVariableCountModels[1]] = sortedVariableCountModels[0]
+    // For Well Known Model
+    var wellKnownAnimeModels = []
     var genresCountX = [], genresCountY = []
     for(let i=0; i<favourites.length;i++){
         genresCountX.push(genresCount[i].genresCount)
         genresCountY.push(genresCount[i].userScore)
     }
-    tempVar["genresCountModel"] = linearRegression(genresCountX,genresCountY)
+    wellKnownAnimeModels.push([linearRegression(genresCountX,genresCountY),"genresCountModel"])
     var tagsCountX = [], tagsCountY = []
     for(let i=0; i<tagsCount.length;i++){
         tagsCountX.push(tagsCount[i].tagsCount)
         tagsCountY.push(tagsCount[i].userScore)
     }
-    tempVar["tagsCountModel"] = linearRegression(tagsCountX,tagsCountY)
+    wellKnownAnimeModels.push([linearRegression(tagsCountX,tagsCountY),"tagsCountModel"])
     var studiosCountX = [], studiosCountY = []
     for(let i=0; i<favourites.length;i++){
         studiosCountX.push(studiosCount[i].studiosCount)
         studiosCountY.push(studiosCount[i].userScore)
     }
-    tempVar["studiosCountModel"] = linearRegression(studiosCountX,studiosCountY)
+    wellKnownAnimeModels.push([linearRegression(studiosCountX,studiosCountY),"studiosCountModel"])
     var staffCountX = [], staffCountY = []
     for(let i=0; i<favourites.length;i++){
         staffCountX.push(staffCount[i].staffCount)
         staffCountY.push(staffCount[i].userScore)
     }
-    tempVar["staffCountModel"] = linearRegression(staffCountX,staffCountY)
+    wellKnownAnimeModels.push([linearRegression(staffCountX,staffCountY),"staffCountModel"])
+    var sortedWellKnownAnimeModels = wellKnownAnimeModels.sort(function(a, b) {
+        return b[0].r2 - a[0].r2;
+    })
+    sortedWellKnownAnimeModels = sortedWellKnownAnimeModels[0]
+    tempVar[sortedWellKnownAnimeModels[1]] = sortedWellKnownAnimeModels[0]
     varScheme = tempVar
-    var meanR2 = arrayMedian([varScheme.episodesModel.r2,varScheme.durationModel.r2,varScheme.averageScoreModel.r2,
-        varScheme.trendingModel.r2,varScheme.popularityModel.r2,varScheme.favouritesModel.r2,varScheme.genresCountModel.r2,
-        varScheme.tagsCountModel.r2,varScheme.studiosCountModel.r2,varScheme.staffCountModel.r2])
-    var models = ["episodesModel","durationModel","averageScoreModel","trendingModel","popularityModel",
-        "favouritesModel","genresCountModel","tagsCountModel","studiosCountModel","staffCountModel"]
-    for(let i=0;i<models.length;i++){
-        if(varScheme[models[i]].r2>=meanR2){
-            varScheme[models[i]+"Dense"] = varScheme[models[i]]
-        }
-    }
+    // var meanR2 = arrayMedian([varScheme.episodesModel.r2,varScheme.durationModel.r2,varScheme.averageScoreModel.r2,
+    //     varScheme.trendingModel.r2,varScheme.popularityModel.r2,varScheme.favouritesModel.r2,varScheme.genresCountModel.r2,
+    //     varScheme.tagsCountModel.r2,varScheme.studiosCountModel.r2,varScheme.staffCountModel.r2])
+    // var models = ["episodesModel","durationModel","averageScoreModel","trendingModel","popularityModel",
+    //     "favouritesModel","genresCountModel","tagsCountModel","studiosCountModel","staffCountModel"]
+    // for(let i=0;i<models.length;i++){
+    //     if(varScheme[models[i]].r2>=meanR2){
+    //         varScheme[models[i]+"Dense"] = varScheme[models[i]]
+    //     }
+    // }
     self.postMessage({
         varScheme: varScheme, 
         userListStatus: userListStatus,

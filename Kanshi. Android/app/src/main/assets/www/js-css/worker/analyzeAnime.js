@@ -46,7 +46,6 @@ self.onmessage = (message) => {
             allFilterInfo[season.toLowerCase()] = true
             allFilterInfo["!"+season.toLowerCase()] = true
         }
-        var score = []
         // Arrange
         var xformat = format!=="Format: N/A"?`Format: ${format}`:`${Math.random()}`
         var xyear = year!=="Year: N/A"?"Year: "+year:`x${Math.random()}`
@@ -112,45 +111,45 @@ self.onmessage = (message) => {
         var zformatDense = []
         if(varImportance[xformat]!==undefined) {
             zformat.push(varImportance[xformat])
+        }
+        if(varImportance[xformat+"Dense"]!==undefined) {
+            zformatDense.push(varImportance[xformat+"Dense"])
             savedAnalyzedVariablesCount[title] += 1
             analyzedVariableCount += 1
-            if(varImportance[xformat+"Dense"]!==undefined) {
-                zformatDense.push(varImportance[xformat+"Dense"])
-            }
         }
         var zyear = []
         var zyearDense = []
         if(varImportance[xyear]!==undefined) {
             zyear.push(varImportance[xyear])
+        }
+        if(varImportance[xyear+"Dense"]!==undefined) {
+            zyearDense.push(varImportance[xyear+"Dense"])
             savedAnalyzedVariablesCount[title] += 1
             analyzedVariableCount += 1
-            if(varImportance[xyear+"Dense"]!==undefined) {
-                zyearDense.push(varImportance[xyear+"Dense"])
-            }
         }
         var zseason = []
         var zseasonDense = []
         if(varImportance[xseason]!==undefined) {
             zseason.push(varImportance[xseason])
+        }
+        if(varImportance[xseason+"Dense"]!==undefined) {
+            zseasonDense.push(varImportance[xseason+"Dense"])
             savedAnalyzedVariablesCount[title] += 1
             analyzedVariableCount += 1
-            if(varImportance[xseason+"Dense"]!==undefined) {
-                zseasonDense.push(varImportance[xseason+"Dense"])
-            }
         }
         var zgenres = []
         var zgenresDense = []
         for(let j=0; j<xgenres.length; j++){
             if(varImportance[xgenres[j]]!==undefined) {
                 zgenres.push(varImportance[xgenres[j]])
-                savedAnalyzedVariablesCount[title] += 1
-                analyzedVariableCount += 1
                 if(varImportance[xgenres[j]]>=varImportance.meanGenres
                     &&genresIncluded[xgenres[j]]===undefined){
                     genresIncluded[xgenres[j]] = [xgenres[j].replace("Genre: ",""),varImportance[xgenres[j]]]
                 }
             }
             if(varImportance[xgenres[j]+"Dense"]!==undefined) {
+                savedAnalyzedVariablesCount[title] += 1
+                analyzedVariableCount += 1
                 zgenresDense.push(varImportance[xgenres[j]+"Dense"])
             }
         }
@@ -159,8 +158,6 @@ self.onmessage = (message) => {
         for(let j=0; j<xtags.length; j++){
             if(varImportance[xtags[j]]!==undefined) {
                 ztags.push(varImportance[xtags[j]])
-                savedAnalyzedVariablesCount[title] += 1
-                analyzedVariableCount += 1
                 if(varImportance[xtags[j]]>=varImportance.meanTags
                     &&tagsIncluded[xtags[j]]===undefined){
                     tagsIncluded[xtags[j]] = [xtags[j].replace("Tag: ",""),varImportance[xtags[j]]]
@@ -168,6 +165,8 @@ self.onmessage = (message) => {
             }
             if(varImportance[xtags[j]+"Dense"]!==undefined) {
                 ztagsDense.push(varImportance[xtags[j]+"Dense"])
+                savedAnalyzedVariablesCount[title] += 1
+                analyzedVariableCount += 1
             }
         }
         var zstudios = []
@@ -175,8 +174,6 @@ self.onmessage = (message) => {
         for(let j=0; j<xstudios.length; j++){
             if(varImportance[xstudios[j]]!==undefined) {
                 zstudios.push(varImportance[xstudios[j]])
-                savedAnalyzedVariablesCount[title] += 1
-                analyzedVariableCount += 1
                 if(varImportance[xstudios[j]]>=varImportance.meanStudios
                     &&studiosIncluded[xstudios[j]]===undefined){
                     studiosIncluded[xstudios[j]] = [{[xstudios[j].replace("Studio: ","")]: studios[j].siteUrl},varImportance[xstudios[j]]]
@@ -184,6 +181,8 @@ self.onmessage = (message) => {
             }
             if(varImportance[xstudios[j]+"Dense"]!==undefined) {
                 zstudiosDense.push(varImportance[xstudios[j]+"Dense"])
+                savedAnalyzedVariablesCount[title] += 1
+                analyzedVariableCount += 1
             }
         }
         var zstaff = []
@@ -191,8 +190,6 @@ self.onmessage = (message) => {
         for(let j=0; j<xstaff.length; j++){
             if(varImportance[xstaff[j]]!==undefined) {
                 zstaff.push(varImportance[xstaff[j]])
-                savedAnalyzedVariablesCount[title] += 1
-                analyzedVariableCount += 1
                 if(varImportance[xstaff[j]]>=varImportance.meanStaff
                     &&staffIncluded[xstaff[j]]===undefined){
                     staffIncluded[xstaff[j]] = [{[xstaff[j].replace("Staff: ","")]: staff[j].siteUrl},varImportance[xstaff[j]]]
@@ -200,79 +197,132 @@ self.onmessage = (message) => {
             }
             if(varImportance[xstaff[j]+"Dense"]!==undefined) {
                 zstaffDense.push(varImportance[xstaff[j]+"Dense"])
+                savedAnalyzedVariablesCount[title] += 1
+                analyzedVariableCount += 1
             }
         }
         // Original Scores
           // Categorical
-        zformat = zformat.length===0?0:arrayMean(zformat)
-        zyear = zyear.length===0?0:arrayMean(zyear)
-        zseason = zseason.length===0?0:arrayMean(zseason)
-        zgenres = zgenres.length===0?0:arrayMean(zgenres)
-        ztags = ztags.length===0?0:arrayMean(ztags)
-        zstudios = zstudios.length===0?0:arrayMean(zstudios)
-        zstaff = zstaff.length===0?0:arrayMean(zstaff)
-          // Linear Models
-        var zepisodes = anime.episodes===null?0:LRpredict(varImportance.episodesModel,anime.episodes)
-        var zduration = anime.duration===null?0:LRpredict(varImportance.durationModel,anime.duration)
-        var zaverageScore = anime.averageScore===null?0:LRpredict(varImportance.averageScoreModel,anime.averageScore)
-        var ztrending = anime.trending===null?0:LRpredict(varImportance.trendingModel,anime.trending)
-        var zpopularity = anime.popularity===null?0:LRpredict(varImportance.popularityModel,anime.popularity)
-        var zfavourites = anime.favourites===null?0:LRpredict(varImportance.favouritesModel,anime.favourites)
-          // Variable Count
-        var zgenresCount = genresCount===null?0:LRpredict(varImportance.genresCountModel,genresCount)
-        var ztagsCount = tagsCount===null?0:LRpredict(varImportance.tagsCountModel,tagsCount)
-        var zstudiosCount = studiosCount===null?0:LRpredict(varImportance.studiosCountModel,studiosCount)
-        var zstaffCount = staffCount===null?0:LRpredict(varImportance.staffCountModel,staffCount)
+        var categoricalOSArray = []
+        if(zformat.length>0){
+            categoricalOSArray.push(arrayMean(zformat))
+        }
+        if(zyear.length>0){
+            categoricalOSArray.push(arrayMean(zyear))
+        }
+        if(zseason.length>0){
+            categoricalOSArray.push(arrayMean(zseason))
+        }
+        if(zgenres.length>0){
+            categoricalOSArray.push(arrayMean(zgenres))
+        }
+        if(ztags.length>0){
+            categoricalOSArray.push(arrayMean(ztags))
+        }
+        if(zstudios.length>0){
+            categoricalOSArray.push(arrayMean(zstudios))
+        }
+        if(zstaff.length>0){
+            categoricalOSArray.push(arrayMean(zstaff))
+        }
         // Weighted
+          // Categorical
+        var categoricalWSArray = []
+        if(zformatDense.length>0){
+            categoricalWSArray.push(arrayMean(zformatDense))
+        }
+        if(zyearDense.length>0){
+            categoricalWSArray.push(arrayMean(zyearDense))
+        }
+        if(zseasonDense.length>0){
+            categoricalWSArray.push(arrayMean(zseasonDense))
+        }
+        if(zgenresDense.length>0){
+            categoricalWSArray.push(arrayMean(zgenresDense))
+        }
+        if(ztagsDense.length>0){
+            categoricalWSArray.push(arrayMean(ztagsDense))
+        }
+        if(zstudiosDense.length>0){
+            categoricalWSArray.push(arrayMean(zstudiosDense))
+        }
+        if(zstaffDense.length>0){
+            categoricalWSArray.push(arrayMean(zstaffDense))
+        }
+        // Original Scores
+          // Linear Models
+        var modelsArray = []
+            // Average Score
+        if(!isNaN(anime.averageScore)&&varImportance.averageScoreModel!==undefined){
+            modelsArray.push(LRpredict(varImportance.averageScoreModel,anime.averageScore))
+        }
+            // Anime Length
+        if(!isNaN(anime.episodes)&&varImportance.episodesModel!==undefined){
+            modelsArray.push(LRpredict(varImportance.episodesModel,anime.episodes))
+        }
+        if(!isNaN(anime.duration)&&varImportance.durationModel!==undefined){
+            modelsArray.push(LRpredict(varImportance.durationModel,anime.duration))
+        }
+            // Popularity
+        if(!isNaN(anime.trending)&&varImportance.trendingModel!==undefined){
+            modelsArray.push(LRpredict(varImportance.trendingModel,anime.trending))
+        }
+        if(!isNaN(anime.popularity)&&varImportance.popularityModel!==undefined){
+            modelsArray.push(LRpredict(varImportance.popularityModel,anime.popularity))
+        }
+        if(!isNaN(anime.favourites)&&varImportance.favouritesModel!==undefined){
+            modelsArray.push(LRpredict(varImportance.favouritesModel,anime.favourites))
+        }
+          // Variable Count
+        if(!isNaN(genresCount)&&varImportance.genresCountModel!==undefined){
+            modelsArray.push(LRpredict(varImportance.genresCountModel,genresCount))
+        }
+        if(!isNaN(tagsCount)&&varImportance.tagsCountModel!==undefined){
+            modelsArray.push(LRpredict(varImportance.tagsCountModel,tagsCount))
+        }
+        if(!isNaN(studiosCount)&&varImportance.studiosCountModel!==undefined){
+            modelsArray.push(LRpredict(varImportance.studiosCountModel,studiosCount))
+        }
+        if(!isNaN(staffCount)&&varImportance.staffCountModel!==undefined){
+            modelsArray.push(LRpredict(varImportance.staffCountModel,staffCount))
+        }
             //
-        zformatDense = zformatDense.length===0?0:arrayMean(zformatDense)
-        zyearDense = zyearDense.length===0?0:arrayMean(zyearDense)
-        zseasonDense = zseasonDense.length===0?0:arrayMean(zseasonDense)
-        zgenresDense = zgenresDense.length===0?0:arrayMean(zgenresDense)
-        ztagsDense = ztagsDense.length===0?0:arrayMean(ztagsDense)
-        zstudiosDense = zstudiosDense.length===0?0:arrayMean(zstudiosDense)
-        zstaffDense = zstaffDense.length===0?0:arrayMean(zstaffDense)
-            //
-        var modelsDenseArray = []
-        if(varImportance.episodesModelDense!==undefined){
-            modelsDenseArray.push(zepisodes)
-        }
-        if(varImportance.durationModelDense!==undefined){
-            modelsDenseArray.push(zduration)
-        }
-        if(varImportance.averageScoreModelDense!==undefined){
-            modelsDenseArray.push(zaverageScore)
-        }
-        if(varImportance.trendingModelDense!==undefined){
-            modelsDenseArray.push(ztrending)
-        }
-        if(varImportance.popularityModelDense!==undefined){
-            modelsDenseArray.push(zpopularity)
-        }
-        if(varImportance.favouritesModelDense!==undefined){
-            modelsDenseArray.push(zfavourites)
-        }
-        if(varImportance.genresCountModelDense!==undefined){
-            modelsDenseArray.push(zgenresCount)
-        }
-        if(varImportance.tagsCountModelDense!==undefined){
-            modelsDenseArray.push(ztagsCount)
-        }
-        if(varImportance.studiosCountModelDense!==undefined){
-            modelsDenseArray.push(zstudiosCount)
-        }
-        if(varImportance.staffCountModelDense!==undefined){
-            modelsDenseArray.push(zstaffCount)
-        }
-        score = arrayMean([
-            zformat,zyear,zseason,zgenres,ztags,zstaff,zstudios,
-            zepisodes,zduration,zaverageScore,ztrending,zpopularity,zfavourites,
-            zgenresCount,ztagsCount,zstudiosCount,zstaffCount
-        ])
-        weightedScore = arrayMean(
-            [zformatDense,zyearDense,zseasonDense,zgenresDense,ztagsDense,zstaffDense,zstudiosDense]
-            .concat(modelsDenseArray)
-        )
+        // var modelsDenseArray = []
+        // if(varImportance.episodesModelDense!==undefined){
+        //     modelsDenseArray.push(zepisodes)
+        // }
+        // if(varImportance.durationModelDense!==undefined){
+        //     modelsDenseArray.push(zduration)
+        // }
+        // if(varImportance.averageScoreModelDense!==undefined){
+        //     modelsDenseArray.push(zaverageScore)
+        // }
+        // if(varImportance.trendingModelDense!==undefined){
+        //     modelsDenseArray.push(ztrending)
+        // }
+        // if(varImportance.popularityModelDense!==undefined){
+        //     modelsDenseArray.push(zpopularity)
+        // }
+        // if(varImportance.favouritesModelDense!==undefined){
+        //     modelsDenseArray.push(zfavourites)
+        // }
+        // if(varImportance.genresCountModelDense!==undefined){
+        //     modelsDenseArray.push(zgenresCount)
+        // }
+        // if(varImportance.tagsCountModelDense!==undefined){
+        //     modelsDenseArray.push(ztagsCount)
+        // }
+        // if(varImportance.studiosCountModelDense!==undefined){
+        //     modelsDenseArray.push(zstudiosCount)
+        // }
+        // if(varImportance.staffCountModelDense!==undefined){
+        //     modelsDenseArray.push(zstaffCount)
+        // }
+        // zepisodes,zduration,zaverageScore,ztrending,zpopularity,zfavourites,
+        // zgenresCount,ztagsCount,zstudiosCount,zstaffCount
+        // Scores
+        score = arrayMean(categoricalOSArray.concat(modelsArray))
+        weightedScore = arrayMean(categoricalWSArray.concat(modelsArray))
         // Other Anime Recommendation Info
         for(let k=0; k<userListStatus.length; k++){
             if(userListStatus[k].title===title){
@@ -316,8 +366,8 @@ self.onmessage = (message) => {
         }
         const limitShown = 10
         variablesIncluded = tempVariablesIncluded.length>0?tempVariablesIncluded.slice(0,limitShown) : []
-        savedRecScheme[title] = {
-            title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
+        savedRecScheme[title] = {//delete this analyzedVariableCount on score
+            title: title, animeUrl: animeUrl, score: analyzedVariableCount, weightedScore: weightedScore, 
             status: status, genres: genres, tags: tags, year: year, 
             season: season, format: format, studios: studios, staff: staff,
             variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount,
@@ -326,6 +376,7 @@ self.onmessage = (message) => {
     var savedRecSchemeEntries = Object.keys(savedRecScheme)
     var analyzedVariableSum = arraySum(Object.values(savedAnalyzedVariablesCount))
     var analyzedVariableMean = arrayMean(Object.values(savedAnalyzedVariablesCount))
+    var analyzedVariableMedian = arrayMedian(Object.values(savedAnalyzedVariablesCount))
     for(let i=0;i<savedRecSchemeEntries.length;i++){
         var anime = savedRecScheme[savedRecSchemeEntries[i]]
         if(anime.analyzedVariableCount<analyzedVariableMean){
