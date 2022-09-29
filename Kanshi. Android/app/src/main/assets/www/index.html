@@ -643,7 +643,7 @@
     var request, db,
         // Saved Data
     savedUsername, savedRecScheme, savedFilters, savedUserList, savedAnimeEntries, savedHiddenAnimeTitles,
-    savedYscroll, savedTablePage, savedTableStatus, savedSort,
+    savedYscroll, savedHiddenTablePage, savedUnhiddenTablePage, savedTableStatus, savedSort,
     exportPathIsAvailable, savedFilterOptionsJson, allFilterInfo,
     exportIntervalIsActive, updateIntervalIsActive, exportIntervalStartDate, updateIntervalStartDate,
     exportIntervalTimeout = [], updateIntervalTimeout = [],
@@ -651,7 +651,7 @@
         // Load Saved API Request State
     savedAnalyzeVariableTime, savedUpdateAnalyzeAnimeTime, savedDeepUpdateTime,
     deepUpdateStartTime, isDeepUpdate, requestIntervalSeconds, savedLastRequestDate, requestPause,
-    updateStartTime, isRunning = false, requestIsRunning = false, temp = []
+    updateStartTime, isRunning = false, requestIsRunning = false, isLoading = false, temp = []
     // Create IndexDB
     $(window).load(async function() {
         await new Promise((resolve)=>{
@@ -674,116 +674,111 @@
             setTimeout(()=>{
                 return
             },1000)
-            await new Promise(async(resolve)=>{// Load Functions
-                savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
+            await new Promise(async(resolve)=>{
+                savedUnhiddenTablePage = await retrieveJSON("savedUnhiddenTablePage") || 0
+                savedHiddenTablePage = await retrieveJSON("savedHiddenTablePage") || 0
                 savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
+                resolve()
+            })
+            return
+        }).then(async()=>{
+            setTimeout(()=>{
+                return
+            },1000)
+            await new Promise(async(resolve)=>{// Load Functions
                 await $("#anime-table")
-                .tablesorter({
-                    sortInitialOrder: "asc",
-                    headers: {
-                        1:{sortInitialOrder: "desc"},
-                        4:{sortInitialOrder: "desc"},
-                        9:{sortInitialOrder: "desc"},
-                    },
-                    widgets: ["saveSort"],
-                    widgetOptions : {
-                        saveSort : true
-                    }
-                })
-                .tablesorterPager({
-                    container: $(".pager"),
-                    updateArrows: true,
-                    page: savedTableStatus==="Unhidden"? savedTablePage[0]:savedTablePage[1],
-                    savePages: true,
-                    size: 8,
-                    pageReset: false,
-                    removeRows: true,
-                    fixedHeight: true,
-                    cssNext: '.next',
-                    cssPrev: '.prev',
-                    cssFirst: '.first',
-                    cssLast: '.last',
-                    cssGoto: '.pagenum',
-                    cssPageDisplay: '.pagedisplay'
-                })
-                .bind('pageMoved', async function(){
-                    await setTimeout(async()=>{
-                        let setPageInfo = await setInterval(async()=>{
-                            if(typeof $('#anime-table')[0].config!=="undefined"){
-                                await clearInterval(setPageInfo)
-                                await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
-                            }
-                        },1)
-                    },0)
-                    var page = await $('#anime-table')[0].config.pager.page
-                    savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
-                    savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
-                    await saveJSON(savedTableStatus==="Unhidden"?[page,savedTablePage[1]||0]:[savedTablePage[0]||0,page],"savedTablePage")
-                })
-                .delegate('button.hide-anime', 'click' , async function() {
-                    var hiddenRow =  await $(this).closest('tr')
-                    var hiddenAnimeTitle = await hiddenRow.children("td#animeTitle").children("a")[0].textContent
-                    savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
-                    await savedHiddenAnimeTitles.push(hiddenAnimeTitle)
-                    await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
-                    hiddenRow.addClass("remove-me")
-                    $("#anime-table").trigger("pagerUpdate")
-                    if($("#anime-table")[0].config.rowsCopy.length===0){
-                        await $("#animeRecommendationList").empty()
-                        await $("#animeRecommendationList").append(`
-                            <tr class="item" role="row">
-                                <td style="padding: 1.5em !important;" colspan="13">
-                                    <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                                    No Data
-                                </td>
-                            </tr>
-                        `)
-                    }
-                    // Have a Hidden Anime
-                    if(await savedHiddenAnimeTitles.length>0){
-                        await $("#showAllAnime").show()
-                    }
-                    await setTimeout(async()=>{
-                        let setPageInfo = await setInterval(async()=>{
-                            if(typeof $('#anime-table')[0].config!=="undefined"){
-                                await clearInterval(setPageInfo)
-                                await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
-                            }
-                        },1)
-                    },0)
-                    return false
-                })
-                .delegate('button.show-anime', 'click' , async function() {
-                    var hiddenRow = await $(this).closest('tr')
-                    var hiddenAnimeTitle = await hiddenRow.children("td#animeTitle").children("a")[0].textContent
-                    savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
-                    savedHiddenAnimeTitles = await savedHiddenAnimeTitles.filter((v)=>v!==hiddenAnimeTitle)
-                    await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
-                    // No Hidden Anime
-                    await hiddenRow.addClass("remove-me")
-                    await $("#anime-table").trigger("pagerUpdate")
-                    if(await savedHiddenAnimeTitles.length===0||$("#anime-table")[0].config.rowsCopy.length===0){
-                        await $("#animeRecommendationList").empty()
-                        await $("#animeRecommendationList").append(`
-                            <tr class="item" role="row">
-                                <td style="padding: 1.5em !important;" colspan="13">
-                                    <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                                    No Data
-                                </td>
-                            </tr>
-                        `)
-                        await $("#showAllAnime").hide()
-                    }
-                    await setTimeout(async()=>{
-                        let setPageInfo = await setInterval(async()=>{
-                            if(await (typeof $('#anime-table')[0].config!=="undefined")){
-                                await clearInterval(setPageInfo)
-                                await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
-                            }
-                        },1)
-                    },0)
-                    return false
-                })
+                    .tablesorter({
+                        sortInitialOrder: "asc",
+                        headers: {
+                            1:{sortInitialOrder: "desc"},
+                            4:{sortInitialOrder: "desc"},
+                            9:{sortInitialOrder: "desc"},
+                        },
+                        widgets: ["saveSort"],
+                        widgetOptions : {
+                            saveSort : true
+                        }
+                    })
+                    .tablesorterPager({
+                        container: $(".pager"),
+                        updateArrows: true,
+                        page: (savedTableStatus==="Unhidden"? savedUnhiddenTablePage:savedHiddenTablePage),
+                        savePages: true,
+                        size: 8,
+                        pageReset: false,
+                        removeRows: true,
+                        fixedHeight: true,
+                        cssNext: '.next',
+                        cssPrev: '.prev',
+                        cssFirst: '.first',
+                        cssLast: '.last',
+                        cssGoto: '.pagenum',
+                        cssPageDisplay: '.pagedisplay'
+                    })
+                    .delegate('button.hide-anime', 'click' , async function() {
+                        var hiddenRow =  await $(this).closest('tr')
+                        var hiddenAnimeTitle = await hiddenRow.children("td#animeTitle").children("a")[0].textContent
+                        savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
+                        await savedHiddenAnimeTitles.push(hiddenAnimeTitle)
+                        await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                        hiddenRow.addClass("remove-me")
+                        $("#anime-table").trigger("pagerUpdate")
+                        if($("#anime-table")[0].config.rowsCopy.length===0){
+                            await $("#animeRecommendationList").empty()
+                            await $("#animeRecommendationList").append(`
+                                <tr class="item" role="row">
+                                    <td style="padding: 1.5em !important;" colspan="13">
+                                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                        No Data
+                                    </td>
+                                </tr>
+                            `)
+                        }
+                        // Have a Hidden Anime
+                        if(await savedHiddenAnimeTitles.length>0){
+                            await $("#showAllAnime").show()
+                        }
+                        await setTimeout(async()=>{
+                            let setPageInfo = await setInterval(async()=>{
+                                if(typeof $('#anime-table')[0].config!=="undefined"){
+                                    await clearInterval(setPageInfo)
+                                    await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                                }
+                            },1)
+                        },0)
+                        return false
+                    })
+                    .delegate('button.show-anime', 'click' , async function() {
+                        var hiddenRow = await $(this).closest('tr')
+                        var hiddenAnimeTitle = await hiddenRow.children("td#animeTitle").children("a")[0].textContent
+                        savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
+                        savedHiddenAnimeTitles = await savedHiddenAnimeTitles.filter((v)=>v!==hiddenAnimeTitle)
+                        await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                        // No Hidden Anime
+                        await hiddenRow.addClass("remove-me")
+                        await $("#anime-table").trigger("pagerUpdate")
+                        if(await savedHiddenAnimeTitles.length===0||$("#anime-table")[0].config.rowsCopy.length===0){
+                            await $("#animeRecommendationList").empty()
+                            await $("#animeRecommendationList").append(`
+                                <tr class="item" role="row">
+                                    <td style="padding: 1.5em !important;" colspan="13">
+                                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                        No Data
+                                    </td>
+                                </tr>
+                            `)
+                            await $("#showAllAnime").hide()
+                        }
+                        await setTimeout(async()=>{
+                            let setPageInfo = await setInterval(async()=>{
+                                if(await (typeof $('#anime-table')[0].config!=="undefined")){
+                                    await clearInterval(setPageInfo)
+                                    await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                                }
+                            },1)
+                        },0)
+                        return false
+                    })
                 resolve()
             })
             return 
@@ -791,6 +786,7 @@
             setTimeout(()=>{
                 return
             },1000)
+
             await new Promise(async(resolve) => {
                 // Auto css
                 await $(".table-responsive").css("margin-bottom",`${$("#pager").outerHeight()+43}px`)
@@ -937,6 +933,30 @@
                         }
                     }
                 },1)
+            })
+            return
+        }).then(async()=>{
+            await new Promise(async(resolve, reject) => {
+                await $("#anime-table")
+                    .bind('pageMoved', async function(){
+                        await setTimeout(async()=>{
+                            let setPageInfo = await setInterval(async()=>{
+                                if(typeof $('#anime-table')[0].config!=="undefined"){
+                                    await clearInterval(setPageInfo)
+                                    await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                                    var page = await $('#anime-table')[0].config.pager.page
+                                    ++page
+                                    savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
+                                    if(savedTableStatus==="Unhidden"){
+                                        saveJSON(page,"savedUnhiddenTablePage")
+                                    } else {
+                                        saveJSON(page,"savedHiddenTablePage")
+                                    }
+                                }
+                            },1)
+                        },0)
+                    })
+                resolve()
             })
             return
         }).then(async()=>{
@@ -1254,6 +1274,7 @@
                         await filterInput.trigger(e)
                         await filterInput.val("")
                     }
+                    await $("#hiddenUnhiddenBtn").text("Hidden")
                     saveJSON("Hidden","savedTableStatus")
                     await $("#animeRecommendationList").empty()
                     await $("#animeRecommendationList").append(`
@@ -1267,9 +1288,6 @@
                         </tr>
                     `)
                     await LoadData(savedRecScheme)
-                    await $("#hiddenUnhiddenBtn").text("Hidden")
-                    savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
-                    $("#anime-table").trigger("pageSet",1+savedTablePage[0])
                     setTimeout(()=>{
                         let setPageInfo = setInterval(()=>{
                             if(typeof $('#anime-table')[0].config!=="undefined"){
@@ -1290,6 +1308,7 @@
                             }
                         }
                     }
+                    await $("#hiddenUnhiddenBtn").text("Unhidden")
                     saveJSON("Unhidden","savedTableStatus")
                     await $("#animeRecommendationList").empty()
                     await $("#animeRecommendationList").append(`
@@ -1303,10 +1322,6 @@
                         </tr>
                     `)
                     await LoadData(savedRecScheme)
-                    $("#hiddenUnhiddenBtn").text("Unhidden")
-                    savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
-                    savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
-                    $("#anime-table").trigger("pageSet",1+savedTablePage[1])
                     setTimeout(()=>{
                         let setPageInfo = setInterval(()=>{
                             if(typeof $('#anime-table')[0].config!=="undefined"){
@@ -1315,7 +1330,7 @@
                             }
                         },1)
                     },0)
-                    isRunning = false
+                    isRunning = false                  
                 }
             } else isRunning = false
         }
@@ -1361,8 +1376,8 @@
                 savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                 await LoadData(savedRecScheme)
                 $("#hiddenUnhiddenBtn").text("Unhidden")
-                savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
-                await $('#anime-table').trigger("pageSet",savedTablePage[0])
+                savedUnhiddenTablePage = await retrieveJSON("savedUnhiddenTablePage") || 0
+                await $('#anime-table').trigger("pageSet",savedUnhiddenTablePage)
                 setTimeout(()=>{
                     let setPageInfo = setInterval(()=>{
                         if(typeof $('#anime-table')[0].config!=="undefined"){
@@ -1372,7 +1387,6 @@
                     },1)
                 },0)
                 saveJSON("Unhidden","savedTableStatus")
-                saveJSON($('#anime-table')[0].config.pager.page,"savedTablePage")
                 $("#showAllAnime").hide()
                 $(".menu-container").fadeOut(250)
                 swal("All hidden anime has now been successfully transferred to your List!", {
@@ -2295,6 +2309,7 @@
     
 
     async function LoadData(savedRecScheme){
+        if(!isLoading) isLoading = true
         return new Promise(async (resolve) => {
             var recList = Object.values(savedRecScheme)
             if((recList.length>0)) {
@@ -2328,32 +2343,39 @@
                     worker.terminate()
                     const data = message.data
                     const animeData = data.animeData
-                    await $("#animeRecommendationList").empty()
-                    await $("#animeRecommendationList").css({
-                        "display":"none",
-                        "visibility":"hidden",
-                        "content-visibility":"hidden"
-                    }).append(animeData)
-                    await $("#anime-table").trigger("update")
-                    await $("#anime-table").trigger("pagerUpdate")
-                    await $("#animeRecommendationList").css({"content-visibility":"auto"})
-                    await $("#animeRecommendationList").css({
-                        "display":"",
-                        "visibility":"",
-                        "content-visibility":"auto"
+                    await new Promise(async(resolve) => {
+                        savedUnhiddenTablePage = await retrieveJSON("savedUnhiddenTablePage") || 0
+                        savedHiddenTablePage = await retrieveJSON("savedHiddenTablePage") || 0    
+                        savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
+                        resolve()
+                    }).then(async()=>{
+                        await $("#animeRecommendationList").empty()
+                        await $("#animeRecommendationList").css({
+                            "display":"none",
+                            "visibility":"hidden",
+                            "content-visibility":"hidden"
+                        }).append(animeData)
+                        await $("#anime-table").trigger("update")
+                        await $("#anime-table").trigger("pagerUpdate")
+                        await $("#animeRecommendationList").css({"content-visibility":"auto"})
+                        await $("#animeRecommendationList").css({
+                            "display":"",
+                            "visibility":"",
+                            "content-visibility":"auto"
+                        })
+                        // idk why savedUnhiddenTable Page sets to (page - 1) in SecondTolast and Last
+                        await $("#anime-table").trigger("pageSet",(savedTableStatus==="Unhidden"? savedUnhiddenTablePage:savedHiddenTablePage))
+                        setTimeout(()=>{
+                            let setPageInfo = setInterval(()=>{
+                                if(typeof $('#anime-table')[0].config!=="undefined"){
+                                    clearInterval(setPageInfo)
+                                    $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
+                                }
+                            },1)
+                        },0)
+                        isLoading = false
+                        resolve()
                     })
-                    savedTablePage = await retrieveJSON("savedTablePage") || [0,0]
-                    savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
-                    await $("#anime-table").trigger("pageSet",1+(savedTableStatus==="Unhidden"? savedTablePage[0]:savedTablePage[1]))
-                    setTimeout(()=>{
-                        let setPageInfo = setInterval(()=>{
-                            if(typeof $('#anime-table')[0].config!=="undefined"){
-                                clearInterval(setPageInfo)
-                                $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages}`).prop('selected', true)
-                            }
-                        },1)
-                    },0)
-                    resolve()
                 }
             }
         })
