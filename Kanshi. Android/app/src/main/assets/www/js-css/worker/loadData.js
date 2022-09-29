@@ -6,7 +6,7 @@ self.onmessage = (message) => {
     var excludes = data.excludes
     //
     // FilterOut User Includes and Excludes
-      // Include
+    // Include
     var tempRecScheme = []
     for(let i=0; i<includes.length; i++){
         for(let j=0; j<recList.length; j++){
@@ -22,7 +22,7 @@ self.onmessage = (message) => {
                 continue
             }
             // Numbers
-              // Weighted Score
+            // Weighted Score
             if(includes[i].toLowerCase().includes("wscore<=")){
                 var score=includes[i].toLowerCase().replace("wscore<=", "")
                 if(!isNaN(score)) if(recList[j].weightedScore<=parseFloat(score)) tempRecScheme.push(recList[j])
@@ -43,7 +43,7 @@ self.onmessage = (message) => {
                 if(!isNaN(score)) if(recList[j].weightedScore<parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-              // Score
+            // Score
             if(includes[i].toLowerCase().includes("score<=")&&!includes[i].toLowerCase().includes("wscore<=")){
                 var score=includes[i].toLowerCase().replace("score<=", "")
                 if(!isNaN(score)) if(recList[j].score<=parseFloat(score)) tempRecScheme.push(recList[j])
@@ -64,7 +64,7 @@ self.onmessage = (message) => {
                 if(!isNaN(score)) if(recList[j].score<parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-              // Year
+            // Year
             if(includes[i].toLowerCase().includes("year<=")){
                 var year=includes[i].toLowerCase().replace("year<=", "")
                 if(!isNaN(year)) if(recList[j].year<=parseFloat(year)) tempRecScheme.push(recList[j])
@@ -175,7 +175,7 @@ self.onmessage = (message) => {
         tempRecScheme = []
     }
     // Show Table
-    var animeData = ""
+    var animeData = []
     recList.forEach((value) => {
         var score = parseFloat(value.score)
         var weightedScore = parseFloat(value.weightedScore)
@@ -232,7 +232,7 @@ self.onmessage = (message) => {
             }
         } else {
             if(!savedHiddenAnimeTitles.includes(value.title)){
-                animeData += `
+                animeData.push(`
                 <tr class="item" role="row">
                     <td class="hide-anime-column">
                         <button 
@@ -242,9 +242,8 @@ self.onmessage = (message) => {
                     </td>
                     <td class="anime-score" title="${weightedScore}">${weightedScore}</td>
                     <td id="animeTitle"><a href="${value.animeUrl||"javascript:;"}">${value.title}</a></td>
-                    <td>`
-                        animeData += similarities.length>0 ? similarities.join(", ") : "Similarities: N/A"
-                        animeData += `
+                    <td>
+                        ${similarities.length>0 ? similarities.join(", ") : "Similarities: N/A"}
                     </td>
                     <td class="anime-score" title="${score}">${score}</td>
                     <td>${value.status}</td>
@@ -253,15 +252,13 @@ self.onmessage = (message) => {
                     <td>${value.format}</td>
                     <td>${value.year}</td>
                     <td>${value.season}</td>
-                    <td>`
-                        animeData += studios.length>0 ? studios.join(", ") : "Studios: N/A"
-                        animeData += `
+                    <td>
+                        ${studios.length>0 ? studios.join(", ") : "Studios: N/A"}
                     </td>
-                    <td>`
-                        animeData += staff.length>0 ? staff.join(", ") : "Staff: N/A"
-                        animeData += `
+                    <td>
+                        ${staff.length>0 ? staff.join(", ") : "Staff: N/A"}
                     </td>
-                </tr>`
+                </tr>`)
             }
         }
     })

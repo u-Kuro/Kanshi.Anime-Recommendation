@@ -7,15 +7,15 @@
   2. Run the app and Enter a username of an Exsting anilist account (A properly rated list is highly recommended). If you don't have one, you can easily Create an account in their website ([Anilist](https://anilist.co/home)) or Export your List from MAL (MyAnimeList) if you have one ([MAL export](https://myanimelist.net/panel.php?go=export)) then Import the XML file in the Anilist settings ([Anilist Import](https://anilist.co/settings/import)).
   
   Additional Features
-  1. Filters are available, insert Title/Genres/Tags/Status/Format/Year/Season/Studios to include and/or exclude (adding !filterword) an anime in your recommendation list. Numeric Filters >,<,=>,<= for numbered column including Score and Year.
+  1. Filters are available, insert Title/Genres/Tags/Status/Format/Year/Season/Studios/Staff to include and/or exclude (adding !filterword) an anime in your recommendation list. Numeric Filters >,<,=>,<= for numbered column including WScore, Score and Year.
   2. Sort by Scores/Status/Year/etc. to the desired order.
-  3. Hidden/Unhidden List to hide an Anime from ones' list or show it back to your list (Click Show All for immediate retrieval).
+  3. Hidden/Unhidden List to hide an Anime from ones' list or show it back to your recommendations list (You may click show all for immediate retrieval).
 
 ## Kanshi.VI (Recommended)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Year, Season, Format, and Studios for Categories. Each variables or variable component are averaged. Numeric variables including Anilist Average-Score, Popularity, Favourites, Episodes, Trending, Duration have their own Linear Regression Model to be predicted. Finally, all anime in Anilist are then analyzed based on the Variable Importance Schema from ones' rating.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Year, Season, Format, and Studios as Categorical. Each variables or variable component are averaged. Numeric variables including Anilist Average-Score, Popularity, Favourites, Episodes, Trending, Duration have their own Linear Regression Model to be predicted. Finally, all anime in Anilist are then analyzed based on the Variable Importance Schema from ones' rating.
 
 ### Recommendation Algorithm
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The recommendation score is averaged through different variables based on user score to get each percent of Likeability. All anime are then analyzed based on the Variable Importance Schema from ones' anime list. Anime recommendation score will be high if most variable from an anime are liked by the user and a low score if most variables in it are disliked by the user. 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The recommendation score is averaged through different variables based on user score to get each percent of Likeability. All anime are then analyzed based on the Variable Importance Schema from ones' anime list. Anime recommendation score will be high if most variable from an anime are liked by the user and a low score if most variables in it are disliked by the user.
   
   Steps for Calculation:
   
@@ -23,7 +23,7 @@
   2. Analyzing Anime for Initial Recommendation Score - Each available variable in the Variable Importance Schema that is in an Anime from Anilist are then averaged by the scores from variables' scores or Predicted by the created Models given in the analyzed Schema.
   3. Adding Weight (Wscore) for Accuracy - In order to avoid bias to every anime with very Few variables, a weight is added for each shows calculated by [(SumOfAnalyzedVariableFromSpecificAnime/SumOfAllAnalyzedVariableFromAllAnime)].
 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score for recommendation is WScore, calculated by multiplying the Weight and the Initial Score [InitialScore * Weight]. Unweighted Score is still included in the app to see if there were any Highly recommended  Anime that was put in the margin of error.
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score for recommendation is WScore, calculated by multiplying the Weight and the Initial Score [InitialScore * Weight]. Unweighted Score is still included in the app to see if there were any Highly recommended  Anime that was put within the margin of error.
 
 ## Kanshi.R
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that also uses existing Anilist account analyzed based on three factors. The User Score to evaluate ones' Likability, the Amount of recommendations for a specific anime to Improve recommendation Accuracy, and the General ratings for a recommended anime to Identify a well-received Show.
