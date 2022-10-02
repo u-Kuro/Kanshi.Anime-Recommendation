@@ -1,4 +1,4 @@
-# Kanshi. Anime Recommendation App Android (Kanshi.VI and Kanshi.R)
+# Kanshi. Anime Recommendation Android App (VI and R)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anime Recommendation Apps that uses existing Anilist account analyzed based through User. Kanshi.VI is based on User's Likeability and Variable Importance while Kanshi.R is based on User's Likeability and Other Anilist User Recommendations.
 
 ## Starting Up
