@@ -690,6 +690,12 @@ self.onmessage = (message) => {
         alteredVariables: alteredVariables
     })
     // Used Function
+    function isaN(num){
+        if(num===null){return false
+        }else if(typeof num==='string'){if(num.split(' ').join('').length===0){return false}
+        }else if(typeof num==='boolean'){return false}
+        else return !isNaN(num)
+    }
     function arrayMean(obj) {
         return (arraySum(obj) / obj.length) || 0
     }
@@ -703,6 +709,50 @@ self.onmessage = (message) => {
             return (sorted[middle - 1] + sorted[middle]) / 2;
         }
         return sorted[middle];
+    }
+    function arrayMode(obj){
+        if(obj.length===0){return}
+        else if(obj.length===1){return obj[0]}
+        else if(obj.length===2){return (obj[0]+obj[1])/2}
+        var max = parseFloat(Math.max(...obj))
+        var min = parseFloat(Math.min(...obj))
+        // var maxNumOfDec = obj.join(',').match(/((?<=\.)\d+)/g)?.reduce((acc,el)=>acc>=el.length?acc:el.length,0)??0
+        var boundary = Number.MIN_VALUE
+        var classW = parseFloat(((max-min)/(1.0+(3.322*Math.log(obj.length)))))
+        var classIs
+        if(max===min||classW<boundary){ // To avoid Inf loop if classWidth is very small
+            classIs = [{low:min,high:max,freq:0}]
+        } else {
+            var high = min+classW-boundary, low = min
+            classIs = [{low:low,high:high,freq:0}]
+            while(classIs.slice(-1)[0].high<max){
+                low=high+boundary
+                high=low+classW-boundary
+                classIs.push({low:low,high:high,freq:0})
+            }
+        }
+        for(let i=0;i<obj.length;i++){
+            for(let j=0;j<classIs.length;j++){
+                var num = obj[i]
+                if(num>=classIs[j].low&&num<=classIs[j].high){ 
+                    ++classIs[j].freq
+                    continue
+                }
+            }
+        }
+        var modeClass = classIs[0]
+        var modeIdx = 0
+        for(let i=1;i<classIs.length;i++){
+            if(classIs[i].freq>modeClass.freq){
+                modeClass = classIs[i]
+                modeIdx = i
+            }
+        }
+        var modLowLim = modeClass.low
+        var modFreq = modeClass.freq
+        var modPreFreq = classIs[modeIdx-1]===undefined?0:classIs[modeIdx-1].freq
+        var modSucFreq = classIs[modeIdx+1]===undefined?0:classIs[modeIdx+1].freq
+        return modLowLim+(((modFreq-modPreFreq)/((2*modFreq)-modPreFreq-modSucFreq))*classW)
     }
         // Linear Regression
     function linearRegression(x,y){

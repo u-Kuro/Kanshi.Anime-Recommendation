@@ -1772,7 +1772,7 @@
                     for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                     $("#dataStatusContainer").hide()
                     $("#dataStatusSpinner").show()
-                    $("#dataStatusContainer").fadeIn(2500).css("display","flex")
+                    $("#dataStatusContainer").css("display","flex").fadeIn(2500)
                     requestIntervalSeconds = Math.round(60-(((new Date()).getTime()-savedLastRequestDate.getTime())/1000)) || 60
                     for(let i=requestIntervalSeconds; i>=0; i--){
                         let timeout = setTimeout(async()=>{
@@ -1876,7 +1876,7 @@
                     savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || 20
                     $("#dataStatusContainer").hide()
                     $("#dataStatusSpinner").show()
-                    $("#dataStatusContainer").fadeIn(2500).css("display","flex")
+                    $("#dataStatusContainer").css("display","flex").fadeIn(2500)
                     for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                     for(let i=savedAnalyzeVariableTime; i>0; i--){
                         var timeout = setTimeout(()=>{

@@ -34,19 +34,19 @@ self.onmessage = (message) => {
         // var staffCount = staff.length
         var status = "UNWATCHED"
         if(allFilterInfo[title.toLowerCase()]===undefined){
-            allFilterInfo[title.toLowerCase()] = true
+            allFilterInfo[title.toLowerCase()] = 0
         }
         if(allFilterInfo[format.toLowerCase()]===undefined){
-            allFilterInfo[format.toLowerCase()] = true
-            allFilterInfo["!"+format.toLowerCase()] = true
+            allFilterInfo[format.toLowerCase()] = 0
+            allFilterInfo["!"+format.toLowerCase()] = 0
         }
         if(allFilterInfo[year]===undefined){
-            allFilterInfo[year] = true  
-            allFilterInfo[`!${year}`] = true
+            allFilterInfo[year] = 0  
+            allFilterInfo[`!${year}`] = 0
         }
         if(allFilterInfo[season.toLowerCase()]===undefined){
-            allFilterInfo[season.toLowerCase()] = true
-            allFilterInfo["!"+season.toLowerCase()] = true
+            allFilterInfo[season.toLowerCase()] = 0
+            allFilterInfo["!"+season.toLowerCase()] = 0
         }
         // Arrange
         var xformat = format!=="Format: N/A"?`Format: ${format}`:`${Math.random()}`
@@ -59,8 +59,8 @@ self.onmessage = (message) => {
             }
             xgenres.push("Genre: "+genres[j])
             if(allFilterInfo[genres[j].toLowerCase()]===undefined){
-                allFilterInfo[genres[j].toLowerCase()] = true 
-                allFilterInfo["!"+genres[j].toLowerCase()] = true
+                allFilterInfo[genres[j].toLowerCase()] = 0 
+                allFilterInfo["!"+genres[j].toLowerCase()] = 0
             }
         }
         var xtags = []
@@ -70,8 +70,8 @@ self.onmessage = (message) => {
             }
             xtags.push("Tag: "+tags[j].name)
             if(allFilterInfo[(tags[j].name).toLowerCase()]===undefined){
-                allFilterInfo[(tags[j].name).toLowerCase()] = true 
-                allFilterInfo["!"+(tags[j].name).toLowerCase()] = true
+                allFilterInfo[(tags[j].name).toLowerCase()] = 0 
+                allFilterInfo["!"+(tags[j].name).toLowerCase()] = 0
             }
         }
         var xstudios = []
@@ -86,8 +86,8 @@ self.onmessage = (message) => {
             xstudios.push({name:"Studio: "+studios[j].name,siteUrl:studios[j].siteUrl})
             // Remove Since It's Lagging on Too Much Filters
             // if(allFilterInfo[(studios[j].name).toLowerCase()]===undefined){
-            //     allFilterInfo[(studios[j].name).toLowerCase()] = true  
-            //     allFilterInfo["!"+(studios[j].name).toLowerCase()] = true
+            //     allFilterInfo[(studios[j].name).toLowerCase()] = 0  
+            //     allFilterInfo["!"+(studios[j].name).toLowerCase()] = 0
             // }
         }
         var xstaff = []
@@ -98,17 +98,21 @@ self.onmessage = (message) => {
             if((alteredVariables.staff_in["Staff: "+staff[j].node.name.userPreferred]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
                 animeShallUpdate = true
             }
-            xstaff.push({staff:"Staff: "+staff[j].node.name.userPreferred, role:"Role"+staff[j].role.split(" (")[0], siteUrl:staff[j].node.siteUrl})
+            xstaff.push({staff:"Staff: "+staff[j].node.name.userPreferred, role:staff[j].role.split(" (")[0], siteUrl:staff[j].node.siteUrl})
             // Remove Since It's Lagging on Too Much Filters
             // if(allFilterInfo[(staff[j].name.userPreferred).toLowerCase()]===undefined){
-            //     allFilterInfo[(staff[j].name.userPreferred).toLowerCase()] = true
-            //     allFilterInfo["!"+(staff[j].name.userPreferred).toLowerCase()] = true
+            //     allFilterInfo[(staff[j].name.userPreferred).toLowerCase()] = 0
+            //     allFilterInfo["!"+(staff[j].name.userPreferred).toLowerCase()] = 0
             // }
         }
         // Check if any variable is Altered, and continue
         if(!animeShallUpdate) continue
         // Continue Analyzing Affected Anime
         // Reset Anime Weights
+        if(savedAnalyzedVariablesCount.all===undefined){
+            savedAnalyzedVariablesCount.all = {}    
+        }
+        savedAnalyzedVariablesCount.all[title] = 0
         if(savedAnalyzedVariablesCount.format===undefined){
             savedAnalyzedVariablesCount.format = {}    
         }
@@ -146,7 +150,6 @@ self.onmessage = (message) => {
             studios: 0,
             staff: 0
         }
-        var xanalyzedVariableCount = 0
         var genresIncluded = {}
         var tagsIncluded = {}
         var studiosIncluded = {}
@@ -156,8 +159,8 @@ self.onmessage = (message) => {
         if(varImportance[xformat]!==undefined) {
             zformat.push(varImportance[xformat])
             savedAnalyzedVariablesCount.format[title] += 1
+            savedAnalyzedVariablesCount.all[title] += 1
             analyzedVariableCount.format += 1
-            ++xanalyzedVariableCount
         } else {
             zformat.push(0)
         }
@@ -165,8 +168,8 @@ self.onmessage = (message) => {
         if(varImportance[xyear]!==undefined) {
             zyear.push(varImportance[xyear])
             savedAnalyzedVariablesCount.year[title] += 1
+            savedAnalyzedVariablesCount.all[title] += 1
             analyzedVariableCount.year += 1
-            ++xanalyzedVariableCount
         } else {
             zyear.push(0)
         }
@@ -174,8 +177,8 @@ self.onmessage = (message) => {
         if(varImportance[xseason]!==undefined) {
             zseason.push(varImportance[xseason])
             savedAnalyzedVariablesCount.season[title] += 1
+            savedAnalyzedVariablesCount.all[title] += 1
             analyzedVariableCount.season += 1
-            ++xanalyzedVariableCount
         } else {
             zseason.push(0)
         }
@@ -184,8 +187,8 @@ self.onmessage = (message) => {
             if(varImportance[xgenres[j]]!==undefined) {
                 zgenres.push(varImportance[xgenres[j]])
                 savedAnalyzedVariablesCount.genres[title] += 1
+                savedAnalyzedVariablesCount.all[title] += 1
                 analyzedVariableCount.genres += 1
-                ++xanalyzedVariableCount
                 if(varImportance[xgenres[j]]>=varImportance.meanGenres
                     &&genresIncluded[xgenres[j]]===undefined){
                     genresIncluded[xgenres[j]] = [xgenres[j].replace("Genre: ",""),varImportance[xgenres[j]]]
@@ -199,8 +202,8 @@ self.onmessage = (message) => {
             if(varImportance[xtags[j]]!==undefined) {
                 ztags.push(varImportance[xtags[j]])
                 savedAnalyzedVariablesCount.tags[title] += 1
+                savedAnalyzedVariablesCount.all[title] += 1
                 analyzedVariableCount.tags += 1
-                ++xanalyzedVariableCount
                 if(varImportance[xtags[j]]>=varImportance.meanTags
                     &&tagsIncluded[xtags[j]]===undefined){
                     tagsIncluded[xtags[j]] = [xtags[j].replace("Tag: ",""),varImportance[xtags[j]]]
@@ -217,8 +220,8 @@ self.onmessage = (message) => {
             if(varImportance[xstudios[j].name]!==undefined) {
                 zstudios.push(varImportance[xstudios[j].name])
                 savedAnalyzedVariablesCount.studios[title] += 1
+                savedAnalyzedVariablesCount.all[title] += 1
                 analyzedVariableCount.studios += 1
-                ++xanalyzedVariableCount
                 if(varImportance[xstudios[j].name]>=varImportance.meanStudios
                     &&studiosIncluded[xstudios[j].name]===undefined){
                     studiosIncluded[xstudios[j].name] = [{[xstudios[j].name.replace("Studio: ","")]: xstudios[j].siteUrl},varImportance[xstudios[j].name]]
@@ -257,14 +260,14 @@ self.onmessage = (message) => {
         for(let j=0; j<xstaff.length; j++){
             if(includedStaff[xstaff[j].staff]!==undefined) continue
             else includedStaff[xstaff[j].staff] = null
-            if(varImportance[xstaff[j].staff]!==undefined) {
+            if(varImportance[xstaff[j].staff]!==undefined){
                 zstaff.push(varImportance[xstaff[j].staff])
                 savedAnalyzedVariablesCount.staff[title] += 1
+                savedAnalyzedVariablesCount.all[title] += 1
                 analyzedVariableCount.staff += 1
-                ++xanalyzedVariableCount
                 if(varImportance[xstaff[j].staff]>=varImportance.meanStaff
                     &&staffIncluded[xstaff[j].staff]===undefined){
-                    staffIncluded[xstaff[j].staff] = [{[xstaff[j].staff.replace("Staff: ","")]: xstaff[j].siteUrl},varImportance[xstaff[j].staff]]
+                    staffIncluded[xstaff[j].staff] = [{[xstaff[j].staff.replace("Staff",xstaff[j].role)]: xstaff[j].siteUrl},varImportance[xstaff[j].staff]]
                 }
             } else {
                 zstaff.push(0)
@@ -391,46 +394,15 @@ self.onmessage = (message) => {
         }
     }
     // Add Weight to Scores
-    var analyzedFormatValues = Object.values(savedAnalyzedVariablesCount.format)
-    var analyzedFormatKeys = Object.keys(savedAnalyzedVariablesCount.format)
-    // var analyzedFormatMean = arrayMean(analyzedFormatValues)
-    var analyzedYearValues = Object.values(savedAnalyzedVariablesCount.year)
-    var analyzedYearKeys = Object.keys(savedAnalyzedVariablesCount.year)
-    // var analyzedYearMean = arrayMean(analyzedYearValues)
-    var analyzedSeasonValues = Object.values(savedAnalyzedVariablesCount.season)
-    var analyzedSeasonKeys = Object.keys(savedAnalyzedVariablesCount.season)
-    // var analyzedSeasonMean = arrayMean(analyzedSeasonValues)
-    var analyzedGenresValues = Object.values(savedAnalyzedVariablesCount.genres)
-    var analyzedGenresKeys = Object.keys(savedAnalyzedVariablesCount.genres)
-    var analyzedGenresMean = arrayMean(analyzedGenresValues)
-    var analyzedTagsValues = Object.values(savedAnalyzedVariablesCount.tags)
-    var analyzedTagsKeys = Object.keys(savedAnalyzedVariablesCount.tags)
-    var analyzedTagsMean = arrayMean(analyzedTagsValues)
-    var analyzedStudiosValues = Object.values(savedAnalyzedVariablesCount.studios)
-    var analyzedStudiosKeys = Object.keys(savedAnalyzedVariablesCount.studios)
-    // var analyzedStudiosMean = arrayMean(analyzedStudiosValues)
-    var analyzedStaffValues = Object.values(savedAnalyzedVariablesCount.staff)
-    var analyzedStaffKeys = Object.keys(savedAnalyzedVariablesCount.staff)
-    var analyzedStaffMean = arrayMean(analyzedStaffValues)
-    var analyzedVariableLength = Object.keys({
-        ...analyzedFormatKeys,
-        ...analyzedYearKeys,
-        ...analyzedSeasonKeys,
-        ...analyzedGenresKeys,
-        ...analyzedTagsKeys,
-        ...analyzedStudiosKeys,
-        ...analyzedStaffKeys,
-    }).length
-    var analyzedVariableSum = arraySum([
-            arraySum(analyzedFormatValues),
-            arraySum(analyzedYearValues),
-            arraySum(analyzedSeasonValues),
-            arraySum(analyzedGenresValues),
-            arraySum(analyzedTagsValues),
-            arraySum(analyzedStudiosValues),
-            arraySum(analyzedStaffValues),
-        ])
-    var analyzedVariableMean = analyzedVariableSum/analyzedVariableLength
+    // var analyzedFormatMean = arrayMean(Object.values(savedAnalyzedVariablesCount.format))
+    // var analyzedYearMean = arrayMean(Object.values(savedAnalyzedVariablesCount.year))
+    // var analyzedSeasonMean = arrayMean(Object.values(savedAnalyzedVariablesCount.season))
+    var analyzedGenresMean = arrayMean(Object.values(savedAnalyzedVariablesCount.genres))
+    var analyzedTagsMean = arrayMean(Object.values(savedAnalyzedVariablesCount.tags))
+    // var analyzedStudiosMean = arrayMean(Object.values(savedAnalyzedVariablesCount.studios))
+    var analyzedStaffMean = arrayMean(Object.values(savedAnalyzedVariablesCount.staff))
+    var analyzedVariableMean = arrayMean(Object.values(savedAnalyzedVariablesCount.all))
+    var analyzedVariableSum = arraySum(Object.values(savedAnalyzedVariablesCount.all))
     var savedRecSchemeEntries = Object.keys(savedRecScheme)
     for(let i=0;i<savedRecSchemeEntries.length;i++){
         var anime = savedRecScheme[savedRecSchemeEntries[i]]
@@ -450,7 +422,13 @@ self.onmessage = (message) => {
         allFilterInfo: allFilterInfo,
         savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
     })
-    //
+    // Used Functions
+    function isaN(num){
+        if(num===null){return false
+        }else if(typeof num==='string'){if(num.split(' ').join('').length===0){return false}
+        }else if(typeof num==='boolean'){return false}
+        else return !isNaN(num)
+    }
     function arraySum(obj) {
         return obj.reduce((a, b) => a + b, 0)
     }
@@ -464,6 +442,50 @@ self.onmessage = (message) => {
             return (sorted[middle - 1] + sorted[middle]) / 2;
         }
         return sorted[middle];
+    }
+    function arrayMode(obj){
+        if(obj.length===0){return console.error(`Error: Empty array`)}
+        else if(obj.length===1){return obj[0]}
+        else if(obj.length===2){return (obj[0]+obj[1])/2}
+        var max = parseFloat(Math.max(...obj))
+        var min = parseFloat(Math.min(...obj))
+        // var maxNumOfDec = obj.join(',').match(/((?<=\.)\d+)/g)?.reduce((acc,el)=>acc>=el.length?acc:el.length,0)??0
+        var boundary = Number.MIN_VALUE
+        var classW = parseFloat(((max-min)/(1.0+(3.322*Math.log(obj.length)))))
+        var classIs
+        if(max===min||classW<boundary){ // To avoid Inf loop if classWidth is very small
+            classIs = [{low:min,high:max,freq:0}]
+        } else {
+            var high = min+classW-boundary, low = min
+            classIs = [{low:low,high:high,freq:0}]
+            while(classIs.slice(-1)[0].high<max){
+                low=high+boundary
+                high=low+classW-boundary
+                classIs.push({low:low,high:high,freq:0})
+            }
+        }
+        for(let i=0;i<obj.length;i++){
+            for(let j=0;j<classIs.length;j++){
+                var num = obj[i]
+                if(num>=classIs[j].low&&num<=classIs[j].high){ 
+                    ++classIs[j].freq
+                    continue
+                }
+            }
+        }
+        var modeClass = classIs[0]
+        var modeIdx = 0
+        for(let i=1;i<classIs.length;i++){
+            if(classIs[i].freq>modeClass.freq){
+                modeClass = classIs[i]
+                modeIdx = i
+            }
+        }
+        var modLowLim = modeClass.low
+        var modFreq = modeClass.freq
+        var modPreFreq = classIs[modeIdx-1]===undefined?0:classIs[modeIdx-1].freq
+        var modSucFreq = classIs[modeIdx+1]===undefined?0:classIs[modeIdx+1].freq
+        return modLowLim+(((modFreq-modPreFreq)/((2*modFreq)-modPreFreq-modSucFreq))*classW)
     }
     // Linear Regression
     function LRpredict(modelObj, x){

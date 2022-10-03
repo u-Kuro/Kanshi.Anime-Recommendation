@@ -4530,7 +4530,7 @@ self.onmessage = (message) => {
     ]
     var allFilterInfo = {}
     for(let i=0;i<savedFilterOptionsJson.length;i++){
-        allFilterInfo[savedFilterOptionsJson[i].info] = true
+        allFilterInfo[savedFilterOptionsJson[i].info] = 0
     }
     self.postMessage({
         savedFilterOptionsJson:  savedFilterOptionsJson,
