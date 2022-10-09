@@ -267,6 +267,9 @@
             #animeRecommendationList{
                 content-visibility: auto;
             }
+            #animeRecommendationList > tr > *{
+                white-space: nowrap;
+            }
             #updateIntervalBtn,
             #chooseExportPathBtn,
             #updateBtn,
@@ -337,6 +340,13 @@
             }
             .anime-score{
                 text-align: center !important;
+                max-width: 50px !important;
+                text-overflow: ellipsis !important;
+                overflow: hidden !important;
+            }
+            .anime-score > div {
+                display: flex;
+                gap: 0.5ch;
                 max-width: 50px !important;
                 text-overflow: ellipsis !important;
                 overflow: hidden !important;
@@ -570,6 +580,8 @@
                 right: 50%;
                 transform: scale(1) translate(50%,-50%) !important;
                 width: 478px;
+                max-width: 100%;
+                max-height: 100%;
                 opacity: 0;
                 pointer-events: none;
                 background-color: #fff;
@@ -667,6 +679,9 @@
             td#animeTitle>i{
                 padding: 0.5ch;
             }
+            #warnAnimeModal{
+                user-select: none;
+            }
         </style>
 </head>
 <body>
@@ -703,12 +718,12 @@
         </div>
         <div id="filters" class="filter-container">
             <input type="text"
-                   placeholder="Filter Word/Number (!Exclude/Score>N/etc.)"
-                   class="flexdatalist"
-                   data-search-in="info"
-                   multiple="multiple"
-                   data-min-length="1"
-                   name="filter">
+                placeholder="Filter Word/Number (!Exclude/Score>N/etc.)"
+                class="flexdatalist"
+                data-search-in="info"
+                multiple="multiple"
+                data-min-length="1"
+                name="filter">
         </div>
         <div class="btn-container">
             <button id="searchBtn" class="btn" type="submit">Search</button>
@@ -983,7 +998,8 @@
                     })
                 await $('.flexdatalistWarnAnime').flexdatalist({
                     minLength: 1,
-                    searchIn: 'info'
+                    searchIn: 'info',
+                    data: savedFilterOptionsJson
                 })
                 resolve()
             })
@@ -1055,6 +1071,35 @@
                     },1)
                 },0)
                 resolve()
+            })
+            return
+        }).then(async()=>{
+            setTimeout(()=>{
+                return
+            },2000)
+            await new Promise(async(resolve)=>{
+                await $("#warnAnimeModal").show().css({visibility:"hidden"})
+                let reloadSavedData = await setInterval(async () => {
+                    if(await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
+                        await clearInterval(reloadSavedData)
+                        // Reload Filters
+                        var warnAnimeInput
+                        savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
+                                                                                   "full cgi","kids","love triangle","!male harem","!mixed gender harem",
+                                                                                   "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
+                                                                                   "!rape"
+                                                                                 ]
+                        for(let i=0; i<savedWarnAnime.length; i++) {
+                            warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                            await warnAnimeInput.val(savedWarnAnime[i])
+                            var e = await $.Event("keyup",{keyCode:13})
+                            await warnAnimeInput.trigger(e)
+                            await warnAnimeInput.val("")
+                        }
+                        await $("#warnAnimeModal").css({visibility:"visible"}).hide()
+                        resolve()
+                    }
+                },1)
             })
             return
         }).then(async()=>{
@@ -1234,12 +1279,10 @@
                     await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hrs
                         const savedUsername = await retrieveJSON("savedUsername")
-                        const savedHiddenAnimeTitles = await retrieveJSON("savedWarnAnime")
-                        const savedWarnAnime = await retrieveJSON("savedHiddenAnimeTitles")
+                        const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                        const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                         const savedUserList = await retrieveJSON("savedUserList")
                         const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                        const allFilterInfo = await retrieveJSON("allFilterInfo")
-                        const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
                         const savedRecScheme = await retrieveJSON("savedRecScheme")
                         const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
                         const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -1251,8 +1294,6 @@
                             savedUsername: savedUsername,
                             savedWarnAnime: savedWarnAnime,
                             savedHiddenAnimeTitles: savedHiddenAnimeTitles,
-                            allFilterInfo: allFilterInfo,
-                            savedFilterOptionsJson: savedFilterOptionsJson,
                             savedRecScheme: savedRecScheme,
                             savedAnimeEntries: savedAnimeEntries,
                             savedLatestAnimeTitle: savedLatestAnimeTitle,
@@ -1270,12 +1311,10 @@
                         for(let i=0;i<exportIntervalTimeout.length;i++) await clearTimeout(exportIntervalTimeout[i])
                         var saveExportIntervalTimeout = await setTimeout(async()=>{
                             const savedUsername = await retrieveJSON("savedUsername")
-                            const savedHiddenAnimeTitles = await retrieveJSON("savedWarnAnime")
-                            const savedWarnAnime = await retrieveJSON("savedHiddenAnimeTitles")
+                            const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                            const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                             const savedUserList = await retrieveJSON("savedUserList")
                             const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                            const allFilterInfo = await retrieveJSON("allFilterInfo")
-                            const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
                             const savedRecScheme = await retrieveJSON("savedRecScheme")
                             const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
                             const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -1287,8 +1326,6 @@
                                 savedUsername: savedUsername,
                                 savedWarnAnime: savedWarnAnime,
                                 savedHiddenAnimeTitles: savedHiddenAnimeTitles,
-                                allFilterInfo: allFilterInfo,
-                                savedFilterOptionsJson: savedFilterOptionsJson,
                                 savedRecScheme: savedRecScheme,
                                 savedAnimeEntries: savedAnimeEntries,
                                 savedLatestAnimeTitle: savedLatestAnimeTitle,
@@ -1456,6 +1493,8 @@
                             </td>
                         </tr>
                     `)
+                    await $("#anime-table").trigger("update")
+                    await $("#anime-table").trigger("pagerUpdate")
                     await Update()
                     $(".menu-container").fadeOut(250)
                 }
@@ -1629,65 +1668,103 @@
                 })
                 .then(async (confirmed) => {
                     if(confirmed){
-                        $("#importBtn").css({background: "black", color: "white"})
-                        const fileContent = JSON.parse(reader.result);
-                        const entries = Object.entries(fileContent)
-                        savedUsername = fileContent.savedUsername || ""
-                        saveJSON(savedUsername,"savedUsername")
-                        savedHiddenAnimeTitles = fileContent.savedHiddenAnimeTitles || []
-                        saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
-                        allFilterInfo = fileContent.allFilterInfo || allFilterInfo
-                        saveJSON(allFilterInfo,"allFilterInfo")
-                        savedFilterOptionsJson = fileContent.savedFilterOptionsJson || savedFilterOptionsJson
-                        saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
-                        savedRecScheme = fileContent.savedRecScheme || {}
-                        saveJSON(savedRecScheme,"savedRecScheme")
-                        savedAnimeEntries = fileContent.savedAnimeEntries || []
-                        saveJSON(savedAnimeEntries,"savedAnimeEntries")
-                        savedLatestAnimeTitle = fileContent.savedLatestAnimeTitle || ""
-                        saveJSON(savedLatestAnimeTitle,"savedLatestAnimeTitle")
-                        savedUserList = fileContent.savedUserList || {}
-                        saveJSON(savedUserList,"savedUserList")
-                        savedAnalyzeVariableTime = fileContent.savedAnalyzeVariableTime || 20
-                        saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
-                        savedUpdateAnalyzeAnimeTime = fileContent.savedUpdateAnalyzeAnimeTime || 3
-                        saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
-                        lastAnilistPage = fileContent.lastAnilistPage || 284
-                        saveJSON(lastAnilistPage,"lastAnilistPage")
-                        savedWarnAnime = fileContent.savedWarnAnime || ["Love Triangle","CGI","NTR","Boys' Love","Girls' Love","Rape","Ecchi","Yuri"]
-                        saveJSON(savedWarnAnime,"savedWarnAnime")
-                        $("#username").val(savedUsername)
-                        $('.flexdatalist').flexdatalist({
-                            data: savedFilterOptionsJson
-                        })
-                        if(savedHiddenAnimeTitles.length) $("#showAllAnime").show()
-                        else $("#showAllAnime").hide()
-                        if(Object.keys(savedRecScheme).length) {
-                            $("#updateBtn").show()
-                            $("#updateIntervalBtn").show()
-                            LoadData(savedRecScheme)
-                        } else {
-                            $("#updateBtn").hide()
-                            $("#updateIntervalBtn").hide()
-                            animeData = `
-                                <tr class="item" role="row">
-                                    <td style="padding: 1.5em !important;" colspan="13">
-                                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                                        No Data
-                                    </td>
-                                </tr>
-                            `
-                            $("#animeRecommendationList").empty()
-                            $("#animeRecommendationList").append(animeData)
-                            await $("#anime-table").trigger("update")
-                        }
-                        $(".menu-container").fadeOut(250)
-                        swal("Data has been updated!", {
-                            icon: "success",
+                        await new Promise(async(resolve)=>{
+                            await $("#importBtn").css({background: "black", color: "white"})
+                            const fileContent = await JSON.parse(reader.result);
+                            const entries = await Object.entries(fileContent)
+                            savedUsername = await fileContent.savedUsername || ""
+                            await saveJSON(savedUsername,"savedUsername")
+                            savedHiddenAnimeTitles = await fileContent.savedHiddenAnimeTitles || []
+                            await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                            savedRecScheme = await fileContent.savedRecScheme || {}
+                            await saveJSON(savedRecScheme,"savedRecScheme")
+                            savedAnimeEntries = await fileContent.savedAnimeEntries || []
+                            await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                            savedLatestAnimeTitle = await fileContent.savedLatestAnimeTitle || ""
+                            await saveJSON(savedLatestAnimeTitle,"savedLatestAnimeTitle")
+                            savedUserList = await fileContent.savedUserList || {}
+                            await saveJSON(savedUserList,"savedUserList")
+                            savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || 20
+                            await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
+                            savedUpdateAnalyzeAnimeTime = await fileContent.savedUpdateAnalyzeAnimeTime || 3
+                            await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
+                            lastAnilistPage = await fileContent.lastAnilistPage || 284
+                            await saveJSON(lastAnilistPage,"lastAnilistPage")
+                            savedWarnAnime = await fileContent.savedWarnAnime || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
+                                                                                   "full cgi","kids","love triangle","!male harem","!mixed gender harem",
+                                                                                   "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
+                                                                                   "!rape"
+                                                                                 ]
+                            await saveJSON(savedWarnAnime,"savedWarnAnime")
+                            resolve()
+                        }).then(async()=>{
+                            await $("#username").val(savedUsername)
+                            return
+                        }).then(async()=>{
+                            if(savedHiddenAnimeTitles.length) $("#showAllAnime").show()
+                            else $("#showAllAnime").hide()
+                            await new Promise(async(resolve)=>{
+                                await $("#warnAnimeModal").show().css({visibility:"hidden"})
+                                let reloadSavedData = await setInterval(async () => {
+                                    if(await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
+                                        await clearInterval(reloadSavedData)
+                                        await new Promise(async(resolve)=>{
+                                            // Remove Current Filters
+                                            var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
+                                            for(let i=0; i<warnInfo.length; i++) {
+                                                var infoName = await warnInfo.eq(i).children(".text")[0].innerText
+                                                await warnInfo.eq(i).children(".fdl-remove").trigger("click")
+                                                await $("#warnAnimeModal .flexdatalist-alias").blur()
+                                            }
+                                            resolve()
+                                        }).then(async()=>{
+                                            // Reload Filters
+                                            var warnAnimeInput
+                                            for(let i=0; i<savedWarnAnime.length; i++) {
+                                                warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                                                await warnAnimeInput.val(savedWarnAnime[i])
+                                                var e = await $.Event("keyup",{keyCode:13})
+                                                await warnAnimeInput.trigger(e)
+                                                await warnAnimeInput.val("")
+                                            }
+                                            await $("#warnAnimeModal").css({visibility:"visible"}).hide()
+                                            return
+                                        })
+                                        resolve()
+                                    }
+                                },1)
+                            })
+                        }).then(async()=>{
+                            if(Object.keys(savedRecScheme).length) {
+                                await $("#updateBtn").show()
+                                await $("#updateIntervalBtn").show()
+                                await LoadData(savedRecScheme)
+                            } else {
+                                await $("#updateBtn").hide()
+                                await $("#updateIntervalBtn").hide()
+                                animeData = `
+                                    <tr class="item" role="row">
+                                        <td style="padding: 1.5em !important;" colspan="13">
+                                            <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                            No Data
+                                        </td>
+                                    </tr>
+                                `
+                                await $("#animeRecommendationList").empty()
+                                await $("#animeRecommendationList").append(animeData)
+                                await $("#anime-table").trigger("update")
+                            }
+                            return
+                        }).then(async()=>{
+                            await $(".menu-container").fadeOut(250)
+                            await swal("Data has been updated!", {
+                                icon: "success",
+                            })
+                            return
                         })
                     } else {
-                        $("#importBtn").css({background: "black", color: "white"})
-                        $("#importFile")[0].value = ""
+                        await $("#importBtn").css({background: "black", color: "white"})
+                        $("#importFile")[0].value = await ""
                     }
                 })
             }
@@ -1707,12 +1784,10 @@
             .then(async(confirmed) => {
                 if(confirmed){
                     const savedUsername = await retrieveJSON("savedUsername")
-                    const savedHiddenAnimeTitles = await retrieveJSON("savedWarnAnime")
-                    const savedWarnAnime = await retrieveJSON("savedHiddenAnimeTitles")
+                    const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                    const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                     const savedUserList = await retrieveJSON("savedUserList")
                     const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                    const allFilterInfo = await retrieveJSON("allFilterInfo")
-                    const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
                     const savedRecScheme = await retrieveJSON("savedRecScheme")
                     const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
                     const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -1724,8 +1799,6 @@
                         savedUsername: savedUsername,
                         savedWarnAnime: savedWarnAnime,
                         savedHiddenAnimeTitles: savedHiddenAnimeTitles,
-                        allFilterInfo: allFilterInfo,
-                        savedFilterOptionsJson: savedFilterOptionsJson,
                         savedRecScheme: savedRecScheme,
                         savedAnimeEntries: savedAnimeEntries,
                         savedLatestAnimeTitle: savedLatestAnimeTitle,
@@ -1837,12 +1910,10 @@
                         saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                         if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
                             const savedUsername = await retrieveJSON("savedUsername")
-                            const savedHiddenAnimeTitles = await retrieveJSON("savedWarnAnime")
-                            const savedWarnAnime = await retrieveJSON("savedHiddenAnimeTitles")
+                            const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                            const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                             const savedUserList = await retrieveJSON("savedUserList")
                             const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                            const allFilterInfo = await retrieveJSON("allFilterInfo")
-                            const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
                             const savedRecScheme = await retrieveJSON("savedRecScheme")
                             const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
                             const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -1854,8 +1925,6 @@
                                 savedUsername: savedUsername,
                                 savedWarnAnime: savedWarnAnime,
                                 savedHiddenAnimeTitles: savedHiddenAnimeTitles,
-                                allFilterInfo: allFilterInfo,
-                                savedFilterOptionsJson: savedFilterOptionsJson,
                                 savedRecScheme: savedRecScheme,
                                 savedAnimeEntries: savedAnimeEntries,
                                 savedLatestAnimeTitle: savedLatestAnimeTitle,
@@ -1873,12 +1942,10 @@
                             for(let i=0;i<exportIntervalTimeout.length;i++) clearTimeout(exportIntervalTimeout[i])
                             var saveExportIntervalTimeout = setTimeout(async()=>{
                                 const savedUsername = await retrieveJSON("savedUsername")
-                                const savedHiddenAnimeTitles = await retrieveJSON("savedWarnAnime")
-                                const savedWarnAnime = await retrieveJSON("savedHiddenAnimeTitles")
+                                const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                                const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                                 const savedUserList = await retrieveJSON("savedUserList")
                                 const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                                const allFilterInfo = await retrieveJSON("allFilterInfo")
-                                const savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson")
                                 const savedRecScheme = await retrieveJSON("savedRecScheme")
                                 const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
                                 const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -1890,8 +1957,6 @@
                                     savedUsername: savedUsername,
                                     savedWarnAnime: savedWarnAnime,
                                     savedHiddenAnimeTitles: savedHiddenAnimeTitles,
-                                    allFilterInfo: allFilterInfo,
-                                    savedFilterOptionsJson: savedFilterOptionsJson,
                                     savedRecScheme: savedRecScheme,
                                     savedAnimeEntries: savedAnimeEntries,
                                     savedLatestAnimeTitle: savedLatestAnimeTitle,
@@ -1922,32 +1987,13 @@
     $("#warnAnimeBtn").on("click", async ()=>{
         $("#warnAnimeModal").css({opacity:0,display:"flex"}).animate({opacity:1},150)
         $("#warnAnimeModal .swal-modal-custom").css({opacity:0}).show().animate({opacity:1},150)
-        let reloadSavedData = setInterval(async () => {
-            if($("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
-                clearInterval(reloadSavedData)
-                // Reload Filters
-                var warnAnimeInput
-                savedWarnAnime = await retrieveJSON("savedWarnAnime") || ["Love Triangle","CGI","NTR","Boys' Love","Girls' Love","Rape","Ecchi","Yuri"]
-                for(let i=0; i<savedWarnAnime.length; i++) {
-                    warnAnimeInput = $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
-                    await warnAnimeInput.val(savedWarnAnime[i])
-                    var e = await $.Event("keyup",{keyCode:13})
-                    await warnAnimeInput.trigger(e)
-                    await warnAnimeInput.val("")
-                }
-            }
-        },1)
     })
     $("#submitWarnAnime").on("click",async()=>{
         var warnAnimeInputs = $("#warnAnimeModal .flexdatalist-multiple > .value").children(".text")
         var warnAnime = []
-        var warnAnimeY = []
-        var warnAnimeR = []
         for(let i=0; i<warnAnimeInputs.length; i++){
             var warnName = warnAnimeInputs[i].textContent
             warnAnime.push(warnName)
-            if(warnName.charAt(0)==="!") warnAnimeR.push(warnName.slice(2))
-            else warnAnimeY.push(warnName.slice(1))
         }
         await saveJSON(warnAnime,"savedWarnAnime")
         await $("#warnAnimeModal .swal-modal-custom").fadeOut(150,()=>{
@@ -1981,11 +2027,11 @@
         }
     })
     $("#animeRecommendationList").delegate('td.anime-score', 'click' , async function() {
-        var warns = $(this).children("div").attr("title")
+        var warns = $(this).children("div").children("div").attr("title")
         if(warns!==undefined){
             swal("Content Warn", {
                 title: "Content Warn",
-                text: `You may not Like this Anime since it the following contents: \n${warns}`,
+                text: `Anime has the following contents: \n${warns}`,
                 icon: "info"
             })
         }
@@ -2606,11 +2652,15 @@
                     }
                 }
                 saveJSON(filters, "savedFilters")
-                savedWarnAnime = await retrieveJSON("savedWarnAnime") || ["Love Triangle","CGI","NTR","Boys' Love","Girls' Love","Rape","Ecchi","Yuri"]
+                savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
+                                                                           "full cgi","kids","love triangle","!male harem","!mixed gender harem",
+                                                                           "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
+                                                                           "!rape"
+                                                                        ]
                 var savedWarnR = {}
                 var savedWarnY = {}
                 for(let i=0; i<savedWarnAnime.length; i++){
-                    var warnName = savedWarnAnime[i]
+                    var warnName = savedWarnAnime[i].toLowerCase()
                     if(warnName.charAt(0)==="!") savedWarnR[warnName.slice(1)] = null
                     else savedWarnY[warnName] = null
                 }

@@ -283,7 +283,7 @@ self.onmessage = (message) => {
                             title="Hide this Anime">Show</button>
                     </td>
                     <td class="anime-score" title="${weightedScore}">
-                        ${hasWarn?`<div title=${warns.join(", ")}><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
+                        ${hasWarn?`<div title='${warns.join(", ")}'><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
                         ${weightedScore}
                     </td>
                     <td id="animeTitle">
@@ -323,8 +323,10 @@ self.onmessage = (message) => {
                             title="Hide this Anime">Hide</button>
                     </td>
                     <td class="anime-score" title="${weightedScore}">
-                        ${hasWarn?`<div title=${warns.join(", ")}><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
-                        ${weightedScore}
+                        <div>
+                            ${hasWarn?`<div title='${warns.join(", ")}'><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
+                            ${weightedScore}
+                        </div>
                     </td>
                     <td id="animeTitle">
                         <a href="${value.animeUrl||"javascript:;"}">
