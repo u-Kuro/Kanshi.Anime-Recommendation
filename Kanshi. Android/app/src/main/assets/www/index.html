@@ -501,6 +501,172 @@
                 -webkit-box-shadow: 0 3px 20px 0 #af6e7138 !important;
                 box-shadow: 0 3px 20px 0 #af6e7138 !important;
             }
+            /*  */
+            @-webkit-keyframes showSweetAlert{
+                0%{
+                    -webkit-transform:scale(1);
+                    transform:scale(1)
+                }1%{
+                    -webkit-transform:scale(.5);
+                    transform:scale(.5)
+                }45%{
+                    -webkit-transform:scale(1.05);
+                    transform:scale(1.05)
+                }80%{
+                    -webkit-transform:scale(.95);
+                    transform:scale(.95)
+                }to{
+                    -webkit-transform:scale(1);
+                    transform:scale(1)}
+                }
+            @keyframes showSweetAlert{
+                0%{
+                    -webkit-transform:scale(1);
+                    transform:scale(1)
+                }1%{
+                    -webkit-transform:scale(.5);
+                    transform:scale(.5)
+                }45%{
+                    -webkit-transform:scale(1.05);
+                    transform:scale(1.05)
+                }80%{
+                    -webkit-transform:scale(.95);
+                    transform:scale(.95)
+                }to{
+                    -webkit-transform:scale(1);
+                    transform:scale(1)}
+                }
+            .swal-overlay-custom{
+                display: none;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                text-align: center;
+                font-size: 0;
+                overflow-y: auto;
+                background-color: rgba(0,0,0,.4);
+                z-index: 10000;
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity .3s;
+            }
+            .swal-overlay--show-modal-custom{
+                opacity: 1;
+                pointer-events: auto;
+            }
+            .swal-overlay--show-modal-custom .swal-modal-custom{
+                opacity: 1;
+                pointer-events: auto;
+                box-sizing: border-box;
+                -webkit-animation: showSweetAlert .3s;
+                animation: showSweetAlert .3s;
+                will-change: transform;
+            }
+            .swal-modal-custom{
+                position: fixed;
+                top: 50%;
+                right: 50%;
+                transform: scale(1) translate(50%,-50%) !important;
+                width: 478px;
+                opacity: 0;
+                pointer-events: none;
+                background-color: #fff;
+                text-align: center;
+                border-radius: 5px;
+                display: inline-block;
+                vertical-align: middle;
+                z-index: 10001;
+                transition: opacity .2s,-webkit-transform .3s;
+                transition: transform .3s,opacity .2s;
+                transition: transform .3s,opacity .2s,-webkit-transform .3s;
+            }
+            .swal-text-custom:first-child{
+                display: block !important;
+                margin-top: 20px !important;
+                margin-left: 15px !important;
+            }
+            .swal-text-custom{
+                font-size: 1.15rem !important;
+                text-align: center;
+                font-size: 16px;
+                position: relative;
+                float: none;
+                line-height: normal;
+                vertical-align: top;
+                text-align: left;
+                display: inline-block;
+                margin: 0;
+                padding: 0 10px;
+                font-weight: 400;
+                color: rgba(0,0,0,.64);
+                max-width: calc(100% - 20px);
+                overflow-wrap: break-word;
+                box-sizing: border-box;
+            }
+            .swal-footer-custom {
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+                text-align: center;
+            }
+            .swal-footer-custom {
+                text-align: right;
+                padding-top: 13px;
+                margin-top: 13px;
+                padding: 13px 16px;
+                border-radius: inherit;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            }
+            .swal-button-container-custom {
+                margin: 5px;
+                display: inline-block;
+                position: relative;
+            }
+            .swal-button-custom {
+                background-color: black !important;
+                color: white !important;
+            }
+            .swal-button--cancel-custom {
+                color: #555;
+                background-color: #efefef;
+            }
+            .swal-button-custom {
+                background-color: #7cd1f9;
+                color: #fff;
+                border: none;
+                box-shadow: none;
+                border-radius: 5px;
+                font-weight: 600;
+                font-size: 14px;
+                padding: 10px 24px;
+                margin: 0;
+                cursor: pointer;
+            }
+            .swal-button__loader-custom{
+                position: absolute;
+                height: auto;
+                width: 43px;
+                z-index: 2;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translateX(-50%) translateY(-50%);
+                transform: translateX(-50%) translateY(-50%);
+                text-align: center;
+                pointer-events: none;
+                opacity: 0;
+            }
+            .orange{
+                color: orange;
+            }
+            .red{
+                color: red;
+            }
+            td#animeTitle>i{
+                padding: 0.5ch;
+            }
         </style>
 </head>
 <body>
@@ -517,6 +683,7 @@
         <button id="importBtn">Import</button>
         <button id="exportBtn">Export</button>
         <button id="chooseExportPathBtn">Change Export Folder</button>
+        <button id="warnAnimeBtn">Choose Anime to Warn</button>
         <button id="hideKidsAnimeBtn">Hide Kids Anime</button>
         <button id="updateIntervalBtn">Update Every 1 hour</button>
         <button id="exportIntervalBtn">Export Every 1 hours</button>
@@ -534,7 +701,7 @@
         <div class="userInputContainer">
             <input class="userInput" placeholder="Anilist Username" name="username" id="username" type="text">
         </div>
-        <div class="filter-container">
+        <div id="filters" class="filter-container">
             <input type="text"
                    placeholder="Filter Word/Number (!Exclude/Score>N/etc.)"
                    class="flexdatalist"
@@ -637,12 +804,47 @@
     <span><h1 id="loaderText">Loading...</h1></span>
 </div>
 
+<div id="warnAnimeModal" class="swal-overlay-custom swal-overlay--show-modal-custom" tabindex="-1">
+    <div class="swal-modal-custom" role="dialog" aria-modal="true">
+        <div class="swal-text-custom">
+            <div class="swal-text-custom" style="margin:0 !important;padding:0;">Select an Anime Information to be Warned</div>
+            <div class="filter-container">
+                <input type="text"
+                    placeholder="Normal word for Semi-Warning or !Red-Warning"
+                    class="flexdatalistWarnAnime"
+                    data-search-in="info"
+                    multiple="multiple"
+                    data-min-length="1"
+                    name="filter">
+            </div>
+        </div>
+        <div class="swal-footer-custom">
+            <div class="swal-button-container">
+                <button id="cancelWarnAnime" class="swal-button-custom swal-button--cancel-custom">Cancel</button>
+                <div class="swal-button__loader-custom">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div class="swal-button-container-custom">
+                <button id="submitWarnAnime" class="swal-button-custom swal-button--confirm-custom">Submit</button>
+                    <div class="swal-button__loader-custom">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script defer>
     // Initialize Global Variables
         // IndexDB
     var request, db,
         // Saved Data
-    savedUsername, savedRecScheme, savedFilters, savedUserList, savedAnimeEntries, savedHiddenAnimeTitles,
+    savedUsername, savedRecScheme, savedFilters, savedUserList, savedAnimeEntries, savedHiddenAnimeTitles, savedWarnAnime,
     savedYscroll, savedHiddenTablePage, savedUnhiddenTablePage, savedTableStatus, savedSort,
     exportPathIsAvailable, savedFilterOptionsJson, allFilterInfo,
     exportIntervalIsActive, updateIntervalIsActive, exportIntervalStartDate, updateIntervalStartDate,
@@ -779,6 +981,10 @@
                         },0)
                         return false
                     })
+                await $('.flexdatalistWarnAnime').flexdatalist({
+                    minLength: 1,
+                    searchIn: 'info'
+                })
                 resolve()
             })
             return 
@@ -859,20 +1065,20 @@
                 // Reload Filters -> Data
                     // Check for FlexDatalist Availability
                 let reloadSavedData = await setInterval(async () => {
-                    if(await $(".flexdatalist-multiple-value > .flexdatalist-alias").length){
+                    if(await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias").length){
                         await clearInterval(reloadSavedData)
                         // Reload Filters
                         var filterInput
                         savedFilters = await retrieveJSON("savedFilters") || []
                         for(let i=0; i<savedFilters.length; i++) {
-                            filterInput = await $(".flexdatalist-multiple-value > .flexdatalist-alias")
+                            filterInput = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
                             await filterInput.val(savedFilters[i])
                             var e = await $.Event("keyup",{keyCode:13})
                             await filterInput.trigger(e)
                             await filterInput.val("")
                         }
                         // Check if the List shown is Hidden List or Unhidden List -> Rename th button
-                        var filters = await $(".flexdatalist-multiple").children("li.value")
+                        var filters = await $("#filters .flexdatalist-multiple").children("li.value")
                         for(let i=0; i<filters.length; i++) {
                             var filterName = await filters.eq(i).children(".text")[0].innerText
                             if(await filterName.toLowerCase()==="hidden"){
@@ -1267,8 +1473,8 @@
                     await $("#username").val(savedUsername)
                 }
                 if(state==="Unhidden"){
-                    if($(".flexdatalist-multiple-value > .flexdatalist-alias").length){
-                        var filterInput = await $(".flexdatalist-multiple-value > .flexdatalist-alias")
+                    if($("#filters .flexdatalist-multiple-value > .flexdatalist-alias").length){
+                        var filterInput = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
                         await filterInput.val("hidden")
                         var e = await $.Event("keyup",{keyCode:13})
                         await filterInput.trigger(e)
@@ -1298,13 +1504,13 @@
                     },0)
                     isRunning = false
                 } else {
-                    if($(".flexdatalist-multiple-value").length){
-                        var filters = await $(".flexdatalist-multiple").children("li.value")
+                    if($("#filters .flexdatalist-multiple-value").length){
+                        var filters = await $("#filters .flexdatalist-multiple").children("li.value")
                         for(let i=0; i<filters.length; i++) {
                             var filterName = await filters.eq(i).children(".text")[0].innerText
                             if(filterName.toLowerCase()==="hidden"){
                                 await filters.eq(i).children(".fdl-remove").trigger("click")
-                                await $(".flexdatalist-alias").blur()
+                                await $("#filters .flexdatalist-alias").blur()
                             }
                         }
                     }
@@ -1350,13 +1556,13 @@
                     $("#username").val(savedUsername)
                 }
                 saveJSON([], "savedHiddenAnimeTitles")
-                if(await $(".flexdatalist-multiple-value").length){
-                    var filters = await $(".flexdatalist-multiple").children("li.value")
+                if(await $("#filters .flexdatalist-multiple-value").length){
+                    var filters = await $("#filters .flexdatalist-multiple").children("li.value")
                     for(let i=0; i<filters.length; i++) {
                         var filterName = await filters.eq(i).children(".text")[0].innerText
                         if(filterName.toLowerCase()==="hidden"){
                             await filters.eq(i).children(".fdl-remove").trigger("click")
-                            await $(".flexdatalist-alias").blur()
+                            await $("#filters .flexdatalist-alias").blur()
                         }
                     }
                 }
@@ -1701,6 +1907,51 @@
     $("#chooseExportPathBtn").on("click",()=>{
         console.log("WebtoApp: Choose an Export Path")
     })
+    $("#warnAnimeBtn").on("click", async ()=>{
+        $("#warnAnimeModal").css({opacity:0,display:"flex"}).animate({opacity:1},150)
+        $("#warnAnimeModal .swal-modal-custom").css({opacity:0}).show().animate({opacity:1},150)
+        let reloadSavedData = setInterval(async () => {
+            if($("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
+                clearInterval(reloadSavedData)
+                // Reload Filters
+                var warnAnimeInput
+                savedWarnAnime = await retrieveJSON("savedWarnAnime") || ["Love Triangle","CGI","NTR","Boys' Love","Girls' Love","Rape","Ecchi","Yuri"]
+                for(let i=0; i<savedWarnAnime.length; i++) {
+                    warnAnimeInput = $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                    await warnAnimeInput.val(savedWarnAnime[i])
+                    var e = await $.Event("keyup",{keyCode:13})
+                    await warnAnimeInput.trigger(e)
+                    await warnAnimeInput.val("")
+                }
+            }
+        },1)
+    })
+    $("#submitWarnAnime").on("click",async()=>{
+        var warnAnimeInputs = $("#warnAnimeModal .flexdatalist-multiple > .value").children(".text")
+        var warnAnime = []
+        var warnAnimeY = []
+        var warnAnimeR = []
+        for(let i=0; i<warnAnimeInputs.length; i++){
+            var warnName = warnAnimeInputs[i].textContent
+            warnAnime.push(warnName)
+            if(warnName.charAt(0)==="!") warnAnimeR.push(warnName.slice(2))
+            else warnAnimeY.push(warnName.slice(1))
+        }
+        await saveJSON(warnAnime,"savedWarnAnime")
+        await $("#warnAnimeModal .swal-modal-custom").fadeOut(150,()=>{
+            $("#warnAnimeModal").fadeOut(150)
+        })
+        savedRecScheme = await retrieveJSON("savedRecScheme")
+        LoadData(savedRecScheme)
+    })
+    $("#warnAnimeModal, #cancelWarnAnime").on("click",()=>{
+        $("#warnAnimeModal .swal-modal-custom").fadeOut(150,()=>{
+            $("#warnAnimeModal").fadeOut(150)
+        })
+    })
+    $("#warnAnimeModal .swal-modal-custom").on("click",(e)=>{
+        e.stopImmediatePropagation()
+    })
     $("#hideKidsAnimeBtn").on("click", async ()=>{
         kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden")
         if(kidsAnimeIsHidden){
@@ -1715,6 +1966,16 @@
             $("#hideKidsAnimeBtn").css({background:"white",color:"black"})
             savedRecScheme = await retrieveJSON("savedRecScheme")
             LoadData(savedRecScheme)
+        }
+    })
+    $("#animeRecommendationList").delegate('td.anime-score', 'click' , async function() {
+        var warns = $(this).children("div").attr("title")
+        if(warns!==undefined){
+            swal("Content Warn", {
+                title: "Content Warn",
+                text: `You may not Like this Anime since it the following contents: \n${warns}`,
+                icon: "info"
+            })
         }
     })
     //
@@ -1737,14 +1998,14 @@
     // Search Function
     async function Update(){
         updateStartTime = new Date
-        var filterInput = $(".filter-container > ul > .flexdatalist-multiple-value > input")
+        var filterInput = $("#filters > ul > .flexdatalist-multiple-value > input")
         var username = $("#username").val()
         var filter = filterInput.val()
         // Check Input Validity
         if(username===""||username===null||typeof username==="undefined"){
             $("#username")[0].setCustomValidity("Anilist Username is Required!")
             $("#username")[0].reportValidity()
-        }else if($(".flexdatalist-multiple").children("li").length<2&&filterInput.val()!=""){
+        }else if($("#filters .flexdatalist-multiple").children("li").length<2&&filterInput.val()!=""){
             filterInput[0].setCustomValidity("Select or Enter a word to Filter!")
             filterInput[0].reportValidity()
         } else {
@@ -1759,7 +2020,7 @@
                 // Search New Data
                 requestPause = true
                 saveJSON(requestPause,"requestPause")
-                var filterInputs = $(".flexdatalist-multiple > .value").children(".text")
+                var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
                 var filters = []
                 for(let i=0; i<filterInputs.length; i++){
                     var filterName = filterInputs[i].textContent
@@ -2259,7 +2520,7 @@
                 const data = message.data
                 // Save Current Filters
                 saveJSON(requestPause,"requestPause")
-                var filterInputs = $(".flexdatalist-multiple > .value").children(".text")
+                var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
                 var filters = []
                 for(let i=0; i<filterInputs.length; i++){
                     var filterName = filterInputs[i].textContent
@@ -2275,13 +2536,13 @@
                     data: savedFilterOptionsJson
                 })
                 let reloadSavedData = setInterval(async () => {
-                    if($(".flexdatalist-multiple-value > .flexdatalist-alias").length){
+                    if($("#filters .flexdatalist-multiple-value > .flexdatalist-alias").length){
                         clearInterval(reloadSavedData)
                         // Reload Filters
                         var filterInput
                         savedFilters = await retrieveJSON("savedFilters") || []
                         for(let i=0; i<savedFilters.length; i++) {
-                            filterInput = $(".flexdatalist-multiple-value > .flexdatalist-alias")
+                            filterInput = $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
                             await filterInput.val(savedFilters[i])
                             var e = await $.Event("keyup",{keyCode:13})
                             await filterInput.trigger(e)
@@ -2315,7 +2576,7 @@
         return new Promise(async (resolve) => {
             var recList = Object.values(savedRecScheme)
             if((recList.length>0)) {
-                var filterInputs = $(".flexdatalist-multiple > .value").children(".text")
+                var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
                 var filters = []
                 var includes = []
                 var excludes = kidsAnimeIsHidden? ["kids"] : []
@@ -2333,13 +2594,23 @@
                     }
                 }
                 saveJSON(filters, "savedFilters")
+                savedWarnAnime = await retrieveJSON("savedWarnAnime") || ["Love Triangle","CGI","NTR","Boys' Love","Girls' Love","Rape","Ecchi","Yuri"]
+                var savedWarnR = {}
+                var savedWarnY = {}
+                for(let i=0; i<savedWarnAnime.length; i++){
+                    var warnName = savedWarnAnime[i]
+                    if(warnName.charAt(0)==="!") savedWarnR[warnName.slice(1)] = null
+                    else savedWarnY[warnName] = null
+                }
                 savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
                 var worker = new Worker("./js-css/worker/loadData.js")
                 worker.postMessage({
                     recList: recList,
                     savedHiddenAnimeTitles: savedHiddenAnimeTitles,
                     includes: includes,
-                    excludes: excludes
+                    excludes: excludes,
+                    savedWarnR: savedWarnR,
+                    savedWarnY: savedWarnY
                 })
                 worker.onmessage = async (message) => {
                     worker.terminate()

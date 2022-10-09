@@ -4,6 +4,8 @@ self.onmessage = (message) => {
     var savedHiddenAnimeTitles = data.savedHiddenAnimeTitles
     var includes = data.includes
     var excludes = data.excludes
+    var savedWarnR = data.savedWarnR
+    var savedWarnY = data.savedWarnY
     //
     // FilterOut User Includes and Excludes
     // Include
@@ -177,6 +179,9 @@ self.onmessage = (message) => {
     // Show Table
     var animeData = []
     recList.forEach((value) => {
+        var hasWarnR = false
+        var hasWarnY = false
+        var warns = []
         var score = parseFloat(value.score)
         var weightedScore = parseFloat(value.weightedScore)
         var similarities = []
@@ -189,14 +194,84 @@ self.onmessage = (message) => {
                 similarities.push(v)
             }
         })
+        if(savedWarnR[value.title.toLowerCase()]!==undefined) {
+            warns.push(value.title)
+            hasWarnR = true
+        }else if(savedWarnY[value.title.toLowerCase()]!==undefined&&hasWarnR!==true){
+            warns.push(value.title)
+            hasWarnY = true
+        }
+        if(savedWarnR[value.status.toLowerCase()]!==undefined) {
+            warns.push(value.status)
+            hasWarnR = true
+        }else if(savedWarnY[value.status.toLowerCase()]!==undefined&&hasWarnR!==true) {
+            warns.push(value.status)
+            hasWarnY = true
+        }
+        if(savedWarnR[value.format.toLowerCase()]!==undefined){
+            warns.push(value.format)
+            hasWarnR = true
+        } else if(savedWarnY[value.format.toLowerCase()]!==undefined&&hasWarnR!==true) {
+            warns.push(value.format)
+            hasWarnY = true
+        }
+        if(savedWarnR[`${value.year}`.toLowerCase()]!==undefined){
+            warns.push(value.year)
+            hasWarnR = true
+        }else if(savedWarnY[`${value.year}`.toLowerCase()]!==undefined&&hasWarnR!==true) {
+            warns.push(value.year)
+            hasWarnY = true
+        }
+        if(savedWarnR[value.season.toLowerCase()]!==undefined){
+            warns.push(value.season)
+            hasWarnR = true
+        }else if(savedWarnY[value.season.toLowerCase()]!==undefined&&hasWarnR!==true){
+            warns.push(value.season)
+            hasWarnY = true
+        }
+        var genres = value.genres.split(", ")
+        genres.forEach((name)=>{
+            if(savedWarnR[name.toLowerCase()]!==undefined) {
+                warns.push(name)
+                hasWarnR = true
+            }else if(savedWarnY[name.toLowerCase()]!==undefined&&hasWarnR!==true){
+                warns.push(name)
+                hasWarnY = true
+            }
+        })
+        var tags = value.tags.split(", ")
+        tags.forEach((name)=>{
+            if(savedWarnR[name.toLowerCase()]!==undefined) {
+                warns.push(name)
+                hasWarnR = true
+            }else if(savedWarnY[name.toLowerCase()]!==undefined&&hasWarnR!==true){
+                warns.push(name)
+                hasWarnY = true
+            }
+        })
         var studios = []
         Object.entries(value.studios).forEach(([name,url])=>{
             studios.push(`<a href=${url||"javascript:;"}>${name}</a>`)
+            if(savedWarnR[name.toLowerCase()]!==undefined) {
+                warns.push(name)
+                hasWarnR = true
+            }else if(savedWarnY[name.toLowerCase()]!==undefined&&hasWarnR!==true){
+                warns.push(name)
+                hasWarnY = true
+            }
         })
         var staff = []
         Object.entries(value.staff).forEach(([name,url])=>{
             staff.push(`<a href=${url||"javascript:;"}>${name}</a>`)
+            if(savedWarnR[name.toLowerCase()]!==undefined) {
+                warns.push(name)
+                hasWarnR = true
+            }else if(savedWarnY[name.toLowerCase()]!==undefined&&hasWarnR!==true){
+                warns.push(name)
+                hasWarnY = true
+            }
         })
+        var hasWarn = hasWarnR||hasWarnY
         if(includes.some(item=>equalsNCS(item,"hidden"))){                        
             if(savedHiddenAnimeTitles.includes(value.title)){
                 animeData += `
@@ -207,8 +282,15 @@ self.onmessage = (message) => {
                             type="button" class="show-anime" 
                             title="Hide this Anime">Show</button>
                     </td>
-                    <td class="anime-score" title="${weightedScore}">${weightedScore}</td>
-                    <td id="animeTitle"><a href="${value.animeUrl||"javascript:;"}">${value.title}</a></td>
+                    <td class="anime-score" title="${weightedScore}">
+                        ${hasWarn?`<div title=${warns.join(", ")}><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
+                        ${weightedScore}
+                    </td>
+                    <td id="animeTitle">
+                        <a href="${value.animeUrl||"javascript:;"}">
+                            ${value.title}
+                        </a>
+                    </td>
                     <td>`
                         animeData += similarities.length>0 ? similarities.join(", ") : "Top Similarities: N/A"
                         animeData += `
@@ -240,8 +322,15 @@ self.onmessage = (message) => {
                             type="button" class="hide-anime" 
                             title="Hide this Anime">Hide</button>
                     </td>
-                    <td class="anime-score" title="${weightedScore}">${weightedScore}</td>
-                    <td id="animeTitle"><a href="${value.animeUrl||"javascript:;"}">${value.title}</a></td>
+                    <td class="anime-score" title="${weightedScore}">
+                        ${hasWarn?`<div title=${warns.join(", ")}><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
+                        ${weightedScore}
+                    </td>
+                    <td id="animeTitle">
+                        <a href="${value.animeUrl||"javascript:;"}">
+                            ${value.title}
+                        </a>
+                    </td>
                     <td>
                         ${similarities.length>0 ? similarities.join(", ") : "Similarities: N/A"}
                     </td>

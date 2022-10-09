@@ -1,4 +1,5 @@
 self.onmessage = (message) => {
+    const minNumber = 1-6e-17!==1? 6e-17 : 1e-16 // Min Value Javascript
     var data = message.data
     var animeEntries = data.animeEntries
     var savedRecScheme = data.savedRecScheme
@@ -8,7 +9,6 @@ self.onmessage = (message) => {
     var allFilterInfo = data.allFilterInfo
     var alteredVariables = data.alteredVariables
     var savedAnalyzedVariablesCount = data.savedAnalyzedVariablesCount || {}
-    var minNumber = 1-6e-17===1? 6e-17 : 1e-16 // Min Value Javascript
     //
     for(let i=0; i<animeEntries.length; i++){
         var animeShallUpdate = false
@@ -425,14 +425,14 @@ self.onmessage = (message) => {
             zstaffRolesArray[i] = arrayMean(zstaffRolesArray[i])
         }
         if(zstaffRolesArray.length>0){
-            animeProductionOS.push(...zstaffRolesArray)
+            animeProductionOS.push(arrayMean(zstaffRolesArray))
         }
         var zstaffRolesArrayMin = Object.values(zstaffMin)
         for(let i=0;i<zstaffRolesArrayMin.length;i++){
             zstaffRolesArrayMin[i] = arrayMean(zstaffRolesArrayMin[i])
         }
         if(zstaffRolesArrayMin.length>0){
-            animeProductionOSMin.push(...zstaffRolesArrayMin)
+            animeProductionOSMin.push(arrayMean(zstaffRolesArrayMin))
         }
         // General Opinion 
         var animeGeneralOpinionOS = []
@@ -583,7 +583,7 @@ self.onmessage = (message) => {
         var max = parseFloat(Math.max(...obj))
         var min = parseFloat(Math.min(...obj))
         // var maxNumOfDec = obj.join(',').match(/((?<=\.)\d+)/g)?.reduce((acc,el)=>acc>=el.length?acc:el.length,0)??0
-        var boundary = 1-6e-17===1? 6e-17 : 1e-16  // Min Value Javascript
+        const boundary = minNumber  // Min Value Javascript
         var classW = parseFloat(((max-min)/(1.0+(3.322*Math.log(obj.length)))))
         var classIs
         if(max===min||classW<boundary){ // To avoid Inf loop if classWidth is very small

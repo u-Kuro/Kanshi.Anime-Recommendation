@@ -1,4 +1,5 @@
 self.onmessage = (message) => {
+    const minNumber = 1-6e-17!==1? 6e-17 : 1e-16 // Min Value Javascript
     const data = message.data
     const userList = data.userList.data
     var savedUserList = data.savedUserList
@@ -812,7 +813,7 @@ self.onmessage = (message) => {
         var max = parseFloat(Math.max(...obj))
         var min = parseFloat(Math.min(...obj))
         // var maxNumOfDec = obj.join(',').match(/((?<=\.)\d+)/g)?.reduce((acc,el)=>acc>=el.length?acc:el.length,0)??0
-        var boundary = 1-6e-17===1? 6e-17 : 1e-16
+        const boundary = minNumber
         var classW = parseFloat(((max-min)/(1.0+(3.322*Math.log(obj.length)))))
         var classIs
         if(max===min||classW<boundary){ // To avoid Inf loop if classWidth is very small
