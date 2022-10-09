@@ -1234,7 +1234,8 @@
                     await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hrs
                         const savedUsername = await retrieveJSON("savedUsername")
-                        const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                        const savedHiddenAnimeTitles = await retrieveJSON("savedWarnAnime")
+                        const savedWarnAnime = await retrieveJSON("savedHiddenAnimeTitles")
                         const savedUserList = await retrieveJSON("savedUserList")
                         const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                         const allFilterInfo = await retrieveJSON("allFilterInfo")
@@ -1246,8 +1247,9 @@
                         const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
                         const lastAnilistPage = await retrieveJSON("lastAnilistPage")
                         const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
-                        const backup = await {
+                        const backup = {
                             savedUsername: savedUsername,
+                            savedWarnAnime: savedWarnAnime,
                             savedHiddenAnimeTitles: savedHiddenAnimeTitles,
                             allFilterInfo: allFilterInfo,
                             savedFilterOptionsJson: savedFilterOptionsJson,
@@ -1268,7 +1270,8 @@
                         for(let i=0;i<exportIntervalTimeout.length;i++) await clearTimeout(exportIntervalTimeout[i])
                         var saveExportIntervalTimeout = await setTimeout(async()=>{
                             const savedUsername = await retrieveJSON("savedUsername")
-                            const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                            const savedHiddenAnimeTitles = await retrieveJSON("savedWarnAnime")
+                            const savedWarnAnime = await retrieveJSON("savedHiddenAnimeTitles")
                             const savedUserList = await retrieveJSON("savedUserList")
                             const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                             const allFilterInfo = await retrieveJSON("allFilterInfo")
@@ -1280,8 +1283,9 @@
                             const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
                             const lastAnilistPage = await retrieveJSON("lastAnilistPage")
                             const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
-                            const backup = await {
+                            const backup = {
                                 savedUsername: savedUsername,
+                                savedWarnAnime: savedWarnAnime,
                                 savedHiddenAnimeTitles: savedHiddenAnimeTitles,
                                 allFilterInfo: allFilterInfo,
                                 savedFilterOptionsJson: savedFilterOptionsJson,
@@ -1650,6 +1654,8 @@
                         saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
                         lastAnilistPage = fileContent.lastAnilistPage || 284
                         saveJSON(lastAnilistPage,"lastAnilistPage")
+                        savedWarnAnime = fileContent.savedWarnAnime || ["Love Triangle","CGI","NTR","Boys' Love","Girls' Love","Rape","Ecchi","Yuri"]
+                        saveJSON(savedWarnAnime,"savedWarnAnime")
                         $("#username").val(savedUsername)
                         $('.flexdatalist').flexdatalist({
                             data: savedFilterOptionsJson
@@ -1701,7 +1707,8 @@
             .then(async(confirmed) => {
                 if(confirmed){
                     const savedUsername = await retrieveJSON("savedUsername")
-                    const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                    const savedHiddenAnimeTitles = await retrieveJSON("savedWarnAnime")
+                    const savedWarnAnime = await retrieveJSON("savedHiddenAnimeTitles")
                     const savedUserList = await retrieveJSON("savedUserList")
                     const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                     const allFilterInfo = await retrieveJSON("allFilterInfo")
@@ -1715,6 +1722,7 @@
                     const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
                     const backup = {
                         savedUsername: savedUsername,
+                        savedWarnAnime: savedWarnAnime,
                         savedHiddenAnimeTitles: savedHiddenAnimeTitles,
                         allFilterInfo: allFilterInfo,
                         savedFilterOptionsJson: savedFilterOptionsJson,
@@ -1829,7 +1837,8 @@
                         saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                         if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
                             const savedUsername = await retrieveJSON("savedUsername")
-                            const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                            const savedHiddenAnimeTitles = await retrieveJSON("savedWarnAnime")
+                            const savedWarnAnime = await retrieveJSON("savedHiddenAnimeTitles")
                             const savedUserList = await retrieveJSON("savedUserList")
                             const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                             const allFilterInfo = await retrieveJSON("allFilterInfo")
@@ -1843,6 +1852,7 @@
                             const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
                             const backup = {
                                 savedUsername: savedUsername,
+                                savedWarnAnime: savedWarnAnime,
                                 savedHiddenAnimeTitles: savedHiddenAnimeTitles,
                                 allFilterInfo: allFilterInfo,
                                 savedFilterOptionsJson: savedFilterOptionsJson,
@@ -1863,7 +1873,8 @@
                             for(let i=0;i<exportIntervalTimeout.length;i++) clearTimeout(exportIntervalTimeout[i])
                             var saveExportIntervalTimeout = setTimeout(async()=>{
                                 const savedUsername = await retrieveJSON("savedUsername")
-                                const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                                const savedHiddenAnimeTitles = await retrieveJSON("savedWarnAnime")
+                                const savedWarnAnime = await retrieveJSON("savedHiddenAnimeTitles")
                                 const savedUserList = await retrieveJSON("savedUserList")
                                 const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                                 const allFilterInfo = await retrieveJSON("allFilterInfo")
@@ -1877,6 +1888,7 @@
                                 const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
                                 const backup = {
                                     savedUsername: savedUsername,
+                                    savedWarnAnime: savedWarnAnime,
                                     savedHiddenAnimeTitles: savedHiddenAnimeTitles,
                                     allFilterInfo: allFilterInfo,
                                     savedFilterOptionsJson: savedFilterOptionsJson,
