@@ -10,9 +10,10 @@
   1. Filters are available, insert Title/Genres/Tags/Status/Format/Year/Season/Studios/Staff to include and/or exclude (adding !filterword) an anime in your recommendation list. Numeric Filters >,<,=>,<= for numbered column including WScore, Score and Year.
   2. Sort by Scores/Status/Year/etc. to the desired order.
   3. Hidden/Unhidden List to hide an Anime from ones' list or show it back to your recommendations list (You may click show all for immediate retrieval).
+  4. Content Warn (only for VI) allows user to select Anime Information like Nudity, Harem, etc. to show a warning beside a anime recommendation in order to be alerted by any undesired content. User can also see the warned anime content by clicking the warn icon shown.
 
 ## Kanshi.VI (Recommended)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Year, Season, Format, and Studios as Categorical. Each variables or variable component are averaged. Numeric variables including Anilist Average-Score, Popularity, Favourites, Episodes, Trending, Duration have their own Linear Regression Model to be predicted. Finally, all anime in Anilist are then analyzed based on the Variable Importance Schema from ones' rating.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Year, Season, Format, Studios, and Staffs by Role as Categorical. Each variables or variable component are averaged. Numeric variables including Anilist Average-Score, Popularity, Favourites, Episodes, Trending, Duration have their own Linear Regression Model to be predicted and accepted at 0.1 r-squared. Finally, all anime in Anilist are then analyzed based on the Variable Importance Schema from ones' rating.
 
 ### Recommendation Algorithm
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The recommendation score is averaged through different variables based on user score to get each percent of Likeability. All anime are then analyzed based on the Variable Importance Schema from ones' anime list. Anime recommendation score will be high if most variable from an anime are liked by the user and a low score if most variables in it are disliked by the user.
