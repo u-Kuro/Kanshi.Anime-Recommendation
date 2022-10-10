@@ -188,7 +188,7 @@ self.onmessage = (message) => {
         value.variablesIncluded.forEach((v)=>{
             if(isJson(v)){
                 Object.entries(v).forEach(([name, url])=>{
-                    similarities.push(`<a href=${url||"javascript:;"}>${name}</a>`)
+                    similarities.push(`<a target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"}>${name}</a>`)
                 })
             } else {
                 similarities.push(v)
@@ -251,7 +251,7 @@ self.onmessage = (message) => {
         })
         var studios = []
         Object.entries(value.studios).forEach(([name,url])=>{
-            studios.push(`<a href=${url||"javascript:;"}>${name}</a>`)
+            studios.push(`<a target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"}>${name}</a>`)
             if(savedWarnR[name.toLowerCase()]!==undefined) {
                 warns.push(name)
                 hasWarnR = true
@@ -262,7 +262,7 @@ self.onmessage = (message) => {
         })
         var staff = []
         Object.entries(value.staff).forEach(([name,url])=>{
-            staff.push(`<a href=${url||"javascript:;"}>${name}</a>`)
+            staff.push(`<a target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"}>${name}</a>`)
             if(savedWarnR[name.toLowerCase()]!==undefined) {
                 warns.push(name)
                 hasWarnR = true
@@ -289,7 +289,7 @@ self.onmessage = (message) => {
                         </div>
                     </td>
                     <td id="animeTitle">
-                        <a href="${value.animeUrl||"javascript:;"}" data-value="${value.title}">${value.title}</a>
+                        <a target="_blank" rel="noopener noreferrer" href="${value.animeUrl||"javascript:;"}" data-value="${value.title}">${value.title}</a>
                     </td>
                     <td>`
                         animeData += similarities.length>0 ? similarities.join(", ") : "Top Similarities: N/A"
@@ -329,7 +329,7 @@ self.onmessage = (message) => {
                         </div>
                     </td>
                     <td id="animeTitle">
-                        <a href="${value.animeUrl||"javascript:;"}" data-value="${value.title}">${value.title}</a>
+                        <a target="_blank" rel="noopener noreferrer" href="${value.animeUrl||"javascript:;"}" data-value="${value.title}">${value.title}</a>
                     </td>
                     <td>
                         ${similarities.length>0 ? similarities.join(", ") : "Similarities: N/A"}
