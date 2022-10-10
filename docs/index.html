@@ -1307,9 +1307,15 @@
                             savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                         })
                         worker.onmessage = async(message) => {
-                            downloadObjectAsJson(await message.data.backup, "Kanshi-Backup")
+                            await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
                             exportIntervalStartDate = await new Date()
                             await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                            await $("#dataStatusContainer").fadeOut(2500)
+                            await $("#dataStatus").empty()
+                            await $("#dataStatusContainer").hide()
+                            await swal("Data has been exported!", {
+                                icon: "success",
+                            })
                         }
                     } else {
                         for(let i=0;i<exportIntervalTimeout.length;i++) await clearTimeout(exportIntervalTimeout[i])
@@ -1348,9 +1354,15 @@
                                 savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                             })
                             worker.onmessage = async(message) => {
-                                downloadObjectAsJson(await message.data.backup, "Kanshi-Backup")
+                                await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
                                 exportIntervalStartDate = await new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                await $("#dataStatusContainer").fadeOut(2500)
+                                await $("#dataStatus").empty()
+                                await $("#dataStatusContainer").hide()
+                                await swal("Data has been exported!", {
+                                    icon: "success",
+                                })
                             }
                         },await 3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
                         await exportIntervalTimeout.push(saveExportIntervalTimeout)
@@ -1681,43 +1693,64 @@
                 })
                 .then(async (confirmed) => {
                     if(confirmed){
+                        await $(".menu-container").fadeOut(250)
+                        $("#dataStatusContainer").hide()
+                        $("#dataStatusSpinner").show()
+                        $("#dataStatusContainer").css("display","flex").fadeIn(2500)
+                        $("#dataStatus")
+                            .empty()
+                            .append(`Importing data, please wait...`)
+                        var fileContent
                         await new Promise(async(resolve)=>{
                             await $("#importBtn").css({background: "black", color: "white"})
-                            const fileContent = await JSON.parse(reader.result);
-                            const entries = await Object.entries(fileContent)
+                            fileContent = await JSON.parse(reader.result);
+                            resolve()
+                        }).then(async()=>{
                             savedUsername = await fileContent.savedUsername || ""
+                            await $("#username").val(savedUsername)
                             await saveJSON(savedUsername,"savedUsername")
+                            return
+                        }).then(async()=>{
                             savedHiddenAnimeTitles = await fileContent.savedHiddenAnimeTitles || []
                             await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                            if(savedHiddenAnimeTitles.length) $("#showAllAnime").show()
+                            else $("#showAllAnime").hide()
+                            return
+                        }).then(async()=>{
                             savedRecScheme = await fileContent.savedRecScheme || {}
                             await saveJSON(savedRecScheme,"savedRecScheme")
+                        }).then(async()=>{
                             savedAnimeEntries = await fileContent.savedAnimeEntries || []
                             await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                        }).then(async()=>{
                             savedLatestAnimeTitle = await fileContent.savedLatestAnimeTitle || ""
                             await saveJSON(savedLatestAnimeTitle,"savedLatestAnimeTitle")
+                        }).then(async()=>{
                             savedUserList = await fileContent.savedUserList || {}
                             await saveJSON(savedUserList,"savedUserList")
+                        }).then(async()=>{
                             savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || 20
                             await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
+                        }).then(async()=>{
                             savedUpdateAnalyzeAnimeTime = await fileContent.savedUpdateAnalyzeAnimeTime || 3
                             await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
+                        }).then(async()=>{
                             lastAnilistPage = await fileContent.lastAnilistPage || 284
                             await saveJSON(lastAnilistPage,"lastAnilistPage")
+                        }).then(async()=>{
                             savedWarnAnime = await fileContent.savedWarnAnime || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
                                                                                    "full cgi","kids","love triangle","!male harem","!mixed gender harem",
                                                                                    "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
                                                                                    "!rape"
                                                                                  ]
                             await saveJSON(savedWarnAnime,"savedWarnAnime")
-                            resolve()
+                            return
                         }).then(async()=>{
                             await $("#username").val(savedUsername)
                             return
                         }).then(async()=>{
-                            if(savedHiddenAnimeTitles.length) $("#showAllAnime").show()
-                            else $("#showAllAnime").hide()
                             await new Promise(async(resolve)=>{
-                                await $("#warnAnimeModal").show().css({visibility:"hidden"})
+                                await $("#warnAnimeModal").css({visibility:"hidden"}).show()
                                 let reloadSavedData = await setInterval(async () => {
                                     if(await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
                                         await clearInterval(reloadSavedData)
@@ -1747,6 +1780,7 @@
                                     }
                                 },1)
                             })
+                            return
                         }).then(async()=>{
                             if(Object.keys(savedRecScheme).length) {
                                 await $("#updateBtn").show()
@@ -1769,11 +1803,13 @@
                             }
                             return
                         }).then(async()=>{
-                            await $(".menu-container").fadeOut(250)
+                            $("#importFile")[0].value = null
+                            $("#dataStatusContainer").fadeOut(2500)
+                            $("#dataStatus").empty()
+                            $("#dataStatusContainer").hide()
                             await swal("Data has been updated!", {
                                 icon: "success",
                             })
-                            $("#importFile")[0].value = null
                             return
                         })
                     } else {
@@ -1795,6 +1831,7 @@
         })
         .then(async(confirmed) => {
             if(confirmed){
+                await $(".menu-container").fadeOut(250)
                 $("#dataStatusContainer").hide()
                 $("#dataStatusSpinner").show()
                 $("#dataStatusContainer").css("display","flex").fadeIn(2500)
@@ -1829,8 +1866,13 @@
                     savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                 })
                 worker.onmessage = async(message) => {
-                    downloadObjectAsJson(await message.data.backup, "Kanshi-Backup")
-                    $(".menu-container").fadeOut(250)
+                    await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
+                    await $("#dataStatusContainer").fadeOut(2500)
+                    await $("#dataStatus").empty()
+                    await $("#dataStatusContainer").hide()
+                    await swal("Data has been exported!", {
+                        icon: "success",
+                    })
                 }
             }
         })
@@ -1925,6 +1967,7 @@
                     exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                     saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
+                        await $(".menu-container").fadeOut(250)
                         $("#dataStatusContainer").hide()
                         $("#dataStatusSpinner").show()
                         $("#dataStatusContainer").css("display","flex").fadeIn(2500)
@@ -1959,9 +2002,15 @@
                             savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                         })
                         worker.onmessage = async(message) => {
-                            downloadObjectAsJson(await message.data.backup, "Kanshi-Backup")
-                            exportIntervalStartDate = new Date()
-                            saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                            await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
+                            exportIntervalStartDate = await new Date()
+                            await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                            await $("#dataStatusContainer").fadeOut(2500)
+                            await $("#dataStatus").empty()
+                            await $("#dataStatusContainer").hide()
+                            await swal("Data has been exported!", {
+                                icon: "success",
+                            })
                         }
                     } else {
                         for(let i=0;i<exportIntervalTimeout.length;i++) clearTimeout(exportIntervalTimeout[i])
@@ -2000,9 +2049,15 @@
                                 savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                             })
                             worker.onmessage = async(message) => {
-                                downloadObjectAsJson(await message.data.backup, "Kanshi-Backup")
+                                await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
                                 exportIntervalStartDate = new Date()
-                                saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                await $("#dataStatusContainer").fadeOut(2500)
+                                await $("#dataStatus").empty()
+                                await $("#dataStatusContainer").hide()
+                                await swal("Data has been exported!", {
+                                    icon: "success",
+                                })
                             }
                         },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
                         exportIntervalTimeout.push(saveExportIntervalTimeout)
@@ -2823,19 +2878,11 @@
         if(seconds>0) time.push(`${seconds}s`)
         return time.join(" ")
     }
-    async function downloadObjectAsJson(exportObj, exportName){// Needs downloader.js web worker
-        var worker = await new Worker("./js-css/worker/downloader.js")
-        await worker.postMessage({exportObj:exportObj, exportName:exportName})
-        worker.onmessage = async (message) => {
-            var div = document.createElement('div');
-            div.style.display = "none";
-            div.innerHTML = message.data.anchor;
-            div.firstElementChild.click();
-            div.remove();
-            $("#dataStatusContainer").fadeOut(2500)
-            $("#dataStatus").empty()
-            $("#dataStatusContainer").hide()
-        }
+    async function downloadObjectAsJson(objStr, name) {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([objStr], { type:`text/json` }));
+        a.download = name+".json";
+        a.click();
     }
     function isJsonString(str) {
         try {JSON.parse(str);}

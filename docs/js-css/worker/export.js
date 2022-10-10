@@ -12,7 +12,7 @@ self.onmessage = async(message) => {
     const savedDeepUpdateTime = data.savedDeepUpdateTime
     const lastAnilistPage = data.lastAnilistPage
     const savedAnalyzedVariablesCount = data.savedAnalyzedVariablesCount
-    const backup = {
+    const backupStr = JSON.stringify({
         savedUsername: savedUsername,
         savedWarnAnime: savedWarnAnime,
         savedHiddenAnimeTitles: savedHiddenAnimeTitles,
@@ -25,9 +25,9 @@ self.onmessage = async(message) => {
         savedDeepUpdateTime: savedDeepUpdateTime,
         lastAnilistPage: lastAnilistPage,
         savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
-    }
+    })
     //
     self.postMessage({
-        backup: backup
+        backupStr: backupStr
     })
 }
