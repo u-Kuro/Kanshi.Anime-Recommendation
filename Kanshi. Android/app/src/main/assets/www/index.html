@@ -934,7 +934,7 @@
                     })
                     .delegate('button.hide-anime', 'click' , async function() {
                         var hiddenRow =  await $(this).closest('tr')
-                        var hiddenAnimeTitle = await hiddenRow.children("td#animeTitle").children("a")[0].textContent
+                        var hiddenAnimeTitle = await hiddenRow.children("td#animeTitle").children("a").attr("data-value")
                         savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
                         await savedHiddenAnimeTitles.push(hiddenAnimeTitle)
                         await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
@@ -967,7 +967,7 @@
                     })
                     .delegate('button.show-anime', 'click' , async function() {
                         var hiddenRow = await $(this).closest('tr')
-                        var hiddenAnimeTitle = await hiddenRow.children("td#animeTitle").children("a")[0].textContent
+                        var hiddenAnimeTitle = await hiddenRow.children("td#animeTitle").children("a").attr("data-value")
                         savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
                         savedHiddenAnimeTitles = await savedHiddenAnimeTitles.filter((v)=>v!==hiddenAnimeTitle)
                         await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
@@ -1089,6 +1089,7 @@
                                                                                    "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
                                                                                    "!rape"
                                                                                  ]
+                        console.log(savedWarnAnime)
                         for(let i=0; i<savedWarnAnime.length; i++) {
                             warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
                             await warnAnimeInput.val(savedWarnAnime[i])
@@ -1278,6 +1279,7 @@
                     exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                     await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hrs
+                        var worker = new Worker("./js-css/worker/export.js")
                         const savedUsername = await retrieveJSON("savedUsername")
                         const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                         const savedWarnAnime = await retrieveJSON("savedWarnAnime")
@@ -1290,7 +1292,7 @@
                         const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
                         const lastAnilistPage = await retrieveJSON("lastAnilistPage")
                         const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
-                        const backup = {
+                        worker.postMessage({
                             savedUsername: savedUsername,
                             savedWarnAnime: savedWarnAnime,
                             savedHiddenAnimeTitles: savedHiddenAnimeTitles,
@@ -1303,13 +1305,16 @@
                             savedDeepUpdateTime: savedDeepUpdateTime,
                             lastAnilistPage: lastAnilistPage,
                             savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
+                        })
+                        worker.onmessage = async(message) => {
+                            downloadObjectAsJson(await message.data.backup, "Kanshi-Backup")
+                            exportIntervalStartDate = await new Date()
+                            await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                         }
-                        await downloadObjectAsJson(backup, "Kanshi-Backup")
-                        exportIntervalStartDate = await new Date()
-                        await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     } else {
                         for(let i=0;i<exportIntervalTimeout.length;i++) await clearTimeout(exportIntervalTimeout[i])
                         var saveExportIntervalTimeout = await setTimeout(async()=>{
+                            var worker = new Worker("./js-css/worker/export.js")
                             const savedUsername = await retrieveJSON("savedUsername")
                             const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                             const savedWarnAnime = await retrieveJSON("savedWarnAnime")
@@ -1322,7 +1327,7 @@
                             const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
                             const lastAnilistPage = await retrieveJSON("lastAnilistPage")
                             const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
-                            const backup = {
+                            worker.postMessage({
                                 savedUsername: savedUsername,
                                 savedWarnAnime: savedWarnAnime,
                                 savedHiddenAnimeTitles: savedHiddenAnimeTitles,
@@ -1335,10 +1340,12 @@
                                 savedDeepUpdateTime: savedDeepUpdateTime,
                                 lastAnilistPage: lastAnilistPage,
                                 savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
+                            })
+                            worker.onmessage = async(message) => {
+                                downloadObjectAsJson(await message.data.backup, "Kanshi-Backup")
+                                exportIntervalStartDate = await new Date()
+                                await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                             }
-                            await downloadObjectAsJson(backup, "Kanshi-Backup")
-                            exportIntervalStartDate = await new Date()
-                            await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                         },await 3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
                         await exportIntervalTimeout.push(saveExportIntervalTimeout)
                     }
@@ -1783,6 +1790,7 @@
             })
             .then(async(confirmed) => {
                 if(confirmed){
+                    var worker = new Worker("./js-css/worker/export.js")
                     const savedUsername = await retrieveJSON("savedUsername")
                     const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                     const savedWarnAnime = await retrieveJSON("savedWarnAnime")
@@ -1795,7 +1803,7 @@
                     const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
                     const lastAnilistPage = await retrieveJSON("lastAnilistPage")
                     const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
-                    const backup = {
+                    worker.postMessage({
                         savedUsername: savedUsername,
                         savedWarnAnime: savedWarnAnime,
                         savedHiddenAnimeTitles: savedHiddenAnimeTitles,
@@ -1808,9 +1816,11 @@
                         savedDeepUpdateTime: savedDeepUpdateTime,
                         lastAnilistPage: lastAnilistPage,
                         savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
+                    })
+                    worker.onmessage = async(message) => {
+                        downloadObjectAsJson(await message.data.backup, "Kanshi-Backup")
+                        $(".menu-container").fadeOut(250)
                     }
-                    downloadObjectAsJson(backup, "Kanshi-Backup")
-                    $(".menu-container").fadeOut(250)
                 }
             })
         } else {
@@ -1909,6 +1919,7 @@
                         exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                         saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                         if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
+                            var worker = new Worker("./js-css/worker/export.js")
                             const savedUsername = await retrieveJSON("savedUsername")
                             const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                             const savedWarnAnime = await retrieveJSON("savedWarnAnime")
@@ -1921,7 +1932,7 @@
                             const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
                             const lastAnilistPage = await retrieveJSON("lastAnilistPage")
                             const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
-                            const backup = {
+                            worker.postMessage({
                                 savedUsername: savedUsername,
                                 savedWarnAnime: savedWarnAnime,
                                 savedHiddenAnimeTitles: savedHiddenAnimeTitles,
@@ -1934,13 +1945,16 @@
                                 savedDeepUpdateTime: savedDeepUpdateTime,
                                 lastAnilistPage: lastAnilistPage,
                                 savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
+                            })
+                            worker.onmessage = async(message) => {
+                                downloadObjectAsJson(await message.data.backup, "Kanshi-Backup")
+                                exportIntervalStartDate = new Date()
+                                saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                             }
-                            downloadObjectAsJson(backup, "Kanshi-Backup")
-                            exportIntervalStartDate = new Date()
-                            saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                         } else {
                             for(let i=0;i<exportIntervalTimeout.length;i++) clearTimeout(exportIntervalTimeout[i])
                             var saveExportIntervalTimeout = setTimeout(async()=>{
+                                var worker = new Worker("./js-css/worker/export.js")
                                 const savedUsername = await retrieveJSON("savedUsername")
                                 const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                                 const savedWarnAnime = await retrieveJSON("savedWarnAnime")
@@ -1953,7 +1967,7 @@
                                 const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
                                 const lastAnilistPage = await retrieveJSON("lastAnilistPage")
                                 const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
-                                const backup = {
+                                worker.postMessage({
                                     savedUsername: savedUsername,
                                     savedWarnAnime: savedWarnAnime,
                                     savedHiddenAnimeTitles: savedHiddenAnimeTitles,
@@ -1966,10 +1980,12 @@
                                     savedDeepUpdateTime: savedDeepUpdateTime,
                                     lastAnilistPage: lastAnilistPage,
                                     savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
+                                })
+                                worker.onmessage = async(message) => {
+                                    downloadObjectAsJson(await message.data.backup, "Kanshi-Backup")
+                                    exportIntervalStartDate = new Date()
+                                    saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                 }
-                                downloadObjectAsJson(backup, "Kanshi-Backup")
-                                exportIntervalStartDate = new Date()
-                                saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                             },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
                             exportIntervalTimeout.push(saveExportIntervalTimeout)
                         }
@@ -2627,7 +2643,6 @@
             }
         }
     }
-    
 
     async function LoadData(savedRecScheme){
         if(!isLoading) isLoading = true
@@ -2796,14 +2811,16 @@
         if(seconds>0) time.push(`${seconds}s`)
         return time.join(" ")
     }
-    function downloadObjectAsJson(exportObj, exportName){
-        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
-        var downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href",dataStr);
-        downloadAnchorNode.setAttribute("download",exportName + ".json");
-        document.body.appendChild(downloadAnchorNode); // required for firefox
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
+    async function downloadObjectAsJson(exportObj, exportName){// Needs downloader.js web worker
+        var worker = await new Worker("./js-css/worker/downloader.js")
+        await worker.postMessage({exportObj:exportObj, exportName:exportName})
+        worker.onmessage = async (message) => {
+            var div = document.createElement('div');
+            div.style.display = "none";
+            div.innerHTML = message.data.anchor;
+            div.firstElementChild.click();
+            div.remove();
+        }
     }
     function isJsonString(str) {
         try {JSON.parse(str);}

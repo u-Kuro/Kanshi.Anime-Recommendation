@@ -283,13 +283,13 @@ self.onmessage = (message) => {
                             title="Hide this Anime">Show</button>
                     </td>
                     <td class="anime-score" title="${weightedScore}">
-                        ${hasWarn?`<div title='${warns.join(", ")}'><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
-                        ${weightedScore}
+                        <div>
+                            ${hasWarn?`<div title='${warns.join(", ")}'><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
+                            ${weightedScore}
+                        </div>
                     </td>
                     <td id="animeTitle">
-                        <a href="${value.animeUrl||"javascript:;"}">
-                            ${value.title}
-                        </a>
+                        <a href="${value.animeUrl||"javascript:;"}" data-value="${value.title}">${value.title}</a>
                     </td>
                     <td>`
                         animeData += similarities.length>0 ? similarities.join(", ") : "Top Similarities: N/A"
@@ -329,9 +329,7 @@ self.onmessage = (message) => {
                         </div>
                     </td>
                     <td id="animeTitle">
-                        <a href="${value.animeUrl||"javascript:;"}">
-                            ${value.title}
-                        </a>
+                        <a href="${value.animeUrl||"javascript:;"}" data-value="${value.title}">${value.title}</a>
                     </td>
                     <td>
                         ${similarities.length>0 ? similarities.join(", ") : "Similarities: N/A"}
@@ -353,7 +351,7 @@ self.onmessage = (message) => {
             }
         }
     })
-    if(animeData===""){
+    if(!animeData.length){
         animeData = `
             <tr class="item" role="row">
                 <td style="padding: 1.5em !important;" colspan="13">
