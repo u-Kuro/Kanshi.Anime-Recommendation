@@ -1310,9 +1310,11 @@
                             await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
                             exportIntervalStartDate = await new Date()
                             await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                            await $("#dataStatusContainer").fadeOut(2500)
-                            await $("#dataStatus").empty()
-                            await $("#dataStatusContainer").hide()
+                            if(!requestIsRunning){
+                                await $("#dataStatusContainer").fadeOut(2500)
+                                await $("#dataStatus").empty()
+                                await $("#dataStatusContainer").hide()
+                            }
                             await swal("Data has been exported!", {
                                 icon: "success",
                             })
@@ -1357,9 +1359,11 @@
                                 await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
                                 exportIntervalStartDate = await new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                                await $("#dataStatusContainer").fadeOut(2500)
-                                await $("#dataStatus").empty()
-                                await $("#dataStatusContainer").hide()
+                                if(!requestIsRunning){
+                                    await $("#dataStatusContainer").fadeOut(2500)
+                                    await $("#dataStatus").empty()
+                                    await $("#dataStatusContainer").hide()
+                                }
                                 await swal("Data has been exported!", {
                                     icon: "success",
                                 })
@@ -1867,9 +1871,11 @@
                 })
                 worker.onmessage = async(message) => {
                     await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
-                    await $("#dataStatusContainer").fadeOut(2500)
-                    await $("#dataStatus").empty()
-                    await $("#dataStatusContainer").hide()
+                    if(!requestIsRunning){
+                        await $("#dataStatusContainer").fadeOut(2500)
+                        await $("#dataStatus").empty()
+                        await $("#dataStatusContainer").hide()
+                    }
                     await swal("Data has been exported!", {
                         icon: "success",
                     })
@@ -2005,9 +2011,11 @@
                             await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
                             exportIntervalStartDate = await new Date()
                             await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                            await $("#dataStatusContainer").fadeOut(2500)
-                            await $("#dataStatus").empty()
-                            await $("#dataStatusContainer").hide()
+                            if(!requestIsRunning){
+                                await $("#dataStatusContainer").fadeOut(2500)
+                                await $("#dataStatus").empty()
+                                await $("#dataStatusContainer").hide()
+                            }
                             await swal("Data has been exported!", {
                                 icon: "success",
                             })
@@ -2052,9 +2060,11 @@
                                 await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
                                 exportIntervalStartDate = new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                                await $("#dataStatusContainer").fadeOut(2500)
-                                await $("#dataStatus").empty()
-                                await $("#dataStatusContainer").hide()
+                                if(!requestIsRunning){
+                                    await $("#dataStatusContainer").fadeOut(2500)
+                                    await $("#dataStatus").empty()
+                                    await $("#dataStatusContainer").hide()
+                                }
                                 await swal("Data has been exported!", {
                                     icon: "success",
                                 })

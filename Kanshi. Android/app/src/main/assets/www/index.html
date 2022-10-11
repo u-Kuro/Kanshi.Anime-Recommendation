@@ -718,12 +718,12 @@
         </div>
         <div id="filters" class="filter-container">
             <input type="text"
-                placeholder="Filter Word/Number (!Exclude/Score>N/etc.)"
-                class="flexdatalist"
-                data-search-in="info"
-                multiple="multiple"
-                data-min-length="1"
-                name="filter">
+                   placeholder="Filter Word/Number (!Exclude/Score>N/etc.)"
+                   class="flexdatalist"
+                   data-search-in="info"
+                   multiple="multiple"
+                   data-min-length="1"
+                   name="filter">
         </div>
         <div class="btn-container">
             <button id="searchBtn" class="btn" type="submit">Search</button>
@@ -825,12 +825,12 @@
             <div class="swal-text-custom" style="margin:0 !important;padding:0;">Select an Anime Information to be Warned</div>
             <div class="filter-container">
                 <input type="text"
-                    placeholder="Normal word for Semi-Warning or !Red-Warning"
-                    class="flexdatalistWarnAnime"
-                    data-search-in="info"
-                    multiple="multiple"
-                    data-min-length="1"
-                    name="filter">
+                       placeholder="Normal word for Semi-Warning or !Red-Warning"
+                       class="flexdatalistWarnAnime"
+                       data-search-in="info"
+                       multiple="multiple"
+                       data-min-length="1"
+                       name="filter">
             </div>
         </div>
         <div class="swal-footer-custom">
@@ -844,7 +844,7 @@
             </div>
             <div class="swal-button-container-custom">
                 <button id="submitWarnAnime" class="swal-button-custom swal-button--confirm-custom">Submit</button>
-                    <div class="swal-button__loader-custom">
+                <div class="swal-button__loader-custom">
                     <div></div>
                     <div></div>
                     <div></div>
@@ -1003,7 +1003,7 @@
                 })
                 resolve()
             })
-            return 
+            return
         }).then(async()=>{
             setTimeout(()=>{
                 return
@@ -1312,7 +1312,7 @@
                             savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                         })
                         worker.onmessage = async(message) => {
-                            console.log("WebtoApp: Export File"+savedUsername+"/ReavenDupitas/"+message.data.backupStr)
+                            await exportJsonData(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                             exportIntervalStartDate = await new Date()
                             await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                             await $("#dataStatusContainer").fadeOut(2500)
@@ -1359,7 +1359,7 @@
                                 savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                             })
                             worker.onmessage = async(message) => {
-                                console.log("WebtoApp: Export File"+savedUsername+"/ReavenDupitas/"+message.data.backupStr)
+                                await exportJsonData(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                                 exportIntervalStartDate = await new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                 await $("#dataStatusContainer").fadeOut(2500)
@@ -1609,7 +1609,7 @@
                             }
                         },1)
                     },0)
-                    isRunning = false                  
+                    isRunning = false
                 }
             } else isRunning = false
         }
@@ -1873,7 +1873,8 @@
                         savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                     })
                     worker.onmessage = async(message) => {
-                        console.log("WebtoApp: Export File"+savedUsername+"/ReavenDupitas/"+message.data.backupStr)
+                        await exportJsonData(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                        // await exportJsonData(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                         await $("#dataStatusContainer").fadeOut(2500)
                         await $("#dataStatus").empty()
                         await $("#dataStatusContainer").hide()
@@ -2014,7 +2015,7 @@
                                 savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                             })
                             worker.onmessage = async(message) => {
-                                console.log("WebtoApp: Export File"+savedUsername+"/ReavenDupitas/"+message.data.backupStr)
+                                await exportJsonData(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                                 exportIntervalStartDate = await new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                 await $(".menu-container").fadeOut(250)
@@ -2062,7 +2063,7 @@
                                     savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                                 })
                                 worker.onmessage = async(message) => {
-                                    console.log("WebtoApp: Export File"+savedUsername+"/ReavenDupitas/"+message.data.backupStr)
+                                    await exportJsonData(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                                     exportIntervalStartDate = await new Date()
                                     await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                     await $(".menu-container").fadeOut(250)
@@ -2782,7 +2783,7 @@
                     const animeData = data.animeData
                     await new Promise(async(resolve) => {
                         savedUnhiddenTablePage = await retrieveJSON("savedUnhiddenTablePage") || 0
-                        savedHiddenTablePage = await retrieveJSON("savedHiddenTablePage") || 0    
+                        savedHiddenTablePage = await retrieveJSON("savedHiddenTablePage") || 0
                         savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
                         resolve()
                     }).then(async()=>{
@@ -2903,6 +2904,9 @@
         a.href = URL.createObjectURL(new Blob([objStr], { type:`text/json` }));
         a.download = name+".json";
         a.click();
+    }
+    function exportJsonData(objStr, fileName) {
+        JSBridge.exportJSON(objStr, fileName);
     }
     function isJsonString(str) {
         try {JSON.parse(str);}
