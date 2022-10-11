@@ -1307,7 +1307,7 @@
                             savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                         })
                         worker.onmessage = async(message) => {
-                            await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
+                            await downloadObjectAsJson(await message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                             exportIntervalStartDate = await new Date()
                             await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                             if(!requestIsRunning){
@@ -1356,7 +1356,7 @@
                                 savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                             })
                             worker.onmessage = async(message) => {
-                                await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
+                                await downloadObjectAsJson(await message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                                 exportIntervalStartDate = await new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                 if(!requestIsRunning){
@@ -1835,51 +1835,55 @@
         })
         .then(async(confirmed) => {
             if(confirmed){
-                await $(".menu-container").fadeOut(250)
-                $("#dataStatusContainer").hide()
-                $("#dataStatusSpinner").show()
-                $("#dataStatusContainer").css("display","flex").fadeIn(2500)
-                $("#dataStatus")
-                    .empty()
-                    .append(`Exporting data, please wait...`)
-                var worker = new Worker("./js-css/worker/export.js")
-                const savedUsername = await retrieveJSON("savedUsername")
-                const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
-                const savedWarnAnime = await retrieveJSON("savedWarnAnime")
-                const savedUserList = await retrieveJSON("savedUserList")
-                const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                const savedRecScheme = await retrieveJSON("savedRecScheme")
-                const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
-                const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
-                const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
-                const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
-                const lastAnilistPage = await retrieveJSON("lastAnilistPage")
-                const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
-                worker.postMessage({
-                    savedUsername: savedUsername,
-                    savedWarnAnime: savedWarnAnime,
-                    savedHiddenAnimeTitles: savedHiddenAnimeTitles,
-                    savedRecScheme: savedRecScheme,
-                    savedAnimeEntries: savedAnimeEntries,
-                    savedLatestAnimeTitle: savedLatestAnimeTitle,
-                    savedUserList: savedUserList,
-                    savedAnalyzeVariableTime: savedAnalyzeVariableTime,
-                    savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
-                    savedDeepUpdateTime: savedDeepUpdateTime,
-                    lastAnilistPage: lastAnilistPage,
-                    savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
-                })
-                worker.onmessage = async(message) => {
-                    await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
-                    if(!requestIsRunning){
-                        await $("#dataStatusContainer").fadeOut(2500)
-                        await $("#dataStatus").empty()
-                        await $("#dataStatusContainer").hide()
-                    }
-                    await swal("Data has been exported!", {
-                        icon: "success",
+                await new Promise(async(resolve)=>{
+                    await $(".menu-container").fadeOut(250)
+                    await $("#dataStatusContainer").hide()
+                    await $("#dataStatusSpinner").show()
+                    await $("#dataStatusContainer").css("display","flex").fadeIn(2500)
+                    await $("#dataStatus")
+                        .empty()
+                        .append(`Exporting data, please wait...`)
+                    resolve()
+                }).then(async()=>{
+                    var worker = new Worker("./js-css/worker/export.js")
+                    const savedUsername = await retrieveJSON("savedUsername")
+                    const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                    const savedWarnAnime = await retrieveJSON("savedWarnAnime")
+                    const savedUserList = await retrieveJSON("savedUserList")
+                    const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
+                    const savedRecScheme = await retrieveJSON("savedRecScheme")
+                    const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
+                    const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                    const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                    const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                    const lastAnilistPage = await retrieveJSON("lastAnilistPage")
+                    const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
+                    worker.postMessage({
+                        savedUsername: savedUsername,
+                        savedWarnAnime: savedWarnAnime,
+                        savedHiddenAnimeTitles: savedHiddenAnimeTitles,
+                        savedRecScheme: savedRecScheme,
+                        savedAnimeEntries: savedAnimeEntries,
+                        savedLatestAnimeTitle: savedLatestAnimeTitle,
+                        savedUserList: savedUserList,
+                        savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                        savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                        savedDeepUpdateTime: savedDeepUpdateTime,
+                        lastAnilistPage: lastAnilistPage,
+                        savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                     })
-                }
+                    worker.onmessage = async(message) => {
+                        await downloadObjectAsJson(await message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                        if(!requestIsRunning){
+                            await $("#dataStatusContainer").fadeOut(2500)
+                            await $("#dataStatus").empty()
+                            await $("#dataStatusContainer").hide()   
+                        }
+                        await swal("Data has been exported!", {
+                            icon: "success",
+                        })
+                    }
+                })
             }
         })
     })
@@ -1973,53 +1977,57 @@
                     exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                     saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
-                        await $(".menu-container").fadeOut(250)
-                        $("#dataStatusContainer").hide()
-                        $("#dataStatusSpinner").show()
-                        $("#dataStatusContainer").css("display","flex").fadeIn(2500)
-                        $("#dataStatus")
-                            .empty()
-                            .append(`Exporting data, please wait...`)
-                        var worker = new Worker("./js-css/worker/export.js")
-                        const savedUsername = await retrieveJSON("savedUsername")
-                        const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
-                        const savedWarnAnime = await retrieveJSON("savedWarnAnime")
-                        const savedUserList = await retrieveJSON("savedUserList")
-                        const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                        const savedRecScheme = await retrieveJSON("savedRecScheme")
-                        const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
-                        const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
-                        const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
-                        const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
-                        const lastAnilistPage = await retrieveJSON("lastAnilistPage")
-                        const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
-                        worker.postMessage({
-                            savedUsername: savedUsername,
-                            savedWarnAnime: savedWarnAnime,
-                            savedHiddenAnimeTitles: savedHiddenAnimeTitles,
-                            savedRecScheme: savedRecScheme,
-                            savedAnimeEntries: savedAnimeEntries,
-                            savedLatestAnimeTitle: savedLatestAnimeTitle,
-                            savedUserList: savedUserList,
-                            savedAnalyzeVariableTime: savedAnalyzeVariableTime,
-                            savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
-                            savedDeepUpdateTime: savedDeepUpdateTime,
-                            lastAnilistPage: lastAnilistPage,
-                            savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
-                        })
-                        worker.onmessage = async(message) => {
-                            await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
-                            exportIntervalStartDate = await new Date()
-                            await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                            if(!requestIsRunning){
-                                await $("#dataStatusContainer").fadeOut(2500)
-                                await $("#dataStatus").empty()
-                                await $("#dataStatusContainer").hide()
-                            }
-                            await swal("Data has been exported!", {
-                                icon: "success",
+                        await new Promise(async(resolve)=>{
+                            await $(".menu-container").fadeOut(250)
+                            await $("#dataStatusContainer").hide()
+                            await $("#dataStatusSpinner").show()
+                            await $("#dataStatusContainer").css("display","flex").fadeIn(2500)
+                            await $("#dataStatus")
+                                .empty()
+                                .append(`Exporting data, please wait...`)
+                            resolve()
+                        }).then(async()=>{
+                            var worker = new Worker("./js-css/worker/export.js")
+                            const savedUsername = await retrieveJSON("savedUsername")
+                            const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
+                            const savedWarnAnime = await retrieveJSON("savedWarnAnime")
+                            const savedUserList = await retrieveJSON("savedUserList")
+                            const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
+                            const savedRecScheme = await retrieveJSON("savedRecScheme")
+                            const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
+                            const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                            const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                            const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                            const lastAnilistPage = await retrieveJSON("lastAnilistPage")
+                            const savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount")
+                            worker.postMessage({
+                                savedUsername: savedUsername,
+                                savedWarnAnime: savedWarnAnime,
+                                savedHiddenAnimeTitles: savedHiddenAnimeTitles,
+                                savedRecScheme: savedRecScheme,
+                                savedAnimeEntries: savedAnimeEntries,
+                                savedLatestAnimeTitle: savedLatestAnimeTitle,
+                                savedUserList: savedUserList,
+                                savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                                savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                                savedDeepUpdateTime: savedDeepUpdateTime,
+                                lastAnilistPage: lastAnilistPage,
+                                savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                             })
-                        }
+                            worker.onmessage = async(message) => {
+                                await downloadObjectAsJson(await message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                                exportIntervalStartDate = await new Date()
+                                await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                if(!requestIsRunning){
+                                    await $("#dataStatusContainer").fadeOut(2500)
+                                    await $("#dataStatus").empty()
+                                    await $("#dataStatusContainer").hide()   
+                                }
+                                await swal("Data has been exported!", {
+                                    icon: "success",
+                                })
+                            }
+                        })
                     } else {
                         for(let i=0;i<exportIntervalTimeout.length;i++) clearTimeout(exportIntervalTimeout[i])
                         var saveExportIntervalTimeout = setTimeout(async()=>{
@@ -2057,7 +2065,7 @@
                                 savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                             })
                             worker.onmessage = async(message) => {
-                                await downloadObjectAsJson(await message.data.backupStr, "Kanshi-Backup")
+                                await downloadObjectAsJson(await message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                                 exportIntervalStartDate = new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                 if(!requestIsRunning){
@@ -2888,10 +2896,10 @@
         if(seconds>0) time.push(`${seconds}s`)
         return time.join(" ")
     }
-    async function downloadObjectAsJson(objStr, name) {
+    async function downloadObjectAsJson(objStr, fileName) {
         const a = document.createElement('a');
         a.href = URL.createObjectURL(new Blob([objStr], { type:`text/json` }));
-        a.download = name+".json";
+        a.download = fileName;
         a.click();
     }
     function isJsonString(str) {

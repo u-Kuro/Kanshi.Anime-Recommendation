@@ -284,7 +284,7 @@ self.onmessage = (message) => {
                     </td>
                     <td class="anime-score" title="${weightedScore}">
                         <div>
-                            ${hasWarn?`<div title='${warns.join(", ")}'><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
+                            ${hasWarn?`<div title="${warns.join(", ")}"><i class="fa-solid fa-circle-exclamation ${hasWarnR?"red":hasWarnY?"orange":""}"></i></div>`:""}
                             ${weightedScore}
                         </div>
                     </td>
@@ -324,7 +324,7 @@ self.onmessage = (message) => {
                     </td>
                     <td class="anime-score" title="${weightedScore}">
                         <div>
-                            ${hasWarn?`<div title='${warns.join(", ")}'><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
+                            ${hasWarn?`<div title="${warns.join(", ")}"><i class="fa-solid fa-circle-exclamation ${hasWarnR?"red":hasWarnY?"orange":""}"></i></div>`:""}
                             ${weightedScore}
                         </div>
                     </td>
