@@ -8,8 +8,10 @@
     <link rel="shortcut icon" type="image/x-icon" href="./public/logo.png" />
     <!-- Jquery -->
     <script src="./js-css/jquery-1.8.3.min.js"></script>
-    <!-- Alternative JS Alert -->
-    <script src="./js-css/sweetalert.min.js"></script>
+    <!-- Swal 2 -->
+    <script src="./js-css/swal2/sweetalert2.all.js"></script>
+    <script src="./js-css/swal2/sweetalert2.css"></script>
+    <link rel="stylesheet" href="./js-css/swal2/sweetalert2.css">
     <!-- Table Sort -->
     <link rel="stylesheet" href="./js-css/jquery tablesorter/theme.default.min.css">
     <script type="text/javascript" src="./js-css/jquery tablesorter/jquery.tablesorter.js"></script>
@@ -123,7 +125,6 @@
                 outline: 0;
             }
             input[type=text]{
-                width: 0;
                 user-select: text;
             }
             button,
@@ -310,32 +311,6 @@
             .item > td {
                 vertical-align: middle !important;
             }
-            .swal-modal{
-                user-select: none;
-            }
-            .swal-text:first-child{
-                display: block !important;
-                margin-top: 20px !important;
-                margin-left: 15px !important;
-            }
-            .swal-text{
-                font-size: 1.15rem !important;
-                text-align: center;
-            }
-            .swal-footer{
-                display: flex;
-                justify-content: space-evenly;
-                align-items: center;
-                text-align: center;
-            }
-            .swal-button{
-                background-color: black !important;
-                color: white !important;
-            }
-            .swal-button:hover{
-                background-color: black !important;
-                color: white !important;
-            }
             .anime-score{
                 text-align: center !important;
                 max-width: 50px !important;
@@ -509,41 +484,41 @@
                 -webkit-box-shadow: 0 3px 20px 0 #af6e7138 !important;
                 box-shadow: 0 3px 20px 0 #af6e7138 !important;
             }
-            /*  */
-            @-webkit-keyframes showSweetAlert{
-                0%{
-                    -webkit-transform:scale(1);
-                    transform:scale(1)
-                }1%{
-                    -webkit-transform:scale(.5);
-                    transform:scale(.5)
-                }45%{
-                    -webkit-transform:scale(1.05);
-                    transform:scale(1.05)
-                }80%{
-                    -webkit-transform:scale(.95);
-                    transform:scale(.95)
-                }to{
-                    -webkit-transform:scale(1);
-                    transform:scale(1)}
-                }
-            @keyframes showSweetAlert{
-                0%{
-                    -webkit-transform:scale(1);
-                    transform:scale(1)
-                }1%{
-                    -webkit-transform:scale(.5);
-                    transform:scale(.5)
-                }45%{
-                    -webkit-transform:scale(1.05);
-                    transform:scale(1.05)
-                }80%{
-                    -webkit-transform:scale(.95);
-                    transform:scale(.95)
-                }to{
-                    -webkit-transform:scale(1);
-                    transform:scale(1)}
-                }
+            .no-before::before{
+                content: none;
+            }
+            .swal2-validation-message-custom-success::before {
+                content: "✓";
+                display: inline-block;
+                width: 1.5em;
+                min-width: 1.5em;
+                height: 1.5em;
+                margin: 0 0.625em;
+                border-radius: 50%;
+                background-color: #78f274;
+                color: #fff;
+                font-weight: 600;
+                line-height: 1.5em;
+                text-align: center;
+            }
+            .swal2-actions{
+                justify-content: space-evenly !important;
+                width: 100% !important;
+            }
+            .swal2-footer{
+                justify-content: space-evenly !important;
+                width: 100% !important;
+                flex-wrap: wrap;
+                gap: 1.5ch;
+            }
+            .no-border{
+                border: none;
+            }
+            .swal2-footer > *{
+                flex: 1 !important;
+                min-width: 100% !important;
+                text-align: center !important;
+            }
             .swal-overlay-custom{
                 display: none;
                 position: fixed;
@@ -841,7 +816,7 @@
             </div>
             <div class="swal-button-container-custom">
                 <button id="submitWarnAnime" class="swal-button-custom swal-button--confirm-custom">Submit</button>
-                    <div class="swal-button__loader-custom">
+                <div class="swal-button__loader-custom">
                     <div></div>
                     <div></div>
                     <div></div>
@@ -857,7 +832,8 @@
     var request, db,
         // Saved Data
     savedUsername, savedRecScheme, savedFilters, savedUserList, savedAnimeEntries, savedHiddenAnimeTitles, savedWarnAnime,
-    savedYscroll, savedHiddenTablePage, savedUnhiddenTablePage, savedTableStatus, savedSort, savedFilterOptionsJson, allFilterInfo,
+    savedYscroll, savedHiddenTablePage, savedUnhiddenTablePage, savedTableStatus, savedSort,
+    savedFilterOptionsJson, allFilterInfo,
     exportIntervalIsActive, updateIntervalIsActive, exportIntervalStartDate, updateIntervalStartDate,
     exportIntervalTimeout = [], updateIntervalTimeout = [],
     kidsAnimeIsHidden,
@@ -899,11 +875,11 @@
                 return
             },1000)
             await new Promise(async(resolve)=>{// Load Functions
-                // Mobile Browser
+                // Browser (Mobile)
                 $(window).on("orientationchange", function(event) {
                     $('body').animate({scrollTop: 0},1)
                 })
-                //
+                // Browser (Mobile)
                 await $("#anime-table")
                     .tablesorter({
                         sortInitialOrder: "asc",
@@ -1004,7 +980,7 @@
                 })
                 resolve()
             })
-            return 
+            return
         }).then(async()=>{
             setTimeout(()=>{
                 return
@@ -1182,7 +1158,7 @@
             })
             return
         }).then(async()=>{
-            await new Promise(async(resolve, reject) => {
+            await new Promise(async(resolve) => {
                 await $("#anime-table")
                     .bind('pageMoved', async function(){
                         await setTimeout(async()=>{
@@ -1307,7 +1283,9 @@
                             savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                         })
                         worker.onmessage = async(message) => {
-                            await downloadObjectAsJson(await message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                            // Browser
+                            await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                            // Browser
                             exportIntervalStartDate = await new Date()
                             await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                             if(!requestIsRunning){
@@ -1315,8 +1293,10 @@
                                 await $("#dataStatus").empty()
                                 await $("#dataStatusContainer").hide()
                             }
-                            await swal("Data has been exported!", {
+                            await Swal.fire({
+                                text: "Data has been exported!",
                                 icon: "success",
+                                confirmButtonColor: "#000"
                             })
                         }
                     } else {
@@ -1356,7 +1336,9 @@
                                 savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                             })
                             worker.onmessage = async(message) => {
-                                await downloadObjectAsJson(await message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                                // Browser
+                                await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                                // Browser
                                 exportIntervalStartDate = await new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                 if(!requestIsRunning){
@@ -1364,8 +1346,10 @@
                                     await $("#dataStatus").empty()
                                     await $("#dataStatusContainer").hide()
                                 }
-                                await swal("Data has been exported!", {
+                                await Swal.fire({
+                                    text: "Data has been exported!",
                                     icon: "success",
+                                    confirmButtonColor: "#000"
                                 })
                             }
                         },await 3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
@@ -1376,7 +1360,18 @@
             })
             return
         }).then(async()=>{
-            $(".loader").fadeOut("slow")
+            await new Promise((resolve) => {
+                $(".loader").fadeOut("slow",()=>{return resolve()})
+            })
+        }).then(async()=>{
+            await new Promise(async (resolve) => {
+                if(savedUsername===undefined||savedUsername.length===0){
+                    await initUsernameData()
+                    resolve()
+                } else {
+                    resolve()
+                }
+            })
         })
     })
     // Event Listeners
@@ -1405,16 +1400,20 @@
         }
         else {
             if(!requestIsRunning){
-                swal({
+                Swal.fire({
                     text: `Do you want to continue and update your recommendations list?
                     The estimated time to finish is ${msToTime(savedDeepUpdateTime*1000)}`,
-                    buttons: [
-                        'No',
-                        'Yes'
-                    ],
+                    showConfirmButton: true,
+                    confirmButtonText: "Yes",
+                    showDenyButton: true,
+                    denyButtonText: "No",
+                    confirmButtonColor: '#000',
+                    denyButtonColor: '#e27d81',
+                    icon: "question",
+                    reverseButtons: true
                 })
-                .then((confirmed) => {
-                    if(confirmed){
+                .then((value) => {
+                    if(value.isConfirmed){
                         deepUpdateStartTime = new Date()
                         isDeepUpdate = true
                         // Reset Anime-List
@@ -1429,8 +1428,10 @@
                     }
                 })
             } else {
-                swal("List is already updating! Please wait a moment...", {
+                Swal.fire({
+                    text: "List is already updating! Please wait a moment...",
                     icon: "info",
+                    confirmButtonColor: "#000"
                 })
             }
         }
@@ -1446,29 +1447,36 @@
     $("#updateBtn").on('click', async ()=>{
         var savedUpdateTime = (await retrieveJSON("savedAnalyzeVariableTime") || 20) + (await retrieveJSON("savedUpdateAnalyzeAnimeTime") || 3)
         if(!requestIsRunning){
-            swal({
+            Swal.fire({
                 text: `Do you want to continue and update your recommendations list?
                 This may take ${msToTime(savedUpdateTime*1000)} to finish.`,
-                buttons: [
-                    'No',
-                    'Yes'
-                ],
+                showConfirmButton: true,
+                confirmButtonText: "Yes",
+                showDenyButton: true,
+                denyButtonText: "No",
+                confirmButtonColor: '#000',
+                denyButtonColor: '#e27d81',
+                icon: "question",
+                reverseButtons: true
             })
-            .then(async (confirmed) => {
-                if(confirmed){
+            .then(async(value) => {
+                if(value.isConfirmed){
                     var newUsername = await $("#username").val()
                     savedUsername = await retrieveJSON("savedUsername") || ""
                     if(newUsername!==savedUsername){
-                        swal({
+                        Swal.fire({
                             text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
-                            buttons: [
-                                'No',
-                                'Yes'
-                            ]
-                        })
-                        .then(async (confirmed)=>{
+                            showConfirmButton: true,
+                            confirmButtonText: "Yes",
+                            showDenyButton: true,
+                            denyButtonText: "No",
+                            confirmButtonColor: '#000',
+                            denyButtonColor: '#e27d81',
+                            icon: "question",
+                            reverseButtons: true
+                        }).then(async(value)=>{
                             $(".menu-container").fadeOut(250)
-                            if(confirmed){
+                            if(value.isConfirmed){
                                 savedUserList = {}
                                 await saveJSON(savedUserList,"savedUserList")
                                 Update()
@@ -1483,24 +1491,30 @@
                 }
             })
         } else {
-            swal("List is already updating! Please wait a moment...", {
+            Swal.fire({
+                text: "List is already updating! Please wait a moment...",
                 icon: "info",
+                confirmButtonColor: "#000"
             })
         }
     })
     $("#deepUpdateBtn").on("click", async ()=>{
         savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || 320
         if(!requestIsRunning){
-            swal({
+            Swal.fire({
                 text: `Do you want to continue and update all data in your recommendations list?
                 This may take ${msToTime(savedDeepUpdateTime*1000)} to finish.`,
-                buttons: [
-                    'No',
-                    'Yes'
-                ],
+                showConfirmButton: true,
+                confirmButtonText: "Yes",
+                showDenyButton: true,
+                denyButtonText: "No",
+                confirmButtonColor: '#000',
+                denyButtonColor: '#e27d81',
+                icon: "question",
+                reverseButtons: true
             })
-            .then(async (confirmed) => {
-                if(confirmed){
+            .then(async(value) => {
+                if(value.isConfirmed){
                     deepUpdateStartTime = new Date()
                     isDeepUpdate = true
                     // Reset Anime-List
@@ -1529,8 +1543,10 @@
                 }
             })
         } else {
-            swal("List is already updating! Please wait a moment...", {
+            Swal.fire({
+                text: "List is already updating! Please wait a moment...",
                 icon: "info",
+                confirmButtonColor: "#000"
             })
         }
     })
@@ -1608,21 +1624,25 @@
                             }
                         },1)
                     },0)
-                    isRunning = false                  
+                    isRunning = false
                 }
             } else isRunning = false
         }
     })
     $("#showAllAnime").on('click', ()=>{
-        swal({
+        Swal.fire({
             text: "Do you want to show all your hidden anime? This will remove all hidden Anime in the hidden's list!",
-            buttons: [
-                'No',
-                'Yes'
-            ],
+            showConfirmButton: true,
+            confirmButtonText: "Yes",
+            showDenyButton: true,
+            denyButtonText: "No",
+            confirmButtonColor: '#000',
+            denyButtonColor: '#e27d81',
+            icon: "question",
+            reverseButtons: true
         })
-        .then(async(confirmed) => {
-            if(confirmed){
+        .then(async(value) => {
+            if(value.isConfirmed){
                 savedUsername = await retrieveJSON("savedUsername") || ""
                 if(!equalsNCS($("#username").val(),savedUsername)){
                     $("#username").val(savedUsername)
@@ -1667,8 +1687,10 @@
                 saveJSON("Unhidden","savedTableStatus")
                 $("#showAllAnime").hide()
                 $(".menu-container").fadeOut(250)
-                swal("All hidden anime has now been successfully transferred to your List!", {
+                Swal.fire({
+                    text: "All hidden anime has now been successfully transferred to your List!",
                     icon: "success",
+                    confirmButtonColor: "#000"
                 })
             }
         })
@@ -1679,8 +1701,8 @@
     $("#importFile").on("change",(event)=>{
         if($("#importFile")[0].value != ""){
             const importedFile = $("#importFile")[0].files[0]
-            const reader = new FileReader();
-            reader.onload = () => {
+            const reader = new FileReader()
+            reader.onload = async() => {
                 const fullPath = $("#importFile")[0].value
                 $("#importBtn").css({background: "white", color: "black"})
                 const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
@@ -1688,153 +1710,333 @@
                 if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
                     filename = filename.substring(1);
                 }
-                swal({
-                    text: `File named [${filename}] been detected, do you want to continue the import? This will remove your current data!`,
-                    buttons: [
-                        'No',
-                        'Yes'
-                    ],
-                })
-                .then(async (confirmed) => {
-                    if(confirmed){
-                        await $(".menu-container").fadeOut(250)
-                        $("#dataStatusContainer").hide()
-                        $("#dataStatusSpinner").show()
-                        $("#dataStatusContainer").css("display","flex").fadeIn(2500)
-                        $("#dataStatus")
-                            .empty()
-                            .append(`Importing data, please wait...`)
-                        var fileContent
-                        await new Promise(async(resolve)=>{
-                            await $("#importBtn").css({background: "black", color: "white"})
-                            fileContent = await JSON.parse(reader.result);
-                            resolve()
-                        }).then(async()=>{
-                            savedUsername = await fileContent.savedUsername || ""
-                            await $("#username").val(savedUsername)
-                            await saveJSON(savedUsername,"savedUsername")
-                            return
-                        }).then(async()=>{
-                            savedHiddenAnimeTitles = await fileContent.savedHiddenAnimeTitles || []
-                            await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
-                            if(savedHiddenAnimeTitles.length) $("#showAllAnime").show()
-                            else $("#showAllAnime").hide()
-                            return
-                        }).then(async()=>{
-                            savedRecScheme = await fileContent.savedRecScheme || {}
-                            await saveJSON(savedRecScheme,"savedRecScheme")
-                        }).then(async()=>{
-                            savedAnimeEntries = await fileContent.savedAnimeEntries || []
-                            await saveJSON(savedAnimeEntries,"savedAnimeEntries")
-                        }).then(async()=>{
-                            savedLatestAnimeTitle = await fileContent.savedLatestAnimeTitle || ""
-                            await saveJSON(savedLatestAnimeTitle,"savedLatestAnimeTitle")
-                        }).then(async()=>{
-                            savedUserList = await fileContent.savedUserList || {}
-                            await saveJSON(savedUserList,"savedUserList")
-                        }).then(async()=>{
-                            savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || 20
-                            await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
-                        }).then(async()=>{
-                            savedUpdateAnalyzeAnimeTime = await fileContent.savedUpdateAnalyzeAnimeTime || 3
-                            await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
-                        }).then(async()=>{
-                            lastAnilistPage = await fileContent.lastAnilistPage || 284
-                            await saveJSON(lastAnilistPage,"lastAnilistPage")
-                        }).then(async()=>{
-                            savedWarnAnime = await fileContent.savedWarnAnime || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
-                                                                                   "full cgi","kids","love triangle","!male harem","!mixed gender harem",
-                                                                                   "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
-                                                                                   "!rape"
-                                                                                 ]
-                            await saveJSON(savedWarnAnime,"savedWarnAnime")
-                            return
-                        }).then(async()=>{
-                            await $("#username").val(savedUsername)
-                            return
-                        }).then(async()=>{
-                            await new Promise(async(resolve)=>{
-                                await $("#warnAnimeModal").css({visibility:"hidden"}).show()
-                                let reloadSavedData = await setInterval(async () => {
-                                    if(await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
-                                        await clearInterval(reloadSavedData)
-                                        await new Promise(async(resolve)=>{
-                                            // Remove Current Filters
-                                            var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
-                                            for(let i=0; i<warnInfo.length; i++) {
-                                                var infoName = await warnInfo.eq(i).children(".text")[0].innerText
-                                                await warnInfo.eq(i).children(".fdl-remove").trigger("click")
-                                                await $("#warnAnimeModal .flexdatalist-alias").blur()
-                                            }
+                if(savedUsername!==undefined&&savedUsername.length){
+                    Swal.fire({
+                        text: `File named [${filename}] been detected, do you want to continue the import? This will remove your current data!`,
+                        showConfirmButton: true,
+                        confirmButtonText: "Yes",
+                        showDenyButton: true,
+                        denyButtonText: "No",
+                        confirmButtonColor: '#000',
+                        denyButtonColor: '#e27d81',
+                        icon: "question",
+                        reverseButtons: true
+                    })
+                    .then(async(value) => {
+                        if(value.isConfirmed){
+                            var fileContent
+                            await new Promise(async(resolve,reject)=>{
+                                await $("#importBtn").css({background: "black", color: "white"})
+                                try{
+                                    fileContent = await JSON.parse(reader.result);
+                                } catch(ex) {
+                                    $("#importFile")[0].value = null
+                                    Swal.fire({
+                                        text: "Error: Invalid Backup File",
+                                        icon: "error",
+                                        confirmButtonColor: "#000"
+                                    })
+                                }
+                                if(fileContent.savedUsername===undefined||fileContent.savedUsername===null) {
+                                    $("#importFile")[0].value = null
+                                    Swal.fire({
+                                        text: "Error: Backup file does not Have a Username",
+                                        icon: "error",
+                                        confirmButtonColor: "#000"
+                                    })
+                                    reject()
+                                } else {
+                                    await $(".menu-container").fadeOut(250)
+                                    $("#dataStatusContainer").hide()
+                                    $("#dataStatusSpinner").show()
+                                    $("#dataStatusContainer").css("display","flex").fadeIn(2500)
+                                    $("#dataStatus")
+                                        .empty()
+                                        .append(`Importing data, please wait...`)
+                                    resolve()
+                                }
+                            }).then(async()=>{
+                                savedUsername = await fileContent.savedUsername || ""
+                                await $("#username").val(savedUsername)
+                                await saveJSON(savedUsername,"savedUsername")
+                                return
+                            }).then(async()=>{
+                                savedHiddenAnimeTitles = await fileContent.savedHiddenAnimeTitles || []
+                                await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                                if(savedHiddenAnimeTitles.length) $("#showAllAnime").show()
+                                else $("#showAllAnime").hide()
+                                return
+                            }).then(async()=>{
+                                savedRecScheme = await fileContent.savedRecScheme || {}
+                                await saveJSON(savedRecScheme,"savedRecScheme")
+                            }).then(async()=>{
+                                savedAnimeEntries = await fileContent.savedAnimeEntries || []
+                                await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                            }).then(async()=>{
+                                savedLatestAnimeTitle = await fileContent.savedLatestAnimeTitle || ""
+                                await saveJSON(savedLatestAnimeTitle,"savedLatestAnimeTitle")
+                            }).then(async()=>{
+                                savedUserList = await fileContent.savedUserList || {}
+                                await saveJSON(savedUserList,"savedUserList")
+                            }).then(async()=>{
+                                savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || 20
+                                await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
+                            }).then(async()=>{
+                                savedUpdateAnalyzeAnimeTime = await fileContent.savedUpdateAnalyzeAnimeTime || 3
+                                await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
+                            }).then(async()=>{
+                                lastAnilistPage = await fileContent.lastAnilistPage || 284
+                                await saveJSON(lastAnilistPage,"lastAnilistPage")
+                            }).then(async()=>{
+                                savedWarnAnime = await fileContent.savedWarnAnime || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
+                                                                                    "full cgi","kids","love triangle","!male harem","!mixed gender harem",
+                                                                                    "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
+                                                                                    "!rape"
+                                                                                    ]
+                                await saveJSON(savedWarnAnime,"savedWarnAnime")
+                                return
+                            }).then(async()=>{
+                                await $("#username").val(savedUsername)
+                                return
+                            }).then(async()=>{
+                                await new Promise(async(resolve)=>{
+                                    await $("#warnAnimeModal").css({visibility:"hidden"}).show()
+                                    let reloadSavedData = await setInterval(async () => {
+                                        if(await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
+                                            await clearInterval(reloadSavedData)
+                                            await new Promise(async(resolve)=>{
+                                                // Remove Current Filters
+                                                var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
+                                                for(let i=0; i<warnInfo.length; i++) {
+                                                    var infoName = await warnInfo.eq(i).children(".text")[0].innerText
+                                                    await warnInfo.eq(i).children(".fdl-remove").trigger("click")
+                                                    await $("#warnAnimeModal .flexdatalist-alias").blur()
+                                                }
+                                                resolve()
+                                            }).then(async()=>{
+                                                // Reload Filters
+                                                var warnAnimeInput
+                                                for(let i=0; i<savedWarnAnime.length; i++) {
+                                                    warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                                                    await warnAnimeInput.val(savedWarnAnime[i])
+                                                    var e = await $.Event("keyup",{keyCode:13})
+                                                    await warnAnimeInput.trigger(e)
+                                                    await warnAnimeInput.val("")
+                                                }
+                                                await $("#warnAnimeModal").css({visibility:"visible"}).hide()
+                                                return
+                                            })
                                             resolve()
-                                        }).then(async()=>{
-                                            // Reload Filters
-                                            var warnAnimeInput
-                                            for(let i=0; i<savedWarnAnime.length; i++) {
-                                                warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
-                                                await warnAnimeInput.val(savedWarnAnime[i])
-                                                var e = await $.Event("keyup",{keyCode:13})
-                                                await warnAnimeInput.trigger(e)
-                                                await warnAnimeInput.val("")
-                                            }
-                                            await $("#warnAnimeModal").css({visibility:"visible"}).hide()
-                                            return
-                                        })
-                                        resolve()
-                                    }
-                                },1)
+                                        }
+                                    },1)
+                                })
+                                return
+                            }).then(async()=>{
+                                if(Object.keys(savedRecScheme).length) {
+                                    await $("#updateBtn").show()
+                                    await $("#updateIntervalBtn").show()
+                                    await LoadData(savedRecScheme)
+                                } else {
+                                    await $("#updateBtn").hide()
+                                    await $("#updateIntervalBtn").hide()
+                                    animeData = `
+                                        <tr class="item" role="row">
+                                            <td style="padding: 1.5em !important;" colspan="13">
+                                                <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                                No Data
+                                            </td>
+                                        </tr>
+                                    `
+                                    await $("#animeRecommendationList").empty()
+                                    await $("#animeRecommendationList").append(animeData)
+                                    await $("#anime-table").trigger("update")
+                                }
+                                return
+                            }).then(async()=>{
+                                $("#importFile")[0].value = null
+                                $("#dataStatusContainer").fadeOut(2500)
+                                $("#dataStatus").empty()
+                                $("#dataStatusContainer").hide()
+                                await Swal.fire({
+                                    text: "Data has been updated!",
+                                    icon: "success",
+                                    confirmButtonColor: "#000"
+                                })
+                                return
                             })
-                            return
-                        }).then(async()=>{
-                            if(Object.keys(savedRecScheme).length) {
-                                await $("#updateBtn").show()
-                                await $("#updateIntervalBtn").show()
-                                await LoadData(savedRecScheme)
-                            } else {
-                                await $("#updateBtn").hide()
-                                await $("#updateIntervalBtn").hide()
-                                animeData = `
-                                    <tr class="item" role="row">
-                                        <td style="padding: 1.5em !important;" colspan="13">
-                                            <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                                            No Data
-                                        </td>
-                                    </tr>
-                                `
-                                await $("#animeRecommendationList").empty()
-                                await $("#animeRecommendationList").append(animeData)
-                                await $("#anime-table").trigger("update")
-                            }
-                            return
-                        }).then(async()=>{
+                            .catch(()=>{
+                                return
+                            })
+                        } else {
                             $("#importFile")[0].value = null
-                            $("#dataStatusContainer").fadeOut(2500)
-                            $("#dataStatus").empty()
-                            $("#dataStatusContainer").hide()
-                            await swal("Data has been updated!", {
-                                icon: "success",
-                            })
-                            return
-                        })
-                    } else {
+                            await $("#importBtn").css({background: "black", color: "white"})
+                        }
+                    })
+                } else {
+                    var fileContent
+                    await new Promise(async(resolve,reject)=>{
                         await $("#importBtn").css({background: "black", color: "white"})
-                        $("#importFile")[0].value = await ""
-                    }
-                })
+                        try{
+                            fileContent = await JSON.parse(reader.result)
+                        } catch(ex) {
+                            $("#importFile")[0].value = null
+                            $(".swal2-validation-message")
+                                .html(
+                                    `Error: Invalid Backup File`
+                                )
+                                .css({display:"flex"})
+                            return
+                        }
+                        if(fileContent.savedUsername===undefined||fileContent.savedUsername===null) {
+                            $("#importFile")[0].value = null
+                            $(".swal2-validation-message")
+                                .html(
+                                    `Error: Backup file does not Have a Username`
+                                )
+                                .css({display:"flex"})
+                            reject()
+                        } else {
+                            $(".swal2-validation-message").addClass("no-before")
+                                .css({display:"flex"})
+                                .html(
+                                    `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                        <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                        <div>Importing Data...</div>
+                                    </div>`
+                                )
+                            resolve()
+                        }
+                    }).then(async()=>{
+                        savedUsername = await fileContent.savedUsername || ""
+                        await $("#username").val(savedUsername)
+                        await saveJSON(savedUsername,"savedUsername")
+                        return
+                    }).then(async()=>{
+                        savedHiddenAnimeTitles = await fileContent.savedHiddenAnimeTitles || []
+                        await saveJSON(savedHiddenAnimeTitles,"savedHiddenAnimeTitles")
+                        if(savedHiddenAnimeTitles.length) $("#showAllAnime").show()
+                        else $("#showAllAnime").hide()
+                        return
+                    }).then(async()=>{
+                        savedRecScheme = await fileContent.savedRecScheme || {}
+                        await saveJSON(savedRecScheme,"savedRecScheme")
+                    }).then(async()=>{
+                        savedAnimeEntries = await fileContent.savedAnimeEntries || []
+                        await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                    }).then(async()=>{
+                        savedLatestAnimeTitle = await fileContent.savedLatestAnimeTitle || ""
+                        await saveJSON(savedLatestAnimeTitle,"savedLatestAnimeTitle")
+                    }).then(async()=>{
+                        savedUserList = await fileContent.savedUserList || {}
+                        await saveJSON(savedUserList,"savedUserList")
+                    }).then(async()=>{
+                        savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || 20
+                        await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
+                    }).then(async()=>{
+                        savedUpdateAnalyzeAnimeTime = await fileContent.savedUpdateAnalyzeAnimeTime || 3
+                        await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
+                    }).then(async()=>{
+                        lastAnilistPage = await fileContent.lastAnilistPage || 284
+                        await saveJSON(lastAnilistPage,"lastAnilistPage")
+                    }).then(async()=>{
+                        savedWarnAnime = await fileContent.savedWarnAnime || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
+                                                                            "full cgi","kids","love triangle","!male harem","!mixed gender harem",
+                                                                            "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
+                                                                            "!rape"
+                                                                            ]
+                        await saveJSON(savedWarnAnime,"savedWarnAnime")
+                        return
+                    }).then(async()=>{
+                        await $("#username").val(savedUsername)
+                        return
+                    }).then(async()=>{
+                        await new Promise(async(resolve)=>{
+                            await $("#warnAnimeModal").css({visibility:"hidden"}).show()
+                            let reloadSavedData = await setInterval(async () => {
+                                if(await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
+                                    await clearInterval(reloadSavedData)
+                                    await new Promise(async(resolve)=>{
+                                        // Remove Current Filters
+                                        var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
+                                        for(let i=0; i<warnInfo.length; i++) {
+                                            var infoName = await warnInfo.eq(i).children(".text")[0].innerText
+                                            await warnInfo.eq(i).children(".fdl-remove").trigger("click")
+                                            await $("#warnAnimeModal .flexdatalist-alias").blur()
+                                        }
+                                        resolve()
+                                    }).then(async()=>{
+                                        // Reload Filters
+                                        var warnAnimeInput
+                                        for(let i=0; i<savedWarnAnime.length; i++) {
+                                            warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                                            await warnAnimeInput.val(savedWarnAnime[i])
+                                            var e = await $.Event("keyup",{keyCode:13})
+                                            await warnAnimeInput.trigger(e)
+                                            await warnAnimeInput.val("")
+                                        }
+                                        await $("#warnAnimeModal").css({visibility:"visible"}).hide()
+                                        return
+                                    })
+                                    resolve()
+                                }
+                            },1)
+                        })
+                        return
+                    }).then(async()=>{
+                        if(Object.keys(savedRecScheme).length) {
+                            await $("#updateBtn").show()
+                            await $("#updateIntervalBtn").show()
+                            await LoadData(savedRecScheme)
+                        } else {
+                            await $("#updateBtn").hide()
+                            await $("#updateIntervalBtn").hide()
+                            animeData = `
+                                <tr class="item" role="row">
+                                    <td style="padding: 1.5em !important;" colspan="13">
+                                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                        No Data
+                                    </td>
+                                </tr>
+                            `
+                            await $("#animeRecommendationList").empty()
+                            await $("#animeRecommendationList").append(animeData)
+                            await $("#anime-table").trigger("update")
+                        }
+                        return
+                    }).then(async()=>{
+                        $("#importFile")[0].value = null
+                        $("#dataStatusContainer").fadeOut(2500)
+                        $("#dataStatus").empty()
+                        $("#dataStatusContainer").hide()
+                        await Swal.fire({
+                            text: "Data has been updated!",
+                            icon: "success",
+                            confirmButtonColor: "#000"
+                        })
+                        return
+                    })
+                    .catch(()=>{
+                        return
+                    })
+                }
             }
-            reader.readAsText(importedFile);
+            reader.readAsText(importedFile);  
         }
     })
     $("#exportBtn").on("click", async()=>{
-        swal({
+        Swal.fire({
             text: `Do you want to export your data?`,
-            buttons: [
-                'No',
-                'Yes'
-            ],
+            showConfirmButton: true,
+            confirmButtonText: "Yes",
+            showDenyButton: true,
+            denyButtonText: "No",
+            confirmButtonColor: '#000',
+            denyButtonColor: '#e27d81',
+            icon: "question",
+            reverseButtons: true
         })
-        .then(async(confirmed) => {
-            if(confirmed){
+        .then(async(value) => {
+            if(value.isConfirmed){
                 await new Promise(async(resolve)=>{
                     await $(".menu-container").fadeOut(250)
                     await $("#dataStatusContainer").hide()
@@ -1873,14 +2075,18 @@
                         savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                     })
                     worker.onmessage = async(message) => {
-                        await downloadObjectAsJson(await message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                        // Browser
+                        await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                        // Browser
                         if(!requestIsRunning){
                             await $("#dataStatusContainer").fadeOut(2500)
                             await $("#dataStatus").empty()
-                            await $("#dataStatusContainer").hide()   
+                            await $("#dataStatusContainer").hide()
                         }
-                        await swal("Data has been exported!", {
+                        await Swal.fire({
+                            text: "Data has been exported!",
                             icon: "success",
+                            confirmButtonColor: "#000"
                         })
                     }
                 })
@@ -1890,30 +2096,38 @@
     $("#updateIntervalBtn").on("click",async()=>{
         updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
         if(updateIntervalIsActive){
-            swal({
+            Swal.fire({
                 text: `Do you want to disable auto update for your recommendations list every 1 hour?`,
-                buttons: [
-                    'No',
-                    'Yes'
-                ],
+                showConfirmButton: true,
+                confirmButtonText: "Yes",
+                showDenyButton: true,
+                denyButtonText: "No",
+                confirmButtonColor: '#000',
+                denyButtonColor: '#e27d81',
+                icon: "question",
+                reverseButtons: true
             })
-            .then(async (confirmed) => {
-                if(confirmed){
+            .then(async(value) => {
+                if(value.isConfirmed){
                     $("#updateIntervalBtn").css({background:"black",color:"white"})
                     updateIntervalIsActive = false
                     saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
                 }
             })
         } else {
-            swal({
+            Swal.fire({
                 text: `Do you want to enable auto update for your recommendations list every 1 hour?`,
-                buttons: [
-                    'No',
-                    'Yes'
-                ],
+                showConfirmButton: true,
+                confirmButtonText: "Yes",
+                showDenyButton: true,
+                denyButtonText: "No",
+                confirmButtonColor: '#000',
+                denyButtonColor: '#e27d81',
+                icon: "question",
+                reverseButtons: true
             })
-            .then(async (confirmed) => {
-                if(confirmed){
+            .then(async(value) => {
+                if(value.isConfirmed){
                     $("#updateIntervalBtn").css({background:"white",color:"black"})
                     updateIntervalIsActive = true
                     saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
@@ -1947,30 +2161,38 @@
     $("#exportIntervalBtn").on("click",async()=>{
         exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
         if(exportIntervalIsActive){
-            swal({
+            Swal.fire({
                 text: `Do you want to disable data back-up every 1 hour?`,
-                buttons: [
-                    'No',
-                    'Yes'
-                ],
+                showConfirmButton: true,
+                confirmButtonText: "Yes",
+                showDenyButton: true,
+                denyButtonText: "No",
+                confirmButtonColor: '#000',
+                denyButtonColor: '#e27d81',
+                icon: "question",
+                reverseButtons: true
             })
-            .then(async (confirmed) => {
-                if(confirmed){
+            .then(async(value) => {
+                if(value.isConfirmed){
                     $("#exportIntervalBtn").css({background:"black",color:"white"})
                     exportIntervalIsActive = false
                     saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
                 }
             })
         } else {
-            swal({
+            Swal.fire({
                 text: `Do you want to enable data Back-Up every 1 hour?`,
-                buttons: [
-                    'No',
-                    'Yes'
-                ],
+                showConfirmButton: true,
+                confirmButtonText: "Yes",
+                showDenyButton: true,
+                denyButtonText: "No",
+                confirmButtonColor: '#000',
+                denyButtonColor: '#e27d81',
+                icon: "question",
+                reverseButtons: true
             })
-            .then(async (confirmed) => {
-                if(confirmed){
+            .then(async(value) => {
+                if(value.isConfirmed){
                     $("#exportIntervalBtn").css({background:"white",color:"black"})
                     exportIntervalIsActive = true
                     saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
@@ -2015,7 +2237,9 @@
                                 savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                             })
                             worker.onmessage = async(message) => {
-                                await downloadObjectAsJson(await message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                                // Browser
+                                await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                                // Browser
                                 exportIntervalStartDate = await new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                 if(!requestIsRunning){
@@ -2023,18 +2247,20 @@
                                     await $("#dataStatus").empty()
                                     await $("#dataStatusContainer").hide()   
                                 }
-                                await swal("Data has been exported!", {
+                                await Swal.fire({
+                                    text: "Data has been exported!",
                                     icon: "success",
+                                    confirmButtonColor: "#000"
                                 })
                             }
                         })
                     } else {
                         for(let i=0;i<exportIntervalTimeout.length;i++) clearTimeout(exportIntervalTimeout[i])
                         var saveExportIntervalTimeout = setTimeout(async()=>{
-                            $("#dataStatusContainer").hide()
-                            $("#dataStatusSpinner").show()
-                            $("#dataStatusContainer").css("display","flex").fadeIn(2500)
-                            $("#dataStatus")
+                            await $("#dataStatusContainer").hide()
+                            await $("#dataStatusSpinner").show()
+                            await $("#dataStatusContainer").css("display","flex").fadeIn(2500)
+                            await $("#dataStatus")
                                 .empty()
                                 .append(`Exporting data, please wait...`)
                             var worker = new Worker("./js-css/worker/export.js")
@@ -2065,7 +2291,9 @@
                                 savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
                             })
                             worker.onmessage = async(message) => {
-                                await downloadObjectAsJson(await message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                                // Browser
+                                await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                                // Browser
                                 exportIntervalStartDate = new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                 if(!requestIsRunning){
@@ -2073,8 +2301,10 @@
                                     await $("#dataStatus").empty()
                                     await $("#dataStatusContainer").hide()
                                 }
-                                await swal("Data has been exported!", {
+                                await Swal.fire({
+                                    text: "Data has been exported!",
                                     icon: "success",
+                                    confirmButtonColor: "#000"
                                 })
                             }
                         },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
@@ -2082,7 +2312,6 @@
                     }
                 }
             })
-
         }
     })
     $("#warnAnimeBtn").on("click", async ()=>{
@@ -2130,10 +2359,10 @@
     $("#animeRecommendationList").delegate('td.anime-score', 'click' , async function() {
         var warns = $(this).children("div").children("div").attr("title")
         if(warns!==undefined){
-            swal("Content Warn", {
-                title: "Content Warn",
-                text: `Anime has the following contents: \n${warns}`,
-                icon: "info"
+            await Swal.fire({
+                text: `Content Warning, Anime has the following contents: \n${warns}`,
+                icon: "info",
+                confirmButtonColor: "#000"
             })
         }
     })
@@ -2338,10 +2567,11 @@
                             $("#username")[0].setCustomValidity("Username is not found!")
                             $("#username")[0].reportValidity()
                         } else {
-                            swal("Error", {
-                                title: "Oops...Something went wrong!",
-                                text: `Error 100: ${typeof err==="string"?err:"Please try again..."}`,
-                                icon: "error"
+                            console.error("Error 100")
+                            Swal.fire({
+                                text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
+                                icon: "error",
+                                confirmButtonColor: "#000"
                             })
                         }
                     } catch(ex) {
@@ -2349,10 +2579,11 @@
                         $("#dataStatusContainer").fadeOut(2500)
                         $("#dataStatusSpinner").show()
                         $("#dataStatus").empty()
-                        swal("Error", {
-                            title: "Oops...Something went wrong!",
-                            text: `Error 101: ${typeof err==="string"?err:"Please try again..."}`,
-                            icon: "error"
+                        console.error("Error 101")
+                        Swal.fire({
+                            text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
+                            icon: "error",
+                            confirmButtonColor: "#000"
                         })
                     }
                     console.log("WebtoApp: Update Error")
@@ -2525,10 +2756,11 @@
                                             $("#username")[0].setCustomValidity("Username is not found!")
                                             $("#username")[0].reportValidity()
                                         } else {
-                                            swal("Error", {
-                                                title: "Oops...Something went wrong!",
-                                                text: `Error 102: ${typeof err==="string"?err:"Please try again..."}`,
-                                                icon: "error"
+                                            console.error("Error 102")
+                                            Swal.fire({
+                                                text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
+                                                icon: "error",
+                                                confirmButtonColor: "#000"
                                             })
                                         }
                                         $("#dataStatusContainer").fadeOut(2500)
@@ -2551,10 +2783,11 @@
                                     }
                                 } catch(ex) {
                                     console.error(ex)
-                                    swal("Error", {
-                                        title: "Oops...Something went wrong!",
-                                        text: `Error 103: ${typeof err==="string"?err:"Please try again..."}`,
-                                        icon: "error"
+                                    console.error("Error 103")
+                                    Swal.fire({
+                                        text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
+                                        icon: "error",
+                                        confirmButtonColor: "#000"
                                     })
                                     $("#dataStatusContainer").fadeOut(2500)
                                     $("#dataStatusSpinner").show()
@@ -2588,19 +2821,21 @@
                         err = JSON.parse(xhr.responseText).errors[0].message
                         console.error(JSON.parse(xhr.responseText))
                     } else {
-                        swal("Error", {
-                            title: "Oops...Something went wrong!",
-                            text: `Error 102: ${typeof err==="string"?err:"Please try again..."}`,
-                            icon: "error"
+                        console.error("Error 104")
+                        Swal.fire({
+                            text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
+                            icon: "error",
+                            confirmButtonColor: "#000"
                         })
                         console.log("WebtoApp: Update Error")
                     }
                 } catch(ex) {
                     console.error(ex)
-                    swal("Error", {
-                        title: "Oops...Something went wrong!",
-                        text: `Error 103: ${typeof err==="string"?err:"Please try again..."}`,
-                        icon: "error"
+                    console.error("Error 105")
+                    Swal.fire({
+                        text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
+                        icon: "error",
+                        confirmButtonColor: "#000"
                     })
                     console.log("WebtoApp: Update Error")
                 }
@@ -2720,8 +2955,10 @@
                 $("#dataStatusContainer").fadeOut(2500)
                 $("#dataStatus").empty()
                 $("#dataStatusContainer").hide()
-                swal("List has been updated!", {
+                Swal.fire({
+                    text: "List has been updated!",
                     icon: "success",
+                    confirmButtonColor: "#000"
                 })
                 requestIsRunning = false
                 worker2.terminate()
@@ -2780,7 +3017,7 @@
                     const animeData = data.animeData
                     await new Promise(async(resolve) => {
                         savedUnhiddenTablePage = await retrieveJSON("savedUnhiddenTablePage") || 0
-                        savedHiddenTablePage = await retrieveJSON("savedHiddenTablePage") || 0    
+                        savedHiddenTablePage = await retrieveJSON("savedHiddenTablePage") || 0
                         savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
                         resolve()
                     }).then(async()=>{
@@ -2814,6 +3051,78 @@
                 }
             }
         })
+    }
+
+    async function initUsernameData(){
+        const { value: username} = await Swal.fire({
+            title: "Starting Up",
+            input: 'text',
+            inputLabel: 'Enter your Anilist Username:',
+            iconHtml: '<img src="./public/logo.png">',
+            customClass: {
+                icon: 'no-border'
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            confirmButtonText: "Search",
+            confirmButtonColor: '#000',
+            denyButtonColor: '#e27d81',
+            reverseButtons: true,
+            footer: `
+                <a target="_blank" rel="noopener noreferrer" href="https://anilist.co/signup">I don't have an anilist account</a>
+                <a href="javascript:$('#importBtn').click()">Import Backup</a>
+            `,
+            inputValidator: async(value) => {
+                return await new Promise(async(resolve) => {
+                    if(!value) {
+                        resolve("You need to write Something...")
+                    } else {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'https://graphql.anilist.co',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                            },
+                            dataType: 'json',
+                            data: JSON.stringify({
+                                query: `{User(name:"${value}"){name}}`
+                            }),
+                            beforeSend: () => {
+                                $(".swal2-validation-message").addClass("no-before")
+                                .css({display:"flex"})
+                                .html(
+                                    `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                        <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                        <div>Checking Username...</div>
+                                    </div>`
+                                )
+                            },
+                            success: (data) => {
+                                $("#UsernameValidation").fadeOut(250,()=>{
+                                    $("#UsernameValidation").remove()
+                                    $(".swal2-validation-message")
+                                        .addClass("swal2-validation-message-custom-success")
+                                        .html("Username Found")
+                                    setTimeout(()=>{
+                                        resolve()
+                                    },500) 
+                                })
+                            },
+                            error: (err) =>{
+                                $("#UsernameValidation").fadeOut(250,()=>$(this).remove())
+                                resolve("Username not Found, Please Try Again")
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        if(username){
+            await $("#username").val(username)
+            Update()
+        }
     }
     //////////////////////////////////////////////////////////////////
     // Extra
@@ -2896,12 +3205,14 @@
         if(seconds>0) time.push(`${seconds}s`)
         return time.join(" ")
     }
+    // Browser
     async function downloadObjectAsJson(objStr, fileName) {
         const a = document.createElement('a');
         a.href = URL.createObjectURL(new Blob([objStr], { type:`text/json` }));
         a.download = fileName;
         a.click();
     }
+    // Browser
     function isJsonString(str) {
         try {JSON.parse(str);}
         catch (e) {return false;}
