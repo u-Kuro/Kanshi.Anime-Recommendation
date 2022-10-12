@@ -3,8 +3,8 @@
 
 ## Starting Up
   Installation
-  1. Install the <a base href="https://github.com/u-Kuro/Kanshi.Anime-Recommendation/raw/main/Kanshi.VI.apk" target="_blank" rel="noreferrer noopener">Kanshi.VI</a> or <a base href="https://github.com/u-Kuro/Kanshi.Anime-Recommendation/raw/main/Kanshi.R.apk" target="_blank" rel="noreferrer noopener">Kanshi.R</a> application in an Android mobile or visit the web application <a base href="http://kanshi.rf.gd/" target="_blank" rel="noreferrer noopener">Kanshi.WebOne</a> or <a base href="https://u-kuro.github.io/Kanshi.Anime-Recommendation/" target="_blank" rel="noreferrer noopener">Kanshi.WebTwo</a>.
-  2. Run/Visit the app and Enter a username of an Exsting anilist account (A properly rated list is highly recommended). If you don't have one, you can easily Create an account in their website (<a base href="https://anilist.co/home" target="_blank" rel="noreferrer noopener">Anilist</a>) or Export your List from MAL (MyAnimeList) if you have one (<a base href="https://myanimelist.net/panel.php?go=export" target="_blank" rel="noreferrer noopener">MAL export</a>) then Import the XML file in the Anilist settings (<a base href="https://anilist.co/settings/import" target="_blank" rel="noreferrer noopener">Anilist Import</a>).
+  1. Install the [Kanshi.VI](https://github.com/u-Kuro/Kanshi.Anime-Recommendation/raw/main/Kanshi.VI.apk) or [Kanshi.R](https://github.com/u-Kuro/Kanshi.Anime-Recommendation/raw/main/Kanshi.R.apk) application in an Android mobile or visit the web application [Kanshi.WebOne](http://kanshi.rf.gd/) or [Kanshi.WebTwo](https://u-kuro.github.io/Kanshi.Anime-Recommendation/).
+  2. Run/Visit the app and Enter a username of an Exsting anilist account (A properly rated list is highly recommended). If you don't have one, you can easily Create an account in their website ([Anilist](https://anilist.co/home)) or Export your List from MAL (MyAnimeList) if you have one ([MAL export](https://myanimelist.net/panel.php?go=export)) then Import the XML file in the Anilist settings ([Anilist Import](https://anilist.co/settings/import)).
   
   Additional Features
   1. Filters are available, insert Title/Genres/Tags/Status/Format/Year/Season/Studios/Staff to include and/or exclude (adding !filterword) an anime in your recommendation list. Numeric Filters >,<,=>,<= for numbered column including WScore, Score and Year.
@@ -39,7 +39,7 @@
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score for recommendation was then calculated by multiplying the three factors [(UserScore * MostRecommendedWeight * GeneralRatings)] instead of averaged to estimate and avoid low scores for each.
  
 ## Requirements
-   - Anilist Account - <a base href="https://anilist.co/home" target="_blank" rel="noreferrer noopener">Anilist Website</a>.
+   - Anilist Account - [Anilist Website](https://anilist.co/home).
    - Anilist with list of Scored Anime (A properly rated list for the account is Necessary for Analysis).
 
 ## Limitations
