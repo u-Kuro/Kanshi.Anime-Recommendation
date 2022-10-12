@@ -487,6 +487,9 @@
             .no-before::before{
                 content: none;
             }
+            .whitespace-pre-wrap{
+                white-space: pre-wrap !important;
+            }
             .swal2-validation-message-custom-success::before {
                 content: "✓";
                 display: inline-block;
@@ -2362,7 +2365,10 @@
             await Swal.fire({
                 text: `Content Warning, Anime has the following contents: \n${warns}`,
                 icon: "info",
-                confirmButtonColor: "#000"
+                confirmButtonColor: "#000",
+                customClass: {
+                    container: 'whitespace-pre-wrap'
+                }
             })
         }
     })
