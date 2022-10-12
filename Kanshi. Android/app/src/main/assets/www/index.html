@@ -1306,6 +1306,7 @@
                                 await $("#dataStatusContainer").hide()
                             }
                             await Swal.fire({
+                                heightAuto: false,
                                 text: "Data has been exported!",
                                 icon: "success",
                                 confirmButtonColor: "#000"
@@ -1359,6 +1360,7 @@
                                     await $("#dataStatusContainer").hide()
                                 }
                                 await Swal.fire({
+                                    heightAuto: false,
                                     text: "Data has been exported!",
                                     icon: "success",
                                     confirmButtonColor: "#000"
@@ -1413,6 +1415,7 @@
         else {
             if(!requestIsRunning){
                 Swal.fire({
+                    heightAuto: false,
                     text: `Do you want to continue and update your recommendations list?
                     The estimated time to finish is ${msToTime(savedDeepUpdateTime*1000)}`,
                     showConfirmButton: true,
@@ -1441,6 +1444,7 @@
                 })
             } else {
                 Swal.fire({
+                    heightAuto: false,
                     text: "List is already updating! Please wait a moment...",
                     icon: "info",
                     confirmButtonColor: "#000"
@@ -1460,6 +1464,7 @@
         var savedUpdateTime = (await retrieveJSON("savedAnalyzeVariableTime") || 20) + (await retrieveJSON("savedUpdateAnalyzeAnimeTime") || 3)
         if(!requestIsRunning){
             Swal.fire({
+                heightAuto: false,
                 text: `Do you want to continue and update your recommendations list?
                 This may take ${msToTime(savedUpdateTime*1000)} to finish.`,
                 showConfirmButton: true,
@@ -1477,6 +1482,7 @@
                     savedUsername = await retrieveJSON("savedUsername") || ""
                     if(newUsername!==savedUsername){
                         Swal.fire({
+                            heightAuto: false,
                             text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
                             showConfirmButton: true,
                             confirmButtonText: "Yes",
@@ -1504,6 +1510,7 @@
             })
         } else {
             Swal.fire({
+                heightAuto: false,
                 text: "List is already updating! Please wait a moment...",
                 icon: "info",
                 confirmButtonColor: "#000"
@@ -1514,6 +1521,7 @@
         savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || 320
         if(!requestIsRunning){
             Swal.fire({
+                heightAuto: false,
                 text: `Do you want to continue and update all data in your recommendations list?
                 This may take ${msToTime(savedDeepUpdateTime*1000)} to finish.`,
                 showConfirmButton: true,
@@ -1556,6 +1564,7 @@
             })
         } else {
             Swal.fire({
+                heightAuto: false,
                 text: "List is already updating! Please wait a moment...",
                 icon: "info",
                 confirmButtonColor: "#000"
@@ -1643,6 +1652,7 @@
     })
     $("#showAllAnime").on('click', ()=>{
         Swal.fire({
+            heightAuto: false,
             text: "Do you want to show all your hidden anime? This will remove all hidden Anime in the hidden's list!",
             showConfirmButton: true,
             confirmButtonText: "Yes",
@@ -1700,6 +1710,7 @@
                 $("#showAllAnime").hide()
                 $(".menu-container").fadeOut(250)
                 Swal.fire({
+                    heightAuto: false,
                     text: "All hidden anime has now been successfully transferred to your List!",
                     icon: "success",
                     confirmButtonColor: "#000"
@@ -1724,6 +1735,7 @@
                 }
                 if(savedUsername!==undefined&&savedUsername.length){
                     Swal.fire({
+                        heightAuto: false,
                         text: `File named [${filename}] been detected, do you want to continue the import? This will remove your current data!`,
                         showConfirmButton: true,
                         confirmButtonText: "Yes",
@@ -1744,6 +1756,7 @@
                                 } catch(ex) {
                                     $("#importFile")[0].value = null
                                     Swal.fire({
+                                        heightAuto: false,
                                         text: "Error: Invalid Backup File",
                                         icon: "error",
                                         confirmButtonColor: "#000"
@@ -1752,6 +1765,7 @@
                                 if(fileContent.savedUsername===undefined||fileContent.savedUsername===null) {
                                     $("#importFile")[0].value = null
                                     Swal.fire({
+                                        heightAuto: false,
                                         text: "Error: Backup file does not Have a Username",
                                         icon: "error",
                                         confirmButtonColor: "#000"
@@ -1870,6 +1884,7 @@
                                 $("#dataStatus").empty()
                                 $("#dataStatusContainer").hide()
                                 await Swal.fire({
+                                    heightAuto: false,
                                     text: "Data has been updated!",
                                     icon: "success",
                                     confirmButtonColor: "#000"
@@ -2021,6 +2036,7 @@
                         $("#dataStatus").empty()
                         $("#dataStatusContainer").hide()
                         await Swal.fire({
+                            heightAuto: false,
                             text: "Data has been updated!",
                             icon: "success",
                             confirmButtonColor: "#000"
@@ -2041,6 +2057,7 @@
         if(exportPathIsAvailable) {
         // Android
             Swal.fire({
+                heightAuto: false,
                 text: `Do you want to export your data?`,
                 showConfirmButton: true,
                 confirmButtonText: "Yes",
@@ -2100,6 +2117,7 @@
                                 await $("#dataStatusContainer").hide()
                             }
                             await Swal.fire({
+                                heightAuto: false,
                                 text: "Data has been exported!",
                                 icon: "success",
                                 confirmButtonColor: "#000"
@@ -2118,6 +2136,7 @@
         updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
         if(updateIntervalIsActive){
             Swal.fire({
+                heightAuto: false,
                 text: `Do you want to disable auto update for your recommendations list every 1 hour?`,
                 showConfirmButton: true,
                 confirmButtonText: "Yes",
@@ -2137,6 +2156,7 @@
             })
         } else {
             Swal.fire({
+                heightAuto: false,
                 text: `Do you want to enable auto update for your recommendations list every 1 hour?`,
                 showConfirmButton: true,
                 confirmButtonText: "Yes",
@@ -2187,6 +2207,7 @@
             exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
             if(exportIntervalIsActive){
                 Swal.fire({
+                    heightAuto: false,
                     text: `Do you want to disable data back-up every 1 hour?`,
                     showConfirmButton: true,
                     confirmButtonText: "Yes",
@@ -2206,6 +2227,7 @@
                 })
             } else {
                 Swal.fire({
+                    heightAuto: false,
                     text: `Do you want to enable data Back-Up every 1 hour?`,
                     showConfirmButton: true,
                     confirmButtonText: "Yes",
@@ -2273,6 +2295,7 @@
                                         await $("#dataStatusContainer").hide()
                                     }
                                     await Swal.fire({
+                                        heightAuto: false,
                                         text: "Data has been exported!",
                                         icon: "success",
                                         confirmButtonColor: "#000"
@@ -2327,6 +2350,7 @@
                                         await $("#dataStatusContainer").hide()
                                     }
                                     await Swal.fire({
+                                        heightAuto: false,
                                         text: "Data has been exported!",
                                         icon: "success",
                                         confirmButtonColor: "#000"
@@ -2395,6 +2419,7 @@
         var warns = $(this).children("div").children("div").attr("title")
         if(warns!==undefined){
             await Swal.fire({
+                heightAuto: false,
                 text: `Content Warning, Anime has the following contents: \n${warns}`,
                 icon: "info",
                 confirmButtonColor: "#000",
@@ -2607,6 +2632,7 @@
                         } else {
                             console.error("Error 100")
                             Swal.fire({
+                                heightAuto: false,
                                 text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                                 icon: "error",
                                 confirmButtonColor: "#000"
@@ -2619,6 +2645,7 @@
                         $("#dataStatus").empty()
                         console.error("Error 101")
                         Swal.fire({
+                            heightAuto: false,
                             text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                             icon: "error",
                             confirmButtonColor: "#000"
@@ -2796,6 +2823,7 @@
                                         } else {
                                             console.error("Error 102")
                                             Swal.fire({
+                                                heightAuto: false,
                                                 text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                                                 icon: "error",
                                                 confirmButtonColor: "#000"
@@ -2823,6 +2851,7 @@
                                     console.error(ex)
                                     console.error("Error 103")
                                     Swal.fire({
+                                        heightAuto: false,
                                         text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                                         icon: "error",
                                         confirmButtonColor: "#000"
@@ -2861,6 +2890,7 @@
                     } else {
                         console.error("Error 104")
                         Swal.fire({
+                            heightAuto: false,
                             text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                             icon: "error",
                             confirmButtonColor: "#000"
@@ -2871,6 +2901,7 @@
                     console.error(ex)
                     console.error("Error 105")
                     Swal.fire({
+                        heightAuto: false,
                         text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                         icon: "error",
                         confirmButtonColor: "#000"
@@ -2994,6 +3025,7 @@
                 $("#dataStatus").empty()
                 $("#dataStatusContainer").hide()
                 Swal.fire({
+                    heightAuto: false,
                     text: "List has been updated!",
                     icon: "success",
                     confirmButtonColor: "#000"
@@ -3093,6 +3125,7 @@
 
     async function initUsernameData(){
         const { value: username} = await Swal.fire({
+            heightAuto: false,
             title: "Starting Up",
             input: 'text',
             inputLabel: 'Enter your Anilist Username:',
