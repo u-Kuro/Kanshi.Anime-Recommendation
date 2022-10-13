@@ -15,8 +15,12 @@ self.onmessage = (message) => {
     //Concat Completed, Watching, Drop, etc.
     var animeList = userList.MediaListCollection.lists
     var animeEntries = []
-    for(let i=0; i<animeList.length-1; i++){
-        animeEntries = animeList[i].entries.concat(animeList[++i].entries)
+    if(animeList.length>1){
+        for(let i=0; i<animeList.length; i++){
+            animeEntries = animeEntries.concat(animeList[i].entries)
+        }
+    } else if(animeList.length===1) {
+        animeEntries = animeList[0].entries
     }
     var varScheme = {}
     // Check Watched
@@ -527,258 +531,271 @@ self.onmessage = (message) => {
         staffMeanCount = minSampleSize
     }
     //
-    var formatKey = Object.keys(varScheme.format)
-    var formatMean = []
-    //
-    for(let i=0; i<formatKey.length; i++){
-        formatMean.push(arrayMean(varScheme.format[formatKey[i]].userScore))
-    }
-    formatMean = arrayMean(formatMean)
-    for(let i=0; i<formatKey.length; i++){
-        var tempScore = arrayMean(varScheme.format[formatKey[i]].userScore)
-        varScheme.format[formatKey[i]+"Min"] = tempScore
-        // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-        var count = varScheme.format[formatKey[i]].count
-        if(count>=formatMeanCount){//||tempScore<formatMean){ 
-            varScheme.format[formatKey[i]] = tempScore
-        } else {
-            delete varScheme.format[formatKey[i]]
+    if(Object.keys(varScheme).length>0){
+        var formatKey = Object.keys(varScheme.format)
+        var formatMean = []
+        //
+        for(let i=0; i<formatKey.length; i++){
+            formatMean.push(arrayMean(varScheme.format[formatKey[i]].userScore))
         }
-    }
-    //
-    var yearKey = Object.keys(varScheme.year)
-    var yearMean = []
-    for(let i=0; i<yearKey.length; i++){
-        yearMean.push(arrayMean(varScheme.year[yearKey[i]].userScore))
-    }
-    yearMean = arrayMean(yearMean)
-    for(let i=0; i<yearKey.length; i++){
-        var tempScore = arrayMean(varScheme.year[yearKey[i]].userScore)
-        varScheme.year[yearKey[i]+"Min"] = tempScore
-        // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-        var count = varScheme.year[yearKey[i]].count
-        if(count>=yearMeanCount){//||tempScore<yearMean){
-            varScheme.year[yearKey[i]] = tempScore
-        } else {
-            delete varScheme.year[yearKey[i]]
+        formatMean = arrayMean(formatMean)
+        for(let i=0; i<formatKey.length; i++){
+            var tempScore = arrayMean(varScheme.format[formatKey[i]].userScore)
+            varScheme.format[formatKey[i]+"Min"] = tempScore
+            // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
+            var count = varScheme.format[formatKey[i]].count
+            if(count>=formatMeanCount){//||tempScore<formatMean){ 
+                varScheme.format[formatKey[i]] = tempScore
+            } else {
+                delete varScheme.format[formatKey[i]]
+            }
         }
-    }
-    //
-    var seasonKey = Object.keys(varScheme.season)
-    var seasonMean = []
-    for(let i=0; i<seasonKey.length; i++){
-        seasonMean.push(arrayMean(varScheme.season[seasonKey[i]].userScore))
-    }
-    seasonMean = arrayMean(seasonMean)
-    for(let i=0; i<seasonKey.length; i++){
-        var tempScore = arrayMean(varScheme.season[seasonKey[i]].userScore)
-        varScheme.season[seasonKey[i]+"Min"] = tempScore
-        // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-        var count = varScheme.season[seasonKey[i]].count
-        if(count>=seasonMeanCount){//||tempScore<seasonMean){
-            varScheme.season[seasonKey[i]] = tempScore
-        } else {
-            delete varScheme.season[seasonKey[i]]
+        //
+        var yearKey = Object.keys(varScheme.year)
+        var yearMean = []
+        for(let i=0; i<yearKey.length; i++){
+            yearMean.push(arrayMean(varScheme.year[yearKey[i]].userScore))
         }
-    }
-    //
-    var genresKey = Object.keys(varScheme.genres)
-    var genresMean = []
-    for(let i=0; i<genresKey.length; i++){
-        genresMean.push(arrayMean(varScheme.genres[genresKey[i]].userScore))
-    }
-    genresMean = arrayMean(genresMean)
-    for(let i=0; i<genresKey.length; i++){
-        var tempScore = arrayMean(varScheme.genres[genresKey[i]].userScore)
-        varScheme.genres[genresKey[i]+"Min"] = tempScore
-        // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-        var count = varScheme.genres[genresKey[i]].count
-        if(count>=genresMeanCount){//||tempScore<genresMean){
-            varScheme.genres[genresKey[i]] = tempScore
-        } else {
-            delete varScheme.genres[genresKey[i]]
+        yearMean = arrayMean(yearMean)
+        for(let i=0; i<yearKey.length; i++){
+            var tempScore = arrayMean(varScheme.year[yearKey[i]].userScore)
+            varScheme.year[yearKey[i]+"Min"] = tempScore
+            // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
+            var count = varScheme.year[yearKey[i]].count
+            if(count>=yearMeanCount){//||tempScore<yearMean){
+                varScheme.year[yearKey[i]] = tempScore
+            } else {
+                delete varScheme.year[yearKey[i]]
+            }
         }
-    }
-    //
-    var tagsKey = Object.keys(varScheme.tags)
-    var tagsMean = []
-    for(let i=0; i<tagsKey.length; i++){
-        tagsMean.push(arrayMean(varScheme.tags[tagsKey[i]].userScore))
-    }
-    tagsMean = arrayMean(tagsMean)
-    for(let i=0; i<tagsKey.length; i++){
-        var tempScore = arrayMean(varScheme.tags[tagsKey[i]].userScore)
-        varScheme.tags[tagsKey[i]+"Min"] = tempScore
-        // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-        var count = varScheme.tags[tagsKey[i]].count
-        if(count>=tagsMeanCount){//||tempScore<tagsMean){
-            varScheme.tags[tagsKey[i]] = tempScore
-        } else {
-            delete varScheme.tags[tagsKey[i]]
+        //
+        var seasonKey = Object.keys(varScheme.season)
+        var seasonMean = []
+        for(let i=0; i<seasonKey.length; i++){
+            seasonMean.push(arrayMean(varScheme.season[seasonKey[i]].userScore))
         }
-    }
-    //
-    var studiosKey = Object.keys(varScheme.studios)
-    var studiosMean = []
-    for(let i=0; i<studiosKey.length; i++){
-        studiosMean.push(arrayMean(varScheme.studios[studiosKey[i]].userScore))
-    }
-    studiosMean = arrayMean(studiosMean)
-    for(let i=0; i<studiosKey.length; i++){
-        var tempScore = arrayMean(varScheme.studios[studiosKey[i]].userScore)
-        varScheme.studios[studiosKey[i]+"Min"] = tempScore
-        // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-        var count = varScheme.studios[studiosKey[i]].count
-        if(count>=studiosMeanCount){//||tempScore<studiosMean){
-            varScheme.studios[studiosKey[i]] = tempScore
-        } else {
-            delete varScheme.studios[studiosKey[i]]
+        seasonMean = arrayMean(seasonMean)
+        for(let i=0; i<seasonKey.length; i++){
+            var tempScore = arrayMean(varScheme.season[seasonKey[i]].userScore)
+            varScheme.season[seasonKey[i]+"Min"] = tempScore
+            // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
+            var count = varScheme.season[seasonKey[i]].count
+            if(count>=seasonMeanCount){//||tempScore<seasonMean){
+                varScheme.season[seasonKey[i]] = tempScore
+            } else {
+                delete varScheme.season[seasonKey[i]]
+            }
         }
-    }
-    //
-    var staffKey = Object.keys(varScheme.staff)
-    var staffMean = []
-    for(let i=0; i<staffKey.length; i++){
-        staffMean.push(arrayMean(varScheme.staff[staffKey[i]].userScore))
-    }
-    staffMean = arrayMean(staffMean)
-    for(let i=0; i<staffKey.length; i++){
-        var tempScore = arrayMean(varScheme.staff[staffKey[i]].userScore)
-        varScheme.staff[staffKey[i]+"Min"] = tempScore
-        // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-        var count = varScheme.staff[staffKey[i]].count
-        if(count>=staffMeanCount){//||tempScore<staffMean){
-            varScheme.staff[staffKey[i]] = tempScore
-        } else {
-            delete varScheme.staff[staffKey[i]]
+        //
+        var genresKey = Object.keys(varScheme.genres)
+        var genresMean = []
+        for(let i=0; i<genresKey.length; i++){
+            genresMean.push(arrayMean(varScheme.genres[genresKey[i]].userScore))
         }
-    }
-    // Join Data
-    var varSchemeKeys = Object.keys(varScheme)
-    var tempVar = {
-        meanFormat: formatMean,
-        meanYear: yearMean,
-        meanSeason: seasonMean,
-        meanGenres: genresMean,
-        meanTags: tagsMean,
-        meanStudios: studiosMean,
-        meanStaff: staffMean
-    }
-    for(let i=0; i<varSchemeKeys.length; i++){
-        var variables = varScheme[varSchemeKeys[i]]
-        for(let j=0; j<Object.keys(variables).length; j++){
-            var varEntries = Object.entries(variables)
-            tempVar[varEntries[j][0]] = varEntries[j][1]
+        genresMean = arrayMean(genresMean)
+        for(let i=0; i<genresKey.length; i++){
+            var tempScore = arrayMean(varScheme.genres[genresKey[i]].userScore)
+            varScheme.genres[genresKey[i]+"Min"] = tempScore
+            // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
+            var count = varScheme.genres[genresKey[i]].count
+            if(count>=genresMeanCount){//||tempScore<genresMean){
+                varScheme.genres[genresKey[i]] = tempScore
+            } else {
+                delete varScheme.genres[genresKey[i]]
+            }
         }
-    }
-    // Create Model for Numbers| y is predicted so userscore
-    // Average Score Model
-    const r2Thresh = 0.1 // Lowered Since Media is Subjective
-    var averageScoreX = [], averageScoreY = []
-    for(let i=0; i<averageScore.length;i++){
-        averageScoreX.push(averageScore[i].averageScore)
-        averageScoreY.push(averageScore[i].userScore)
-    }
-    if(averageScoreX.length>0&&averageScoreY.length>0){
-        var tempLinearReg = linearRegression(averageScoreX,averageScoreY)
-        if(tempLinearReg.r2>r2Thresh){
-            tempVar["averageScoreModel"] = tempLinearReg
+        //
+        var tagsKey = Object.keys(varScheme.tags)
+        var tagsMean = []
+        for(let i=0; i<tagsKey.length; i++){
+            tagsMean.push(arrayMean(varScheme.tags[tagsKey[i]].userScore))
         }
+        tagsMean = arrayMean(tagsMean)
+        for(let i=0; i<tagsKey.length; i++){
+            var tempScore = arrayMean(varScheme.tags[tagsKey[i]].userScore)
+            varScheme.tags[tagsKey[i]+"Min"] = tempScore
+            // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
+            var count = varScheme.tags[tagsKey[i]].count
+            if(count>=tagsMeanCount){//||tempScore<tagsMean){
+                varScheme.tags[tagsKey[i]] = tempScore
+            } else {
+                delete varScheme.tags[tagsKey[i]]
+            }
+        }
+        //
+        var studiosKey = Object.keys(varScheme.studios)
+        var studiosMean = []
+        for(let i=0; i<studiosKey.length; i++){
+            studiosMean.push(arrayMean(varScheme.studios[studiosKey[i]].userScore))
+        }
+        studiosMean = arrayMean(studiosMean)
+        for(let i=0; i<studiosKey.length; i++){
+            var tempScore = arrayMean(varScheme.studios[studiosKey[i]].userScore)
+            varScheme.studios[studiosKey[i]+"Min"] = tempScore
+            // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
+            var count = varScheme.studios[studiosKey[i]].count
+            if(count>=studiosMeanCount){//||tempScore<studiosMean){
+                varScheme.studios[studiosKey[i]] = tempScore
+            } else {
+                delete varScheme.studios[studiosKey[i]]
+            }
+        }
+        //
+        var staffKey = Object.keys(varScheme.staff)
+        var staffMean = []
+        for(let i=0; i<staffKey.length; i++){
+            staffMean.push(arrayMean(varScheme.staff[staffKey[i]].userScore))
+        }
+        staffMean = arrayMean(staffMean)
+        for(let i=0; i<staffKey.length; i++){
+            var tempScore = arrayMean(varScheme.staff[staffKey[i]].userScore)
+            varScheme.staff[staffKey[i]+"Min"] = tempScore
+            // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
+            var count = varScheme.staff[staffKey[i]].count
+            if(count>=staffMeanCount){//||tempScore<staffMean){
+                varScheme.staff[staffKey[i]] = tempScore
+            } else {
+                delete varScheme.staff[staffKey[i]]
+            }
+        }
+        // Join Data
+        var varSchemeKeys = Object.keys(varScheme)
+        var tempVar = {
+            meanFormat: formatMean,
+            meanYear: yearMean,
+            meanSeason: seasonMean,
+            meanGenres: genresMean,
+            meanTags: tagsMean,
+            meanStudios: studiosMean,
+            meanStaff: staffMean
+        }
+        for(let i=0; i<varSchemeKeys.length; i++){
+            var variables = varScheme[varSchemeKeys[i]]
+            for(let j=0; j<Object.keys(variables).length; j++){
+                var varEntries = Object.entries(variables)
+                tempVar[varEntries[j][0]] = varEntries[j][1]
+            }
+        }
+        // Create Model for Numbers| y is predicted so userscore
+        // Average Score Model
+        const r2Thresh = 0.1 // Lowered Since Media is Subjective
+        const limitSample = 30
+        var averageScoreX = [], averageScoreY = []
+        for(let i=0; i<averageScore.length;i++){
+            averageScoreX.push(averageScore[i].averageScore)
+            averageScoreY.push(averageScore[i].userScore)
+        }
+        if(averageScoreX.length===averageScoreY.length&&averageScoreX.length>=limitSample&&averageScoreY.length>=limitSample){
+            var tempLinearReg = linearRegression(averageScoreX,averageScoreY)
+            if(tempLinearReg.r2>r2Thresh){
+                tempVar["averageScoreModel"] = tempLinearReg
+            }
+        }
+        // For Anime Length Model
+        var animeLengthModels = []
+        var episodesX = [], episodesY = []
+        for(let i=0; i<episodes.length;i++){
+            episodesX.push(episodes[i].episodes)
+            episodesY.push(episodes[i].userScore)
+        }
+        if(episodesX.length===episodesY.length&&episodesX.length>=limitSample&&episodesY.length>=limitSample){
+            var tempLinearReg = linearRegression(episodesX,episodesY)
+            if(tempLinearReg.r2>r2Thresh){
+                animeLengthModels.push([tempLinearReg,"episodesModel"])
+            }
+        }
+        // if(episodesX.length>0&&episodesY.length>0){
+        //     var tempLinearReg = linearRegression(episodesX,episodesY)
+        //     if(tempLinearReg.r2>r2Thresh){
+        //         tempVar["episodesModel"] = tempLinearReg
+        //     }
+        // }
+        var durationX = [], durationY = []
+        for(let i=0; i<duration.length;i++){
+            durationX.push(duration[i].duration)
+            durationY.push(duration[i].userScore)
+        }
+        if(durationX.length===durationY.length&&durationX.length>=limitSample&&durationY.length>=limitSample){
+            var tempLinearReg = linearRegression(durationX,durationY)
+            if(tempLinearReg.r2>r2Thresh){
+                animeLengthModels.push([tempLinearReg,"durationModel"])
+            }
+        }
+        // if(durationX.length>0&&durationY.length>0){
+        //     var tempLinearReg = linearRegression(durationX,durationY)
+        //     if(tempLinearReg.r2>r2Thresh){
+        //         tempVar["durationModel"] = tempLinearReg
+        //     }
+        // }
+        var sortedAnimeLengthModels = animeLengthModels.sort(function(a, b) {
+            return b[0].r2 - a[0].r2;
+        })
+        if(sortedAnimeLengthModels.length>0){
+            sortedAnimeLengthModels = sortedAnimeLengthModels[0]
+            tempVar[sortedAnimeLengthModels[1]] = sortedAnimeLengthModels[0]
+        }
+        // For Popularity
+        var wellKnownAnimeModels = []
+        var trendingX = [], trendingY = []
+        for(let i=0; i<trending.length;i++){
+            trendingX.push(trending[i].trending)
+            trendingY.push(trending[i].userScore)
+        }
+        if(trendingX.length===trendingY.length&&trendingX.length>=limitSample&&trendingY.length>=limitSample){
+            var tempLinearReg = linearRegression(trendingX,trendingY)
+            if(tempLinearReg.r2>r2Thresh){
+                wellKnownAnimeModels.push([tempLinearReg,"trendingModel"])
+            }
+        }
+        // if(trendingX.length>0&&trendingY.length>0){
+        //     var tempLinearReg = linearRegression(trendingX,trendingY)
+        //     if(tempLinearReg.r2>r2Thresh){
+        //         tempVar["trendingModel"] = tempLinearReg
+        //     }
+        // }
+        var popularityX = [], popularityY = []
+        for(let i=0; i<popularity.length;i++){
+            popularityX.push(popularity[i].popularity)
+            popularityY.push(popularity[i].userScore)
+        }
+        if(popularityX.length===popularityY.length&&popularityX.length>=limitSample&&popularityY.length>=limitSample){
+            var tempLinearReg = linearRegression(popularityX,popularityY)
+            if(tempLinearReg.r2>r2Thresh){
+                wellKnownAnimeModels.push([tempLinearReg,"popularityModel"])
+            }
+        }
+        // if(popularityX.length>0&&popularityY.length>0){
+        //     var tempLinearReg = linearRegression(popularityX,popularityY)
+        //     if(tempLinearReg.r2>r2Thresh){
+        //         tempVar["popularityModel"] = tempLinearReg
+        //     }
+        // }
+        var favouritesX = [], favouritesY = []
+        for(let i=0; i<favourites.length;i++){
+            favouritesX.push(favourites[i].favourites)
+            favouritesY.push(favourites[i].userScore)
+        }
+        if(favouritesX.length===favouritesY.length&&favouritesX.length>=limitSample&&favouritesY.length>=limitSample){
+            var tempLinearReg = linearRegression(favouritesX,favouritesY)
+            if(tempLinearReg.r2>r2Thresh){
+                wellKnownAnimeModels.push([tempLinearReg,"favouritesModel"])
+            }
+        }
+        // if(favouritesX.length>0&&favouritesY.length>0){
+        //     var tempLinearReg = linearRegression(favouritesX,favouritesY)
+        //     if(tempLinearReg.r2>r2Thresh){
+        //         tempVar["favouritesModel"] = tempLinearReg
+        //     }
+        // }
+        var sortedWellKnownAnimeModels = wellKnownAnimeModels.sort(function(a, b) {
+            return b[0].r2 - a[0].r2;
+        })
+        if(sortedWellKnownAnimeModels.length>0){
+            sortedWellKnownAnimeModels = sortedWellKnownAnimeModels[0]
+            tempVar[sortedWellKnownAnimeModels[1]] = sortedWellKnownAnimeModels[0]
+        }
+        varScheme = tempVar
     }
-    // For Anime Length Model
-    var animeLengthModels = []
-    var episodesX = [], episodesY = []
-    for(let i=0; i<episodes.length;i++){
-        episodesX.push(episodes[i].episodes)
-        episodesY.push(episodes[i].userScore)
-    }
-    var tempLinearReg = linearRegression(episodesX,episodesY)
-    if(tempLinearReg.r2>r2Thresh){
-        animeLengthModels.push([tempLinearReg,"episodesModel"])
-    }
-    // if(episodesX.length>0&&episodesY.length>0){
-    //     var tempLinearReg = linearRegression(episodesX,episodesY)
-    //     if(tempLinearReg.r2>r2Thresh){
-    //         tempVar["episodesModel"] = tempLinearReg
-    //     }
-    // }
-    var durationX = [], durationY = []
-    for(let i=0; i<duration.length;i++){
-        durationX.push(duration[i].duration)
-        durationY.push(duration[i].userScore)
-    }
-    var tempLinearReg = linearRegression(durationX,durationY)
-    if(tempLinearReg.r2>r2Thresh){
-        animeLengthModels.push([tempLinearReg,"durationModel"])
-    }
-    // if(durationX.length>0&&durationY.length>0){
-    //     var tempLinearReg = linearRegression(durationX,durationY)
-    //     if(tempLinearReg.r2>r2Thresh){
-    //         tempVar["durationModel"] = tempLinearReg
-    //     }
-    // }
-    var sortedAnimeLengthModels = animeLengthModels.sort(function(a, b) {
-        return b[0].r2 - a[0].r2;
-    })
-    if(sortedAnimeLengthModels.length>0){
-        sortedAnimeLengthModels = sortedAnimeLengthModels[0]
-        tempVar[sortedAnimeLengthModels[1]] = sortedAnimeLengthModels[0]
-    }
-    // For Popularity
-    var wellKnownAnimeModels = []
-    var trendingX = [], trendingY = []
-    for(let i=0; i<trending.length;i++){
-        trendingX.push(trending[i].trending)
-        trendingY.push(trending[i].userScore)
-    }
-    var tempLinearReg = linearRegression(trendingX,trendingY)
-    if(tempLinearReg.r2>r2Thresh){
-        wellKnownAnimeModels.push([tempLinearReg,"trendingModel"])
-    }
-    // if(trendingX.length>0&&trendingY.length>0){
-    //     var tempLinearReg = linearRegression(trendingX,trendingY)
-    //     if(tempLinearReg.r2>r2Thresh){
-    //         tempVar["trendingModel"] = tempLinearReg
-    //     }
-    // }
-    var popularityX = [], popularityY = []
-    for(let i=0; i<popularity.length;i++){
-        popularityX.push(popularity[i].popularity)
-        popularityY.push(popularity[i].userScore)
-    }
-    var tempLinearReg = linearRegression(popularityX,popularityY)
-    if(tempLinearReg.r2>r2Thresh){
-        wellKnownAnimeModels.push([tempLinearReg,"popularityModel"])
-    }
-    // if(popularityX.length>0&&popularityY.length>0){
-    //     var tempLinearReg = linearRegression(popularityX,popularityY)
-    //     if(tempLinearReg.r2>r2Thresh){
-    //         tempVar["popularityModel"] = tempLinearReg
-    //     }
-    // }
-    var favouritesX = [], favouritesY = []
-    for(let i=0; i<favourites.length;i++){
-        favouritesX.push(favourites[i].favourites)
-        favouritesY.push(favourites[i].userScore)
-    }
-    var tempLinearReg = linearRegression(favouritesX,favouritesY)
-    if(tempLinearReg.r2>r2Thresh){
-        wellKnownAnimeModels.push([tempLinearReg,"favouritesModel"])
-    }
-    // if(favouritesX.length>0&&favouritesY.length>0){
-    //     var tempLinearReg = linearRegression(favouritesX,favouritesY)
-    //     if(tempLinearReg.r2>r2Thresh){
-    //         tempVar["favouritesModel"] = tempLinearReg
-    //     }
-    // }
-    var sortedWellKnownAnimeModels = wellKnownAnimeModels.sort(function(a, b) {
-        return b[0].r2 - a[0].r2;
-    })
-    if(sortedWellKnownAnimeModels.length>0){
-        sortedWellKnownAnimeModels = sortedWellKnownAnimeModels[0]
-        tempVar[sortedWellKnownAnimeModels[1]] = sortedWellKnownAnimeModels[0]
-    }
-    varScheme = tempVar
     self.postMessage({
         varScheme: varScheme, 
         userListStatus: userListStatus,
