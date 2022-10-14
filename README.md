@@ -33,7 +33,7 @@
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The recommendation score is weighted equally based on three things, (User Score, Most recommended, and General Ratings). Recommended Animes are retrieved from Anilist recommendation system in which Anilist Users recommend an Anime similar to others (i.e. Gintama is a comedy Anime similar to Level E, Daily Lives of High School Boys). Further, based on ones' User List, those recommendations are gathered and used for the Anime recommendations' Scores.
   
   1. User Score - User's scores for each Anime in ones' list is added to each of its own recommended anime, and each recommended Anime with all its user score ratings are averaged.
-  2. Most Recommended - Acts as a weight for the Users' most watched Anime cluster [(1/SumofCountforAllRecommendedAnime)*CountfortheSpecificAnime] to avoid high score for such low recommendation.
+  2. Most Recommended - Acts as a weight for the Users' most watched Anime cluster [(CountfortheSpecificAnime/SumofCountforAllRecommendedAnime)] to avoid high score for such low recommendation.
   3. General Ratings - The general Mean score of an recommended Anime in the Anilist Database, and helps to increase the rates for a well received anime.
 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score for recommendation was then calculated by multiplying the three factors [(UserScore * MostRecommendedWeight * GeneralRatings)] instead of averaged to estimate and avoid low scores for each.
