@@ -275,7 +275,7 @@ self.onmessage = (message) => {
         if(includes.some(item=>equalsNCS(item,"hidden"))){                        
             if(savedHiddenAnimeTitles.includes(value.title)){
                 animeData += `
-                <tr class="item" role="row">
+                <tr class="item" role="row" style="height:65px;">
                     <td class="hide-anime-column">
                         <button 
                             style="margin:auto; padding: 5px 13px;" 

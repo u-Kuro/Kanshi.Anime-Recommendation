@@ -649,7 +649,7 @@ th{text-align:left}
 .table>tbody+tbody{border-top:2px solid #ddd}
 .table .table{background-color:#fff}
 .table-condensed>tbody>tr>td,.table-condensed>tbody>tr>th,.table-condensed>tfoot>tr>td,.table-condensed>tfoot>tr>th,.table-condensed>thead>tr>td,.table-condensed>thead>tr>th{padding:5px}
-.table-bordered{border:1px solid #ddd}
+.table-bordered{border:1px solid #ddd;}
 .table-bordered>tbody>tr>td,.table-bordered>tbody>tr>th,.table-bordered>tfoot>tr>td,.table-bordered>tfoot>tr>th,.table-bordered>thead>tr>td,.table-bordered>thead>tr>th{border:1px solid #ddd}
 .table-bordered>thead>tr>td,.table-bordered>thead>tr>th{border-bottom-width:2px}
 .table-striped>tbody>tr:nth-of-type(odd){background-color:#f9f9f9}

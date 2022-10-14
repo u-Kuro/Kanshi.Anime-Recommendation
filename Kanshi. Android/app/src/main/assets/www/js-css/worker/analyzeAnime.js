@@ -9,6 +9,17 @@ self.onmessage = (message) => {
     var allFilterInfo = data.allFilterInfo
     var alteredVariables = data.alteredVariables
     var savedAnalyzedVariablesCount = data.savedAnalyzedVariablesCount || {}
+    // Add Popularity Weight
+    var meanPopularity = []
+    var meanAverageScore = []
+    for(let i=0; i<animeEntries.length; i++){
+        var anime = animeEntries[i]
+        meanPopularity.push(anime.popularity)
+        meanAverageScore.push(anime.averageScore)
+    }
+    var popularitySum = meanPopularity.length>0?arraySum(meanPopularity):0
+    meanPopularity = meanPopularity.length>0?arrayMean(meanPopularity):0
+    meanAverageScore = meanAverageScore.length>0?arrayMean(meanAverageScore):0
     //    
     if(!jsonIsEmpty(varImportance)){
         for(let i=0; i<animeEntries.length; i++){
@@ -366,7 +377,7 @@ self.onmessage = (message) => {
             // }
             // Original Scores
             // Anime Length
-            var animeLengthOS = []
+            // var animeLengthOS = []
             var animeLengthOSMin = []
             // if(zformat.length>0){
             //     animeLengthOS.push(arrayMean(zformat))
@@ -376,12 +387,12 @@ self.onmessage = (message) => {
             }
             if(!isNaN(anime.episodes)&&varImportance.episodesModel!==undefined){
                 var tempLRPredict = LRpredict(varImportance.episodesModel,anime.episodes)
-                animeLengthOS.push(tempLRPredict)
+                // animeLengthOS.push(tempLRPredict)
                 animeLengthOSMin.push(tempLRPredict)
             }
             if(!isNaN(anime.duration)&&varImportance.durationModel!==undefined){
                 var tempLRPredict = LRpredict(varImportance.durationModel,anime.duration)
-                animeLengthOS.push(tempLRPredict)
+                // animeLengthOS.push(tempLRPredict)
                 animeLengthOSMin.push(tempLRPredict)
             }
             // Anime Time
@@ -478,6 +489,13 @@ self.onmessage = (message) => {
                 arrayMean(animeTimeOSMin),
                 arrayMean(animeGeneralOpinionOSMin),
             ])
+            // Low Average
+            if(anime.averageScore!==null){
+                if(anime.averageScore<meanAverageScore){
+                    var AVmul = anime.averageScore*0.01
+                    score = score*(AVmul>=1?1:AVmul)
+                }
+            }
             // var weightedScore = arrayMean([
             //     arrayMean(animeLengthOS),
             //     arrayMean(animeTypeOS),
@@ -539,7 +557,8 @@ self.onmessage = (message) => {
                 title: title, animeUrl: animeUrl, score: score, weightedScore: score, 
                 status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, staff: staff,
-                variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount
+                variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount,
+                popularity: anime.popularity
             }
         }
         // Add Weight to Scores
@@ -568,6 +587,11 @@ self.onmessage = (message) => {
                 //     (anime.analyzedVariableCount.all||0)===0? (minNumber/analyzedVariableSum)*anime.score
                 //     : (anime.analyzedVariableCount.all/analyzedVariableSum)*anime.score                
                 // )
+            } else if(anime.popularity<meanPopularity) {
+                savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
+                    (anime.popularity||0)===0? (minNumber/popularitySum)*anime.weightedScore
+                    : (anime.popularity/popularitySum)*anime.weightedScore
+                )
             }
         }
     } else {
@@ -695,7 +719,8 @@ self.onmessage = (message) => {
                 if(anime.favourites<anime.popularity) {
                     favOverpop = anime.favourites/anime.popularity
                 }
-                var score = ((favOverpop)+(anime.averageScore*0.01))/2
+                var AVmul = anime.averageScore*0.01
+                var score = (favOverpop)*(AVmul>=1?1:AVmul)
                 var weightedScore = score
             }
             // Other Anime Recommendation Info
@@ -721,7 +746,8 @@ self.onmessage = (message) => {
                 title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
                 status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, staff: staff,
-                variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount
+                variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount,
+                popularity: anime.popularity
             }
         }
         // Add Weight to Scores
@@ -743,8 +769,13 @@ self.onmessage = (message) => {
                 // || (anime.analyzedVariableCount.staff||0)<analyzedStaffMean 
                 ){
                 savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
-                    (anime.analyzedVariableCount.all||0)===0? (1e-16/analyzedVariableSum)*anime.weightedScore
+                    (anime.analyzedVariableCount.all||0)===0? (minNumber/analyzedVariableSum)*anime.weightedScore
                     : (anime.analyzedVariableCount.all/analyzedVariableSum)*anime.weightedScore                
+                )
+            } else if(anime.popularity<meanPopularity) {
+                savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
+                    (anime.popularity||0)===0? (minNumber/popularitySum)*anime.weightedScore
+                    : (anime.popularity/popularitySum)*anime.weightedScore
                 )
             }
         }
@@ -826,13 +857,10 @@ self.onmessage = (message) => {
         var modSucFreq = classIs[modeIdx+1]===undefined?0:classIs[modeIdx+1].freq
         return modLowLim+(((modFreq-modPreFreq)/((2*modFreq)-modPreFreq-modSucFreq))*classW)
     }
-    function arrayDensity(obj){
-        var mean,obj
-        for(i=0;i<obj.length;i++){
-            mean = arrayMean(obj)
-            obj = obj.filter((x)=>{return Math.abs(x-mean)<mean})
-        }
-        return arrayMean(obj)
+    function arraySD(obj) {
+        const n = obj.length
+        const mean = arrayMean(obj)
+        return Math.sqrt(obj.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
     }
     // Linear Regression
     function LRpredict(modelObj, x){

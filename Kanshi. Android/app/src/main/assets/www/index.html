@@ -264,6 +264,9 @@
             a {
                 color: #B06D70;
             }
+            #anime-table{
+                border: 1px solid #ddd !important;
+            }
             #animeRecommendationList{
                 content-visibility: auto;
             }
@@ -351,7 +354,9 @@
                 justify-content: center;
             }
             .table-responsive{
-                margin-bottom: 77px;
+                border: 1px solid #dddddd !important;
+                min-height: 556px !important;
+                margin-bottom: 100px !important;
             }
             .pager{
                 position: fixed;
@@ -410,9 +415,6 @@
                 filter: alpha(opacity=50);
                 cursor: default;
             }
-            .pagerSavedHeightSpacer{
-                display: none;
-            }
             .pagedisplay{
                 max-width: fit-content;
             }
@@ -462,6 +464,7 @@
                 margin-top: 50px;
             }
             .menu-container {
+                overflow: auto;
                 top: 0px;
                 right: 0;
                 position: fixed;
@@ -474,8 +477,9 @@
                 user-select: none;
             }
             .menu-container>div{
+                margin-bottom: 63px;
                 padding: 1em;
-                margin-top: 60px;
+                margin-top: 50px;
                 display: flex;
                 flex-wrap: wrap;
                 gap: 1.5em;
@@ -606,6 +610,7 @@
                 animation-name: swal2-hide;
             }
             .swal-modal-custom{
+                overflow: auto;
                 font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
                 padding-top: 36px;
                 padding-bottom: 2px;
@@ -965,7 +970,6 @@
                         size: 8,
                         pageReset: false,
                         removeRows: true,
-                        fixedHeight: true,
                         cssNext: '.next',
                         cssPrev: '.prev',
                         cssFirst: '.first',
@@ -1051,8 +1055,6 @@
             },1000)
 
             await new Promise(async(resolve) => {
-                // Auto css
-                await $(".table-responsive").css("margin-bottom",`${$("#pager").outerHeight()+43}px`)
                 // Reload Name
                 savedUsername = await retrieveJSON("savedUsername") || ""
                 if(await savedUsername.length>0){
