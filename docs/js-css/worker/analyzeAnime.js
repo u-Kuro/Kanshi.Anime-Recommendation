@@ -10,16 +10,22 @@ self.onmessage = (message) => {
     var alteredVariables = data.alteredVariables
     var savedAnalyzedVariablesCount = data.savedAnalyzedVariablesCount || {}
     // Add Popularity Weight
-    var meanPopularity = []
-    var meanAverageScore = []
+    var popularityMode = []
+    var averageScoreMode = []
     for(let i=0; i<animeEntries.length; i++){
         var anime = animeEntries[i]
-        meanPopularity.push(anime.popularity)
-        meanAverageScore.push(anime.averageScore)
+        var popularity = anime.popularity
+        if(isaN(popularity)){
+            popularityMode.push(popularity)
+        }
+        var score = anime.averageScore
+        if(isaN(score)){
+            averageScoreMode.push(score)
+        }
     }
-    var popularitySum = meanPopularity.length>0?arraySum(meanPopularity):0
-    meanPopularity = meanPopularity.length>0?arrayMean(meanPopularity):0
-    meanAverageScore = meanAverageScore.length>0?arrayMean(meanAverageScore):0
+    var popularitySum = popularityMode.length>0?arraySum(popularityMode):0
+    popularityMode = popularityMode.length>0?arrayMode(popularityMode):0
+    averageScoreMode = averageScoreMode.length>0?arrayMode(averageScoreMode):0
     //    
     if(!jsonIsEmpty(varImportance)){
         for(let i=0; i<animeEntries.length; i++){
@@ -254,7 +260,7 @@ self.onmessage = (message) => {
             var tagRankMean = []
             for(let j=0; j<anime.tags.length; j++){
                 var xTagRank = anime.tags[j].rank
-                if(xTagRank!==null){tagRankMean.push(xTagRank)}
+                if(isaN(xTagRank)){tagRankMean.push(xTagRank)}
             }
             var tempTagRankMean = arrayMean(tagRankMean)
             tagRankMean = tagRankMean.length===0?50:tempTagRankMean<50?50:tempTagRankMean
@@ -265,7 +271,6 @@ self.onmessage = (message) => {
                 savedAnalyzedVariablesCount.all[title] += 1
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.tags += 1
-
                 if(varImportance[xtags[j].name+"Min"]!==undefined && xtags[j].rank>=tagRankMean){
                     ztagsMin.push(varImportance[xtags[j].name+"Min"])
                 } else {
@@ -385,12 +390,12 @@ self.onmessage = (message) => {
             if(zformatMin.length>0){
                 animeLengthOSMin.push(arrayMean(zformatMin))
             }
-            if(!isNaN(anime.episodes)&&varImportance.episodesModel!==undefined){
+            if(isaN(anime.episodes)&&varImportance.episodesModel!==undefined){
                 var tempLRPredict = LRpredict(varImportance.episodesModel,anime.episodes)
                 // animeLengthOS.push(tempLRPredict)
                 animeLengthOSMin.push(tempLRPredict)
             }
-            if(!isNaN(anime.duration)&&varImportance.durationModel!==undefined){
+            if(isaN(anime.duration)&&varImportance.durationModel!==undefined){
                 var tempLRPredict = LRpredict(varImportance.durationModel,anime.duration)
                 // animeLengthOS.push(tempLRPredict)
                 animeLengthOSMin.push(tempLRPredict)
@@ -459,23 +464,23 @@ self.onmessage = (message) => {
             // var animeGeneralOpinionOS = []
             var animeGeneralOpinionOSMin = []
                 // Average Score
-            if(!isNaN(anime.averageScore)&&varImportance.averageScoreModel!==undefined){
+            if(isaN(anime.averageScore)&&varImportance.averageScoreModel!==undefined){
                 var tempLRPredict = LRpredict(varImportance.averageScoreModel,anime.averageScore)
                 // animeGeneralOpinionOS.push(tempLRPredict)
                 animeGeneralOpinionOSMin.push(tempLRPredict)
             }
                 // Popularity
-            if(!isNaN(anime.trending)&&varImportance.trendingModel!==undefined){
+            if(isaN(anime.trending)&&varImportance.trendingModel!==undefined){
                 var tempLRPredict = LRpredict(varImportance.trendingModel,anime.trending)
                 // animeGeneralOpinionOS.push(tempLRPredict)
                 animeGeneralOpinionOSMin.push(tempLRPredict)
             }
-            if(!isNaN(anime.popularity)&&varImportance.popularityModel!==undefined){
+            if(isaN(anime.popularity)&&varImportance.popularityModel!==undefined){
                 var tempLRPredict = LRpredict(varImportance.popularityModel,anime.popularity)
                 // animeGeneralOpinionOS.push(tempLRPredict)
                 animeGeneralOpinionOSMin.push(tempLRPredict)
             }
-            if(!isNaN(anime.favourites)&&varImportance.favouritesModel!==undefined){
+            if(isaN(anime.favourites)&&varImportance.favouritesModel!==undefined){
                 var tempLRPredict = LRpredict(varImportance.favouritesModel,anime.favourites)
                 // animeGeneralOpinionOS.push(tempLRPredict)
                 animeGeneralOpinionOSMin.push(tempLRPredict)
@@ -489,11 +494,12 @@ self.onmessage = (message) => {
                 arrayMean(animeTimeOSMin),
                 arrayMean(animeGeneralOpinionOSMin),
             ])
+            var weightedScore = score
             // Low Average
-            if(anime.averageScore!==null){
-                if(anime.averageScore<meanAverageScore){
+            if(isaN(anime.averageScore)){
+                if(anime.averageScore<averageScoreMode){
                     var AVmul = anime.averageScore*0.01
-                    score = score*(AVmul>=1?1:AVmul)
+                    weightedScore = weightedScore*(AVmul>=1?1:AVmul)
                 }
             }
             // var weightedScore = arrayMean([
@@ -554,7 +560,7 @@ self.onmessage = (message) => {
             const limitShown = 10
             variablesIncluded = tempVariablesIncluded.length>0?tempVariablesIncluded.slice(0,limitShown) : []
             savedRecScheme[title] = {
-                title: title, animeUrl: animeUrl, score: score, weightedScore: score, 
+                title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
                 status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, staff: staff,
                 variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount,
@@ -587,7 +593,7 @@ self.onmessage = (message) => {
                 //     (anime.analyzedVariableCount.all||0)===0? (minNumber/analyzedVariableSum)*anime.score
                 //     : (anime.analyzedVariableCount.all/analyzedVariableSum)*anime.score                
                 // )
-            } else if(anime.popularity<meanPopularity) {
+            } else if(anime.popularity<popularityMode) {
                 savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
                     (anime.popularity||0)===0? (minNumber/popularitySum)*anime.weightedScore
                     : (anime.popularity/popularitySum)*anime.weightedScore
@@ -720,8 +726,7 @@ self.onmessage = (message) => {
                     favOverpop = anime.favourites/anime.popularity
                 }
                 var AVmul = anime.averageScore*0.01
-                var score = (favOverpop)*(AVmul>=1?1:AVmul)
-                var weightedScore = score
+                score = weightedScore = (favOverpop)*(AVmul>=1?1:AVmul)
             }
             // Other Anime Recommendation Info
             genres = genres.length>0?genres.join(", "):"Genres: N/A"
@@ -772,7 +777,7 @@ self.onmessage = (message) => {
                     (anime.analyzedVariableCount.all||0)===0? (minNumber/analyzedVariableSum)*anime.weightedScore
                     : (anime.analyzedVariableCount.all/analyzedVariableSum)*anime.weightedScore                
                 )
-            } else if(anime.popularity<meanPopularity) {
+            } else if(anime.popularity<popularityMode) {
                 savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
                     (anime.popularity||0)===0? (minNumber/popularitySum)*anime.weightedScore
                     : (anime.popularity/popularitySum)*anime.weightedScore

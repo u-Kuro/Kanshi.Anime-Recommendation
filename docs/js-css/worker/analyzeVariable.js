@@ -41,10 +41,10 @@ self.onmessage = (message) => {
     var popularity = []
     var favourites = []
     //
-    var genresCount = []
-    var tagsCount = []
-    var studiosCount = []
-    var staffCount = []
+    // var genresCount = []
+    // var tagsCount = []
+    // var studiosCount = []
+    // var staffCount = []
     //
     var formatMeanCount = {}
     var yearMeanCount = {}
@@ -327,7 +327,7 @@ self.onmessage = (message) => {
                 var tagRankMean = []
                 for(let j=0; j<anime.tags.length; j++){
                     var xTagRank = anime.tags[j].rank
-                    if(xTagRank!==null){tagRankMean.push(xTagRank)}
+                    if(isaN(xTagRank)){tagRankMean.push(xTagRank)}
                 }
                 var tempTagRankMean = arrayMean(tagRankMean)
                 tagRankMean = tagRankMean.length===0?50:tempTagRankMean<50?50:tempTagRankMean
@@ -411,42 +411,42 @@ self.onmessage = (message) => {
                 }
             }
             // Number
-            if(anime.episodes!==null){
+            if(isaN(anime.episodes)){
                 episodes.push({userScore: userScore, episodes: anime.episodes})
             }
-            if(anime.duration!==null){
+            if(isaN(anime.duration)){
                 duration.push({userScore: userScore, duration: anime.duration})
             }
-            if(anime.averageScore!==null){
+            if(isaN(anime.averageScore)){
                 averageScore.push({userScore: userScore, averageScore: anime.averageScore})
             }
-            if(anime.trending!==null){
+            if(isaN(anime.trending)){
                 trending.push({userScore: userScore, trending: anime.trending})
             }
-            if(anime.popularity!==null){
+            if(isaN(anime.popularity)){
                 popularity.push({userScore: userScore, popularity: anime.popularity})
             }
-            if(anime.favourites!==null){
+            if(isaN(anime.favourites)){
                 favourites.push({userScore: userScore, favourites: anime.favourites})
             }
             //
-            if(anime.genres!==null){
-                genresCount.push({userScore: userScore, genresCount: anime.genres.length})
-            }
-            if(anime.tags!==null){
-                tagsCount.push({userScore: userScore, tagsCount: anime.tags.length})
-            }
-            if(anime.studios.nodes!==null){
-                var studioLength = 0
-                for(let i=0;i<anime.studios.nodes.length;i++){
-                    if(!anime.studios.nodes[i].isAnimationStudio) continue
-                    studioLength++
-                }
-                studiosCount.push({userScore: userScore, studiosCount: studioLength})
-            }
-            if(anime.staff.edges!==null){
-                staffCount.push({userScore: userScore, staffCount: anime.staff.edges.length})
-            }
+            // if(isaN(anime.genres)){
+            //     genresCount.push({userScore: userScore, genresCount: anime.genres.length})
+            // }
+            // if(isaN(anime.tags)){
+            //     tagsCount.push({userScore: userScore, tagsCount: anime.tags.length})
+            // }
+            // if(isaN(anime.studios.nodes)){
+            //     var studioLength = 0
+            //     for(let i=0;i<anime.studios.nodes.length;i++){
+            //         if(!anime.studios.nodes[i].isAnimationStudio) continue
+            //         studioLength++
+            //     }
+            //     studiosCount.push({userScore: userScore, studiosCount: studioLength})
+            // }
+            // if(isaN(anime.staff.edges)){
+            //     staffCount.push({userScore: userScore, staffCount: anime.staff.edges.length})
+            // }
         }
     }
     // Check and Remove if User Deleted an Anime, and add its variables as altered
@@ -476,7 +476,7 @@ self.onmessage = (message) => {
             if(!anime.studios.nodes[j].isAnimationStudio) continue
             if(alteredVariables.studios_in["Studio: "+anime.studios.nodes[j].name]===undefined){
                 alteredVariables.studios_in["Studio: "+anime.studios.nodes[j].name] = 1
-            }
+            }formatMeanCount
         }
         for(let j=0; j<anime.staff.edges.length; j++){
             if(alteredVariables.staff_in["Staff: "+anime.staff.edges[j].node.name.userPreferred]===undefined){
