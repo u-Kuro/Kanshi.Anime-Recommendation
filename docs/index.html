@@ -742,6 +742,7 @@
         <button id="hideKidsAnimeBtn">Hide Kids Anime</button>
         <button id="updateIntervalBtn">Update Every 1 hour</button>
         <button id="exportIntervalBtn">Export Every 1 hours</button>
+        <button id="sign-up">Create another account</button>
     </div>
 </div>
 <header>
@@ -2434,6 +2435,91 @@
     $("#warnAnimeContainer .swal-modal-custom").on("click",(e)=>{
         e.stopImmediatePropagation()
     })
+    $("#sign-up").on("click", async ()=>{
+        Swal.fire({
+            heightAuto: false,
+            text: `Do you want to create an Anilist account?`,
+            showConfirmButton: true,
+            confirmButtonText: "Yes, Signup",
+            showDenyButton: true,
+            denyButtonText: "No",
+            confirmButtonColor: '#000',
+            denyButtonColor: '#e27d81',
+            icon: "question",
+            reverseButtons: true
+        }).then(async(value)=>{
+            if(value.isConfirmed){
+                await window.open('https://anilist.co/signup', '_blank')
+                const { value: username} = await Swal.fire({
+                    heightAuto: false,
+                    text: "Done signing-up your new account with Anilist? Update with your new username to load your own data.",
+                    input: 'text',
+                    inputLabel: 'Enter your Anilist Username:',
+                    customClass: {
+                        icon: 'no-border'
+                    },
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: true,
+                    confirmButtonText: "Update",
+                    confirmButtonColor: '#000',
+                    showDenyButton: true,
+                    denyButtonColor: '#e27d81',
+                    denyButtonText: "Cancel",
+                    reverseButtons: true,
+                    inputValidator: async(value) => {
+                        return await new Promise(async(resolve) => {
+                            if(!value) {
+                                resolve("You need to write Something...")
+                            } else {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'https://graphql.anilist.co',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Accept': 'application/json',
+                                    },
+                                    dataType: 'json',
+                                    data: JSON.stringify({
+                                        query: `{User(name:"${value}"){name}}`
+                                    }),
+                                    beforeSend: () => {
+                                        $(".swal2-validation-message").addClass("no-before")
+                                        .css({display:"flex"})
+                                        .html(
+                                            `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                                <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                                <div>Checking Username...</div>
+                                            </div>`
+                                        )
+                                    },
+                                    success: (data) => {
+                                        $("#UsernameValidation").fadeOut(250,()=>{
+                                            $("#UsernameValidation").remove()
+                                            $(".swal2-validation-message")
+                                                .addClass("swal2-validation-message-custom-success")
+                                                .html("Username Found")
+                                            setTimeout(()=>{
+                                                resolve()
+                                            },500) 
+                                        })
+                                    },
+                                    error: (err) =>{
+                                        $("#UsernameValidation").fadeOut(250,()=>$(this).remove())
+                                        resolve("Username not Found, Please Try Again")
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+                if(username){
+                    await $("#username").val(username)
+                    Update()
+                }
+            }
+        })
+    })
     $("#hideKidsAnimeBtn").on("click", async ()=>{
         kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden")
         if(kidsAnimeIsHidden){
@@ -2723,8 +2809,96 @@
                         $("#dataStatusSpinner").show()
                         $("#dataStatus").empty()
                         if(err==="User not found"){
-                            $("#username")[0].setCustomValidity("Username is not found!")
-                            $("#username")[0].reportValidity()
+                            Swal.fire({
+                                heightAuto: false,
+                                text: `Username '${username}' was not found in Anilist. Do you want to create another Anilist account?`,
+                                showConfirmButton: true,
+                                confirmButtonText: "Yes, Signup",
+                                showDenyButton: true,
+                                denyButtonText: "No, Change it Back",
+                                confirmButtonColor: '#000',
+                                denyButtonColor: '#e27d81',
+                                icon: "question",
+                                reverseButtons: true
+                            }).then(async(value)=>{
+                                if(value.isConfirmed){
+                                    await window.open('https://anilist.co/signup', '_blank');
+                                    const { value: xusername} = await Swal.fire({
+                                        heightAuto: false,
+                                        text: "Done signing-up your new account with Anilist? Update with your new username or Return to the old username.",
+                                        input: 'text',
+                                        inputLabel: 'Enter your Anilist Username:',
+                                        inputValue: username,
+                                        customClass: {
+                                            icon: 'no-border'
+                                        },
+                                        allowOutsideClick: false,
+                                        allowEscapeKey: false,
+                                        showConfirmButton: true,
+                                        confirmButtonText: "Update",
+                                        confirmButtonColor: '#000',
+                                        showDenyButton: true,
+                                        denyButtonColor: '#e27d81',
+                                        denyButtonText: "Change it Back",
+                                        reverseButtons: true,
+                                        inputValidator: async(value) => {
+                                            return await new Promise(async(resolve) => {
+                                                if(!value) {
+                                                    resolve("You need to write Something...")
+                                                } else {
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: 'https://graphql.anilist.co',
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                            'Accept': 'application/json',
+                                                        },
+                                                        dataType: 'json',
+                                                        data: JSON.stringify({
+                                                            query: `{User(name:"${value}"){name}}`
+                                                        }),
+                                                        beforeSend: () => {
+                                                            $(".swal2-validation-message").addClass("no-before")
+                                                            .css({display:"flex"})
+                                                            .html(
+                                                                `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                                                    <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
+                                                                    <div>Checking Username...</div>
+                                                                </div>`
+                                                            )
+                                                        },
+                                                        success: (data) => {
+                                                            $("#UsernameValidation").fadeOut(250,()=>{
+                                                                $("#UsernameValidation").remove()
+                                                                $(".swal2-validation-message")
+                                                                    .addClass("swal2-validation-message-custom-success")
+                                                                    .html("Username Found")
+                                                                setTimeout(()=>{
+                                                                    resolve()
+                                                                },500) 
+                                                            })
+                                                        },
+                                                        error: (err) =>{
+                                                            $("#UsernameValidation").fadeOut(250,()=>$(this).remove())
+                                                            resolve("Username not Found, Please Try Again")
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+                                    if(xusername){
+                                        await $("#username").val(xusername)
+                                        Update()
+                                    } else {
+                                        savedUsername = await retrieveJSON("savedUsername")
+                                        $("#username").val(savedUsername)
+                                    }
+                                } else {
+                                    savedUsername = await retrieveJSON("savedUsername")
+                                    $("#username").val(savedUsername)
+                                }
+                            })
                         } else {
                             console.error("Error 100")
                             Swal.fire({
