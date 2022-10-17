@@ -43,7 +43,6 @@ self.onmessage = (message) => {
             if((alteredVariables.season_in["Season: "+season]!==undefined&&!animeShallUpdate)||recSchemeIsNew) animeShallUpdate=true
             var genres = anime.genres
             var tags = anime.tags
-            // del
             var studios = anime.studios.nodes.filter((studio)=>{return studio.isAnimationStudio})
             //
             var staff = anime.staff.edges
@@ -51,7 +50,8 @@ self.onmessage = (message) => {
             // var tagsCount = tags.length
             // var studiosCount = studios.length
             // var staffCount = staff.length
-            var status = "UNWATCHED"
+            var status = anime.status || "Status: N/A"
+            var userStatus = "UNWATCHED"
             if(allFilterInfo[title.toLowerCase()]===undefined){
                 allFilterInfo[title.toLowerCase()] = 0
             }
@@ -66,6 +66,10 @@ self.onmessage = (message) => {
             if(allFilterInfo[season.toLowerCase()]===undefined){
                 allFilterInfo[season.toLowerCase()] = 0
                 allFilterInfo["!"+season.toLowerCase()] = 0
+            }
+            if(allFilterInfo[status.toLowerCase()]===undefined){
+                allFilterInfo[status.toLowerCase()] = 0
+                allFilterInfo["!"+status.toLowerCase()] = 0
             }
             // Arrange
             var xformat = format!=="Format: N/A"?`Format: ${format}`:`${Math.random()}`
@@ -129,7 +133,11 @@ self.onmessage = (message) => {
             // Check Status
             for(let k=0; k<userListStatus.length; k++){
                 if(userListStatus[k].title===title){
-                    status = userListStatus[k].status
+                    userStatus = userListStatus[k].status
+                    if(allFilterInfo[userStatus.toLowerCase()]===undefined){
+                        allFilterInfo[userStatus.toLowerCase()] = 0
+                        allFilterInfo["!"+userStatus.toLowerCase()] = 0
+                    }
                     break
                 }
             }
@@ -381,54 +389,51 @@ self.onmessage = (message) => {
             //     }
             // }
             // Original Scores
-            // Anime Length
-            // var animeLengthOS = []
-            var animeLengthOSMin = []
-            // if(zformat.length>0){
-            //     animeLengthOS.push(arrayMean(zformat))
-            // }
-            if(zformatMin.length>0){
-                animeLengthOSMin.push(arrayMean(zformatMin))
-            }
-            if(isaN(anime.episodes)&&varImportance.episodesModel!==undefined){
-                var tempLRPredict = LRpredict(varImportance.episodesModel,anime.episodes)
-                // animeLengthOS.push(tempLRPredict)
-                animeLengthOSMin.push(tempLRPredict)
-            }
-            if(isaN(anime.duration)&&varImportance.durationModel!==undefined){
-                var tempLRPredict = LRpredict(varImportance.durationModel,anime.duration)
-                // animeLengthOS.push(tempLRPredict)
-                animeLengthOSMin.push(tempLRPredict)
-            }
-            // Anime Time
-            // var animeTimeOS = []
-            var animeTimeOSMin = []
-            // if(zyear.length>0){
-            //     animeTimeOS.push(arrayMean(zyear))
-            // }
-            if(zyearMin.length>0){
-                animeTimeOSMin.push(arrayMean(zyearMin))
-            }
-            // if(zseason.length>0){
-            //     animeTimeOS.push(arrayMean(zseason))
-            // }
-            if(zseasonMin.length>0){
-                animeTimeOSMin.push(arrayMean(zseasonMin))
-            }
             // Anime Type
             // var animeTypeOS = []
             var animeTypeOSMin = []
+            // if(zformat.length>0){
+            //     animeTypeOS.push(arrayMean(zformat))
+            // }
+            if(zformatMin.length>0){
+                animeTypeOSMin.push(arrayMean(zformatMin))
+            }
+            if(isaN(anime.episodes)&&varImportance.episodesModel!==undefined){
+                var tempLRPredict = LRpredict(varImportance.episodesModel,anime.episodes)
+                // animeTypeOS.push(tempLRPredict)
+                animeTypeOSMin.push(tempLRPredict)
+            }
+            if(isaN(anime.duration)&&varImportance.durationModel!==undefined){
+                var tempLRPredict = LRpredict(varImportance.durationModel,anime.duration)
+                // animeTypeOS.push(tempLRPredict)
+                animeTypeOSMin.push(tempLRPredict)
+            }
+            // if(zyear.length>0){
+            //     animeTypeOS.push(arrayMean(zyear))
+            // }
+            if(zyearMin.length>0){
+                animeTypeOSMin.push(arrayMean(zyearMin))
+            }
+            // if(zseason.length>0){
+            //     animeTypeOS.push(arrayMean(zseason))
+            // }
+            if(zseasonMin.length>0){
+                animeTypeOSMin.push(arrayMean(zseasonMin))
+            }
+            // Anime Type
+            // var animeContentOS = []
+            var animeContentOSMin = []
             // if(zgenres.length>0){
-            //     animeTypeOS.push(arrayMean(zgenres))
+            //     animeContentOS.push(arrayMean(zgenres))
             // }
             if(zgenresMin.length>0){
-                animeTypeOSMin.push(arrayMean(zgenresMin))
+                animeContentOSMin.push(arrayMean(zgenresMin))
             }
             // if(ztags.length>0){
-            //     animeTypeOS.push(arrayMean(ztagsMin))
+            //     animeContentOS.push(arrayMean(ztagsMin))
             // }
             if(ztagsMin.length>0){
-                animeTypeOSMin.push(arrayMean(ztagsMin))
+                animeContentOSMin.push(arrayMean(ztagsMin))
             }
             // Anime Production
             // var animeProductionOS = []
@@ -488,10 +493,9 @@ self.onmessage = (message) => {
             // Scores
             // OG&&UC
             var score = arrayMean([
-                arrayMean(animeLengthOSMin),
                 arrayMean(animeTypeOSMin),
+                arrayMean(animeContentOSMin),
                 arrayMean(animeProductionOSMin),
-                arrayMean(animeTimeOSMin),
                 arrayMean(animeGeneralOpinionOSMin),
             ])
             var weightedScore = score
@@ -561,7 +565,7 @@ self.onmessage = (message) => {
             variablesIncluded = tempVariablesIncluded.length>0?tempVariablesIncluded.slice(0,limitShown) : []
             savedRecScheme[title] = {
                 title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
-                status: status, genres: genres, tags: tags, year: year, 
+                userStatus: userStatus, status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, staff: staff,
                 variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount,
                 popularity: anime.popularity
@@ -617,7 +621,8 @@ self.onmessage = (message) => {
             var studios = anime.studios.nodes.filter((studio)=>{return studio.isAnimationStudio})
             //
             var staff = anime.staff.edges
-            var status = "UNWATCHED"
+            var status = anime.status || "Status: N/A"
+            var userStatus = "UNWATCHED"
             if(allFilterInfo[title.toLowerCase()]===undefined){
                 allFilterInfo[title.toLowerCase()] = 0
             }
@@ -632,6 +637,14 @@ self.onmessage = (message) => {
             if(allFilterInfo[season.toLowerCase()]===undefined){
                 allFilterInfo[season.toLowerCase()] = 0
                 allFilterInfo["!"+season.toLowerCase()] = 0
+            }
+            if(allFilterInfo[status.toLowerCase()]===undefined){
+                allFilterInfo[status.toLowerCase()] = 0
+                allFilterInfo["!"+status.toLowerCase()] = 0
+            }
+            if(allFilterInfo[userStatus.toLowerCase()]===undefined){
+                allFilterInfo[userStatus.toLowerCase()] = 0
+                allFilterInfo["!"+userStatus.toLowerCase()] = 0
             }
             // Arrange
             for(let j=0; j<genres.length; j++){
@@ -749,7 +762,7 @@ self.onmessage = (message) => {
             variablesIncluded = []
             savedRecScheme[title] = {
                 title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
-                status: status, genres: genres, tags: tags, year: year, 
+                userStatus: userStatus, status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, staff: staff,
                 variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount,
                 popularity: anime.popularity

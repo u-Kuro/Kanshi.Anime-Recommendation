@@ -786,6 +786,7 @@
                 <th>Title</th>
                 <th>Top Similarities</th>
                 <th>Score</th>
+                <th>User Status</th>
                 <th>Status</th>
                 <th>Genres</th>
                 <th>Tags</th>
@@ -798,7 +799,7 @@
             </thead>
             <tbody id="animeRecommendationList">
             <tr class="item" role="row">
-                <td style="padding: 1.5em !important;" colspan="13">
+                <td style="padding: 1.5em !important;" colspan="14">
                     <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                     No Data
                 </td>
@@ -990,7 +991,7 @@
                             await $("#animeRecommendationList").empty()
                             await $("#animeRecommendationList").append(`
                                 <tr class="item" role="row">
-                                    <td style="padding: 1.5em !important;" colspan="13">
+                                    <td style="padding: 1.5em !important;" colspan="14">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                         No Data
                                     </td>
@@ -1024,7 +1025,7 @@
                             await $("#animeRecommendationList").empty()
                             await $("#animeRecommendationList").append(`
                                 <tr class="item" role="row">
-                                    <td style="padding: 1.5em !important;" colspan="13">
+                                    <td style="padding: 1.5em !important;" colspan="14">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                         No Data
                                     </td>
@@ -1180,7 +1181,7 @@
                         await $("#animeRecommendationList").empty()
                         await $("#animeRecommendationList").append(`
                             <tr class="item" role="row">
-                                <td style="padding: 1.5em !important;" colspan="13">
+                                <td style="padding: 1.5em !important;" colspan="14">
                                     <div style="display:flex; align-items:center;">
                                         <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                         <div>Loading...</div>
@@ -1209,7 +1210,7 @@
                         } else {
                             animeData = `
                                 <tr class="item" role="row">
-                                    <td style="padding: 1.5em !important;" colspan="13">
+                                    <td style="padding: 1.5em !important;" colspan="14">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                         No Data
                                     </td>
@@ -1468,7 +1469,7 @@
                 await $("#animeRecommendationList").empty()
                 await $("#animeRecommendationList").append(`
                     <tr class="item" role="row">
-                        <td style="padding: 1.5em !important;" colspan="13">
+                        <td style="padding: 1.5em !important;" colspan="14">
                             <div style="display:flex; align-items:center;">
                                 <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                 <div>Loading...</div>
@@ -1622,7 +1623,7 @@
                     $("#animeRecommendationList").empty()
                     $("#animeRecommendationList").append(`
                         <tr class="item" role="row">
-                            <td style="padding: 1.5em !important;" colspan="13">
+                            <td style="padding: 1.5em !important;" colspan="14">
                                 <div style="display:flex; align-items:center;">
                                     <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                     <div>Updating...</div>
@@ -1668,7 +1669,7 @@
                     await $("#animeRecommendationList").empty()
                     await $("#animeRecommendationList").append(`
                         <tr class="item" role="row">
-                            <td style="padding: 1.5em !important;" colspan="13">
+                            <td style="padding: 1.5em !important;" colspan="14">
                                 <div style="display:flex; align-items:center;">
                                     <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                     <div>Loading...</div>
@@ -1702,7 +1703,7 @@
                     await $("#animeRecommendationList").empty()
                     await $("#animeRecommendationList").append(`
                         <tr class="item" role="row">
-                            <td style="padding: 1.5em !important;" colspan="13">
+                            <td style="padding: 1.5em !important;" colspan="14">
                                 <div style="display:flex; align-items:center;">
                                     <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                     <div>Loading...</div>
@@ -1758,7 +1759,7 @@
                     await $("#animeRecommendationList").empty()
                     await $("#animeRecommendationList").append(`
                         <tr class="item" role="row">
-                            <td style="padding: 1.5em !important;" colspan="13">
+                            <td style="padding: 1.5em !important;" colspan="14">
                                 <div style="display:flex; align-items:center;">
                                     <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
                                     <div>Loading...</div>
@@ -1941,7 +1942,7 @@
                                     await $("#updateIntervalBtn").hide()
                                     animeData = `
                                         <tr class="item" role="row">
-                                            <td style="padding: 1.5em !important;" colspan="13">
+                                            <td style="padding: 1.5em !important;" colspan="14">
                                                 <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                                 No Data
                                             </td>
@@ -2095,7 +2096,7 @@
                             await $("#updateIntervalBtn").hide()
                             animeData = `
                                 <tr class="item" role="row">
-                                    <td style="padding: 1.5em !important;" colspan="13">
+                                    <td style="padding: 1.5em !important;" colspan="14">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                         No Data
                                     </td>
@@ -2688,7 +2689,6 @@
                                 averageScore
                                 episodes
                                 duration
-                                averageScore
                                 trending
                                 popularity
                                 favourites
@@ -2704,8 +2704,6 @@
                                         isAnimationStudio
                                     }
                                 }
-                                format
-                                episodes
                                 seasonYear
                                 season
                                 staff {
@@ -2958,7 +2956,7 @@
                         $("#animeRecommendationList").empty()
                         $("#animeRecommendationList").append(`
                             <tr class="item" role="row">
-                                <td style="padding: 1.5em !important;" colspan="13">
+                                <td style="padding: 1.5em !important;" colspan="14">
                                     <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                     No Data
                                 </td>
@@ -3040,12 +3038,12 @@
                                             averageScore
                                             episodes
                                             duration
-                                            averageScore
                                             trending
                                             popularity
                                             favourites
                                             format
                                             genres
+                                            status
                                             tags {
                                                 name
                                                 rank
@@ -3057,8 +3055,6 @@
                                                     isAnimationStudio
                                                 }
                                             }
-                                            format
-                                            episodes
                                             seasonYear
                                             season
                                             staff {
@@ -3144,7 +3140,7 @@
                                             $("#animeRecommendationList").empty()
                                             $("#animeRecommendationList").append(`
                                                 <tr class="item" role="row">
-                                                    <td style="padding: 1.5em !important;" colspan="13">
+                                                    <td style="padding: 1.5em !important;" colspan="14">
                                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                                         No Data
                                                     </td>
@@ -3171,7 +3167,7 @@
                                         $("#animeRecommendationList").empty()
                                         $("#animeRecommendationList").append(`
                                             <tr class="item" role="row">
-                                                <td style="padding: 1.5em !important;" colspan="13">
+                                                <td style="padding: 1.5em !important;" colspan="14">
                                                     <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                                     No Data
                                                 </td>
@@ -3222,7 +3218,7 @@
                     $("#animeRecommendationList").empty()
                     $("#animeRecommendationList").append(`
                         <tr class="item" role="row">
-                            <td style="padding: 1.5em !important;" colspan="13">
+                            <td style="padding: 1.5em !important;" colspan="14">
                                 <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                 No Data
                             </td>

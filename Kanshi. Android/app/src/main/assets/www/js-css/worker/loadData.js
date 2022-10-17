@@ -16,6 +16,7 @@ self.onmessage = (message) => {
             if(equalsNCS(includes[i],recList[j].format)
             ||equalsNCS(includes[i],recList[j].year)
             ||equalsNCS(includes[i],recList[j].season)
+            ||equalsNCS(includes[i],recList[j].userStatus)
             ||equalsNCS(includes[i],recList[j].status)
             ||equalsNCS(includes[i],recList[j].title)
             ||equalsNCS(includes[i],"hidden"))
@@ -135,6 +136,7 @@ self.onmessage = (message) => {
             ||equalsNCS(excludes[i],recList[j].year)
             ||equalsNCS(excludes[i],recList[j].season)
             ||equalsNCS(excludes[i],recList[j].title)
+            ||equalsNCS(excludes[i],recList[j].userStatus)
             ||equalsNCS(excludes[i],recList[j].status))
             {
                 continue
@@ -296,6 +298,7 @@ self.onmessage = (message) => {
                         animeData += `
                     </td>
                     <td class="anime-score" title="${score}">${score}</td>
+                    <td>${value.userStatus}</td>
                     <td>${value.status}</td>
                     <td>${value.genres}</td>
                     <td>${value.tags}</td>
@@ -335,6 +338,7 @@ self.onmessage = (message) => {
                         ${similarities.length>0 ? similarities.join(", ") : "Similarities: N/A"}
                     </td>
                     <td class="anime-score" title="${score}">${score}</td>
+                    <td>${value.userStatus}</td>
                     <td>${value.status}</td>
                     <td>${value.genres}</td>
                     <td>${value.tags}</td>
@@ -354,7 +358,7 @@ self.onmessage = (message) => {
     if(!animeData.length){
         animeData = `
             <tr class="item" role="row">
-                <td style="padding: 1.5em !important;" colspan="13">
+                <td style="padding: 1.5em !important;" colspan="14">
                     <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                     No Data
                 </td>
