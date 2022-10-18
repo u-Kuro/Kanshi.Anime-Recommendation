@@ -2904,6 +2904,9 @@
                                 text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                                 icon: "error",
                                 confirmButtonColor: "#000"
+                            }).then(async()=>{
+                                savedRecScheme = await retrieveJSON("savedRecScheme") || {}
+                                await LoadData(savedRecScheme)
                             })
                         }
                     } catch(ex) {
@@ -2917,6 +2920,9 @@
                             text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                             icon: "error",
                             confirmButtonColor: "#000"
+                        }).then(async()=>{
+                            savedRecScheme = await retrieveJSON("savedRecScheme") || {}
+                            await LoadData(savedRecScheme)
                         })
                     }
                     console.log("WebtoApp: Update Error")
@@ -3098,6 +3104,9 @@
                                                 text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                                                 icon: "error",
                                                 confirmButtonColor: "#000"
+                                            }).then(async()=>{
+                                                savedRecScheme = await retrieveJSON("savedRecScheme") || {}
+                                                await LoadData(savedRecScheme)
                                             })
                                         }
                                         $("#dataStatusContainer").fadeOut(2500)
@@ -3126,6 +3135,9 @@
                                         text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                                         icon: "error",
                                         confirmButtonColor: "#000"
+                                    }).then(async()=>{
+                                        savedRecScheme = await retrieveJSON("savedRecScheme") || {}
+                                        await LoadData(savedRecScheme)
                                     })
                                     $("#dataStatusContainer").fadeOut(2500)
                                     $("#dataStatusSpinner").show()
@@ -3165,6 +3177,9 @@
                             text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                             icon: "error",
                             confirmButtonColor: "#000"
+                        }).then(async()=>{
+                            savedRecScheme = await retrieveJSON("savedRecScheme") || {}
+                            await LoadData(savedRecScheme)
                         })
                         console.log("WebtoApp: Update Error")
                     }
@@ -3176,6 +3191,9 @@
                         text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                         icon: "error",
                         confirmButtonColor: "#000"
+                    }).then(async()=>{
+                        savedRecScheme = await retrieveJSON("savedRecScheme") || {}
+                        await LoadData(savedRecScheme)
                     })
                     console.log("WebtoApp: Update Error")
                 }

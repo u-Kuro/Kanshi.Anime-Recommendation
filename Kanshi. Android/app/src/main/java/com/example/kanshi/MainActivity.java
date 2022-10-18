@@ -1,56 +1,54 @@
 package com.example.kanshi;
 
+import static android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+import static android.view.WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
 import static com.example.kanshi.Utils.*;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import android.app.AlertDialog;
-import android.app.DownloadManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PixelFormat;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
+import android.os.PowerManager;
 import android.provider.DocumentsContract;
 import android.provider.Settings;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
 import android.webkit.ConsoleMessage;
-import android.webkit.CookieManager;
-import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
-import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEdit;
@@ -60,28 +58,55 @@ public class MainActivity extends AppCompatActivity {
 
     private ValueCallback<Uri[]> mUploadMessage;
     private String exportPath;
-    private WebView webView;
-    public boolean wasInBackground;
+    private MediaWebView webView;
+
+    private PowerManager.WakeLock wakeLock;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+        // Keep Awake on Lock Screen
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "KeepAwake:");
+        wakeLock.acquire();
         // Hide Action Bar
         getSupportActionBar().hide();
         // Shared Preference
         prefs = MainActivity.this.getSharedPreferences("com.example.kanshi", Context.MODE_PRIVATE);
         prefsEdit = prefs.edit();
-         // Saved Data
-            exportPath = prefs.getString("savedExportPath", "");
+        // Saved Data
+        exportPath = prefs.getString("savedExportPath", "");
         // Create WebView App Instance
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        webView = findViewById(R.id.webView);
+        // Add Webview on Layout
+        ConstraintLayout constraintLayout = findViewById(R.id.activity_main);
+        webView = new MediaWebView(this);
+        webView.setId(R.id.webView);
+        constraintLayout.addView(webView);
+        // Add Webview Layout Style
+        webView.setLayoutParams(new ConstraintLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        ));
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(webView.getId(),ConstraintSet.BOTTOM,ConstraintSet.PARENT_ID,ConstraintSet.BOTTOM,0);
+        constraintSet.connect(webView.getId(),ConstraintSet.END,ConstraintSet.PARENT_ID,ConstraintSet.END,0);
+        constraintSet.connect(webView.getId(),ConstraintSet.START,ConstraintSet.PARENT_ID,ConstraintSet.START,0);
+        constraintSet.applyTo(constraintLayout);
         // Set WebView Settings
+        webView.setKeepScreenOn(true);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setAllowFileAccess(true);
         webSettings.setAllowContentAccess(true);
+        webSettings.setLoadsImagesAutomatically(true);
+        webSettings.setDatabaseEnabled(true);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setAllowFileAccessFromFileURLs(true);
+        webSettings.setBlockNetworkLoads(false);
+        webSettings.setBlockNetworkImage(false);
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             webSettings.setAllowUniversalAccessFromFileURLs(true);
@@ -182,6 +207,60 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        webView.setKeepScreenOn(true);
+        webView.resumeTimers();
+        webView.setVisibility(View.VISIBLE);
+        webView.onWindowSystemUiVisibilityChanged(View.VISIBLE);
+        webView.onWindowVisibilityChanged(View.VISIBLE);
+        MainActivity.this.setVisible(true);
+        MainActivity.this.requestVisibleBehind(true);
+    }
+
+     // Keep WebView Running on Background
+     class MediaWebView extends WebView {
+         public MediaWebView(Context context) {
+             super(context);
+         }
+         public MediaWebView(Context context, AttributeSet attrs) {
+             super(context, attrs);
+         }
+         public MediaWebView(Context context, AttributeSet attrs, int defStyleAttr) {
+             super(context, attrs, defStyleAttr);
+         }
+         @Override
+         public void onWindowSystemUiVisibilityChanged(int visibility) {
+             if(visibility != View.GONE) {
+                 super.resumeTimers();
+                 super.setVisibility(View.VISIBLE);
+                 super.setKeepScreenOn(true);
+                 super.onWindowSystemUiVisibilityChanged(View.VISIBLE);
+                 super.onWindowVisibilityChanged(View.VISIBLE);
+                 MainActivity.this.setVisible(true);
+                 MainActivity.this.requestVisibleBehind(true);
+             }
+         }
+         @Override
+         protected void onWindowVisibilityChanged(int visibility) {
+             if(visibility != View.GONE) {
+                 super.resumeTimers();
+                 super.setVisibility(View.VISIBLE);
+                 super.setKeepScreenOn(true);
+                 super.onWindowSystemUiVisibilityChanged(View.VISIBLE);
+                 super.onWindowVisibilityChanged(View.VISIBLE);
+                 MainActivity.this.setVisible(true);
+                 MainActivity.this.requestVisibleBehind(true);
+             }
+         }
+     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        wakeLock.release();
+    }
+
     // Native and Webview Connection
     class JSBridge {
         @RequiresApi(api = Build.VERSION_CODES.R)
@@ -251,7 +330,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
     // Activity Results
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -291,48 +369,21 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
     }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        webView.resumeTimers();
-        webView.setNetworkAvailable(true);
-        webView.onResume();
-    }
-
-    // Save App States
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        webView.saveState(outState);
-    }
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        webView.restoreState(savedInstanceState);
-    }
-
-    // Go Back Button
-    @Override
-    public void onBackPressed() {
-        // Add Do you want to exit Confirmation
-        if (webView.canGoBack()) {
-            webView.goBack();
-        } else {
-            new AlertDialog.Builder(this)
-                    .setTitle("Hey hey...")
-                    .setMessage("Do you really want to Exit now?")
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                            overridePendingTransition(com.google.android.material.R.anim.abc_fade_in, com.google.android.material.R.anim.abc_fade_out);
-                        }
-                    })
-                    .setNegativeButton("Later", null).show();
-        }
-    }
 }
+
+//    public void exitApp(){
+//        new AlertDialog.Builder(this)
+//                .setTitle("Hey hey...")
+//                .setMessage("Do you really want to Exit now?")
+//                .setIcon(android.R.drawable.ic_dialog_alert)
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        finish();
+//                        overridePendingTransition(com.google.android.material.R.anim.abc_fade_in, com.google.android.material.R.anim.abc_fade_out);
+//                    }
+//                })
+//                .setNegativeButton("Later", null).show();
+//    }
 
 
