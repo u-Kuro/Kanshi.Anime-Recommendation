@@ -1329,7 +1329,7 @@
                         const savedUserList = await retrieveJSON("savedUserList")
                         const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                         const savedRecScheme = await retrieveJSON("savedRecScheme")
-                        const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
+                        const savedLatestAnimeID = await retrieveJSON("savedLatestAnimeID")
                         const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
                         const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
                         const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
@@ -1341,7 +1341,7 @@
                             savedHiddenAnimeTitles: savedHiddenAnimeTitles,
                             savedRecScheme: savedRecScheme,
                             savedAnimeEntries: savedAnimeEntries,
-                            savedLatestAnimeTitle: savedLatestAnimeTitle,
+                            savedLatestAnimeID: savedLatestAnimeID,
                             savedUserList: savedUserList,
                             savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                             savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
@@ -1383,7 +1383,7 @@
                             const savedUserList = await retrieveJSON("savedUserList")
                             const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                             const savedRecScheme = await retrieveJSON("savedRecScheme")
-                            const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
+                            const savedLatestAnimeID = await retrieveJSON("savedLatestAnimeID")
                             const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
                             const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
                             const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
@@ -1395,7 +1395,7 @@
                                 savedHiddenAnimeTitles: savedHiddenAnimeTitles,
                                 savedRecScheme: savedRecScheme,
                                 savedAnimeEntries: savedAnimeEntries,
-                                savedLatestAnimeTitle: savedLatestAnimeTitle,
+                                savedLatestAnimeID: savedLatestAnimeID,
                                 savedUserList: savedUserList,
                                 savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                                 savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
@@ -1865,8 +1865,8 @@
                                 savedAnimeEntries = await fileContent.savedAnimeEntries || []
                                 await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                             }).then(async()=>{
-                                savedLatestAnimeTitle = await fileContent.savedLatestAnimeTitle || ""
-                                await saveJSON(savedLatestAnimeTitle,"savedLatestAnimeTitle")
+                                savedLatestAnimeID = await fileContent.savedLatestAnimeID || ""
+                                await saveJSON(savedLatestAnimeID,"savedLatestAnimeID")
                             }).then(async()=>{
                                 savedUserList = await fileContent.savedUserList || {}
                                 await saveJSON(savedUserList,"savedUserList")
@@ -2019,8 +2019,8 @@
                         savedAnimeEntries = await fileContent.savedAnimeEntries || []
                         await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                     }).then(async()=>{
-                        savedLatestAnimeTitle = await fileContent.savedLatestAnimeTitle || ""
-                        await saveJSON(savedLatestAnimeTitle,"savedLatestAnimeTitle")
+                        savedLatestAnimeID = await fileContent.savedLatestAnimeID || ""
+                        await saveJSON(savedLatestAnimeID,"savedLatestAnimeID")
                     }).then(async()=>{
                         savedUserList = await fileContent.savedUserList || {}
                         await saveJSON(savedUserList,"savedUserList")
@@ -2148,7 +2148,7 @@
                     const savedUserList = await retrieveJSON("savedUserList")
                     const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                     const savedRecScheme = await retrieveJSON("savedRecScheme")
-                    const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
+                    const savedLatestAnimeID = await retrieveJSON("savedLatestAnimeID")
                     const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
                     const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
                     const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
@@ -2160,7 +2160,7 @@
                         savedHiddenAnimeTitles: savedHiddenAnimeTitles,
                         savedRecScheme: savedRecScheme,
                         savedAnimeEntries: savedAnimeEntries,
-                        savedLatestAnimeTitle: savedLatestAnimeTitle,
+                        savedLatestAnimeID: savedLatestAnimeID,
                         savedUserList: savedUserList,
                         savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                         savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
@@ -2315,7 +2315,7 @@
                             const savedUserList = await retrieveJSON("savedUserList")
                             const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                             const savedRecScheme = await retrieveJSON("savedRecScheme")
-                            const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
+                            const savedLatestAnimeID = await retrieveJSON("savedLatestAnimeID")
                             const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
                             const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
                             const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
@@ -2327,7 +2327,7 @@
                                 savedHiddenAnimeTitles: savedHiddenAnimeTitles,
                                 savedRecScheme: savedRecScheme,
                                 savedAnimeEntries: savedAnimeEntries,
-                                savedLatestAnimeTitle: savedLatestAnimeTitle,
+                                savedLatestAnimeID: savedLatestAnimeID,
                                 savedUserList: savedUserList,
                                 savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                                 savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
@@ -2370,7 +2370,7 @@
                             const savedUserList = await retrieveJSON("savedUserList")
                             const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                             const savedRecScheme = await retrieveJSON("savedRecScheme")
-                            const savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle")
+                            const savedLatestAnimeID = await retrieveJSON("savedLatestAnimeID")
                             const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
                             const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
                             const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
@@ -2382,7 +2382,7 @@
                                 savedHiddenAnimeTitles: savedHiddenAnimeTitles,
                                 savedRecScheme: savedRecScheme,
                                 savedAnimeEntries: savedAnimeEntries,
-                                savedLatestAnimeTitle: savedLatestAnimeTitle,
+                                savedLatestAnimeID: savedLatestAnimeID,
                                 savedUserList: savedUserList,
                                 savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                                 savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
@@ -2651,6 +2651,7 @@
                         status
                         entries {
                             media {
+                                id
                                 title {
                                     userPreferred
                                 }
@@ -2945,7 +2946,7 @@
     }
 
     async function updateAllAnimeList(username, varImportance, userListStatus, alteredVariables){
-        var savedLatestAnimeTitle = await retrieveJSON("savedLatestAnimeTitle") || ""
+        var savedLatestAnimeID = await retrieveJSON("savedLatestAnimeID") || ""
         var lastAnilistPage = await retrieveJSON("lastAnilistPage") || 284
         $.ajax({
             type: 'POST',
@@ -2959,9 +2960,7 @@
                 query: `
                 {
                     Media(type: ANIME, startDate_greater:20000000, sort:[START_DATE_DESC], status:RELEASING) {
-                        title {
-                            userPreferred
-                        }
+                        id
                     }
                 }
                 `
@@ -2969,8 +2968,8 @@
             beforeSend: ()=>{
                 // Reset Anime-List
                 if(isDeepUpdate){
-                    savedLatestAnimeTitle = ""
-                    saveJSON(savedLatestAnimeTitle,"savedLatestAnimeTitle")
+                    savedLatestAnimeID = ""
+                    saveJSON(savedLatestAnimeID,"savedLatestAnimeID")
                 }
                 for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
                 $("#dataStatus")
@@ -2978,15 +2977,14 @@
                     .append(`Checking for Anilist Updates...`)
             },
             success: (xresult)=>{
-                var latestAnime = xresult.data.Media.title.userPreferred
-                if(latestAnime!==savedLatestAnimeTitle){
+                var latestAnimeID = xresult.data.Media.id
+                if(latestAnimeID!==savedLatestAnimeID){
                     var maxAnimePerPage = 50
                     var maxRequest = 90
                     var startDate = new Date(Date.now() + 1000) // Allowance of 1sec
                     var animeEntries = []
                     var sum = 0
                     async function recall(page){
-                        console.log(page)
                         $.ajax({
                             type: 'POST',
                             url: 'https://graphql.anilist.co',
@@ -3004,6 +3002,7 @@
                                             genre_not_in: ["Hentai"],
                                             status_in:[FINISHED, RELEASING],
                                             format_in:[TV,TV_SHORT,MOVIE,OVA,ONA,SPECIAL]) {
+                                            id
                                             title {
                                                 userPreferred
                                             }
@@ -3061,7 +3060,7 @@
                                     animeEntries = animeEntries.concat(tempAnimeEntries)
                                     return recall(++page)
                                 } else {
-                                    saveJSON(latestAnime,"savedLatestAnimeTitle")
+                                    saveJSON(latestAnimeID,"savedLatestAnimeID")
                                     saveJSON(animeEntries,"savedAnimeEntries")
                                     saveJSON(page, "lastAnilistPage")
                                     analyzeAnime(animeEntries, varImportance, userListStatus, alteredVariables, username)

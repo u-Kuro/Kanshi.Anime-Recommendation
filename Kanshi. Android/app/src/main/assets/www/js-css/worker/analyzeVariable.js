@@ -28,7 +28,7 @@ self.onmessage = (message) => {
     for(let i=0; i<animeList.length; i++){
         for(let j=0; j<animeList[i].entries.length; j++){ 
             userListStatus.push({
-                title: animeList[i].entries[j].media.title.userPreferred,
+                id: animeList[i].entries[j].media.id,
                 status: animeList[i].status
             })
         }
@@ -54,25 +54,25 @@ self.onmessage = (message) => {
     var studiosMeanCount = {}
     var staffMeanCount = {}
     // For checking any deleted Anime
-    var savedUserListTitles = Object.keys(savedUserList)
+    var savedUserListIDs = Object.keys(savedUserList)
     // Analyze each Anime Variable
     for(let i=0; i<animeEntries.length; i++){
         // Check Any Changes in User List
         var isNewAnime = false
         var anime = animeEntries[i].media
-        var title = anime.title.userPreferred
+        var anilistId = anime.id
         var editedEntry = JSON.parse(JSON.stringify(animeEntries[i]))
         delete editedEntry.media.duration
         delete editedEntry.media.trending
         delete editedEntry.media.popularity
         delete editedEntry.media.favourites
         var newAnimeObjStr = JSON.stringify(editedEntry)
-        if(savedUserList[title]===undefined){
+        if(savedUserList[anilistId]===undefined){
             isNewAnime = true
-            savedUserList[title] = newAnimeObjStr
+            savedUserList[anilistId] = newAnimeObjStr
         } else {
             // Filter Anime not in the savedUserList, if one is deleted in Anilist
-            savedUserListTitles = savedUserListTitles.filter((savedTitle)=>{return savedTitle!==title})
+            savedUserListIDs = savedUserListIDs.filter((savedID)=>{return savedID!==anilistId})
         }
         if(animeEntries[i].score>0){
             var userScore = animeEntries[i].score
@@ -98,8 +98,8 @@ self.onmessage = (message) => {
                         formatMeanCount["Format: "+anime.format] += 1
                     }
                 }
-                if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.format!==null){
-                    savedUserList[title] = newAnimeObjStr
+                if((savedUserList[anilistId]!==newAnimeObjStr||isNewAnime)&&anime.format!==null){
+                    savedUserList[anilistId] = newAnimeObjStr
                     if(alteredVariables.format_in["Format: "+anime.format]===undefined){
                         alteredVariables.format_in["Format: "+anime.format] = 1
                     }
@@ -117,8 +117,8 @@ self.onmessage = (message) => {
                         yearMeanCount["Year: "+anime.seasonYear] += 1
                     }
                 }
-                if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.seasonYear!==null){
-                    savedUserList[title] = newAnimeObjStr
+                if((savedUserList[anilistId]!==newAnimeObjStr||isNewAnime)&&anime.seasonYear!==null){
+                    savedUserList[anilistId] = newAnimeObjStr
                     if(alteredVariables.year_in["Year: "+anime.seasonYear]===undefined){
                         alteredVariables.year_in["Year: "+anime.seasonYear]=1
                     }
@@ -136,8 +136,8 @@ self.onmessage = (message) => {
                         seasonMeanCount["Season: "+anime.season] += 1
                     }
                 }
-                if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.season!==null){
-                    savedUserList[title] = newAnimeObjStr
+                if((savedUserList[anilistId]!==newAnimeObjStr||isNewAnime)&&anime.season!==null){
+                    savedUserList[anilistId] = newAnimeObjStr
                     if(alteredVariables.season_in["Season: "+anime.season]===undefined){
                         alteredVariables.season_in["Season: "+anime.season] = 1
                     }
@@ -156,8 +156,8 @@ self.onmessage = (message) => {
                             genresMeanCount["Genre: "+anime.genres[j]] += 1
                         }
                     }
-                    if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.genres[j]!==null){
-                        savedUserList[title] = newAnimeObjStr
+                    if((savedUserList[anilistId]!==newAnimeObjStr||isNewAnime)&&anime.genres[j]!==null){
+                        savedUserList[anilistId] = newAnimeObjStr
                         if(alteredVariables.genres_in["Genre: "+anime.genres[j]]===undefined){
                             alteredVariables.genres_in["Genre: "+anime.genres[j]] = 1
                         }
@@ -177,8 +177,8 @@ self.onmessage = (message) => {
                             tagsMeanCount["Tag: "+anime.tags[j].name] += 1
                         }
                     }
-                    if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.tags[j].name!==null){
-                        savedUserList[title] = newAnimeObjStr
+                    if((savedUserList[anilistId]!==newAnimeObjStr||isNewAnime)&&anime.tags[j].name!==null){
+                        savedUserList[anilistId] = newAnimeObjStr
                         if(alteredVariables.tags_in["Tag: "+anime.tags[j].name]===undefined){
                             alteredVariables.tags_in["Tag: "+anime.tags[j].name] = 1
                         }
@@ -202,8 +202,8 @@ self.onmessage = (message) => {
                             studiosMeanCount["Studio: "+anime.studios.nodes[j].name] += 1
                         }
                     }
-                    if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.studios.nodes[j].name!==null){
-                        savedUserList[title] = newAnimeObjStr
+                    if((savedUserList[anilistId]!==newAnimeObjStr||isNewAnime)&&anime.studios.nodes[j].name!==null){
+                        savedUserList[anilistId] = newAnimeObjStr
                         if(alteredVariables.studios_in["Studio: "+anime.studios.nodes[j].name]===undefined){
                             alteredVariables.studios_in["Studio: "+anime.studios.nodes[j].name] = 1
                         }
@@ -227,8 +227,8 @@ self.onmessage = (message) => {
                             staffMeanCount["Staff: "+anime.staff.edges[j].node.name.userPreferred] += 1
                         }
                     }
-                    if((savedUserList[title]!==newAnimeObjStr||isNewAnime)&&anime.staff.edges[j].node.name.userPreferred!==null){
-                        savedUserList[title] = newAnimeObjStr
+                    if((savedUserList[anilistId]!==newAnimeObjStr||isNewAnime)&&anime.staff.edges[j].node.name.userPreferred!==null){
+                        savedUserList[anilistId] = newAnimeObjStr
                         if(alteredVariables.staff_in["Staff: "+anime.staff.edges[j].node.name.userPreferred]===undefined){
                             alteredVariables.staff_in["Staff: "+anime.staff.edges[j].node.name.userPreferred] = 1
                         }
@@ -240,8 +240,8 @@ self.onmessage = (message) => {
             } else {
                 var xformat = anime.format===null? null : "Format: "+anime.format
                 if(xformat!==null){
-                    if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
-                        savedUserList[title] = newAnimeObjStr
+                    if(savedUserList[anilistId]!==newAnimeObjStr||isNewAnime){
+                        savedUserList[anilistId] = newAnimeObjStr
                         if(alteredVariables.format_in[xformat]===undefined){
                             alteredVariables.format_in[xformat] = 1
                         }
@@ -261,8 +261,8 @@ self.onmessage = (message) => {
                 }
                 var xyear = anime.seasonYear===null? null : "Year: "+anime.seasonYear.toString()
                 if(xyear!==null){
-                    if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
-                        savedUserList[title] = newAnimeObjStr
+                    if(savedUserList[anilistId]!==newAnimeObjStr||isNewAnime){
+                        savedUserList[anilistId] = newAnimeObjStr
                         if(alteredVariables.year_in[xyear]===undefined){
                             alteredVariables.year_in[xyear] = 1
                         }
@@ -282,8 +282,8 @@ self.onmessage = (message) => {
                 }
                 var xseason = anime.season===null? null : "Season: "+anime.season
                 if(xseason!==null){
-                    if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
-                        savedUserList[title] = newAnimeObjStr
+                    if(savedUserList[anilistId]!==newAnimeObjStr||isNewAnime){
+                        savedUserList[anilistId] = newAnimeObjStr
                         if(alteredVariables.season_in[xseason]===undefined){
                             alteredVariables.season_in[xseason] = 1
                         }
@@ -304,8 +304,8 @@ self.onmessage = (message) => {
                 for(let j=0; j<anime.genres.length; j++){
                     var xgenres = anime.genres[j]===null? null : "Genre: "+anime.genres[j]
                     if(xgenres!==null){
-                        if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
-                            savedUserList[title] = newAnimeObjStr
+                        if(savedUserList[anilistId]!==newAnimeObjStr||isNewAnime){
+                            savedUserList[anilistId] = newAnimeObjStr
                             if(alteredVariables.genres_in[xgenres]===undefined){
                                 alteredVariables.genres_in[xgenres] = 1
                             }
@@ -336,8 +336,8 @@ self.onmessage = (message) => {
                     if(xTagRank===null) continue
                     var xtags = anime.tags[j].name===null? null : "Tag: "+anime.tags[j].name
                     if(xtags!==null&&xTagRank>=tagRankMean){
-                        if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
-                            savedUserList[title] = newAnimeObjStr
+                        if(savedUserList[anilistId]!==newAnimeObjStr||isNewAnime){
+                            savedUserList[anilistId] = newAnimeObjStr
                             if(alteredVariables.tags_in[xtags]===undefined){
                                 alteredVariables.tags_in[xtags] = 1
                             }
@@ -363,8 +363,8 @@ self.onmessage = (message) => {
                     else includedStudio[anime.studios.nodes[j].name] = null
                     var xstudios = anime.studios.nodes[j].name===null? null : "Studio: "+anime.studios.nodes[j].name
                     if(xstudios!==null){
-                        if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
-                            savedUserList[title] = newAnimeObjStr
+                        if(savedUserList[anilistId]!==newAnimeObjStr||isNewAnime){
+                            savedUserList[anilistId] = newAnimeObjStr
                             if(alteredVariables.studios_in[xstudios]===undefined){
                                 alteredVariables.studios_in[xstudios] = 1
                             }
@@ -389,8 +389,8 @@ self.onmessage = (message) => {
                     else includedStaff[anime.staff.edges[j].node.name.userPreferred] = null
                     var xstaff = anime.staff.edges[j].node.name.userPreferred===null?null: "Staff: "+anime.staff.edges[j].node.name.userPreferred
                     if(xstaff!==null){
-                        if(savedUserList[title]!==newAnimeObjStr||isNewAnime){
-                            savedUserList[title] = newAnimeObjStr
+                        if(savedUserList[anilistId]!==newAnimeObjStr||isNewAnime){
+                            savedUserList[anilistId] = newAnimeObjStr
                             if(alteredVariables.staff_in[xstaff]===undefined){
                                 alteredVariables.staff_in[xstaff] = 1
                             }
@@ -450,8 +450,8 @@ self.onmessage = (message) => {
         }
     }
     // Check and Remove if User Deleted an Anime, and add its variables as altered
-    for(let i=0;i<savedUserListTitles.length;i++){
-        var entry = JSON.parse(savedUserList[savedUserListTitles[i]])
+    for(let i=0;i<savedUserListIDs.length;i++){
+        var entry = JSON.parse(savedUserList[savedUserListIDs[i]])
         var anime = entry.media
         if(alteredVariables.format_in["Format: "+anime.format]===undefined){
             alteredVariables.format_in["Format: "+anime.format] = 1
@@ -484,7 +484,7 @@ self.onmessage = (message) => {
             }
         }
         // Lastly delete the anime in the savedUserList
-        delete savedUserList[savedUserListTitles[i]]
+        delete savedUserList[savedUserListIDs[i]]
     }
     // Clean Data JSON
     const minSampleSize = 10

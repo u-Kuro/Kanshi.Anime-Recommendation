@@ -33,6 +33,7 @@ self.onmessage = (message) => {
             var anime = animeEntries[i]
             /////
             var title = anime.title.userPreferred || "Title: N/A"
+            var anilistId = anime.id
             var animeUrl = anime.siteUrl
             // var type = anime.type || "N/A"
             var format = anime.format || "Format: N/A"
@@ -132,7 +133,7 @@ self.onmessage = (message) => {
             if(!animeShallUpdate) continue
             // Check Status
             for(let k=0; k<userListStatus.length; k++){
-                if(userListStatus[k].title===title){
+                if(userListStatus[k].id===anilistId){
                     userStatus = userListStatus[k].status
                     if(allFilterInfo[userStatus.toLowerCase()]===undefined){
                         allFilterInfo[userStatus.toLowerCase()] = 0
@@ -146,35 +147,35 @@ self.onmessage = (message) => {
             if(savedAnalyzedVariablesCount.all===undefined){
                 savedAnalyzedVariablesCount.all = {}    
             }
-            savedAnalyzedVariablesCount.all[title] = 0
+            savedAnalyzedVariablesCount.all[anilistId] = 0
             if(savedAnalyzedVariablesCount.format===undefined){
                 savedAnalyzedVariablesCount.format = {}    
             }
-            savedAnalyzedVariablesCount.format[title] = 0
+            savedAnalyzedVariablesCount.format[anilistId] = 0
             if(savedAnalyzedVariablesCount.season===undefined){
                 savedAnalyzedVariablesCount.season = {}    
             }
-            savedAnalyzedVariablesCount.season[title] = 0
+            savedAnalyzedVariablesCount.season[anilistId] = 0
             if(savedAnalyzedVariablesCount.year===undefined){
                 savedAnalyzedVariablesCount.year = {}    
             }
-            savedAnalyzedVariablesCount.year[title] = 0
+            savedAnalyzedVariablesCount.year[anilistId] = 0
             if(savedAnalyzedVariablesCount.genres===undefined){
                 savedAnalyzedVariablesCount.genres = {}    
             }
-            savedAnalyzedVariablesCount.genres[title] = 0
+            savedAnalyzedVariablesCount.genres[anilistId] = 0
             if(savedAnalyzedVariablesCount.tags===undefined){
                 savedAnalyzedVariablesCount.tags = {}    
             }
-            savedAnalyzedVariablesCount.tags[title] = 0
+            savedAnalyzedVariablesCount.tags[anilistId] = 0
             if(savedAnalyzedVariablesCount.studios===undefined){
                 savedAnalyzedVariablesCount.studios = {}    
             }
-            savedAnalyzedVariablesCount.studios[title] = 0
+            savedAnalyzedVariablesCount.studios[anilistId] = 0
             if(savedAnalyzedVariablesCount.staff===undefined){
                 savedAnalyzedVariablesCount.staff = {}    
             }
-            savedAnalyzedVariablesCount.staff[title] = 0
+            savedAnalyzedVariablesCount.staff[anilistId] = 0
             var analyzedVariableCount = {
                 all: 0,
                 format: 0,
@@ -202,8 +203,8 @@ self.onmessage = (message) => {
             // } else {
             //     zformatMin.push(varImportance.meanFormat-minNumber)
             // }
-            savedAnalyzedVariablesCount.format[title] += 1
-            savedAnalyzedVariablesCount.all[title] += 1
+            savedAnalyzedVariablesCount.format[anilistId] += 1
+            savedAnalyzedVariablesCount.all[anilistId] += 1
             analyzedVariableCount.all += 1
             analyzedVariableCount.format += 1
 
@@ -214,8 +215,8 @@ self.onmessage = (message) => {
             } else {
                 zyearMin.push(varImportance.meanYear-minNumber)
             }
-            savedAnalyzedVariablesCount.year[title] += 1
-            savedAnalyzedVariablesCount.all[title] += 1
+            savedAnalyzedVariablesCount.year[anilistId] += 1
+            savedAnalyzedVariablesCount.all[anilistId] += 1
             analyzedVariableCount.all += 1
             analyzedVariableCount.year += 1
 
@@ -231,8 +232,8 @@ self.onmessage = (message) => {
             } else {
                 zseasonMin.push(varImportance.meanSeason-minNumber)
             }
-            savedAnalyzedVariablesCount.season[title] += 1
-            savedAnalyzedVariablesCount.all[title] += 1
+            savedAnalyzedVariablesCount.season[anilistId] += 1
+            savedAnalyzedVariablesCount.all[anilistId] += 1
             analyzedVariableCount.all += 1
             analyzedVariableCount.season += 1
 
@@ -244,8 +245,8 @@ self.onmessage = (message) => {
             // var zgenres = []
             var zgenresMin = []
             for(let j=0; j<xgenres.length; j++){
-                savedAnalyzedVariablesCount.genres[title] += 1
-                savedAnalyzedVariablesCount.all[title] += 1
+                savedAnalyzedVariablesCount.genres[anilistId] += 1
+                savedAnalyzedVariablesCount.all[anilistId] += 1
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.genres += 1
 
@@ -275,8 +276,8 @@ self.onmessage = (message) => {
             // var ztags = []
             var ztagsMin = []
             for(let j=0; j<xtags.length; j++){
-                savedAnalyzedVariablesCount.tags[title] += 1
-                savedAnalyzedVariablesCount.all[title] += 1
+                savedAnalyzedVariablesCount.tags[anilistId] += 1
+                savedAnalyzedVariablesCount.all[anilistId] += 1
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.tags += 1
                 if(varImportance[xtags[j].name+"Min"]!==undefined && xtags[j].rank>=tagRankMean){
@@ -301,8 +302,8 @@ self.onmessage = (message) => {
             for(let j=0; j<xstudios.length; j++){
                 if(includedStudio[xstudios[j].name]!==undefined) continue
                 else includedStudio[xstudios[j].name] = null
-                savedAnalyzedVariablesCount.studios[title] += 1
-                savedAnalyzedVariablesCount.all[title] += 1
+                savedAnalyzedVariablesCount.studios[anilistId] += 1
+                savedAnalyzedVariablesCount.all[anilistId] += 1
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.studios += 1
                 if(varImportance[xstudios[j].name+"Min"]!==undefined){
@@ -327,8 +328,8 @@ self.onmessage = (message) => {
             for(let j=0; j<xstaff.length; j++){
                 if(includedStaff[xstaff[j].staff+xstaff[j].role]!==undefined) continue
                 else includedStaff[xstaff[j].staff+xstaff[j].role] = null
-                savedAnalyzedVariablesCount.staff[title] += 1
-                savedAnalyzedVariablesCount.all[title] += 1
+                savedAnalyzedVariablesCount.staff[anilistId] += 1
+                savedAnalyzedVariablesCount.all[anilistId] += 1
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.staff += 1
                 if(varImportance[xstaff[j].staff+"Min"]!==undefined){
@@ -370,8 +371,8 @@ self.onmessage = (message) => {
             //     if(includedStaff[xstaff[j].staff]!==undefined) continue
             //     else includedStaff[xstaff[j].staff] = null
             //     if(varImportance[xstaff[j].staff+"Min"]!==undefined){
-            //         savedAnalyzedVariablesCount.staff[title] += 1
-            //         savedAnalyzedVariablesCount.all[title] += 1
+            //         savedAnalyzedVariablesCount.staff[anilistId] += 1
+            //         savedAnalyzedVariablesCount.all[anilistId] += 1
             //         analyzedVariableCount.all += 1
             //         analyzedVariableCount.staff += 1
             //         zstaffMin.push(varImportance[xstaff[j].staff+"Min"])
@@ -563,7 +564,7 @@ self.onmessage = (message) => {
             }
             const limitShown = 10
             variablesIncluded = tempVariablesIncluded.length>0?tempVariablesIncluded.slice(0,limitShown) : []
-            savedRecScheme[title] = {
+            savedRecScheme[anilistId] = {
                 title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
                 userStatus: userStatus, status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, staff: staff,
@@ -610,6 +611,7 @@ self.onmessage = (message) => {
             var anime = animeEntries[i]
             /////
             var title = anime.title.userPreferred
+            var anilistId = anime.id
             var animeUrl = anime.siteUrl
             // var type = anime.type
             var format = anime.format
@@ -665,35 +667,35 @@ self.onmessage = (message) => {
             if(savedAnalyzedVariablesCount.all===undefined){
                 savedAnalyzedVariablesCount.all = {}    
             }
-            savedAnalyzedVariablesCount.all[title] = 0
+            savedAnalyzedVariablesCount.all[anilistId] = 0
             if(savedAnalyzedVariablesCount.format===undefined){
                 savedAnalyzedVariablesCount.format = {}    
             }
-            savedAnalyzedVariablesCount.format[title] = 0
+            savedAnalyzedVariablesCount.format[anilistId] = 0
             if(savedAnalyzedVariablesCount.season===undefined){
                 savedAnalyzedVariablesCount.season = {}    
             }
-            savedAnalyzedVariablesCount.season[title] = 0
+            savedAnalyzedVariablesCount.season[anilistId] = 0
             if(savedAnalyzedVariablesCount.year===undefined){
                 savedAnalyzedVariablesCount.year = {}    
             }
-            savedAnalyzedVariablesCount.year[title] = 0
+            savedAnalyzedVariablesCount.year[anilistId] = 0
             if(savedAnalyzedVariablesCount.genres===undefined){
                 savedAnalyzedVariablesCount.genres = {}    
             }
-            savedAnalyzedVariablesCount.genres[title] = 0
+            savedAnalyzedVariablesCount.genres[anilistId] = 0
             if(savedAnalyzedVariablesCount.tags===undefined){
                 savedAnalyzedVariablesCount.tags = {}    
             }
-            savedAnalyzedVariablesCount.tags[title] = 0
+            savedAnalyzedVariablesCount.tags[anilistId] = 0
             if(savedAnalyzedVariablesCount.studios===undefined){
                 savedAnalyzedVariablesCount.studios = {}    
             }
-            savedAnalyzedVariablesCount.studios[title] = 0
+            savedAnalyzedVariablesCount.studios[anilistId] = 0
             if(savedAnalyzedVariablesCount.staff===undefined){
                 savedAnalyzedVariablesCount.staff = {}    
             }
-            savedAnalyzedVariablesCount.staff[title] = 0
+            savedAnalyzedVariablesCount.staff[anilistId] = 0
             var analyzedVariableCount = {
                 all: 0,
                 format: 0,
@@ -704,32 +706,32 @@ self.onmessage = (message) => {
                 studios: 0,
                 staff: 0
             }
-            savedAnalyzedVariablesCount.format[title] += 1
-            savedAnalyzedVariablesCount.all[title] += 1
+            savedAnalyzedVariablesCount.format[anilistId] += 1
+            savedAnalyzedVariablesCount.all[anilistId] += 1
             analyzedVariableCount.all += 1
             analyzedVariableCount.format += 1
-            savedAnalyzedVariablesCount.year[title] += 1
-            savedAnalyzedVariablesCount.all[title] += 1
+            savedAnalyzedVariablesCount.year[anilistId] += 1
+            savedAnalyzedVariablesCount.all[anilistId] += 1
             analyzedVariableCount.all += 1
             analyzedVariableCount.year += 1
-            savedAnalyzedVariablesCount.season[title] += 1
-            savedAnalyzedVariablesCount.all[title] += 1
+            savedAnalyzedVariablesCount.season[anilistId] += 1
+            savedAnalyzedVariablesCount.all[anilistId] += 1
             analyzedVariableCount.all += 1
             analyzedVariableCount.season += 1
-            savedAnalyzedVariablesCount.genres[title] += genres.length
-            savedAnalyzedVariablesCount.all[title] += genres.length
+            savedAnalyzedVariablesCount.genres[anilistId] += genres.length
+            savedAnalyzedVariablesCount.all[anilistId] += genres.length
             analyzedVariableCount.all += genres.length
             analyzedVariableCount.genres += genres.length
-            savedAnalyzedVariablesCount.tags[title] += tags.length
-            savedAnalyzedVariablesCount.all[title] += tags.length
+            savedAnalyzedVariablesCount.tags[anilistId] += tags.length
+            savedAnalyzedVariablesCount.all[anilistId] += tags.length
             analyzedVariableCount.all += tags.length
             analyzedVariableCount.tags += tags.length
-            savedAnalyzedVariablesCount.studios[title] += studios.length
-            savedAnalyzedVariablesCount.all[title] += studios.length
+            savedAnalyzedVariablesCount.studios[anilistId] += studios.length
+            savedAnalyzedVariablesCount.all[anilistId] += studios.length
             analyzedVariableCount.all += studios.length
             analyzedVariableCount.studios += studios.length
-            savedAnalyzedVariablesCount.staff[title] += staff.length
-            savedAnalyzedVariablesCount.all[title] += staff.length
+            savedAnalyzedVariablesCount.staff[anilistId] += staff.length
+            savedAnalyzedVariablesCount.all[anilistId] += staff.length
             analyzedVariableCount.all += staff.length
             analyzedVariableCount.staff += staff.length
             var score = weightedScore = 0
@@ -760,7 +762,7 @@ self.onmessage = (message) => {
             }
             staff = staff.length>0? xxstaff : {}
             variablesIncluded = []
-            savedRecScheme[title] = {
+            savedRecScheme[anilistId] = {
                 title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
                 userStatus: userStatus, status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, staff: staff,
