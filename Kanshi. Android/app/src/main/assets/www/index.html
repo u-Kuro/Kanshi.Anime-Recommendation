@@ -3017,15 +3017,14 @@
                     var startDate = new Date(Date.now() + 1000) // Allowance of 1sec
                     var animeEntries = []
                     var sum = 0
-                    var recalls = []
-                    recall(1) // First Page
                     async function recall(page){
+                        console.log(page)
                         $.ajax({
                             type: 'POST',
                             url: 'https://graphql.anilist.co',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'Accept': 'application/json',
+                                'Accept': 'application/json'
                             },
                             dataType: 'json',
                             data: JSON.stringify({
@@ -3092,7 +3091,7 @@
                                 var tempAnimeEntries = result.data.Page.media
                                 if(tempAnimeEntries.length>0){
                                     animeEntries = animeEntries.concat(tempAnimeEntries)
-                                    recall(++page)
+                                    return recall(++page)
                                 } else {
                                     saveJSON(latestAnime,"savedLatestAnimeTitle")
                                     saveJSON(animeEntries,"savedAnimeEntries")
@@ -3108,57 +3107,18 @@
                                         err = JSON.parse(xhr.responseText).errors[0].message
                                         console.error(JSON.parse(xhr.responseText))
                                     }
-                                    if(err==="Too Many Requests."){
-                                        var timeBeforeNextRequest = timeInterval-((new Date).getTime()-startDate.getTime())
-                                        for(let i=0;i<recalls.length;i++) clearTimeout(recalls[i])
-                                        let recall = setTimeout(()=>{
-                                            recall(page)
-                                        },timeBeforeNextRequest)
-                                        recalls.push(recall)
-                                        var timeBeforeNextRequestSeconds = Math.ceil(timeBeforeNextRequest/1000)
-                                        for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
-                                        for(let i=timeBeforeNextRequestSeconds; i>0; i--){
-                                            var timeout = setTimeout(()=>{
-                                                $("#dataStatus")
+                                    for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
+                                    for(let i=60; i>0; i--){
+                                        var timeout = setTimeout(()=>{
+                                            $("#dataStatus")
                                                     .empty()
                                                     .append(`Limit Request, Continuing in ${msToTime(i*1000)}...  Page ${page} of ${lastAnilistPage>=page?lastAnilistPage:page}`)
-                                            },(timeBeforeNextRequestSeconds-i)*1000)
-                                            temp.push(timeout)
-                                        }
-                                    } else {
-                                        if(err==="User not found"){
-                                            $("#username")[0].setCustomValidity("Username is not found!")
-                                            $("#username")[0].reportValidity()
-                                        } else {
-                                            console.error("Error 102")
-                                            Swal.fire({
-                                                heightAuto: false,
-                                                text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
-                                                icon: "error",
-                                                confirmButtonColor: "#000"
-                                            }).then(async()=>{
-                                                savedRecScheme = await retrieveJSON("savedRecScheme") || {}
-                                                await LoadData(savedRecScheme)
-                                            })
-                                        }
-                                        $("#dataStatusContainer").fadeOut(2500)
-                                        $("#dataStatusSpinner").show()
-                                        $("#dataStatus").empty()
-                                        console.log("WebtoApp: Update Error")
-                                        if(Object.keys(savedRecScheme).length===0){
-                                            $("#animeRecommendationList").empty()
-                                            $("#animeRecommendationList").append(`
-                                                <tr class="item" role="row">
-                                                    <td style="padding: 1.5em !important;" colspan="14">
-                                                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                                                        No Data
-                                                    </td>
-                                                </tr>
-                                            `)
-                                        }
-                                        for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
-                                        requestIsRunning = false
+                                        },(60-i)*1000)
+                                        temp.push(timeout)
                                     }
+                                    setTimeout(()=>{
+                                        return recall(page)
+                                    },60000)
                                 } catch(ex) {
                                     console.error(ex)
                                     console.error("Error 103")
@@ -3168,8 +3128,8 @@
                                         icon: "error",
                                         confirmButtonColor: "#000"
                                     }).then(async()=>{
-                                        savedRecScheme = await retrieveJSON("savedRecScheme") || {}
-                                        await LoadData(savedRecScheme)
+                                        savedRecScheme = retrieveJSON("savedRecScheme") || {}
+                                        LoadData(savedRecScheme)
                                     })
                                     $("#dataStatusContainer").fadeOut(2500)
                                     $("#dataStatusSpinner").show()
@@ -3192,6 +3152,7 @@
                             }
                         })
                     }
+                    recall(1) // First Page
                 } else {
                     analyzeAnime([], varImportance, userListStatus, alteredVariables, username)
                 }
