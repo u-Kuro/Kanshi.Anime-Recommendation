@@ -5,7 +5,7 @@ self.onmessage = async(message) => {
     const savedHiddenAnimeTitles = data.savedHiddenAnimeTitles
     const savedRecScheme = data.savedRecScheme
     const savedAnimeEntries = data.savedAnimeEntries
-    const savedLatestAnimeTitle = data.savedLatestAnimeTitle
+    const savedLatestAnimeID = data.savedLatestAnimeID
     const savedUserList = data.savedUserList
     const savedAnalyzeVariableTime = data.savedAnalyzeVariableTime
     const savedUpdateAnalyzeAnimeTime = data.savedUpdateAnalyzeAnimeTime
@@ -18,7 +18,7 @@ self.onmessage = async(message) => {
         savedHiddenAnimeTitles: savedHiddenAnimeTitles,
         savedRecScheme: savedRecScheme,
         savedAnimeEntries: savedAnimeEntries,
-        savedLatestAnimeTitle: savedLatestAnimeTitle,
+        savedLatestAnimeID: savedLatestAnimeID,
         savedUserList: savedUserList,
         savedAnalyzeVariableTime: savedAnalyzeVariableTime,
         savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
