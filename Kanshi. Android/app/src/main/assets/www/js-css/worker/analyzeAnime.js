@@ -39,9 +39,9 @@ self.onmessage = (message) => {
             var format = anime.format || "Format: N/A"
             if(alteredVariables.format_in["Format: "+format]!==undefined||recSchemeIsNew) animeShallUpdate=true
             var year = anime.seasonYear || "Year: N/A"
-            if((alteredVariables.year_in["Year: "+year]!==undefined&&!animeShallUpdate)||recSchemeIsNew) animeShallUpdate=true
+            // if((alteredVariables.year_in["Year: "+year]!==undefined&&!animeShallUpdate)||recSchemeIsNew) animeShallUpdate=true
             var season = anime.season || "Season: N/A"
-            if((alteredVariables.season_in["Season: "+season]!==undefined&&!animeShallUpdate)||recSchemeIsNew) animeShallUpdate=true
+            // if((alteredVariables.season_in["Season: "+season]!==undefined&&!animeShallUpdate)||recSchemeIsNew) animeShallUpdate=true
             var genres = anime.genres
             var tags = anime.tags
             var studios = anime.studios.nodes.filter((studio)=>{return studio.isAnimationStudio})
@@ -74,8 +74,8 @@ self.onmessage = (message) => {
             }
             // Arrange
             var xformat = format!=="Format: N/A"?`Format: ${format}`:`${Math.random()}`
-            var xyear = year!=="Year: N/A"?"Year: "+year:`x${Math.random()}`
-            var xseason = season!=="Season: N/A"?"Season: "+season:`${Math.random()}`
+            // var xyear = year!=="Year: N/A"?"Year: "+year:`x${Math.random()}`
+            // var xseason = season!=="Season: N/A"?"Season: "+season:`${Math.random()}`
             var xgenres = []
             for(let j=0; j<genres.length; j++){
                 if((alteredVariables.genres_in["Genre: "+genres[j]]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
@@ -152,14 +152,14 @@ self.onmessage = (message) => {
                 savedAnalyzedVariablesCount.format = {}    
             }
             savedAnalyzedVariablesCount.format[anilistId] = 0
-            if(savedAnalyzedVariablesCount.season===undefined){
-                savedAnalyzedVariablesCount.season = {}    
-            }
-            savedAnalyzedVariablesCount.season[anilistId] = 0
-            if(savedAnalyzedVariablesCount.year===undefined){
-                savedAnalyzedVariablesCount.year = {}    
-            }
-            savedAnalyzedVariablesCount.year[anilistId] = 0
+            // if(savedAnalyzedVariablesCount.season===undefined){
+            //     savedAnalyzedVariablesCount.season = {}    
+            // }
+            // savedAnalyzedVariablesCount.season[anilistId] = 0
+            // if(savedAnalyzedVariablesCount.year===undefined){
+            //     savedAnalyzedVariablesCount.year = {}    
+            // }
+            // savedAnalyzedVariablesCount.year[anilistId] = 0
             if(savedAnalyzedVariablesCount.genres===undefined){
                 savedAnalyzedVariablesCount.genres = {}    
             }
@@ -179,8 +179,8 @@ self.onmessage = (message) => {
             var analyzedVariableCount = {
                 all: 0,
                 format: 0,
-                season: 0,
-                year: 0,
+                // season: 0,
+                // year: 0,
                 genres: 0,
                 tags: 0,
                 studios: 0,
@@ -193,8 +193,8 @@ self.onmessage = (message) => {
             // Analyze
             // var zformat = []
             var zformatMin = []
-            if(varImportance[xformat+"Min"]!==undefined) {
-                zformatMin.push(varImportance[xformat+"Min"])
+            if(varImportance[xformat]!==undefined) {
+                zformatMin.push(varImportance[xformat])
             } else {
                 zformatMin.push(varImportance.meanFormat-minNumber)
             }
@@ -209,16 +209,16 @@ self.onmessage = (message) => {
             analyzedVariableCount.format += 1
 
             // var zyear = []
-            var zyearMin = []
-            if(varImportance[xyear+"Min"]!==undefined) {
-                zyearMin.push(varImportance[xyear+"Min"])
-            } else {
-                zyearMin.push(varImportance.meanYear-minNumber)
-            }
-            savedAnalyzedVariablesCount.year[anilistId] += 1
-            savedAnalyzedVariablesCount.all[anilistId] += 1
-            analyzedVariableCount.all += 1
-            analyzedVariableCount.year += 1
+            // var zyearMin = []
+            // if(varImportance[xyear]!==undefined) {
+            //     zyearMin.push(varImportance[xyear])
+            // } else {
+            //     zyearMin.push(varImportance.meanYear-minNumber)
+            // }
+            // savedAnalyzedVariablesCount.year[anilistId] += 1
+            // savedAnalyzedVariablesCount.all[anilistId] += 1
+            // analyzedVariableCount.all += 1
+            // analyzedVariableCount.year += 1
 
             // if(varImportance[xyear]!==undefined) {
             //     zyear.push(varImportance[xyear])
@@ -226,16 +226,16 @@ self.onmessage = (message) => {
             //     zyearMin.push(varImportance.meanYear-minNumber)
             // }
             // var zseason = []
-            var zseasonMin = []
-            if(varImportance[xseason+"Min"]!==undefined) {
-                zseasonMin.push(varImportance[xseason+"Min"])
-            } else {
-                zseasonMin.push(varImportance.meanSeason-minNumber)
-            }
-            savedAnalyzedVariablesCount.season[anilistId] += 1
-            savedAnalyzedVariablesCount.all[anilistId] += 1
-            analyzedVariableCount.all += 1
-            analyzedVariableCount.season += 1
+            // var zseasonMin = []
+            // if(varImportance[xseason]!==undefined) {
+            //     zseasonMin.push(varImportance[xseason])
+            // } else {
+            //     zseasonMin.push(varImportance.meanSeason-minNumber)
+            // }
+            // savedAnalyzedVariablesCount.season[anilistId] += 1
+            // savedAnalyzedVariablesCount.all[anilistId] += 1
+            // analyzedVariableCount.all += 1
+            // analyzedVariableCount.season += 1
 
             // if(varImportance[xseason]!==undefined) {
             //     zseason.push(varImportance[xseason])
@@ -250,8 +250,8 @@ self.onmessage = (message) => {
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.genres += 1
 
-                if(varImportance[xgenres[j]+"Min"]!==undefined) {
-                    zgenresMin.push(varImportance[xgenres[j]+"Min"])
+                if(varImportance[xgenres[j]]!==undefined) {
+                    zgenresMin.push(varImportance[xgenres[j]])
                 } else {
                     zgenresMin.push(varImportance.meanGenres-minNumber)
                 }
@@ -280,8 +280,8 @@ self.onmessage = (message) => {
                 savedAnalyzedVariablesCount.all[anilistId] += 1
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.tags += 1
-                if(varImportance[xtags[j].name+"Min"]!==undefined && xtags[j].rank>=tagRankMean){
-                    ztagsMin.push(varImportance[xtags[j].name+"Min"])
+                if(varImportance[xtags[j].name]!==undefined && xtags[j].rank>=tagRankMean){
+                    ztagsMin.push(varImportance[xtags[j].name])
                 } else {
                     ztagsMin.push(varImportance.meanTags-minNumber)
                 }
@@ -306,8 +306,8 @@ self.onmessage = (message) => {
                 savedAnalyzedVariablesCount.all[anilistId] += 1
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.studios += 1
-                if(varImportance[xstudios[j].name+"Min"]!==undefined){
-                    zstudiosMin.push(varImportance[xstudios[j].name+"Min"])
+                if(varImportance[xstudios[j].name]!==undefined){
+                    zstudiosMin.push(varImportance[xstudios[j].name])
                 } else {
                     zstudiosMin.push(varImportance.meanStudios-minNumber)
                 }
@@ -332,17 +332,17 @@ self.onmessage = (message) => {
                 savedAnalyzedVariablesCount.all[anilistId] += 1
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.staff += 1
-                if(varImportance[xstaff[j].staff+"Min"]!==undefined){
-                    if(zstaffMin[xstaff[j].role+"Min"]===undefined){
-                        zstaffMin[xstaff[j].role+"Min"] = [varImportance[xstaff[j].staff+"Min"]]
+                if(varImportance[xstaff[j].staff]!==undefined){
+                    if(zstaffMin[xstaff[j].role]===undefined){
+                        zstaffMin[xstaff[j].role] = [varImportance[xstaff[j].staff]]
                     } else {
-                        zstaffMin[xstaff[j].role+"Min"].push(varImportance[xstaff[j].staff+"Min"])
+                        zstaffMin[xstaff[j].role].push(varImportance[xstaff[j].staff])
                     }
                 } else {
-                    if(zstaffMin[xstaff[j].role+"Min"]===undefined){
-                        zstaffMin[xstaff[j].role+"Min"] = [varImportance.meanStaff-minNumber]
+                    if(zstaffMin[xstaff[j].role]===undefined){
+                        zstaffMin[xstaff[j].role] = [varImportance.meanStaff-minNumber]
                     } else {
-                        zstaffMin[xstaff[j].role+"Min"].push(varImportance.meanStaff-minNumber)
+                        zstaffMin[xstaff[j].role].push(varImportance.meanStaff-minNumber)
                     }
                 }
                 if(varImportance[xstaff[j].staff]!==undefined) {
@@ -409,18 +409,23 @@ self.onmessage = (message) => {
                 // animeTypeOS.push(tempLRPredict)
                 animeTypeOSMin.push(tempLRPredict)
             }
+            if(isaN(anime.seasonYear)&&varImportance.yearModel!==undefined){
+                var tempLRPredict = LRpredict(varImportance.yearModel,anime.seasonYear)
+                // animeTypeOS.push(tempLRPredict)
+                animeTypeOSMin.push(tempLRPredict)
+            }
             // if(zyear.length>0){
             //     animeTypeOS.push(arrayMean(zyear))
             // }
-            if(zyearMin.length>0){
-                animeTypeOSMin.push(arrayMean(zyearMin))
-            }
+            // if(zyearMin.length>0){
+            //     animeTypeOSMin.push(arrayMean(zyearMin))
+            // }
             // if(zseason.length>0){
             //     animeTypeOS.push(arrayMean(zseason))
             // }
-            if(zseasonMin.length>0){
-                animeTypeOSMin.push(arrayMean(zseasonMin))
-            }
+            // if(zseasonMin.length>0){
+            //     animeTypeOSMin.push(arrayMean(zseasonMin))
+            // }
             // Anime Type
             // var animeContentOS = []
             var animeContentOSMin = []
@@ -569,7 +574,7 @@ self.onmessage = (message) => {
                 userStatus: userStatus, status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, staff: staff,
                 variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount,
-                popularity: anime.popularity
+                popularity: anime.popularity,
             }
         }
         // Add Weight to Scores
@@ -671,14 +676,14 @@ self.onmessage = (message) => {
             if(savedAnalyzedVariablesCount.format===undefined){
                 savedAnalyzedVariablesCount.format = {}    
             }
-            savedAnalyzedVariablesCount.format[anilistId] = 0
-            if(savedAnalyzedVariablesCount.season===undefined){
-                savedAnalyzedVariablesCount.season = {}    
-            }
-            savedAnalyzedVariablesCount.season[anilistId] = 0
-            if(savedAnalyzedVariablesCount.year===undefined){
-                savedAnalyzedVariablesCount.year = {}    
-            }
+            // savedAnalyzedVariablesCount.format[anilistId] = 0
+            // if(savedAnalyzedVariablesCount.season===undefined){
+            //     savedAnalyzedVariablesCount.season = {}    
+            // }
+            // savedAnalyzedVariablesCount.season[anilistId] = 0
+            // if(savedAnalyzedVariablesCount.year===undefined){
+            //     savedAnalyzedVariablesCount.year = {}    
+            // }
             savedAnalyzedVariablesCount.year[anilistId] = 0
             if(savedAnalyzedVariablesCount.genres===undefined){
                 savedAnalyzedVariablesCount.genres = {}    
@@ -699,8 +704,8 @@ self.onmessage = (message) => {
             var analyzedVariableCount = {
                 all: 0,
                 format: 0,
-                season: 0,
-                year: 0,
+                // season: 0,
+                // year: 0,
                 genres: 0,
                 tags: 0,
                 studios: 0,
@@ -710,14 +715,14 @@ self.onmessage = (message) => {
             savedAnalyzedVariablesCount.all[anilistId] += 1
             analyzedVariableCount.all += 1
             analyzedVariableCount.format += 1
-            savedAnalyzedVariablesCount.year[anilistId] += 1
-            savedAnalyzedVariablesCount.all[anilistId] += 1
-            analyzedVariableCount.all += 1
-            analyzedVariableCount.year += 1
-            savedAnalyzedVariablesCount.season[anilistId] += 1
-            savedAnalyzedVariablesCount.all[anilistId] += 1
-            analyzedVariableCount.all += 1
-            analyzedVariableCount.season += 1
+            // savedAnalyzedVariablesCount.year[anilistId] += 1
+            // savedAnalyzedVariablesCount.all[anilistId] += 1
+            // analyzedVariableCount.all += 1
+            // analyzedVariableCount.year += 1
+            // savedAnalyzedVariablesCount.season[anilistId] += 1
+            // savedAnalyzedVariablesCount.all[anilistId] += 1
+            // analyzedVariableCount.all += 1
+            // analyzedVariableCount.season += 1
             savedAnalyzedVariablesCount.genres[anilistId] += genres.length
             savedAnalyzedVariablesCount.all[anilistId] += genres.length
             analyzedVariableCount.all += genres.length
