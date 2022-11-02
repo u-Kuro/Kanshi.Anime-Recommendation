@@ -275,7 +275,7 @@ self.onmessage = (message) => {
         })
         var hasWarn = hasWarnR||hasWarnY
         if(includes.some(item=>equalsNCS(item,"hidden"))){                        
-            if(savedHiddenAnimeTitles.includes(value.title)){
+            if(savedHiddenAnimeTitles.includes(value.id.toString())){
                 animeData += `
                 <tr class="item" role="row" style="height:65px;">
                     <td class="hide-anime-column">
@@ -286,15 +286,15 @@ self.onmessage = (message) => {
                     </td>
                     <td class="anime-score" title="${weightedScore}">
                         <div>
-                            ${hasWarn?`<div title="${warns.join(", ")}"><i class="fa-solid fa-circle-exclamation ${hasWarnR?"red":hasWarnY?"orange":""}"></i></div>`:""}
+                            ${hasWarn?`<div title="${warns.join(', ')}"><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
                             ${weightedScore}
                         </div>
                     </td>
                     <td id="animeTitle">
-                        <a target="_blank" rel="noopener noreferrer" href="${value.animeUrl||"javascript:;"}" data-value="${value.title}">${value.title}</a>
+                        <a target="_blank" rel="noopener noreferrer" href="${value.animeUrl||'javascript:;'}" data-value="${value.id}">${value.title}</a>
                     </td>
                     <td>`
-                        animeData += similarities.length>0 ? similarities.join(", ") : "Top Similarities: N/A"
+                        animeData += similarities.length>0 ? similarities.join(', ') : 'Top Similarities: N/A'
                         animeData += `
                     </td>
                     <td class="anime-score" title="${score}">${score}</td>
@@ -306,17 +306,17 @@ self.onmessage = (message) => {
                     <td>${value.year}</td>
                     <td>${value.season}</td>
                     <td>`
-                        animeData += studios.length>0 ? studios.join(", ") : "Studios: N/A"
+                        animeData += studios.length>0 ? studios.join(', ') : 'Studios: N/A'
                         animeData += `
                     </td>
                     <td>`
-                        animeData += staff.length>0 ? staff.join(", ") : "Staff: N/A"
+                        animeData += staff.length>0 ? staff.join(', ') : 'Staff: N/A'
                         animeData += `
                     </td>
                 </tr>`
             }
         } else {
-            if(!savedHiddenAnimeTitles.includes(value.title)){
+            if(!savedHiddenAnimeTitles.includes(value.id.toString())){
                 animeData.push(`
                 <tr class="item" role="row">
                     <td class="hide-anime-column">
@@ -327,15 +327,15 @@ self.onmessage = (message) => {
                     </td>
                     <td class="anime-score" title="${weightedScore}">
                         <div>
-                            ${hasWarn?`<div title="${warns.join(", ")}"><i class="fa-solid fa-circle-exclamation ${hasWarnR?"red":hasWarnY?"orange":""}"></i></div>`:""}
+                            ${hasWarn?`<div title="${warns.join(', ')}"><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
                             ${weightedScore}
                         </div>
                     </td>
                     <td id="animeTitle">
-                        <a target="_blank" rel="noopener noreferrer" href="${value.animeUrl||"javascript:;"}" data-value="${value.title}">${value.title}</a>
+                        <a target="_blank" rel="noopener noreferrer" href="${value.animeUrl||'javascript:;'}" data-value="${value.id}">${value.title}</a>
                     </td>
                     <td>
-                        ${similarities.length>0 ? similarities.join(", ") : "Similarities: N/A"}
+                        ${similarities.length>0 ? similarities.join(', ') : 'Similarities: N/A'}
                     </td>
                     <td class="anime-score" title="${score}">${score}</td>
                     <td>${value.userStatus}</td>
@@ -346,10 +346,10 @@ self.onmessage = (message) => {
                     <td>${value.year}</td>
                     <td>${value.season}</td>
                     <td>
-                        ${studios.length>0 ? studios.join(", ") : "Studios: N/A"}
+                        ${studios.length>0 ? studios.join(', ') : 'Studios: N/A'}
                     </td>
                     <td>
-                        ${staff.length>0 ? staff.join(", ") : "Staff: N/A"}
+                        ${staff.length>0 ? staff.join(', ') : 'Staff: N/A'}
                     </td>
                 </tr>`)
             }
