@@ -570,7 +570,7 @@ self.onmessage = (message) => {
             const limitShown = 10
             variablesIncluded = tempVariablesIncluded.length>0?tempVariablesIncluded.slice(0,limitShown) : []
             savedRecScheme[anilistId] = {
-                title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
+                id: anilistId, title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
                 userStatus: userStatus, status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, staff: staff,
                 variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount,
@@ -768,7 +768,7 @@ self.onmessage = (message) => {
             staff = staff.length>0? xxstaff : {}
             variablesIncluded = []
             savedRecScheme[anilistId] = {
-                title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
+                id: anilistId, title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
                 userStatus: userStatus, status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, staff: staff,
                 variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount,

@@ -275,7 +275,7 @@ self.onmessage = (message) => {
         })
         var hasWarn = hasWarnR||hasWarnY
         if(includes.some(item=>equalsNCS(item,"hidden"))){                        
-            if(savedHiddenAnimeTitles.includes(value.id.toString())){
+            if(savedHiddenAnimeTitles.includes(`${value.id}`)){
                 animeData += `
                 <tr class="item" role="row" style="height:65px;">
                     <td class="hide-anime-column">
@@ -316,7 +316,7 @@ self.onmessage = (message) => {
                 </tr>`
             }
         } else {
-            if(!savedHiddenAnimeTitles.includes(value.id.toString())){
+            if(!savedHiddenAnimeTitles.includes(`${value.id}`)){
                 animeData.push(`
                 <tr class="item" role="row">
                     <td class="hide-anime-column">
