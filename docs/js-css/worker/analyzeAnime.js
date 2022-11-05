@@ -266,13 +266,6 @@ self.onmessage = (message) => {
                 //     zgenres.push(varImportance.meanGenres-minNumber)
                 // }
             }
-            var tagRankMean = []
-            for(let j=0; j<anime.tags.length; j++){
-                var xTagRank = anime.tags[j].rank
-                if(isaN(xTagRank)){tagRankMean.push(xTagRank)}
-            }
-            var tempTagRankMean = arrayMean(tagRankMean)
-            tagRankMean = tagRankMean.length===0?50:tempTagRankMean<50?50:tempTagRankMean
             // var ztags = []
             var ztagsMin = []
             for(let j=0; j<xtags.length; j++){
@@ -280,12 +273,14 @@ self.onmessage = (message) => {
                 savedAnalyzedVariablesCount.all[anilistId] += 1
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.tags += 1
-                if(varImportance[xtags[j].name]!==undefined && xtags[j].rank>=tagRankMean){
-                    ztagsMin.push(varImportance[xtags[j].name])
-                } else {
-                    ztagsMin.push(varImportance.meanTags-minNumber)
+                if(varImportance[xtags[j].name]!==undefined){
+                    if(xtags[j].rank>=50 || varImportance[xtags[j].name]<varImportance.meanTags){
+                        ztagsMin.push(varImportance[xtags[j].name])
+                    } else {
+                        ztagsMin.push(varImportance.meanTags-minNumber)
+                    }
                 }
-                if(varImportance[xtags[j].name]!==undefined && xtags[j].rank>=tagRankMean){
+                if(varImportance[xtags[j].name]!==undefined && xtags[j].rank>=50){
                     // ztags.push(varImportance[xtags[j].name])
                     if(varImportance[xtags[j].name]>=varImportance.meanTags
                         &&tagsIncluded[xtags[j].name]===undefined){
@@ -414,6 +409,28 @@ self.onmessage = (message) => {
                 // animeTypeOS.push(tempLRPredict)
                 animeTypeOSMin.push(tempLRPredict)
             }
+                // Average Score
+            if(isaN(anime.averageScore)&&varImportance.averageScoreModel!==undefined){
+                var tempLRPredict = LRpredict(varImportance.averageScoreModel,anime.averageScore)
+                // animeGeneralOpinionOS.push(tempLRPredict)
+                animeTypeOSMin.push(tempLRPredict)
+            }
+                // Popularity
+            if(isaN(anime.trending)&&varImportance.trendingModel!==undefined){
+                var tempLRPredict = LRpredict(varImportance.trendingModel,anime.trending)
+                // animeGeneralOpinionOS.push(tempLRPredict)
+                animeTypeOSMin.push(tempLRPredict)
+            }
+            if(isaN(anime.popularity)&&varImportance.popularityModel!==undefined){
+                var tempLRPredict = LRpredict(varImportance.popularityModel,anime.popularity)
+                // animeGeneralOpinionOS.push(tempLRPredict)
+                animeTypeOSMin.push(tempLRPredict)
+            }
+            if(isaN(anime.favourites)&&varImportance.favouritesModel!==undefined){
+                var tempLRPredict = LRpredict(varImportance.favouritesModel,anime.favourites)
+                // animeGeneralOpinionOS.push(tempLRPredict)
+                animeTypeOSMin.push(tempLRPredict)
+            }
             // if(zyear.length>0){
             //     animeTypeOS.push(arrayMean(zyear))
             // }
@@ -471,38 +488,12 @@ self.onmessage = (message) => {
             if(zstaffRolesArrayMin.length>0){
                 animeProductionOSMin.push(arrayMean(zstaffRolesArrayMin))
             }
-            // General Opinion 
-            // var animeGeneralOpinionOS = []
-            var animeGeneralOpinionOSMin = []
-                // Average Score
-            if(isaN(anime.averageScore)&&varImportance.averageScoreModel!==undefined){
-                var tempLRPredict = LRpredict(varImportance.averageScoreModel,anime.averageScore)
-                // animeGeneralOpinionOS.push(tempLRPredict)
-                animeGeneralOpinionOSMin.push(tempLRPredict)
-            }
-                // Popularity
-            if(isaN(anime.trending)&&varImportance.trendingModel!==undefined){
-                var tempLRPredict = LRpredict(varImportance.trendingModel,anime.trending)
-                // animeGeneralOpinionOS.push(tempLRPredict)
-                animeGeneralOpinionOSMin.push(tempLRPredict)
-            }
-            if(isaN(anime.popularity)&&varImportance.popularityModel!==undefined){
-                var tempLRPredict = LRpredict(varImportance.popularityModel,anime.popularity)
-                // animeGeneralOpinionOS.push(tempLRPredict)
-                animeGeneralOpinionOSMin.push(tempLRPredict)
-            }
-            if(isaN(anime.favourites)&&varImportance.favouritesModel!==undefined){
-                var tempLRPredict = LRpredict(varImportance.favouritesModel,anime.favourites)
-                // animeGeneralOpinionOS.push(tempLRPredict)
-                animeGeneralOpinionOSMin.push(tempLRPredict)
-            }
             // Scores
             // OG&&UC
             var score = arrayMean([
                 arrayMean(animeTypeOSMin),
                 arrayMean(animeContentOSMin),
                 arrayMean(animeProductionOSMin),
-                arrayMean(animeGeneralOpinionOSMin),
             ])
             var weightedScore = score
             // Low Average
@@ -517,7 +508,6 @@ self.onmessage = (message) => {
             //     arrayMean(animeTypeOS),
             //     arrayMean(animeProductionOS),
             //     arrayMean(animeTimeOS),
-            //     arrayMean(animeGeneralOpinionOS),
             // ])
             // Other Anime Recommendation Info
             genres = genres.length>0?genres.join(", "):"Genres: N/A"
@@ -894,6 +884,11 @@ self.onmessage = (message) => {
         if(isNaN(modelObj.slope)||isNaN(modelObj.intercept)) return null
         return (parseFloat(modelObj.slope)*x)+parseFloat(modelObj.intercept)
     }
+    // function PRpredict(modelObj, x) {
+    //     return modelObj.coefficients.reduce((sum, coeff, power) => {
+    //         return sum + coeff * Math.pow(x, power)
+    //     }, 0)
+    // }
     // function sortObj(obj,sort){
     //     let sortable = [];
     //     let newObj = {};

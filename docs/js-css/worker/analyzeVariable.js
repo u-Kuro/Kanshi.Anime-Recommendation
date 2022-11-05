@@ -165,7 +165,7 @@ self.onmessage = (message) => {
                     }
                 }
                 for(let j=0; j<anime.tags.length; j++){
-                    if(anime.tags[j].name===null){
+                    if(anime.tags[j].name===null && tags[j].rank>=50){
                         if(tags["Tag: "+anime.tags[j].name]===undefined){
                             tags["Tag: "+anime.tags[j].name] = {userScore:[userScore],count:1}
                         } else {
@@ -687,13 +687,12 @@ self.onmessage = (message) => {
         const limitSample = 30
         // For Anime Date Model
         var animeDateModel = []
-        var yearX = [], yearY = []
+        var yearXY = []
         for(let i=0; i<year.length;i++){
-            yearX.push(year[i].year)
-            yearY.push(year[i].userScore)
+            yearXY.push([year[i].year,year[i].userScore])
         }
-        if(yearX.length===yearY.length&&yearX.length>=limitSample&&yearY.length>=limitSample){
-            var tempLinearReg = linearRegression(yearX,yearY)
+        if(yearXY.length>=limitSample){
+            var tempLinearReg = linearRegression(yearXY)
             // if(tempLinearReg.r2>r2Thresh){
                 animeDateModel.push([tempLinearReg,"yearModel"])
             // }
@@ -707,13 +706,12 @@ self.onmessage = (message) => {
         }
         // For Anime Length Model
         var animeLengthModels = []
-        var episodesX = [], episodesY = []
+        var episodesXY = []
         for(let i=0; i<episodes.length;i++){
-            episodesX.push(episodes[i].episodes)
-            episodesY.push(episodes[i].userScore)
+            episodesXY.push([episodes[i].episodes,episodes[i].userScore])
         }
-        if(episodesX.length===episodesY.length&&episodesX.length>=limitSample&&episodesY.length>=limitSample){
-            var tempLinearReg = linearRegression(episodesX,episodesY)
+        if(episodesXY.length>=limitSample){
+            var tempLinearReg = linearRegression(episodesXY)
             if(tempLinearReg.r2>r2Thresh){
                 animeLengthModels.push([tempLinearReg,"episodesModel"])
             }
@@ -724,13 +722,12 @@ self.onmessage = (message) => {
         //         tempVar["episodesModel"] = tempLinearReg
         //     }
         // }
-        var durationX = [], durationY = []
+        var durationXY = []
         for(let i=0; i<duration.length;i++){
-            durationX.push(duration[i].duration)
-            durationY.push(duration[i].userScore)
+            durationXY.push([duration[i].duration,duration[i].userScore])
         }
-        if(durationX.length===durationY.length&&durationX.length>=limitSample&&durationY.length>=limitSample){
-            var tempLinearReg = linearRegression(durationX,durationY)
+        if(durationXY.length>=limitSample){
+            var tempLinearReg = linearRegression(durationXY)
             if(tempLinearReg.r2>r2Thresh){
                 animeLengthModels.push([tempLinearReg,"durationModel"])
             }
@@ -750,24 +747,22 @@ self.onmessage = (message) => {
         }
         // For Popularity
         var wellKnownAnimeModels = []
-        var averageScoreX = [], averageScoreY = []
+        var averageScoreXY = []
         for(let i=0; i<averageScore.length;i++){
-            averageScoreX.push(averageScore[i].averageScore)
-            averageScoreY.push(averageScore[i].userScore)
+            averageScoreXY.push([averageScore[i].averageScore,averageScore[i].userScore])
         }
-        if(averageScoreX.length===averageScoreY.length&&averageScoreX.length>=limitSample&&averageScoreY.length>=limitSample){
-            var tempLinearReg = linearRegression(averageScoreX,averageScoreY)
+        if(averageScoreXY.length>=limitSample){
+            var tempLinearReg = linearRegression(averageScoreXY)
             // if(tempLinearReg.r2>r2Thresh){
                 wellKnownAnimeModels.push([tempLinearReg,"averageScoreModel"])
             // }
         }
-        var trendingX = [], trendingY = []
+        var trendingXY = []
         for(let i=0; i<trending.length;i++){
-            trendingX.push(trending[i].trending)
-            trendingY.push(trending[i].userScore)
+            trendingXY.push([trending[i].trending,trending[i].userScore])
         }
-        if(trendingX.length===trendingY.length&&trendingX.length>=limitSample&&trendingY.length>=limitSample){
-            var tempLinearReg = linearRegression(trendingX,trendingY)
+        if(trendingXY.length>=limitSample){
+            var tempLinearReg = linearRegression(trendingXY)
             // if(tempLinearReg.r2>r2Thresh){
                 wellKnownAnimeModels.push([tempLinearReg,"trendingModel"])
             // }
@@ -778,13 +773,12 @@ self.onmessage = (message) => {
         //         tempVar["trendingModel"] = tempLinearReg
         //     }
         // }
-        var popularityX = [], popularityY = []
+        var popularityXY = []
         for(let i=0; i<popularity.length;i++){
-            popularityX.push(popularity[i].popularity)
-            popularityY.push(popularity[i].userScore)
+            popularityXY.push([popularity[i].popularity,popularity[i].userScore])
         }
-        if(popularityX.length===popularityY.length&&popularityX.length>=limitSample&&popularityY.length>=limitSample){
-            var tempLinearReg = linearRegression(popularityX,popularityY)
+        if(popularityXY.length>=limitSample){
+            var tempLinearReg = linearRegression(popularityXY)
             // if(tempLinearReg.r2>r2Thresh){
                 wellKnownAnimeModels.push([tempLinearReg,"popularityModel"])
             // }
@@ -795,13 +789,12 @@ self.onmessage = (message) => {
         //         tempVar["popularityModel"] = tempLinearReg
         //     }
         // }
-        var favouritesX = [], favouritesY = []
+        var favouritesXY = []
         for(let i=0; i<favourites.length;i++){
-            favouritesX.push(favourites[i].favourites)
-            favouritesY.push(favourites[i].userScore)
+            favouritesXY.push([favourites[i].favourites,favourites[i].userScore])
         }
-        if(favouritesX.length===favouritesY.length&&favouritesX.length>=limitSample&&favouritesY.length>=limitSample){
-            var tempLinearReg = linearRegression(favouritesX,favouritesY)
+        if(favouritesXY.length>=limitSample){
+            var tempLinearReg = linearRegression(favouritesXY)
             // if(tempLinearReg.r2>r2Thresh){
                 wellKnownAnimeModels.push([tempLinearReg,"favouritesModel"])
             // }
@@ -893,25 +886,123 @@ self.onmessage = (message) => {
         return modLowLim+(((modFreq-modPreFreq)/((2*modFreq)-modPreFreq-modSucFreq))*classW)
     }
         // Linear Regression
-    function linearRegression(x,y){
+    function linearRegression(data){
         var lr = {};
-        var n = y.length;
+        var n = data.length;
         var sum_x = 0;
         var sum_y = 0;
         var sum_xy = 0;
         var sum_xx = 0;
         var sum_yy = 0;
-        for (var i = 0; i < y.length; i++) {
-            sum_x += x[i];
-            sum_y += y[i];
-            sum_xy += (x[i]*y[i]);
-            sum_xx += (x[i]*x[i]);
-            sum_yy += (y[i]*y[i]);
+        for (var i = 0; i < data.length; i++) {
+            sum_x += data[i][0];
+            sum_y += data[i][1];
+            sum_xy += (data[i][0]*data[i][1]);
+            sum_xx += (data[i][0]*data[i][0]);
+            sum_yy += (data[i][1]*data[i][1]);
         } 
         lr['slope'] = (n * sum_xy - sum_x * sum_y) / (n*sum_xx - sum_x * sum_x);
         lr['intercept'] = (sum_y - lr.slope * sum_x)/n;
         lr['r2'] = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
         return lr;
     }
+    // // Polynomial Regression
+    // function polynomialRegression(data, order=2) {
+    //     var lhs = []
+    //     var rhs = []
+    //     var a = 0
+    //     var b = 0
+    //     var len = data.length
+    //     var k = order + 1
+    //     for (var i = 0; i < k; i++) {
+    //         for (var l = 0; l < len; l++) {
+    //             if (data[l][1] !== null) {
+    //                 a += Math.pow(data[l][0], i) * data[l][1]
+    //             }
+    //         }
+    //         lhs.push(a)
+    //         a = 0
+    //         var c = []
+    //         for (var j = 0; j < k; j++) {
+    //             for (var _l = 0; _l < len; _l++) {
+    //                 if (data[_l][1] !== null) {
+    //                     b += Math.pow(data[_l][0], i + j)
+    //                 }
+    //             }
+    //             c.push(b)
+    //             b = 0
+    //         }
+    //         rhs.push(c)
+    //     }
+    //     rhs.push(lhs)
+    //     var coefficients = gaussianElimination(rhs, k).map(function (v) {
+    //         return v
+    //     })
+    //     // var points = data.map(function (point) {
+    //     //     return coefficients.reduce(function (sum, coeff, power) {
+    //     //         return sum + coeff * Math.pow(point[0], power);
+    //     //     }, 0)
+    //     // })
+    //     return {
+    //         coefficients: coefficients,
+    //         // r2: determinationCoefficient(data, points)
+    //     }
+    // }
+    // // Helpers For Polynomial
+    // function gaussianElimination(input, order) {
+    //     var matrix = input;
+    //     var n = input.length - 1;
+    //     var coefficients = [order];
+    //     for (var i = 0; i < n; i++) {
+    //         var maxrow = i;
+    //         for (var j = i + 1; j < n; j++) {
+    //             if (Math.abs(matrix[i][j]) > Math.abs(matrix[i][maxrow])) {
+    //                 maxrow = j;
+    //             }
+    //         }
+    //         for (var k = i; k < n + 1; k++) {
+    //             var tmp = matrix[k][i];
+    //             matrix[k][i] = matrix[k][maxrow];
+    //             matrix[k][maxrow] = tmp;
+    //         }
+    //         for (var _j = i + 1; _j < n; _j++) {
+    //             for (var _k = n; _k >= i; _k--) {
+    //                 matrix[_k][_j] -= matrix[_k][i] * matrix[i][_j] / matrix[i][i];
+    //             }
+    //         }
+    //     }
+    //     for (var _j2 = n - 1; _j2 >= 0; _j2--) {
+    //         var total = 0;
+    //         for (var _k2 = _j2 + 1; _k2 < n; _k2++) {
+    //             total += matrix[_k2][_j2] * coefficients[_k2];
+    //         }
 
+    //         coefficients[_j2] = (matrix[n][_j2] - total) / matrix[_j2][_j2];
+    //     }
+    //     return coefficients;
+    // }
+    // function determinationCoefficient(data, results) {
+    //     var predictions = [];
+    //     var observations = [];
+    //     data.forEach(function (d, i) {
+    //         if (d[1] !== null) {
+    //             observations.push(d);
+    //             predictions.push(results[i]);
+    //         }
+    //     })
+    //     var sum = observations.reduce(function (a, observation) {
+    //         return a + observation[1];
+    //     }, 0);
+    //     var mean = sum / observations.length;
+    //     var ssyy = observations.reduce(function (a, observation) {
+    //         var difference = observation[1] - mean;
+    //         return a + difference * difference;
+    //     }, 0);
+    //     var sse = observations.reduce(function (accum, observation, index) {
+    //         var prediction = predictions[index];
+    //         var residual = observation[1] - prediction[1];
+    //         return accum + residual * residual;
+    //     }, 0);
+    //     return 1 - sse / ssyy;
+    // }
 }
