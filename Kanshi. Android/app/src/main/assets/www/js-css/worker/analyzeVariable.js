@@ -603,7 +603,7 @@ self.onmessage = (message) => {
             varScheme.genres[genresKey[i]+"Min"] = tempScore
             // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
             var count = varScheme.genres[genresKey[i]].count
-            if(count>=genresMeanCount){//||tempScore<genresMean){
+            if(count>=genresMeanCount||tempScore<genresMean){
                 varScheme.genres[genresKey[i]] = tempScore
             } else {
                 delete varScheme.genres[genresKey[i]]
@@ -621,7 +621,7 @@ self.onmessage = (message) => {
             varScheme.tags[tagsKey[i]+"Min"] = tempScore
             // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
             var count = varScheme.tags[tagsKey[i]].count
-            if(count>=tagsMeanCount){//||tempScore<tagsMean){
+            if(count>=tagsMeanCount||tempScore<tagsMean){
                 varScheme.tags[tagsKey[i]] = tempScore
             } else {
                 delete varScheme.tags[tagsKey[i]]
@@ -639,7 +639,7 @@ self.onmessage = (message) => {
             varScheme.studios[studiosKey[i]+"Min"] = tempScore
             // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
             var count = varScheme.studios[studiosKey[i]].count
-            if(count>=studiosMeanCount){//||tempScore<studiosMean){
+            if(count>=studiosMeanCount||tempScore<studiosMean){
                 varScheme.studios[studiosKey[i]] = tempScore
             } else {
                 delete varScheme.studios[studiosKey[i]]
@@ -657,7 +657,7 @@ self.onmessage = (message) => {
             varScheme.staff[staffKey[i]+"Min"] = tempScore
             // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
             var count = varScheme.staff[staffKey[i]].count
-            if(count>=staffMeanCount){//||tempScore<staffMean){
+            if(count>=staffMeanCount||tempScore<staffMean){
                 varScheme.staff[staffKey[i]] = tempScore
             } else {
                 delete varScheme.staff[staffKey[i]]

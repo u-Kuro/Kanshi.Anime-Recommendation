@@ -747,7 +747,7 @@
         <button id="exportIntervalBtn">Export Every 1 hours</button>
         <button id="sign-up">Create another account</button>
         <!-- Android -->
-        <button onClick="window.location.href=window.location.href">Restart</button>
+        <button id="restart">Restart</button>
         <!-- Android -->
     </div>
 </div>
@@ -2586,7 +2586,27 @@
             })
         }
     })
-    //
+    // Android
+    $("#restart").on('click', ()=>{
+        Swal.fire({
+            heightAuto: false,
+            text: `Do you want to restart the app?`,
+            showConfirmButton: true,
+            confirmButtonText: "Yes",
+            showDenyButton: true,
+            denyButtonText: "No",
+            confirmButtonColor: '#000',
+            denyButtonColor: '#e27d81',
+            icon: "question",
+            reverseButtons: true
+        })
+        .then(async(value) => {
+            if(value.isConfirmed){
+                window.location.href=window.location.href
+            }
+        })
+    })
+    // Android
     $(".anime-table-headers").on('click', ()=>{
         setTimeout(()=>{
             let setPageInfo = setInterval(()=>{
