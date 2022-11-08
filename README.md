@@ -45,5 +45,5 @@
 ## Current Limitations
    - The Android app only runs on WebView for the moment so update pauses when app is not visible.
    - The Web page is static so updates may also stop when the tab is closed.
-   - Anilist Request Limits to 50 anime per page/request might slow down UPDATE for Recommendations.
+   - Anilist Request Limits to 50 anime per page/request might slow down update when getting all available anime information.
    - App Kanshi.VI can also be slow due to the Amount of Anime 10000+ being Loaded. (This can be temporarily fixed by adding filters i.e wscore>=N to limit visible anime)
