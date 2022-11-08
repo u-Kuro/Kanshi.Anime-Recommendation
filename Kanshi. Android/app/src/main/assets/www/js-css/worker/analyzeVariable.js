@@ -26,11 +26,13 @@ self.onmessage = (message) => {
     // Check Watched
     var userListStatus = []
     for(let i=0; i<animeList.length; i++){
-        for(let j=0; j<animeList[i].entries.length; j++){ 
-            userListStatus.push({
-                id: animeList[i].entries[j].media.id,
-                status: animeList[i].status
-            })
+        if(animeList[i].status!==null){
+            for(let j=0; j<animeList[i].entries.length; j++){ 
+                userListStatus.push({
+                    id: animeList[i].entries[j].media.id,
+                    status: animeList[i].status
+                })
+            }
         }
     }
     // For Linear Regression Models

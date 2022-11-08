@@ -133,7 +133,7 @@ self.onmessage = (message) => {
             if(!animeShallUpdate) continue
             // Check Status
             for(let k=0; k<userListStatus.length; k++){
-                if(userListStatus[k].id===anilistId){
+                if(userListStatus[k].id===anilistId && userListStatus[k].id!==null && userListStatus[k].status!==null){
                     userStatus = userListStatus[k].status
                     if(allFilterInfo[userStatus.toLowerCase()]===undefined){
                         allFilterInfo[userStatus.toLowerCase()] = 0
