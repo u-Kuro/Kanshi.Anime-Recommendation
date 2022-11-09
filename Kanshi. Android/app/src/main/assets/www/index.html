@@ -1502,7 +1502,14 @@
                     icon: "question",
                     reverseButtons: true
                 }).then(async(value)=>{
-                    if(value.isConfirmed){
+                    if(requestIsRunning){
+                        Swal.fire({
+                            heightAuto: false,
+                            text: "List is already updating! Please wait a moment...",
+                            icon: "info",
+                            confirmButtonColor: "#000"
+                        })
+                    } else if(value.isConfirmed){
                         // Reset User List
                         savedUserList = {}
                         saveJSON(savedUserList,"savedUserList")
@@ -1512,8 +1519,7 @@
                     }
                 })
             }
-        }
-        else {
+        } else {
             if(!requestIsRunning){
                 Swal.fire({
                     heightAuto: false,
@@ -1631,19 +1637,6 @@
                 if(value.isConfirmed){
                     deepUpdateStartTime = new Date()
                     isDeepUpdate = true
-                    $("#animeRecommendationList").empty()
-                    $("#animeRecommendationList").append(`
-                        <tr class="item" role="row">
-                            <td style="padding: 1.5em !important;" colspan="14">
-                                <div style="display:flex; align-items:center;">
-                                    <div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div>
-                                    <div>Updating...</div>
-                                </div>
-                            </td>
-                        </tr>
-                    `)
-                    await $("#anime-table").trigger("update")
-                    await $("#anime-table").trigger("pagerUpdate")
                     await Update()
                     $(".menu-container").fadeOut(250)
                 }
@@ -2965,13 +2958,14 @@
                             console.error("Error 100")
                             Swal.fire({
                                 heightAuto: false,
-                                text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
+                                text: `Error 100: Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                                 icon: "error",
                                 confirmButtonColor: "#000"
-                            }).then(async()=>{
+                            });
+                            (async()=>{
                                 savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                                 await LoadData(savedRecScheme)
-                            })
+                            })()
                         }
                     } catch(ex) {
                         console.error(ex)
@@ -2981,13 +2975,14 @@
                         console.error("Error 101")
                         Swal.fire({
                             heightAuto: false,
-                            text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
+                            text: `Error 101: Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                             icon: "error",
                             confirmButtonColor: "#000"
-                        }).then(async()=>{
+                        });
+                        (async()=>{
                             savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                             await LoadData(savedRecScheme)
-                        })
+                        })()
                     }
                     console.log("WebtoApp: Update Error")
                     if(Object.keys(savedRecScheme).length===0){
@@ -3154,13 +3149,14 @@
                                     console.error("Error 103")
                                     Swal.fire({
                                         heightAuto: false,
-                                        text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
+                                        text: `Error 103: Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                                         icon: "error",
                                         confirmButtonColor: "#000"
-                                    }).then(async()=>{
-                                        savedRecScheme = retrieveJSON("savedRecScheme") || {}
-                                        LoadData(savedRecScheme)
-                                    })
+                                    });
+                                    (async()=>{
+                                        savedRecScheme = await retrieveJSON("savedRecScheme") || {}
+                                        await LoadData(savedRecScheme)
+                                    })()
                                     $("#dataStatusContainer").fadeOut(2500)
                                     $("#dataStatusSpinner").show()
                                     $("#dataStatus").empty()
@@ -3194,16 +3190,17 @@
                         err = JSON.parse(xhr.responseText).errors[0].message
                         console.error(JSON.parse(xhr.responseText))
                     } else {
-                        console.error("Error 104")
+                        console.error("Error 104");
                         Swal.fire({
                             heightAuto: false,
-                            text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
+                            text: `Error 104: Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                             icon: "error",
                             confirmButtonColor: "#000"
-                        }).then(async()=>{
+                        });
+                        (async()=>{
                             savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                             await LoadData(savedRecScheme)
-                        })
+                        })()
                         console.log("WebtoApp: Update Error")
                     }
                 } catch(ex) {
@@ -3211,13 +3208,14 @@
                     console.error("Error 105")
                     Swal.fire({
                         heightAuto: false,
-                        text: `Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
+                        text: `Error 105: Oops...Something went wrong! ${typeof err==="string"?err:"Please try again..."}`,
                         icon: "error",
                         confirmButtonColor: "#000"
-                    }).then(async()=>{
+                    });
+                    (async()=>{
                         savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                         await LoadData(savedRecScheme)
-                    })
+                    })()
                     console.log("WebtoApp: Update Error")
                 }
                 $("#dataStatusContainer").fadeOut(2500)
