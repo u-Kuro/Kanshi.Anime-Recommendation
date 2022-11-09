@@ -7,10 +7,23 @@
   2. Run/Visit the app and Enter a username of an Exsting anilist account (A properly rated list is highly recommended). If you don't have one, you can easily Create an account in their website ([Anilist](https://anilist.co/home)) or Export your List from MAL (MyAnimeList) if you have one ([MAL export](https://myanimelist.net/panel.php?go=export)) then Import the XML file in the Anilist settings ([Anilist Import](https://anilist.co/settings/import)).
   
   Additional Features
-  1. Filters are available, insert Title/Genres/Tags/Status/Format/Year/Season/Studios/Staff to include and/or exclude (adding !filterword) an anime in your recommendation list. Numeric Filters >,<,=>,<= for numbered column including WScore, Score and Year.
+  1. Settings can be shown by clicking the small icon or the logo at the top.
   2. Sort by Scores/Status/Year/etc. to the desired order.
-  3. Hidden/Unhidden List to hide an Anime from ones' list or show it back to your recommendations list (You may click show all for immediate retrieval).
-  4. Content Warn (only for VI and Web) allows user to select Anime Information like Nudity, Harem, etc. to show a warning beside a anime recommendation in order to be alerted by any undesired content. User can also see the warned anime content by clicking the warn icon shown.
+  3. Update is available in the settings (used when you updated anime score in your list).
+  4. Deep Update is available to reset all data in the app (this will take a longer time).
+  5. Import/Export your user data recommendation (this is recommended, a backup will be useful when anilist API had problem with the app).
+  6. Auto Recommendation Updates and Auto Export every 1 hour in the settings.   
+  7. Filters are available, insert Title/Genres/Tags/User Status/Anime Status/Format/Year/Season/Studios/Staff to include and/or exclude an anime in your recommendation list. Numeric Filters >,<,>=,<= for numbered column including WScore, Score and Year.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) To only see Unwatched Anime type unwatched in filter.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To remove completed anime type !completed.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) To only allow wscores 7-10 type wscore>=7.  
+  8. Hidden/Unhidden List to hide an Anime from ones' list or show it back to your recommendations list.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) Click the black unhidden button to change list to hidden and vice versa.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) Click the hide or show button to transfer to hidden list or unhidden list respectively.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) In the settings, click show all to transfer all hidden anime to unhidden list.
+  9. Content Warn in the settings (only for VI and Web) allows user to select Anime Information like Nudity, Harem, etc. to show a warning beside a anime recommendation in order to be alerted by any undesired content. User can also see the warned anime content by clicking the warn icon shown.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) To have a yellow warning for netorare type netorare.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To have a red warning for netorare type !netorare.
 
 ## Kanshi.VI (Recommended)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Format, Studios, and Staffs by Role as Categorical. Each variables or variable component are averaged. Numeric variables including Anilist Average-Score, Popularity, Year, Favourites, Episodes, Trending, Duration have their own Linear Regression Model to be predicted and accepted at 0.1 r-squared. Finally, all anime in Anilist are then analyzed based on the Variable Importance Schema from ones' rating.
