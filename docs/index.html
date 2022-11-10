@@ -935,6 +935,7 @@
 </div>
 
 <script defer>
+    const version = "1.0"
     // Initialize Global Variables
         // IndexDB
     var request, db,
@@ -1107,7 +1108,7 @@
                 savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson") || []
                 allFilterInfo = await retrieveJSON("allFilterInfo") || {}
                 if(await savedFilterOptionsJson.length===0){
-                    var worker1 = await new Worker("./js-css/worker/getOptions.js")
+                    var worker1 = await new Worker(`./js-css/worker/getOptions-${version}.js`)
                     await worker1.postMessage("")
                     worker1.onmessage = async (message) => {
                         await worker1.terminate()
@@ -1365,7 +1366,7 @@
                                 .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                             $("#dataStatusContainer").css("display","flex").fadeIn(250)
                         },250)
-                        var worker2 = new Worker("./js-css/worker/export.js")
+                        var worker2 = new Worker(`./js-css/worker/export-${version}.js`)
                         const savedUsername = await retrieveJSON("savedUsername")
                         const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                         const savedWarnAnime = await retrieveJSON("savedWarnAnime")
@@ -1420,7 +1421,7 @@
                                     .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                                 $("#dataStatusContainer").css("display","flex").fadeIn(250)
                             },250)
-                            var worker3 = new Worker("./js-css/worker/export.js")
+                            var worker3 = new Worker(`./js-css/worker/export-${version}.js`)
                             const savedUsername = await retrieveJSON("savedUsername")
                             const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                             const savedWarnAnime = await retrieveJSON("savedWarnAnime")
@@ -2179,7 +2180,7 @@
                     },250)
                     resolve()
                 }).then(async()=>{
-                    var worker4 = new Worker("./js-css/worker/export.js")
+                    var worker4 = new Worker(`./js-css/worker/export-${version}.js`)
                     const savedUsername = await retrieveJSON("savedUsername")
                     const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                     const savedWarnAnime = await retrieveJSON("savedWarnAnime")
@@ -2347,7 +2348,7 @@
                             },250)
                             resolve()
                         }).then(async()=>{
-                            var worker5 = new Worker("./js-css/worker/export.js")
+                            var worker5 = new Worker(`./js-css/worker/export-${version}.js`)
                             const savedUsername = await retrieveJSON("savedUsername")
                             const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                             const savedWarnAnime = await retrieveJSON("savedWarnAnime")
@@ -2403,7 +2404,7 @@
                                     .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                                 $("#dataStatusContainer").css("display","flex").fadeIn(250)
                             },250)
-                            var worker6 = new Worker("./js-css/worker/export.js")
+                            var worker6 = new Worker(`./js-css/worker/export-${version}.js`)
                             const savedUsername = await retrieveJSON("savedUsername")
                             const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
                             const savedWarnAnime = await retrieveJSON("savedWarnAnime")
@@ -2792,7 +2793,7 @@
                         if(hasNextChunk){
                             return recallAV(++chunk)
                         } else {
-                            var worker7 = new Worker("./js-css/worker/analyzeVariable.js")
+                            var worker7 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
                             worker7.postMessage({savedUserList: savedUserList, userEntries: userEntries})
                             worker7.onmessage = (message) => {
                                 worker7.terminate()
@@ -3172,7 +3173,7 @@
         var tempLastSavedUpdateTime = lastSavedUpdateTime
         var savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
         $("#dataStatusSpinner").hide()
-        if(lastSavedUpdateTime!==0||savedAnimeEntries.length<1||!isDeepUpdate){
+        if(lastSavedUpdateTime!==0&&savedAnimeEntries.length<1&&!isDeepUpdate){
             var maxAnimePerPage = 50
             var updatedAnimeEntries = []
             async function recalluAL(page){
@@ -3264,7 +3265,7 @@
                         if(hasNextPage&&tempUpdatedAnimeEntries.at(-1).updatedAt>lastSavedUpdateTime){
                             return recalluAL(++page)    
                         } else {
-                            var worker8 = new Worker("./js-css/worker/updateAnime.js")
+                            var worker8 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
                             worker8.postMessage({
                                 updatedAnimeEntries: updatedAnimeEntries,
                                 savedAnimeEntries: savedAnimeEntries
@@ -3374,7 +3375,7 @@
             savedRecScheme = await retrieveJSON("savedRecScheme") || {}
         }
         var savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount") || {}
-        var worker9 = new Worker("./js-css/worker/analyzeAnime.js")
+        var worker9 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
         worker9.postMessage({
             animeEntries: animeEntries,
             savedRecScheme: savedRecScheme,
@@ -3401,7 +3402,7 @@
                 $("#updateBtn").show()
                 $("#updateIntervalBtn").show()
             }
-            var worker10 = new Worker("./js-css/worker/updateOptions.js")
+            var worker10 = new Worker(`./js-css/worker/updateOptions-${version}.js`)
             worker10.postMessage({
                 allFilterInfo: allFilterInfo
             })
@@ -3525,7 +3526,7 @@
                     else savedWarnY[warnName] = null
                 }
                 savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles") || []
-                var worker11 = new Worker("./js-css/worker/loadData.js")
+                var worker11 = new Worker(`./js-css/worker/loadData-${version}.js`)
                 worker11.postMessage({
                     recList: recList,
                     savedHiddenAnimeTitles: savedHiddenAnimeTitles,
