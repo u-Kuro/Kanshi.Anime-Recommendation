@@ -3010,7 +3010,6 @@
         var tempLastSavedUpdateTime = lastSavedUpdateTime
         var maxAnimePerPage = 50
         var animeEntries = []
-        $("#dataStatusSpinner").hide()
         async function recalluAAL(page){
             $.ajax({
                 type: 'POST',
@@ -3172,6 +3171,7 @@
         var lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
         var tempLastSavedUpdateTime = lastSavedUpdateTime
         var savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
+        $("#dataStatusSpinner").hide()
         if(lastSavedUpdateTime!==0||savedAnimeEntries.length<1||!isDeepUpdate){
             var maxAnimePerPage = 50
             var updatedAnimeEntries = []
