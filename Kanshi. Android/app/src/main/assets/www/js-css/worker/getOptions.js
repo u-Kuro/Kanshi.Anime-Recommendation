@@ -9,6 +9,8 @@ self.onmessage = (message) => {
         {"info": "studios: n/a"},
         {"info": "staff: n/a"},
         {"info": "top similarities: n/a"},
+        {"info": "finished"},
+        {"info": "releasing"},
         {"info": "action"},
         {"info": "adventure"},
         {"info": "comedy"},
