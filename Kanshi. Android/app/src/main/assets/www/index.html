@@ -3223,7 +3223,7 @@
         var tempLastSavedUpdateTime = lastSavedUpdateTime
         var savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
         $("#dataStatusSpinner").hide()
-        if(lastSavedUpdateTime!==0&&savedAnimeEntries.length<1&&!isDeepUpdate){
+        if(lastSavedUpdateTime!==0&&savedAnimeEntries.length>0&&!isDeepUpdate){
             var maxAnimePerPage = 50
             var updatedAnimeEntries = []
             async function recalluAL(page){
