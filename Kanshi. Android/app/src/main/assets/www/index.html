@@ -2752,8 +2752,7 @@
                     MediaListCollection(userName: "${username}", 
                       chunk:${chunk}, 
                       perChunk:${maxAnimePerChunk}, 
-                      sort: [SCORE_DESC],
-                      forceSingleCompletedList: true
+                      forceSingleCompletedList: true,
                       type: ANIME) {
                         hasNextChunk
                         lists {
@@ -2838,10 +2837,13 @@
                         if(hasNextChunk){
                             return recallAV(++chunk)
                         } else {
+                            console.log(JSON.stringify(userEntries))
+                            console.log(1)
                             var worker = new Worker("./js-css/worker/analyzeVariable.js")
                             worker.postMessage({savedUserList: savedUserList, userEntries: userEntries})
                             worker.onmessage = (message) => {
                                 worker.terminate()
+                                console.log(3)
                                 const data = message.data
                                 // Alert user if Scored List is 0
                                 // to have a better recommendation
@@ -3075,7 +3077,7 @@
                                 type: ANIME,
                                 genre_not_in: ["Hentai"],
                                 status_in:[FINISHED, RELEASING],
-                                format_in:[TV,TV_SHORT,MOVIE,OVA,ONA,SPECIAL]
+                                format_in:[TV,TV_SHORT,MOVIE,OVA,ONA,SPECIAL],
                                 sort: [UPDATED_AT_DESC]) {
                                 id
                                 ${page===1?'updatedAt':''}
@@ -3235,7 +3237,7 @@
                                     type: ANIME,
                                     genre_not_in: ["Hentai"],
                                     status_in:[FINISHED, RELEASING],
-                                    format_in:[TV,TV_SHORT,MOVIE,OVA,ONA,SPECIAL]
+                                    format_in:[TV,TV_SHORT,MOVIE,OVA,ONA,SPECIAL],
                                     sort: [UPDATED_AT_DESC]) {
                                     id
                                     updatedAt
@@ -3304,15 +3306,16 @@
                         if(hasNextPage&&tempUpdatedAnimeEntries.at(-1).updatedAt>lastSavedUpdateTime){
                             return recalluAL(++page)    
                         } else {
-                            $("#dataStatus")
-                            .empty()
-                            .append(`<span style="white-space:nowrap;">Updating Anime from Anilist...⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
                             var worker = new Worker("./js-css/worker/updateAnime.js")
                             worker.postMessage({
                                 updatedAnimeEntries: updatedAnimeEntries,
                                 savedAnimeEntries: savedAnimeEntries
                             })
                             worker.onmessage = (message) => {
+                                worker.terminate()
+                                $("#dataStatus")
+                                    .empty()
+                                    .append(`<span style="white-space:nowrap;">Updating Anime from Anilist...⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
                                 const data = message.data
                                 animeEntries = data.animeEntries
                                 saveJSON(animeEntries,"savedAnimeEntries")
@@ -3411,8 +3414,8 @@
             savedRecScheme = await retrieveJSON("savedRecScheme") || {}
         }
         var savedAnalyzedVariablesCount = await retrieveJSON("savedAnalyzedVariablesCount") || {}
-        var worker = new Worker("./js-css/worker/analyzeAnime.js")
-        worker.postMessage({
+        var worker2 = new Worker("./js-css/worker/analyzeAnime.js")
+        worker2.postMessage({
             animeEntries: animeEntries,
             savedRecScheme: savedRecScheme,
             userListStatus: userListStatus,
@@ -3421,8 +3424,8 @@
             alteredVariables: alteredVariables,
             savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
         })
-        worker.onmessage = (message) => {
-            worker.terminate()
+        worker2.onmessage = (message) => {
+            worker2.terminate()
             const data = message.data
             savedRecScheme = data.savedRecScheme
             allFilterInfo = data.allFilterInfo
@@ -3438,11 +3441,11 @@
                 $("#updateBtn").show()
                 $("#updateIntervalBtn").show()
             }
-            var worker2 = new Worker("./js-css/worker/updateOptions.js")
-            worker2.postMessage({
+            var worker3 = new Worker("./js-css/worker/updateOptions.js")
+            worker3.postMessage({
                 allFilterInfo: allFilterInfo
             })
-            worker2.onmessage = (message) => {
+            worker3.onmessage = (message) => {
                 try{
                     const data = message.data
                     // Save Current Filters
@@ -3518,7 +3521,7 @@
                         })
                     }
                     requestIsRunning = false
-                    worker2.terminate()
+                    worker3.terminate()
                 } catch(ex) {
                     requestIsRunning = false
                 }

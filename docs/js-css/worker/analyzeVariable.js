@@ -1,7 +1,7 @@
 self.onmessage = (message) => {
     const minNumber = 1-6e-17!==1? 6e-17 : 1e-16 // Min Value Javascript
     const data = message.data
-    const userEntries = data.userEntries
+    var userEntries = data.userEntries
     var savedUserList = data.savedUserList
     var alteredVariables = {
         format_in: {},
@@ -46,7 +46,7 @@ self.onmessage = (message) => {
     for(let i=0; i<userEntries.length; i++){
         var isNewAnime = false
         var anime = userEntries[i].media
-        var status = userEntries[i].status
+        var status = userEntries[i].status        
         var anilistId = anime.id
         // Save every anime status in userlist
         if(status!==null&&anilistId!==null){
