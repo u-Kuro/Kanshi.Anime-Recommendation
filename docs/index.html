@@ -776,8 +776,8 @@
         <button id="exportBtn">Export</button>
         <button id="warnAnimeBtn">Choose Content to Warn</button>
         <button id="hideKidsAnimeBtn">Hide Kids Anime</button>
-        <button id="updateIntervalBtn">Update Every 1 hour</button>
-        <button id="exportIntervalBtn">Export Every 1 hour</button>
+        <button id="updateIntervalBtn">Update Every Hour</button>
+        <button id="exportIntervalBtn">Export Every Hour</button>
         <button id="sign-up">Create Another Account</button>
     </div>
 </div>
@@ -935,7 +935,7 @@
 </div>
 
 <script defer>
-    const version = "1.1"
+    const version = "1.2"
     // Initialize Global Variables
         // IndexDB
     var request, db,
@@ -952,7 +952,8 @@
         // Load Saved API Request State
     savedAnalyzeVariableTime, savedUpdateAnalyzeAnimeTime, savedDeepUpdateTime,
     deepUpdateStartTime, isDeepUpdate, requestIntervalSeconds, savedLastRequestDate, requestPause,
-    updateStartTime, isRunning = false, requestIsRunning = false, isLoading = false, temp = []
+    updateStartTime, isRunning = false, requestIsRunning = false, isLoading = false,
+    willAutoUpdate=false, temp = []
     // Create IndexDB
     $(window).load(async function() {
         await new Promise((resolve)=>{
@@ -1340,9 +1341,8 @@
                         if(!requestIsRunning){
                             savedUsername = await retrieveJSON("savedUsername") || ""
                             if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
+                            willAutoUpdate = true
                             await Update()
-                            updateIntervalStartDate = await new Date()
-                            await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                         }
                     } else {
                         for(let i=0;i<updateIntervalTimeout.length;i++) await clearTimeout(updateIntervalTimeout[i])
@@ -1350,9 +1350,8 @@
                             if(!requestIsRunning){
                                 savedUsername = await retrieveJSON("savedUsername") || ""
                                 if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
+                                willAutoUpdate = true
                                 await Update()
-                                updateIntervalStartDate = await new Date()
-                                await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                             }
                         },await 3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                         await updateIntervalTimeout.push(saveUpdateIntervalTimeout)
@@ -2288,9 +2287,8 @@
                         if(!requestIsRunning){
                             savedUsername = await retrieveJSON("savedUsername") || ""
                             if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
+                            willAutoUpdate = true
                             Update()
-                            updateIntervalStartDate = new Date()
-                            saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                         }
                     } else {
                         for(let i=0;i<updateIntervalTimeout.length;i++) clearTimeout(updateIntervalTimeout[i])
@@ -2298,9 +2296,8 @@
                             if(!requestIsRunning){
                                 savedUsername = await retrieveJSON("savedUsername") || ""
                                 if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
+                                willAutoUpdate = true
                                 Update()
-                                updateIntervalStartDate = new Date()
-                                saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                             }
                         },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                         updateIntervalTimeout.push(saveUpdateIntervalTimeout)
@@ -3509,6 +3506,13 @@
                         showNotification("List has been updated!")
                         // Browser
                     } else {
+                        if(willAutoUpdate){
+                            (async()=>{
+                                updateIntervalStartDate = await new Date()
+                                await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                                willAutoUpdate = false
+                            })()
+                        }
                         $("#dataStatusContainer").fadeOut(250)
                         requestIsRunning = false
                     }

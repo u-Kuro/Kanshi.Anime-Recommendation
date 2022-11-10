@@ -532,8 +532,8 @@ self.onmessage = (message) => {
         }
         for(let i=0; i<varSchemeKeys.length; i++){
             var variables = varScheme[varSchemeKeys[i]]
-            for(let j=0; j<Object.keys(variables).length; j++){
-                var varEntries = Object.entries(variables)
+            var varEntries = Object.entries(variables)
+            for(let j=0; j<varEntries.length; j++){
                 tempVar[varEntries[j][0]] = varEntries[j][1]
             }
         }
