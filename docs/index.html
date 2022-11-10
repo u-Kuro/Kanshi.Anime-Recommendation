@@ -987,6 +987,9 @@
                     await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
                     return
                 }
+                worker0.onerror = () => {
+                    return
+                }
             }
         }).then(async()=>{
             setTimeout(()=>{
@@ -2869,6 +2872,8 @@
                                     var savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
                                     if(savedAnimeEntries.length>0){
                                         await analyzeAnime(savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, true)
+                                        updateAnimeList(username, varScheme, userListStatus, alteredVariables)
+                                    } else {
                                         updateAnimeList(username, varScheme, userListStatus, alteredVariables)
                                     }
                                 })()
