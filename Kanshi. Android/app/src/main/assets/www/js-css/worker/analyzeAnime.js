@@ -314,7 +314,7 @@ self.onmessage = (message) => {
                 animeContentOSMin.push(arrayMean(zgenresMin))
             }
             if(ztagsMin.length>0){
-            
+                animeContentOSMin.push(arrayMean(ztagsMin))
             }
             // Anime Production
             var animeProductionOSMin = []
