@@ -5,26 +5,26 @@ self.onmessage = async(message) => {
     const savedHiddenAnimeTitles = data.savedHiddenAnimeTitles
     const savedRecScheme = data.savedRecScheme
     const savedAnimeEntries = data.savedAnimeEntries
-    const savedLatestAnimeID = data.savedLatestAnimeID
     const savedUserList = data.savedUserList
     const savedAnalyzeVariableTime = data.savedAnalyzeVariableTime
     const savedUpdateAnalyzeAnimeTime = data.savedUpdateAnalyzeAnimeTime
     const savedDeepUpdateTime = data.savedDeepUpdateTime
     const lastAnilistPage = data.lastAnilistPage
     const savedAnalyzedVariablesCount = data.savedAnalyzedVariablesCount
+    const lastSavedUpdateTime = data.lastSavedUpdateTime
     const backupStr = JSON.stringify({
         savedUsername: savedUsername,
         savedWarnAnime: savedWarnAnime,
         savedHiddenAnimeTitles: savedHiddenAnimeTitles,
         savedRecScheme: savedRecScheme,
         savedAnimeEntries: savedAnimeEntries,
-        savedLatestAnimeID: savedLatestAnimeID,
         savedUserList: savedUserList,
         savedAnalyzeVariableTime: savedAnalyzeVariableTime,
         savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
         savedDeepUpdateTime: savedDeepUpdateTime,
         lastAnilistPage: lastAnilistPage,
-        savedAnalyzedVariablesCount: savedAnalyzedVariablesCount
+        savedAnalyzedVariablesCount: savedAnalyzedVariablesCount,
+        lastSavedUpdateTime: lastSavedUpdateTime,
     })
     //
     self.postMessage({

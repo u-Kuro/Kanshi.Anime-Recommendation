@@ -284,27 +284,27 @@ self.onmessage = (message) => {
                             type="button" class="show-anime" 
                             title="Hide this Anime">Show</button>
                     </td>
-                    <td class="anime-score" title="${weightedScore}">
+                    <td class="anime-score" title="${weightedScore||0}">
                         <div>
                             ${hasWarn?`<div title="${warns.join(', ')}"><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
-                            ${weightedScore}
+                            ${weightedScore||0}
                         </div>
                     </td>
                     <td id="animeTitle">
-                        <a target="_blank" rel="noopener noreferrer" href="${value.animeUrl||'javascript:;'}" data-value="${value.id}">${value.title}</a>
+                        <a target="_blank" rel="noopener noreferrer" href="${value.animeUrl||'javascript:;'}" data-value="${value.id||''}">${value.title||'Title: N/A'}</a>
                     </td>
                     <td>`
                         animeData += similarities.length>0 ? similarities.join(', ') : 'Top Similarities: N/A'
                         animeData += `
                     </td>
-                    <td class="anime-score" title="${score}">${score}</td>
-                    <td>${value.userStatus}</td>
-                    <td>${value.status}</td>
-                    <td>${value.genres}</td>
-                    <td>${value.tags}</td>
-                    <td>${value.format}</td>
-                    <td>${value.year}</td>
-                    <td>${value.season}</td>
+                    <td class="anime-score" title="${score||0}">${score||0}</td>
+                    <td>${value.userStatus||'User Status: N/A'}</td>
+                    <td>${value.status||'Status: N/A'}</td>
+                    <td>${value.genres||'Genres: N/A'}</td>
+                    <td>${value.tags||'Tags: N/A'}</td>
+                    <td>${value.format||'Format: N/A'}</td>
+                    <td>${value.year||'Year: N/A'}</td>
+                    <td>${value.season||'Season: N/A'}</td>
                     <td>`
                         animeData += studios.length>0 ? studios.join(', ') : 'Studios: N/A'
                         animeData += `
@@ -325,26 +325,26 @@ self.onmessage = (message) => {
                             type="button" class="hide-anime" 
                             title="Hide this Anime">Hide</button>
                     </td>
-                    <td class="anime-score" title="${weightedScore}">
+                    <td class="anime-score" title="${weightedScore||0}">
                         <div>
                             ${hasWarn?`<div title="${warns.join(', ')}"><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
-                            ${weightedScore}
+                            ${weightedScore||0}
                         </div>
                     </td>
                     <td id="animeTitle">
-                        <a target="_blank" rel="noopener noreferrer" href="${value.animeUrl||'javascript:;'}" data-value="${value.id}">${value.title}</a>
+                        <a target="_blank" rel="noopener noreferrer" href="${value.animeUrl||'javascript:;'}" data-value="${value.id||''}">${value.title||'Title: N/A'}</a>
                     </td>
                     <td>
                         ${similarities.length>0 ? similarities.join(', ') : 'Similarities: N/A'}
                     </td>
-                    <td class="anime-score" title="${score}">${score}</td>
-                    <td>${value.userStatus}</td>
-                    <td>${value.status}</td>
-                    <td>${value.genres}</td>
-                    <td>${value.tags}</td>
-                    <td>${value.format}</td>
-                    <td>${value.year}</td>
-                    <td>${value.season}</td>
+                    <td class="anime-score" title="${score||0}">${score||0}</td>
+                    <td>${value.userStatus||'User Status: N/A'}</td>
+                    <td>${value.status||'Status: N/A'}</td>
+                    <td>${value.genres||'Genres: N/A'}</td>
+                    <td>${value.tags||'Tags: N/A'}</td>
+                    <td>${value.format||'Format: N/A'}</td>
+                    <td>${value.year||'Year: N/A'}</td>
+                    <td>${value.season||'Season: N/A'}</td>
                     <td>
                         ${studios.length>0 ? studios.join(', ') : 'Studios: N/A'}
                     </td>

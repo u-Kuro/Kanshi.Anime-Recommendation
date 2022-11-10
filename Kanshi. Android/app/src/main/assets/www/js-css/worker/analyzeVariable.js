@@ -1,40 +1,27 @@
 self.onmessage = (message) => {
     const minNumber = 1-6e-17!==1? 6e-17 : 1e-16 // Min Value Javascript
     const data = message.data
-    const userList = data.userList.data
+    const userEntries = data.userEntries
     var savedUserList = data.savedUserList
     var alteredVariables = {
         format_in: {},
         year_in: {},
-        // season_in: {},
         genres_in: {},
         tags_in: {},
         studios_in: {},
-        staff_in: {}
+        staff_in: {},
     }
-    //Concat Completed, Watching, Drop, etc.
-    var animeList = userList.MediaListCollection.lists
-    var animeEntries = []
-    if(animeList.length>1){
-        for(let i=0; i<animeList.length; i++){
-            animeEntries = animeEntries.concat(animeList[i].entries)
+    // sort by popularity for unique anime in franchise
+    if(userEntries.length>1){
+        if(userEntries[0].media!==null&&userEntries[1].media!==null){
+            if(userEntries[0].media.popularity!==null&&userEntries[1].media.popularity!==null){
+                userEntries.sort((a,b)=>b.media.popularity-a.media.popularity)
+            }
         }
-    } else if(animeList.length===1) {
-        animeEntries = animeList[0].entries
     }
     var varScheme = {}
     // Check Watched
     var userListStatus = []
-    for(let i=0; i<animeList.length; i++){
-        if(animeList[i].status!==null){
-            for(let j=0; j<animeList[i].entries.length; j++){ 
-                userListStatus.push({
-                    id: animeList[i].entries[j].media.id,
-                    status: animeList[i].status
-                })
-            }
-        }
-    }
     // For Linear Regression Models
     var episodes = []
     var duration = []
@@ -44,31 +31,54 @@ self.onmessage = (message) => {
     var favourites = []
     var year = []
     //
-    // var genresCount = []
-    // var tagsCount = []
-    // var studiosCount = []
-    // var staffCount = []
-    //
     var formatMeanCount = {}
-    // var yearMeanCount = {}
-    // var seasonMeanCount = {}
     var genresMeanCount = {}
     var tagsMeanCount = {}
     var studiosMeanCount = {}
     var staffMeanCount = {}
+    // For Alert user if Scored List is 0
+    // to have a better recommendation
+    var userListCount = 0
     // For checking any deleted Anime
     var savedUserListIDs = Object.keys(savedUserList)
     // Analyze each Anime Variable
-    for(let i=0; i<animeEntries.length; i++){
-        // Check Any Changes in User List
+    var includedAnimeRelations = {}
+    for(let i=0; i<userEntries.length; i++){
         var isNewAnime = false
-        var anime = animeEntries[i].media
+        var anime = userEntries[i].media
+        var status = userEntries[i].status
         var anilistId = anime.id
-        var editedEntry = JSON.parse(JSON.stringify(animeEntries[i]))
-        delete editedEntry.media.duration
-        delete editedEntry.media.trending
-        delete editedEntry.media.popularity
-        delete editedEntry.media.favourites
+        // Save every anime status in userlist
+        if(status!==null&&anilistId!==null){
+            userListStatus.push({
+                id: anilistId,
+                status: status
+            })
+        }
+        // Check if a related anime is already analyzed
+        if(includedAnimeRelations[anilistId]!==undefined) continue
+        includedAnimeRelations[anilistId] = null
+        if(anime.relations!==null){
+            var animeRelations = anime.relations.edges
+            for(let j=0;j<animeRelations;j++){
+                var animeRelationsNode = animeRelations[j].node
+                var animeRelationType = animeRelations[j].relationType
+                if(animeRelationsNode!==null&&animeRelationType!==null){
+                    // Other characters may cast at a completely different anime
+                    if(animeRelationsNode.id!==null&&animeRelationType!=="CHARACTER"){
+                        includedAnimeRelations[animeRelationsNode.id] = null
+                    }
+                }
+            }
+        }
+        // Check Any Changes in User List
+        var editedEntry = JSON.parse(JSON.stringify(userEntries[i]))
+        if(editedEntry.media!==null){
+            delete editedEntry.media.duration
+            delete editedEntry.media.trending
+            delete editedEntry.media.popularity
+            delete editedEntry.media.favourites
+        }
         var newAnimeObjStr = JSON.stringify(editedEntry)
         if(savedUserList[anilistId]===undefined){
             isNewAnime = true
@@ -77,11 +87,10 @@ self.onmessage = (message) => {
             // Filter Anime not in the savedUserList, if one is deleted in Anilist
             savedUserListIDs = savedUserListIDs.filter((savedID)=>{return savedID!==anilistId})
         }
-        if(animeEntries[i].score>0){
-            var userScore = animeEntries[i].score
+        if(userEntries[i].score>0){
+            ++userListCount
+            var userScore = userEntries[i].score
             var format = {}
-            // var year = {}
-            // var season = {}
             var genres = {}
             var tags = {}
             var studios = {}
@@ -107,44 +116,6 @@ self.onmessage = (message) => {
                         alteredVariables.format_in["Format: "+anime.format] = 1
                     }
                 }
-                // if(anime.seasonYear!==null){
-                //     if(year["Year: "+anime.seasonYear]===undefined){
-                //         year["Year: "+anime.seasonYear] = {userScore:[userScore],count:1}
-                //     } else {
-                //         year["Year: "+anime.seasonYear].userScore.push(userScore)
-                //         year["Year: "+anime.seasonYear].count += 1
-                //     }
-                //     if(yearMeanCount["Year: "+anime.seasonYear]===undefined){
-                //         yearMeanCount["Year: "+anime.seasonYear] = 1
-                //     } else {
-                //         yearMeanCount["Year: "+anime.seasonYear] += 1
-                //     }
-                // }
-                // if((savedUserList[anilistId]!==newAnimeObjStr||isNewAnime)&&anime.seasonYear!==null){
-                //     savedUserList[anilistId] = newAnimeObjStr
-                //     if(alteredVariables.year_in["Year: "+anime.seasonYear]===undefined){
-                //         alteredVariables.year_in["Year: "+anime.seasonYear]=1
-                //     }
-                // }
-                // if(anime.season!==null){
-                //     if(season["Season: "+anime.season]===undefined){
-                //         season["Season: "+anime.season] = {userScore:[userScore],count:1}
-                //     } else {
-                //         season["Season: "+anime.season].userScore.push(userScore)
-                //         season["Season: "+anime.season].count += 1
-                //     }
-                //     if(seasonMeanCount["Season: "+anime.season]===undefined){
-                //         seasonMeanCount["Season: "+anime.season] = 1
-                //     } else {
-                //         seasonMeanCount["Season: "+anime.season] += 1
-                //     }
-                // }
-                // if((savedUserList[anilistId]!==newAnimeObjStr||isNewAnime)&&anime.season!==null){
-                //     savedUserList[anilistId] = newAnimeObjStr
-                //     if(alteredVariables.season_in["Season: "+anime.season]===undefined){
-                //         alteredVariables.season_in["Season: "+anime.season] = 1
-                //     }
-                // }
                 for(let j=0; j<anime.genres.length; j++){
                     if(anime.genres[j]!==null){
                         if(genres["Genre: "+anime.genres[j]]===undefined){
@@ -238,8 +209,7 @@ self.onmessage = (message) => {
                     }
                 }
                 varScheme = {
-                    format: format, //year: year, season: season,
-                    genres: genres, tags: tags, studios: studios, staff: staff,
+                    format: format, genres: genres, tags: tags, studios: studios, staff: staff
                 }
             } else {
                 var xformat = anime.format===null? null : "Format: "+anime.format
@@ -263,48 +233,6 @@ self.onmessage = (message) => {
                         formatMeanCount[xformat] = 1
                     }
                 }
-                // var xyear = anime.seasonYear===null? null : "Year: "+anime.seasonYear.toString()
-                // if(xyear!==null){
-                //     if(savedUserList[anilistId]!==newAnimeObjStr||isNewAnime){
-                //         savedUserList[anilistId] = newAnimeObjStr
-                //         if(alteredVariables.year_in[xyear]===undefined){
-                //             alteredVariables.year_in[xyear] = 1
-                //         }
-                //     }
-                //     if(varScheme.year[xyear]!==undefined){
-                //         varScheme.year[xyear].userScore.push(userScore)
-                //         varScheme.year[xyear].count += 1
-                //     }
-                //     else{
-                //         varScheme.year[xyear] = {userScore:[userScore],count:1}
-                //     }
-                //     if(yearMeanCount[xyear]!==undefined){
-                //         yearMeanCount[xyear] += 1
-                //     } else {
-                //         yearMeanCount[xyear] = 1
-                //     }
-                // }
-                // var xseason = anime.season===null? null : "Season: "+anime.season
-                // if(xseason!==null){
-                //     if(savedUserList[anilistId]!==newAnimeObjStr||isNewAnime){
-                //         savedUserList[anilistId] = newAnimeObjStr
-                //         if(alteredVariables.season_in[xseason]===undefined){
-                //             alteredVariables.season_in[xseason] = 1
-                //         }
-                //     }
-                //     if(varScheme.season[xseason]!==undefined){
-                //         varScheme.season[xseason].userScore.push(userScore)
-                //         varScheme.season[xseason].count += 1
-                //     }
-                //     else{
-                //         varScheme.season[xseason] = {userScore:[userScore],count:1}
-                //     }
-                //     if(seasonMeanCount[xseason]!==undefined){
-                //         seasonMeanCount[xseason] += 1
-                //     } else {
-                //         seasonMeanCount[xseason] = 1
-                //     }
-                // }
                 for(let j=0; j<anime.genres.length; j++){
                     var xgenres = anime.genres[j]===null? null : "Genre: "+anime.genres[j]
                     if(xgenres!==null){
@@ -436,24 +364,6 @@ self.onmessage = (message) => {
             if(isaN(parseInt(anime.seasonYear))){
                 year.push({userScore: userScore, year: parseInt(anime.seasonYear)})
             }
-            //
-            // if(isaN(anime.genres)){
-            //     genresCount.push({userScore: userScore, genresCount: anime.genres.length})
-            // }
-            // if(isaN(anime.tags)){
-            //     tagsCount.push({userScore: userScore, tagsCount: anime.tags.length})
-            // }
-            // if(isaN(anime.studios.nodes)){
-            //     var studioLength = 0
-            //     for(let i=0;i<anime.studios.nodes.length;i++){
-            //         if(!anime.studios.nodes[i].isAnimationStudio) continue
-            //         studioLength++
-            //     }
-            //     studiosCount.push({userScore: userScore, studiosCount: studioLength})
-            // }
-            // if(isaN(anime.staff.edges)){
-            //     staffCount.push({userScore: userScore, staffCount: anime.staff.edges.length})
-            // }
         }
     }
     // Check and Remove if User Deleted an Anime, and add its variables as altered
@@ -463,12 +373,6 @@ self.onmessage = (message) => {
         if(alteredVariables.format_in["Format: "+anime.format]===undefined){
             alteredVariables.format_in["Format: "+anime.format] = 1
         }
-        // if(alteredVariables.year_in["Year: "+anime.seasonYear]===undefined){
-        //     alteredVariables.year_in["Year: "+anime.seasonYear]=1
-        // }
-        // if(alteredVariables.season_in["Season: "+anime.season]===undefined){
-        //     alteredVariables.season_in["Season: "+anime.season] = 1
-        // }
         for(let j=0; j<anime.genres.length; j++){   
             if(alteredVariables.genres_in["Genre: "+anime.genres[j]]===undefined){
                 alteredVariables.genres_in["Genre: "+anime.genres[j]] = 1
@@ -483,7 +387,7 @@ self.onmessage = (message) => {
             if(!anime.studios.nodes[j].isAnimationStudio) continue
             if(alteredVariables.studios_in["Studio: "+anime.studios.nodes[j].name]===undefined){
                 alteredVariables.studios_in["Studio: "+anime.studios.nodes[j].name] = 1
-            }formatMeanCount
+            }
         }
         for(let j=0; j<anime.staff.edges.length; j++){
             if(alteredVariables.staff_in["Staff: "+anime.staff.edges[j].node.name.userPreferred]===undefined){
@@ -501,18 +405,6 @@ self.onmessage = (message) => {
     } else {
         formatMeanCount = minSampleSize
     }
-    // if(Object.values(yearMeanCount).length>0){
-    //     var tempyearMeanCount = arrayMode(Object.values(yearMeanCount))
-    //     yearMeanCount = tempyearMeanCount<minSampleSize?minSampleSize:tempyearMeanCount
-    // } else {
-    //     yearMeanCount = minSampleSize
-    // }
-    // if(Object.values(seasonMeanCount).length>0){
-    //     var tempseasonMeanCount = arrayMode(Object.values(seasonMeanCount))
-    //     seasonMeanCount = tempseasonMeanCount<minSampleSize?minSampleSize:tempseasonMeanCount
-    // } else {
-    //     seasonMeanCount = minSampleSize
-    // }
     if(Object.values(genresMeanCount).length>0){
         var tempgenresMeanCount = arrayMode(Object.values(genresMeanCount))
         genresMeanCount = tempgenresMeanCount<minSampleSize?minSampleSize:tempgenresMeanCount
@@ -557,42 +449,6 @@ self.onmessage = (message) => {
                 delete varScheme.format[formatKey[i]]
             }
         }
-        //
-        // var yearKey = Object.keys(varScheme.year)
-        // var yearMean = []
-        // for(let i=0; i<yearKey.length; i++){
-        //     yearMean.push(arrayMean(varScheme.year[yearKey[i]].userScore))
-        // }
-        // yearMean = arrayMean(yearMean)
-        // for(let i=0; i<yearKey.length; i++){
-        //     var tempScore = arrayMean(varScheme.year[yearKey[i]].userScore)
-        //     varScheme.year[yearKey[i]+"Min"] = tempScore
-        //     // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-        //     var count = varScheme.year[yearKey[i]].count
-        //     if(count>=yearMeanCount){//||tempScore<yearMean){
-        //         varScheme.year[yearKey[i]] = tempScore
-        //     } else {
-        //         delete varScheme.year[yearKey[i]]
-        //     }
-        // }
-        // //
-        // var seasonKey = Object.keys(varScheme.season)
-        // var seasonMean = []
-        // for(let i=0; i<seasonKey.length; i++){
-        //     seasonMean.push(arrayMean(varScheme.season[seasonKey[i]].userScore))
-        // }
-        // seasonMean = arrayMean(seasonMean)
-        // for(let i=0; i<seasonKey.length; i++){
-        //     var tempScore = arrayMean(varScheme.season[seasonKey[i]].userScore)
-        //     varScheme.season[seasonKey[i]+"Min"] = tempScore
-        //     // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-        //     var count = varScheme.season[seasonKey[i]].count
-        //     if(count>=seasonMeanCount){//||tempScore<seasonMean){
-        //         varScheme.season[seasonKey[i]] = tempScore
-        //     } else {
-        //         delete varScheme.season[seasonKey[i]]
-        //     }
-        // }
         //
         var genresKey = Object.keys(varScheme.genres)
         var genresMean = []
@@ -669,12 +525,10 @@ self.onmessage = (message) => {
         var varSchemeKeys = Object.keys(varScheme)
         var tempVar = {
             meanFormat: formatMean,
-            // meanYear: yearMean,
-            // meanSeason: seasonMean,
             meanGenres: genresMean,
             meanTags: tagsMean,
             meanStudios: studiosMean,
-            meanStaff: staffMean
+            meanStaff: staffMean,
         }
         for(let i=0; i<varSchemeKeys.length; i++){
             var variables = varScheme[varSchemeKeys[i]]
@@ -695,9 +549,7 @@ self.onmessage = (message) => {
         }
         if(yearXY.length>=limitSample){
             var tempLinearReg = linearRegression(yearXY)
-            // if(tempLinearReg.r2>r2Thresh){
-                animeDateModel.push([tempLinearReg,"yearModel"])
-            // }
+            animeDateModel.push([tempLinearReg,"yearModel"])
         }
         var sortedAnimeDateModels = animeDateModel.sort(function(a, b) {
             return b[0].r2 - a[0].r2;
@@ -718,12 +570,6 @@ self.onmessage = (message) => {
                 animeLengthModels.push([tempLinearReg,"episodesModel"])
             }
         }
-        // if(episodesX.length>0&&episodesY.length>0){
-        //     var tempLinearReg = linearRegression(episodesX,episodesY)
-        //     if(tempLinearReg.r2>r2Thresh){
-        //         tempVar["episodesModel"] = tempLinearReg
-        //     }
-        // }
         var durationXY = []
         for(let i=0; i<duration.length;i++){
             durationXY.push([duration[i].duration,duration[i].userScore])
@@ -734,12 +580,6 @@ self.onmessage = (message) => {
                 animeLengthModels.push([tempLinearReg,"durationModel"])
             }
         }
-        // if(durationX.length>0&&durationY.length>0){
-        //     var tempLinearReg = linearRegression(durationX,durationY)
-        //     if(tempLinearReg.r2>r2Thresh){
-        //         tempVar["durationModel"] = tempLinearReg
-        //     }
-        // }
         var sortedAnimeLengthModels = animeLengthModels.sort(function(a, b) {
             return b[0].r2 - a[0].r2;
         })
@@ -755,9 +595,7 @@ self.onmessage = (message) => {
         }
         if(averageScoreXY.length>=limitSample){
             var tempLinearReg = linearRegression(averageScoreXY)
-            // if(tempLinearReg.r2>r2Thresh){
-                wellKnownAnimeModels.push([tempLinearReg,"averageScoreModel"])
-            // }
+            wellKnownAnimeModels.push([tempLinearReg,"averageScoreModel"])
         }
         var trendingXY = []
         for(let i=0; i<trending.length;i++){
@@ -765,48 +603,24 @@ self.onmessage = (message) => {
         }
         if(trendingXY.length>=limitSample){
             var tempLinearReg = linearRegression(trendingXY)
-            // if(tempLinearReg.r2>r2Thresh){
-                wellKnownAnimeModels.push([tempLinearReg,"trendingModel"])
-            // }
+            wellKnownAnimeModels.push([tempLinearReg,"trendingModel"])
         }
-        // if(trendingX.length>0&&trendingY.length>0){
-        //     var tempLinearReg = linearRegression(trendingX,trendingY)
-        //     if(tempLinearReg.r2>r2Thresh){
-        //         tempVar["trendingModel"] = tempLinearReg
-        //     }
-        // }
         var popularityXY = []
         for(let i=0; i<popularity.length;i++){
             popularityXY.push([popularity[i].popularity,popularity[i].userScore])
         }
         if(popularityXY.length>=limitSample){
             var tempLinearReg = linearRegression(popularityXY)
-            // if(tempLinearReg.r2>r2Thresh){
-                wellKnownAnimeModels.push([tempLinearReg,"popularityModel"])
-            // }
+            wellKnownAnimeModels.push([tempLinearReg,"popularityModel"])
         }
-        // if(popularityX.length>0&&popularityY.length>0){
-        //     var tempLinearReg = linearRegression(popularityX,popularityY)
-        //     if(tempLinearReg.r2>r2Thresh){
-        //         tempVar["popularityModel"] = tempLinearReg
-        //     }
-        // }
         var favouritesXY = []
         for(let i=0; i<favourites.length;i++){
             favouritesXY.push([favourites[i].favourites,favourites[i].userScore])
         }
         if(favouritesXY.length>=limitSample){
             var tempLinearReg = linearRegression(favouritesXY)
-            // if(tempLinearReg.r2>r2Thresh){
-                wellKnownAnimeModels.push([tempLinearReg,"favouritesModel"])
-            // }
+            wellKnownAnimeModels.push([tempLinearReg,"favouritesModel"])
         }
-        // if(favouritesX.length>0&&favouritesY.length>0){
-        //     var tempLinearReg = linearRegression(favouritesX,favouritesY)
-        //     if(tempLinearReg.r2>r2Thresh){
-        //         tempVar["favouritesModel"] = tempLinearReg
-        //     }
-        // }
         var sortedWellKnownAnimeModels = wellKnownAnimeModels.sort(function(a, b) {
             return b[0].r2 - a[0].r2;
         })
@@ -820,7 +634,8 @@ self.onmessage = (message) => {
         varScheme: varScheme, 
         userListStatus: userListStatus,
         savedUserList: savedUserList,
-        alteredVariables: alteredVariables
+        alteredVariables: alteredVariables,
+        userListCount: userListCount
     })
     // Used Function
     function isaN(num){
@@ -835,21 +650,12 @@ self.onmessage = (message) => {
     function arraySum(obj) {
         return obj.reduce((a, b) => a + b, 0)
     }
-    function arrayMedian(obj) {
-        var sorted = Array.from(obj).sort((a, b) => a - b);
-        var middle = Math.floor(sorted.length / 2);
-        if (sorted.length % 2 === 0) {
-            return (sorted[middle - 1] + sorted[middle]) / 2;
-        }
-        return sorted[middle];
-    }
     function arrayMode(obj){
         if(obj.length===0){return}
         else if(obj.length===1){return obj[0]}
         else if(obj.length===2){return (obj[0]+obj[1])/2}
         var max = parseFloat(Math.max(...obj))
         var min = parseFloat(Math.min(...obj))
-        // var maxNumOfDec = obj.join(',').match(/((?<=\.)\d+)/g)?.reduce((acc,el)=>acc>=el.length?acc:el.length,0)??0
         const boundary = minNumber
         var classW = parseFloat(((max-min)/(1.0+(3.322*Math.log(obj.length)))))
         var classIs
@@ -908,103 +714,4 @@ self.onmessage = (message) => {
         lr['r2'] = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
         return lr;
     }
-    // // Polynomial Regression
-    // function polynomialRegression(data, order=2) {
-    //     var lhs = []
-    //     var rhs = []
-    //     var a = 0
-    //     var b = 0
-    //     var len = data.length
-    //     var k = order + 1
-    //     for (var i = 0; i < k; i++) {
-    //         for (var l = 0; l < len; l++) {
-    //             if (data[l][1] !== null) {
-    //                 a += Math.pow(data[l][0], i) * data[l][1]
-    //             }
-    //         }
-    //         lhs.push(a)
-    //         a = 0
-    //         var c = []
-    //         for (var j = 0; j < k; j++) {
-    //             for (var _l = 0; _l < len; _l++) {
-    //                 if (data[_l][1] !== null) {
-    //                     b += Math.pow(data[_l][0], i + j)
-    //                 }
-    //             }
-    //             c.push(b)
-    //             b = 0
-    //         }
-    //         rhs.push(c)
-    //     }
-    //     rhs.push(lhs)
-    //     var coefficients = gaussianElimination(rhs, k).map(function (v) {
-    //         return v
-    //     })
-    //     // var points = data.map(function (point) {
-    //     //     return coefficients.reduce(function (sum, coeff, power) {
-    //     //         return sum + coeff * Math.pow(point[0], power);
-    //     //     }, 0)
-    //     // })
-    //     return {
-    //         coefficients: coefficients,
-    //         // r2: determinationCoefficient(data, points)
-    //     }
-    // }
-    // // Helpers For Polynomial
-    // function gaussianElimination(input, order) {
-    //     var matrix = input;
-    //     var n = input.length - 1;
-    //     var coefficients = [order];
-    //     for (var i = 0; i < n; i++) {
-    //         var maxrow = i;
-    //         for (var j = i + 1; j < n; j++) {
-    //             if (Math.abs(matrix[i][j]) > Math.abs(matrix[i][maxrow])) {
-    //                 maxrow = j;
-    //             }
-    //         }
-    //         for (var k = i; k < n + 1; k++) {
-    //             var tmp = matrix[k][i];
-    //             matrix[k][i] = matrix[k][maxrow];
-    //             matrix[k][maxrow] = tmp;
-    //         }
-    //         for (var _j = i + 1; _j < n; _j++) {
-    //             for (var _k = n; _k >= i; _k--) {
-    //                 matrix[_k][_j] -= matrix[_k][i] * matrix[i][_j] / matrix[i][i];
-    //             }
-    //         }
-    //     }
-    //     for (var _j2 = n - 1; _j2 >= 0; _j2--) {
-    //         var total = 0;
-    //         for (var _k2 = _j2 + 1; _k2 < n; _k2++) {
-    //             total += matrix[_k2][_j2] * coefficients[_k2];
-    //         }
-
-    //         coefficients[_j2] = (matrix[n][_j2] - total) / matrix[_j2][_j2];
-    //     }
-    //     return coefficients;
-    // }
-    // function determinationCoefficient(data, results) {
-    //     var predictions = [];
-    //     var observations = [];
-    //     data.forEach(function (d, i) {
-    //         if (d[1] !== null) {
-    //             observations.push(d);
-    //             predictions.push(results[i]);
-    //         }
-    //     })
-    //     var sum = observations.reduce(function (a, observation) {
-    //         return a + observation[1];
-    //     }, 0);
-    //     var mean = sum / observations.length;
-    //     var ssyy = observations.reduce(function (a, observation) {
-    //         var difference = observation[1] - mean;
-    //         return a + difference * difference;
-    //     }, 0);
-    //     var sse = observations.reduce(function (accum, observation, index) {
-    //         var prediction = predictions[index];
-    //         var residual = observation[1] - prediction[1];
-    //         return accum + residual * residual;
-    //     }, 0);
-    //     return 1 - sse / ssyy;
-    // }
 }
