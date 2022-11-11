@@ -951,8 +951,8 @@
     // Broweser
         // Load Saved API Request State
     savedAnalyzeVariableTime, savedUpdateAnalyzeAnimeTime, savedDeepUpdateTime,
-    deepUpdateStartTime, isDeepUpdate, requestIntervalSeconds, savedLastRequestDate, requestPause,
-    updateStartTime, isRunning = false, requestIsRunning = false, isLoading = false,
+    deepUpdateStartTime, requestIntervalSeconds, savedLastRequestDate,
+    updateStartTime, isDeepUpdate = false, isRunning = false, requestIsRunning = false, isLoading = false,
     willAutoUpdate=false, temp = []
     // Create IndexDB
     $(window).load(async function() {
@@ -1123,6 +1123,9 @@
                 if(await savedUsername.length>0){
                     await $("#username").val(savedUsername)
                     await $("#updateIntervalBtn").show()
+                } else {
+                    savedUserList = {}
+                    saveJSON(savedUserList,"savedUserList")
                 }
                 // Reload FilterOptions
                 savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson") || []
@@ -1213,14 +1216,18 @@
                     if(await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias").length){
                         await clearInterval(reloadSavedData)
                         // Reload Filters
-                        var filterInput
-                        savedFilters = await retrieveJSON("savedFilters") || []
-                        for(let i=0; i<savedFilters.length; i++) {
-                            filterInput = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
-                            await filterInput.val(savedFilters[i])
-                            var e = await $.Event("keyup",{keyCode:13})
-                            await filterInput.trigger(e)
-                            await filterInput.val("")
+                        if(savedUsername!==undefined){
+                            if(savedUsername.length>0){
+                                var filterInput
+                                savedFilters = await retrieveJSON("savedFilters") || []
+                                for(let i=0; i<savedFilters.length; i++) {
+                                    filterInput = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
+                                    await filterInput.val(savedFilters[i])
+                                    var e = await $.Event("keyup",{keyCode:13})
+                                    await filterInput.trigger(e)
+                                    await filterInput.val("")
+                                }
+                            }
                         }
                         // Check if the List shown is Hidden List or Unhidden List -> Rename th button
                         var filters = await $("#filters .flexdatalist-multiple").children("li.value")
@@ -1376,14 +1383,14 @@
                     exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                     await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hrs
-                        $("#dataStatusContainer").fadeOut(250)
+                        $("#dataStatusContainer").fadeOut(500)
                         setTimeout(()=>{
                             $("#dataStatusSpinner").show()
                             $("#dataStatus")
                                 .empty()
                                 .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                            $("#dataStatusContainer").css("display","flex").fadeIn(250)
-                        },250)
+                            $("#dataStatusContainer").css("display","flex").fadeIn(500)
+                        },500)
                         var worker2 = new Worker(`./js-css/worker/export-${version}.js`)
                         const savedUsername = await retrieveJSON("savedUsername")
                         const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
@@ -1419,7 +1426,7 @@
                             exportIntervalStartDate = await new Date()
                             await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                             if(!requestIsRunning){
-                                await $("#dataStatusContainer").fadeOut(250)
+                                await $("#dataStatusContainer").fadeOut(500)
                             }
                             await Swal.fire({
                                 heightAuto: false,
@@ -1431,14 +1438,14 @@
                     } else {
                         for(let i=0;i<exportIntervalTimeout.length;i++) await clearTimeout(exportIntervalTimeout[i])
                         var saveExportIntervalTimeout = await setTimeout(async()=>{
-                            $("#dataStatusContainer").fadeOut(250)
+                            $("#dataStatusContainer").fadeOut(500)
                             setTimeout(()=>{
                                 $("#dataStatusSpinner").show()
                                 $("#dataStatus")
                                     .empty()
                                     .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                $("#dataStatusContainer").css("display","flex").fadeIn(250)
-                            },250)
+                                $("#dataStatusContainer").css("display","flex").fadeIn(500)
+                            },500)
                             var worker3 = new Worker(`./js-css/worker/export-${version}.js`)
                             const savedUsername = await retrieveJSON("savedUsername")
                             const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
@@ -1474,7 +1481,7 @@
                                 exportIntervalStartDate = await new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                 if(!requestIsRunning){
-                                    await $("#dataStatusContainer").fadeOut(250)
+                                    await $("#dataStatusContainer").fadeOut(500)
                                 }
                                 await Swal.fire({
                                     heightAuto: false,
@@ -1547,7 +1554,7 @@
                     if(requestIsRunning){
                         Swal.fire({
                             heightAuto: false,
-                            text: "List is already updating! Please wait a moment...",
+                            text: "List is still updating! Please wait a moment... You may restart to cancel the current queue.",
                             icon: "info",
                             confirmButtonColor: "#000"
                         })
@@ -1586,7 +1593,7 @@
             } else {
                 Swal.fire({
                     heightAuto: false,
-                    text: "List is already updating! Please wait a moment...",
+                    text: "List is still updating! Please wait a moment... You may restart to cancel the current queue.",
                     icon: "info",
                     confirmButtonColor: "#000"
                 })
@@ -1596,13 +1603,13 @@
     $("#menuIcon, #menuTitle").on("click",()=>{
         var menu = $(".menu-container")
         if(menu.css("display")=="none"){
-            menu.fadeIn(250)
+            menu.fadeIn(500)
         } else {
-            menu.fadeOut(250)
+            menu.fadeOut(500)
         }
     })
     $("#updateBtn").on('click', async ()=>{
-        var savedUpdateTime = (await retrieveJSON("savedAnalyzeVariableTime") || 20) + (await retrieveJSON("savedUpdateAnalyzeAnimeTime") || 3)
+        var savedUpdateTime = (await retrieveJSON("savedAnalyzeVariableTime") || 90) + (await retrieveJSON("savedUpdateAnalyzeAnimeTime") || 3)
         if(!requestIsRunning){
             Swal.fire({
                 heightAuto: false,
@@ -1634,7 +1641,7 @@
                             icon: "question",
                             reverseButtons: true
                         }).then(async(value)=>{
-                            $(".menu-container").fadeOut(250)
+                            $(".menu-container").fadeOut(500)
                             if(value.isConfirmed){
                                 // Reset User List
                                 savedUserList = {}
@@ -1646,14 +1653,14 @@
                         })
                     } else {
                         Update()
-                        $(".menu-container").fadeOut(250)
+                        $(".menu-container").fadeOut(500)
                     }
                 }
             })
         } else {
             Swal.fire({
                 heightAuto: false,
-                text: "List is already updating! Please wait a moment...",
+                text: "List is still updating! Please wait a moment... You may restart to cancel the current queue.",
                 icon: "info",
                 confirmButtonColor: "#000"
             })
@@ -1680,13 +1687,13 @@
                     deepUpdateStartTime = new Date()
                     isDeepUpdate = true
                     await Update()
-                    $(".menu-container").fadeOut(250)
+                    $(".menu-container").fadeOut(500)
                 }
             })
         } else {
             Swal.fire({
                 heightAuto: false,
-                text: "List is already updating! Please wait a moment...",
+                text: "List is still updating! Please wait a moment... You may restart to cancel the current queue.",
                 icon: "info",
                 confirmButtonColor: "#000"
             })
@@ -1829,7 +1836,7 @@
                 },0)
                 saveJSON("Unhidden","savedTableStatus")
                 $("#showAllAnime").hide()
-                $(".menu-container").fadeOut(250)
+                $(".menu-container").fadeOut(500)
                 Swal.fire({
                     heightAuto: false,
                     text: "All hidden anime has now been successfully transferred to your List!",
@@ -1893,15 +1900,15 @@
                                     })
                                     reject()
                                 } else {
-                                    await $(".menu-container").fadeOut(250)
-                                    $("#dataStatusContainer").fadeOut(250)
+                                    await $(".menu-container").fadeOut(500)
+                                    $("#dataStatusContainer").fadeOut(500)
                                     setTimeout(()=>{
                                         $("#dataStatusSpinner").show()
                                         $("#dataStatus")
                                             .empty()
                                             .append(`<span style="white-space:nowrap;">Importing data, please wait...`)
-                                        $("#dataStatusContainer").css("display","flex").fadeIn(250)
-                                    },250)
+                                        $("#dataStatusContainer").css("display","flex").fadeIn(500)
+                                    },500)
                                     resolve()
                                 }
                             }).then(async()=>{
@@ -1928,7 +1935,7 @@
                                 savedUserList = await fileContent.savedUserList || {}
                                 await saveJSON(savedUserList,"savedUserList")
                             }).then(async()=>{
-                                savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || 20
+                                savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || 90
                                 await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
                             }).then(async()=>{
                                 savedUpdateAnalyzeAnimeTime = await fileContent.savedUpdateAnalyzeAnimeTime || 3
@@ -2004,7 +2011,7 @@
                             }).then(async()=>{
                                 $("#importFile")[0].value = null
                                 if(!requestIsRunning){
-                                    $("#dataStatusContainer").fadeOut(250) 
+                                    $("#dataStatusContainer").fadeOut(500) 
                                 }
                                 await Swal.fire({
                                     heightAuto: false,
@@ -2080,7 +2087,7 @@
                         savedUserList = await fileContent.savedUserList || {}
                         await saveJSON(savedUserList,"savedUserList")
                     }).then(async()=>{
-                        savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || 20
+                        savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || 90
                         await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
                     }).then(async()=>{
                         savedUpdateAnalyzeAnimeTime = await fileContent.savedUpdateAnalyzeAnimeTime || 3
@@ -2187,15 +2194,15 @@
         .then(async(value) => {
             if(value.isConfirmed){
                 await new Promise(async(resolve)=>{
-                    await $(".menu-container").fadeOut(250)
-                    $("#dataStatusContainer").fadeOut(250)
+                    await $(".menu-container").fadeOut(500)
+                    $("#dataStatusContainer").fadeOut(500)
                     setTimeout(()=>{
                         $("#dataStatusSpinner").show()
                         $("#dataStatus")
                             .empty()
                             .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                        $("#dataStatusContainer").css("display","flex").fadeIn(250)
-                    },250)
+                        $("#dataStatusContainer").css("display","flex").fadeIn(500)
+                    },500)
                     resolve()
                 }).then(async()=>{
                     var worker4 = new Worker(`./js-css/worker/export-${version}.js`)
@@ -2231,7 +2238,7 @@
                         await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                         // Browser
                         if(!requestIsRunning){
-                            await $("#dataStatusContainer").fadeOut(250)
+                            await $("#dataStatusContainer").fadeOut(500)
                         }
                         await Swal.fire({
                             heightAuto: false,
@@ -2353,15 +2360,15 @@
                     saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
                         await new Promise(async(resolve)=>{
-                            await $(".menu-container").fadeOut(250)
-                            $("#dataStatusContainer").fadeOut(250)
+                            await $(".menu-container").fadeOut(500)
+                            $("#dataStatusContainer").fadeOut(500)
                             setTimeout(()=>{
                                 $("#dataStatusSpinner").show()
                                 $("#dataStatus")
                                     .empty()
                                     .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                $("#dataStatusContainer").css("display","flex").fadeIn(250)
-                            },250)
+                                $("#dataStatusContainer").css("display","flex").fadeIn(500)
+                            },500)
                             resolve()
                         }).then(async()=>{
                             var worker5 = new Worker(`./js-css/worker/export-${version}.js`)
@@ -2399,7 +2406,7 @@
                                 exportIntervalStartDate = await new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                 if(!requestIsRunning){
-                                    await $("#dataStatusContainer").fadeOut(250)
+                                    await $("#dataStatusContainer").fadeOut(500)
                                 }
                                 await Swal.fire({
                                     heightAuto: false,
@@ -2412,14 +2419,14 @@
                     } else {
                         for(let i=0;i<exportIntervalTimeout.length;i++) clearTimeout(exportIntervalTimeout[i])
                         var saveExportIntervalTimeout = setTimeout(async()=>{
-                            $("#dataStatusContainer").fadeOut(250)
+                            $("#dataStatusContainer").fadeOut(500)
                             setTimeout(()=>{
                                 $("#dataStatusSpinner").show()
                                 $("#dataStatus")
                                     .empty()
                                     .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                $("#dataStatusContainer").css("display","flex").fadeIn(250)
-                            },250)
+                                $("#dataStatusContainer").css("display","flex").fadeIn(500)
+                            },500)
                             var worker6 = new Worker(`./js-css/worker/export-${version}.js`)
                             const savedUsername = await retrieveJSON("savedUsername")
                             const savedHiddenAnimeTitles = await retrieveJSON("savedHiddenAnimeTitles")
@@ -2455,7 +2462,7 @@
                                 exportIntervalStartDate = await new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                 if(!requestIsRunning){
-                                    await $("#dataStatusContainer").fadeOut(250)
+                                    await $("#dataStatusContainer").fadeOut(500)
                                 }
                                 await Swal.fire({
                                     heightAuto: false,
@@ -2483,11 +2490,11 @@
         }
         await saveJSON(warnAnime,"savedWarnAnime")
         savedRecScheme = await retrieveJSON("savedRecScheme")
-        await $("#warnAnimeContainer").removeClass("swal2-show").addClass("swal2-hide").fadeOut(250)
+        await $("#warnAnimeContainer").removeClass("swal2-show").addClass("swal2-hide").fadeOut(500)
         LoadData(savedRecScheme)
     })
     $("#warnAnimeContainer, #cancelWarnAnime").on("click",()=>{
-        $("#warnAnimeContainer").removeClass("swal2-show").addClass("swal2-hide").fadeOut(250)
+        $("#warnAnimeContainer").removeClass("swal2-show").addClass("swal2-hide").fadeOut(500)
     })
     $("#warnAnimeContainer .swal-modal-custom").on("click",(e)=>{
         e.stopImmediatePropagation()
@@ -2507,72 +2514,74 @@
         }).then(async(value)=>{
             if(value.isConfirmed){
                 await window.open('https://anilist.co/signup', '_blank')
-                const { value: username} = await Swal.fire({
-                    heightAuto: false,
-                    text: "Done signing-up your new account with Anilist? Update with your new username to load your own data.",
-                    input: 'text',
-                    inputLabel: 'Enter your Anilist Username:',
-                    customClass: {
-                        icon: 'no-border'
-                    },
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    showConfirmButton: true,
-                    confirmButtonText: "Update",
-                    confirmButtonColor: '#000',
-                    showDenyButton: true,
-                    denyButtonColor: '#e27d81',
-                    denyButtonText: "Cancel",
-                    reverseButtons: true,
-                    inputValidator: async(value) => {
-                        return await new Promise(async(resolve) => {
-                            if(!value) {
-                                resolve("You need to write Something...")
-                            } else {
-                                $.ajax({
-                                    type: 'POST',
-                                    url: 'https://graphql.anilist.co',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'Accept': 'application/json',
-                                    },
-                                    dataType: 'json',
-                                    data: JSON.stringify({
-                                        query: `{User(name:"${value}"){name}}`
-                                    }),
-                                    beforeSend: () => {
-                                        $(".swal2-validation-message").addClass("no-before")
-                                        .css({display:"flex"})
-                                        .html(
-                                            `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
-                                                <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div></div>
-                                                <div>Checking Username...</div>
-                                            </div>`
-                                        )
-                                    },
-                                    success: (data) => {
-                                        $("#UsernameValidation").fadeOut(250,()=>{
-                                            $("#UsernameValidation").remove()
-                                            $(".swal2-validation-message")
-                                                .addClass("swal2-validation-message-custom-success")
-                                                .html("Username Found")
-                                            setTimeout(()=>{
-                                                resolve()
-                                            },500) 
-                                        })
-                                    },
-                                    error: (err) =>{
-                                        $("#UsernameValidation").fadeOut(250,()=>$(this).remove())
-                                        resolve("Username not Found, Please Try Again")
-                                    }
-                                })
-                            }
-                        })
+                if(!requestIsRunning){
+                    const { value: username} = await Swal.fire({
+                        heightAuto: false,
+                        text: "Done signing-up your new account with Anilist? Update with your new username to load your own data.",
+                        input: 'text',
+                        inputLabel: 'Enter your Anilist Username:',
+                        customClass: {
+                            icon: 'no-border'
+                        },
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        showConfirmButton: true,
+                        confirmButtonText: "Update",
+                        confirmButtonColor: '#000',
+                        showDenyButton: true,
+                        denyButtonColor: '#e27d81',
+                        denyButtonText: "Cancel",
+                        reverseButtons: true,
+                        inputValidator: async(value) => {
+                            return await new Promise(async(resolve) => {
+                                if(!value) {
+                                    resolve("You need to write Something...")
+                                } else {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'https://graphql.anilist.co',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Accept': 'application/json',
+                                        },
+                                        dataType: 'json',
+                                        data: JSON.stringify({
+                                            query: `{User(name:"${value}"){name}}`
+                                        }),
+                                        beforeSend: () => {
+                                            $(".swal2-validation-message").addClass("no-before")
+                                            .css({display:"flex"})
+                                            .html(
+                                                `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                                    <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div></div>
+                                                    <div>Checking Username...</div>
+                                                </div>`
+                                            )
+                                        },
+                                        success: (data) => {
+                                            $("#UsernameValidation").fadeOut(500,()=>{
+                                                $("#UsernameValidation").remove()
+                                                $(".swal2-validation-message")
+                                                    .addClass("swal2-validation-message-custom-success")
+                                                    .html("Username Found")
+                                                setTimeout(()=>{
+                                                    resolve()
+                                                },500) 
+                                            })
+                                        },
+                                        error: (err) =>{
+                                            $("#UsernameValidation").fadeOut(500,()=>$(this).remove())
+                                            resolve("Username not Found, Please Try Again")
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
+                    if(username){
+                        await $("#username").val(username)
+                        Update()
                     }
-                })
-                if(username){
-                    await $("#username").val(username)
-                    Update()
                 }
             }
         })
@@ -2637,73 +2646,26 @@
             filterInput[0].setCustomValidity("Select or Enter a word to Filter!")
             filterInput[0].reportValidity()
         } else {
-            savedUsername = await retrieveJSON("savedUsername") || ""
-            if(savedUsername.length===0){
-                saveJSON(username,"savedUsername")
-            }
-            requestPause = await retrieveJSON("requestPause") || false
-            savedLastRequestDate = await retrieveJSON("savedLastRequestDate") || new Date(Date.now()-60001)
-            if(!requestPause
-            ||(((new Date().getTime())-savedLastRequestDate.getTime())>60000)){
-                // Search New Data
-                requestPause = true
-                saveJSON(requestPause,"requestPause")
-                var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
-                var filters = []
-                for(let i=0; i<filterInputs.length; i++){
-                    var filterName = filterInputs[i].textContent
-                    filters.push(filterName)
-                }
-                saveJSON(filters, "savedFilters")
-                analyzeVariables(username)
-            } else {
-                if(!requestIsRunning){
-                    for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
-                    $("#dataStatusContainer").fadeOut(250)
-                    setTimeout(()=>{
-                        $("#dataStatusSpinner").show()
-                        $("#dataStatusContainer").css("display","flex").fadeIn(250)
-                    },250)
-                    requestIntervalSeconds = Math.round(60-(((new Date()).getTime()-savedLastRequestDate.getTime())/1000)) || 60
-                    for(let i=requestIntervalSeconds; i>=0; i--){
-                        let timeout = setTimeout(async()=>{
-                            if(i===0){
-                                requestPause = false
-                                saveJSON(requestPause,"requestPause")
-                                $("#dataStatusContainer").fadeOut(250)
-                                if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
-                                setTimeout(()=>{
-                                    Update()
-                                },250)
-                            } else {
-                                $("#dataStatus")
-                                    .empty()
-                                    .append(`<span style="white-space:nowrap;">Please wait for another Update...⠀</span><span style="white-space:nowrap;">Estimated Time: ${msToTime(i*1000)}</span>`)
-                            }
-                        },(requestIntervalSeconds-i)*1000)
-                        temp.push(timeout)
-                    }
-                }
-            }
+            analyzeVariables(username)
         }
     }
 
     async function analyzeVariables(username) {
-        // Allow One Instance
-        if(requestIsRunning)return
-        else requestIsRunning = true
-        var savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || 20
+        if(!requestIsRunning){
+            requestIsRunning = true
+        }
+        var savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || 90
         var lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
         if(lastSavedUpdateTime===0){
             isDeepUpdate = true
         }
         var AnalyzeVariableStartTime = new Date()
         //
-        $("#dataStatusContainer").fadeOut(250)
+        $("#dataStatusContainer").fadeOut(500)
         setTimeout(()=>{
-            $("#dataStatusSpinner").show()
-            $("#dataStatusContainer").css("display","flex").fadeIn(250)
-        },250)
+            $("#dataStatusSpinner").fadeIn(500)
+            $("#dataStatusContainer").css("display","flex").fadeIn(500)
+        },500)
         for(let i=0;i<temp.length;i++) clearTimeout(temp[i])
         for(let i=savedAnalyzeVariableTime; i>0; i--){
             var timeout = setTimeout(()=>{
@@ -2722,10 +2684,10 @@
                 var query = `
                 {
                     MediaListCollection(userName: "${username}", 
-                      chunk:${chunk}, 
-                      perChunk:${maxAnimePerChunk}, 
-                      forceSingleCompletedList: true,
-                      type: ANIME) {
+                    chunk:${chunk}, 
+                    perChunk:${maxAnimePerChunk}, 
+                    forceSingleCompletedList: true,
+                    type: ANIME) {
                         hasNextChunk
                         lists {
                             entries {
@@ -2792,14 +2754,6 @@
                     data: JSON.stringify({
                         query: query
                     }),
-                    beforeSend: async () => {
-                        requestIsRunning = true
-                        // Reset User List
-                        if(isDeepUpdate){
-                            savedUserList = {}
-                            await saveJSON(savedUserList,"savedUserList")
-                        }
-                    },
                     success: (result)=> {
                         var userList = result.data.MediaListCollection.lists
                         var hasNextChunk = result.data.MediaListCollection.hasNextChunk || userList.length>0
@@ -2809,6 +2763,11 @@
                         if(hasNextChunk){
                             return recallAV(++chunk)
                         } else {
+                            // Reset User List
+                            if(isDeepUpdate){
+                                savedUserList = {}
+                                saveJSON(savedUserList,"savedUserList")
+                            }
                             var worker7 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
                             worker7.postMessage({savedUserList: savedUserList, userEntries: userEntries})
                             worker7.onmessage = (message) => {
@@ -2862,7 +2821,6 @@
                                     })
                                 }
                                 savedUserList = data.savedUserList
-                                saveJSON(savedUserList,"savedUserList")
                                 const varScheme = data.varScheme
                                 const userListStatus = data.userListStatus
                                 const alteredVariables = data.alteredVariables
@@ -2872,9 +2830,10 @@
                                     var savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
                                     if(savedAnimeEntries.length>0){
                                         await analyzeAnime(savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, true)
-                                        updateAnimeList(username, varScheme, userListStatus, alteredVariables)
+                                        await updateAnimeList(username, varScheme, userListStatus, alteredVariables)
+                                        saveJSON(savedUserList,"savedUserList")
                                     } else {
-                                        updateAnimeList(username, varScheme, userListStatus, alteredVariables)
+                                        await updateAllAnimeList(username, varScheme, userListStatus, alteredVariables, savedUserList)
                                     }
                                 })()
                             }
@@ -2887,11 +2846,12 @@
                                 err = JSON.parse(xhr.responseText).errors[0].message
                                 console.error(JSON.parse(xhr.responseText))
                             }
-                            $("#dataStatusContainer").fadeOut(250)
+                            $("#dataStatusContainer").fadeOut(500)
                             setTimeout(async ()=>{
                                 $("#dataStatusSpinner").show()
-                            },250)
+                            },500)
                             if(err==="User not found"){
+                                requestIsRunning = false
                                 Swal.fire({
                                     heightAuto: false,
                                     text: `Username '${username}' was not found in Anilist. Do you want to create another Anilist account?`,
@@ -2906,78 +2866,80 @@
                                 }).then(async(value)=>{
                                     if(value.isConfirmed){
                                         await window.open('https://anilist.co/signup', '_blank');
-                                        const { value: xusername} = await Swal.fire({
-                                            heightAuto: false,
-                                            text: "Done signing-up your new account with Anilist? Update with your new username or Return to the old username.",
-                                            input: 'text',
-                                            inputLabel: 'Enter your Anilist Username:',
-                                            inputValue: username,
-                                            customClass: {
-                                                icon: 'no-border'
-                                            },
-                                            allowOutsideClick: false,
-                                            allowEscapeKey: false,
-                                            showConfirmButton: true,
-                                            confirmButtonText: "Update",
-                                            confirmButtonColor: '#000',
-                                            showDenyButton: true,
-                                            denyButtonColor: '#e27d81',
-                                            denyButtonText: "Change it Back",
-                                            reverseButtons: true,
-                                            inputValidator: async(value) => {
-                                                return await new Promise(async(resolve) => {
-                                                    if(!value) {
-                                                        resolve("You need to write Something...")
-                                                    } else {
-                                                        $.ajax({
-                                                            type: 'POST',
-                                                            url: 'https://graphql.anilist.co',
-                                                            headers: {
-                                                                'Content-Type': 'application/json',
-                                                                'Accept': 'application/json',
-                                                            },
-                                                            dataType: 'json',
-                                                            data: JSON.stringify({
-                                                                query: `{User(name:"${value}"){name}}`
-                                                            }),
-                                                            beforeSend: () => {
-                                                                $(".swal2-validation-message").addClass("no-before")
-                                                                .css({display:"flex"})
-                                                                .html(
-                                                                    `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
-                                                                        <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div></div>
-                                                                        <div>Checking Username...</div>
-                                                                    </div>`
-                                                                )
-                                                            },
-                                                            success: (data) => {
-                                                                $("#UsernameValidation").fadeOut(250,()=>{
-                                                                    $("#UsernameValidation").remove()
-                                                                    $(".swal2-validation-message")
-                                                                        .addClass("swal2-validation-message-custom-success")
-                                                                        .html("Username Found")
-                                                                    setTimeout(()=>{
-                                                                        resolve()
-                                                                    },500) 
-                                                                })
-                                                            },
-                                                            error: (err) =>{
-                                                                $("#UsernameValidation").fadeOut(250,()=>$(this).remove())
-                                                                resolve("Username not Found, Please Try Again")
-                                                            }
-                                                        })
-                                                    }
-                                                })
+                                        if(!requestIsRunning){
+                                            const { value: xusername} = await Swal.fire({
+                                                heightAuto: false,
+                                                text: "Done signing-up your new account with Anilist? Update with your new username or Return to the old username.",
+                                                input: 'text',
+                                                inputLabel: 'Enter your Anilist Username:',
+                                                inputValue: username,
+                                                customClass: {
+                                                    icon: 'no-border'
+                                                },
+                                                allowOutsideClick: false,
+                                                allowEscapeKey: false,
+                                                showConfirmButton: true,
+                                                confirmButtonText: "Update",
+                                                confirmButtonColor: '#000',
+                                                showDenyButton: true,
+                                                denyButtonColor: '#e27d81',
+                                                denyButtonText: "Change it Back",
+                                                reverseButtons: true,
+                                                inputValidator: async(value) => {
+                                                    return await new Promise(async(resolve) => {
+                                                        if(!value) {
+                                                            resolve("You need to write Something...")
+                                                        } else {
+                                                            $.ajax({
+                                                                type: 'POST',
+                                                                url: 'https://graphql.anilist.co',
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                    'Accept': 'application/json',
+                                                                },
+                                                                dataType: 'json',
+                                                                data: JSON.stringify({
+                                                                    query: `{User(name:"${value}"){name}}`
+                                                                }),
+                                                                beforeSend: () => {
+                                                                    $(".swal2-validation-message").addClass("no-before")
+                                                                    .css({display:"flex"})
+                                                                    .html(
+                                                                        `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                                                            <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div></div>
+                                                                            <div>Checking Username...</div>
+                                                                        </div>`
+                                                                    )
+                                                                },
+                                                                success: (data) => {
+                                                                    $("#UsernameValidation").fadeOut(500,()=>{
+                                                                        $("#UsernameValidation").remove()
+                                                                        $(".swal2-validation-message")
+                                                                            .addClass("swal2-validation-message-custom-success")
+                                                                            .html("Username Found")
+                                                                        setTimeout(()=>{
+                                                                            resolve()
+                                                                        },500) 
+                                                                    })
+                                                                },
+                                                                error: (err) =>{
+                                                                    $("#UsernameValidation").fadeOut(500,()=>$(this).remove())
+                                                                    resolve("Username not Found, Please Try Again")
+                                                                }
+                                                            })
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                            if(xusername){
+                                                await $("#username").val(xusername)
+                                                Update()
+                                            } else {
+                                                savedUsername = await retrieveJSON("savedUsername")
+                                                $("#username").val(savedUsername)
                                             }
-                                        })
-                                        if(xusername){
-                                            await $("#username").val(xusername)
-                                            Update()
-                                        } else {
-                                            savedUsername = await retrieveJSON("savedUsername")
-                                            $("#username").val(savedUsername)
                                         }
-                                    } else {
+                                    } else if(value.isDenied){
                                         savedUsername = await retrieveJSON("savedUsername")
                                         $("#username").val(savedUsername)
                                     }
@@ -2990,10 +2952,10 @@
                         } catch(ex) {
                             requestIsRunning = false
                             console.error(ex)
-                            $("#dataStatusContainer").fadeOut(250)
+                            $("#dataStatusContainer").fadeOut(500)
                             setTimeout(()=>{
                                 $("#dataStatusSpinner").show()
-                            },250)
+                            },500)
                             console.error("Error 101")
                             Swal.fire({
                                 heightAuto: false,
@@ -3029,7 +2991,7 @@
         }
     }
 
-    async function updateAllAnimeList(username, varImportance, userListStatus, alteredVariables){
+    async function updateAllAnimeList(username, varImportance, userListStatus, alteredVariables, savedUserList){
         var lastAnilistPage = await retrieveJSON("lastAnilistPage") || 284
         var lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
         var tempLastSavedUpdateTime = lastSavedUpdateTime
@@ -3129,6 +3091,9 @@
                         lastSavedUpdateTime = tempLastSavedUpdateTime
                         saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
                         saveJSON(page, "lastAnilistPage")
+                        if(savedUserList!==undefined){
+                            saveJSON(savedUserList,"savedUserList")
+                        }
                         analyzeAnime(animeEntries, varImportance, userListStatus, alteredVariables, username, false)
                     }
                 },
@@ -3168,10 +3133,10 @@
                         // Browser
                         showNotification(`Oops...Something went wrong! Please try again...`)
                         // Browser
-                        $("#dataStatusContainer").fadeOut(250)
+                        $("#dataStatusContainer").fadeOut(500)
                         setTimeout(()=>{
                             $("#dataStatusSpinner").show()
-                        },250)
+                        },500)
                         console.log("WebtoApp: Update Error")
                         if(Object.keys(savedRecScheme).length===0){
                             $("#animeRecommendationList").empty()
@@ -3344,10 +3309,10 @@
                             // Browser
                             showNotification(`Oops...Something went wrong! Please try again...`)
                             // Browser
-                            $("#dataStatusContainer").fadeOut(250)
+                            $("#dataStatusContainer").fadeOut(500)
                             setTimeout(()=>{
                                 $("#dataStatusSpinner").show()
-                            },250)
+                            },500)
                             console.log("WebtoApp: Update Error")
                             if(Object.keys(savedRecScheme).length===0){
                                 $("#animeRecommendationList").empty()
@@ -3417,8 +3382,6 @@
                 allFilterInfo = data.allFilterInfo
                 savedAnalyzedVariablesCount = data.savedAnalyzedVariablesCount
                 saveJSON(allFilterInfo,"allFilterInfo")
-                // Saved New Username
-                saveJSON(username,"savedUsername")
                 // Save new AnimeList json Data
                 saveJSON(savedRecScheme, "savedRecScheme")
                 // Save and Reload Weight Count
@@ -3434,8 +3397,9 @@
                 worker10.onmessage = (message) => {
                     worker10.terminate()
                     const data = message.data
+                    // Save Username
+                    saveJSON(username,"savedUsername")
                     // Save Current Filters
-                    saveJSON(requestPause,"requestPause")
                     var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
                     var filters = []
                     for(let i=0; i<filterInputs.length; i++){
@@ -3489,14 +3453,6 @@
                     },1)
                     var timeInterval = (new Date).getTime()-UpdateAnalyzeAnimeStartTime.getTime()
                     saveJSON(Math.max(Math.ceil(timeInterval/1000),savedUpdateAnalyzeAnimeTime), "savedUpdateAnalyzeAnimeTime")
-                    if(isDeepUpdate){
-                        (async()=>{
-                            isDeepUpdate = false
-                            savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || 320
-                            var timeInterval = (new Date).getTime()-deepUpdateStartTime.getTime()
-                            saveJSON(Math.max(Math.ceil(timeInterval/1000),savedDeepUpdateTime),"savedDeepUpdateTime")
-                        })();
-                    }
                     if(alertUser){
                         console.log("WebtoApp: List is Updated")
                         if(!swal.isVisible()){
@@ -3518,7 +3474,15 @@
                                 willAutoUpdate = false
                             })()
                         }
-                        $("#dataStatusContainer").fadeOut(250)
+                        if(isDeepUpdate){
+                            (async()=>{
+                                isDeepUpdate = false
+                                savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || 320
+                                var timeInterval = (new Date).getTime()-deepUpdateStartTime.getTime()
+                                saveJSON(Math.max(Math.ceil(timeInterval/1000),savedDeepUpdateTime),"savedDeepUpdateTime")
+                            })();
+                        }
+                        $("#dataStatusContainer").fadeOut(500)
                         requestIsRunning = false
                     }
                     resolve()
@@ -3662,7 +3626,7 @@
                                 )
                             },
                             success: (data) => {
-                                $("#UsernameValidation").fadeOut(250,()=>{
+                                $("#UsernameValidation").fadeOut(500,()=>{
                                     $("#UsernameValidation").remove()
                                     $(".swal2-validation-message")
                                         .addClass("swal2-validation-message-custom-success")
@@ -3673,7 +3637,7 @@
                                 })
                             },
                             error: (err) =>{
-                                $("#UsernameValidation").fadeOut(250,()=>$(this).remove())
+                                $("#UsernameValidation").fadeOut(500,()=>$(this).remove())
                                 resolve("Username not Found, Please Try Again")
                             }
                         })
@@ -3822,31 +3786,6 @@
             fileReader.readAsText(file)
         })
     }
-    // Browser
-    // Notification
-    function showNotification(text) {
-        if(document.hasFocus()) return
-        const notification = new Notification('Kanshi. Recommendation Update', {
-            body: text,
-            icon: './public/logo.png'
-        })
-        setTimeout(() => {
-            notification.close();
-        }, 10 * 1000)
-        // navigate to a URL when clicked
-        notification.addEventListener('click', () => {
-            window.parent.parent.focus()
-        })
-    }
-    (async ()=>{
-        if (Notification.permission === 'granted') {
-            notificationGranted = true
-        } else if (Notification.permission !== 'denied') {
-            let permission = await Notification.requestPermission()
-            notificationGranted = permission === 'granted' ? true : false
-        }
-    })()
-    //Browser
     </script>
 </body>
 </html>

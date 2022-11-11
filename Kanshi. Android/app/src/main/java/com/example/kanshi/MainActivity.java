@@ -10,6 +10,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,6 +23,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.provider.DocumentsContract;
 import android.provider.Settings;
 import android.util.AttributeSet;
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity  {
     private MediaWebView webView;
 
     private PowerManager.WakeLock wakeLock;
+    private NotificationManagerCompat managerCompat;
+    private boolean isVisible = true;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -136,6 +141,7 @@ public class MainActivity extends AppCompatActivity  {
                     return true;
                 }
             }
+
             // Console Logs for Debugging
             @RequiresApi(api = Build.VERSION_CODES.R)
             @Override
@@ -158,7 +164,7 @@ public class MainActivity extends AppCompatActivity  {
                             })
                             .setNegativeButton("Later", null).show();
                     } else {
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
                                     .addCategory(Intent.CATEGORY_DEFAULT);
                             startActivityForResult(Intent.createChooser(i, "Choose directory"), CHOOSE_EXPORT_PATH);
@@ -166,30 +172,48 @@ public class MainActivity extends AppCompatActivity  {
                         }
                     }
                 } else if("WebtoApp: List is Updated".equals(message)){
-                    Intent resultIntent = new Intent(MainActivity.this, MainActivity.class);
-                    PendingIntent resultPendingIntent = PendingIntent.getActivity(MainActivity.this,1,resultIntent,PendingIntent.FLAG_MUTABLE);
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "My Notification")
-                            .setContentTitle("Update")
-                            .setContentText("Recommendations List has been Updated!")
-                            .setSmallIcon(R.drawable.img)
-                            .setAutoCancel(true)
-                            .setPriority(NotificationCompat.PRIORITY_MAX)
-                            .setContentIntent(resultPendingIntent);
-                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MainActivity.this);
-                    managerCompat.notify(1, builder.build());
+                    if(isVisible){
+                        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            v.vibrate(VibrationEffect.createWaveform(new long[] {0, 250, 250, 250},-1));
+                        } else {
+                            v.vibrate(250);
+                        }
+                    } else {
+                        Intent resultIntent = new Intent(MainActivity.this, MainActivity.class);
+                        PendingIntent resultPendingIntent = PendingIntent.getActivity(MainActivity.this, 1, resultIntent, PendingIntent.FLAG_MUTABLE);
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "My Notification")
+                                .setContentTitle("Update")
+                                .setContentText("Recommendations List has been Updated!")
+                                .setSmallIcon(R.drawable.img)
+                                .setAutoCancel(true)
+                                .setPriority(NotificationCompat.PRIORITY_MAX)
+                                .setContentIntent(resultPendingIntent);
+                        managerCompat = NotificationManagerCompat.from(MainActivity.this);
+                        managerCompat.notify(1, builder.build());
+                    }
                 } else if("WebtoApp: Update Error".equals(message)){
-                    Intent resultIntent = new Intent(MainActivity.this, MainActivity.class);
-                    PendingIntent resultPendingIntent = PendingIntent.getActivity(MainActivity.this,1,resultIntent,PendingIntent.FLAG_MUTABLE);
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "My Notification")
-                            .setContentTitle("Update")
-                            .setContentText("An Error Occured, List was not been Updated!")
-                            .setSmallIcon(R.drawable.img)
-                            .setAutoCancel(true)
-                            .setPriority(NotificationCompat.PRIORITY_MAX)
-                            .setContentIntent(resultPendingIntent);
-                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MainActivity.this);
-                    managerCompat.notify(1, builder.build());
-                } else if(message.contains("WebtoApp: Keep Alive")){
+                    if(isVisible){
+                        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            v.vibrate(VibrationEffect.createWaveform(new long[] {0, 250, 250, 250},-1));
+                        } else {
+                            v.vibrate(250);
+                        }
+                    } else {
+                        Intent resultIntent = new Intent(MainActivity.this, MainActivity.class);
+                        PendingIntent resultPendingIntent = PendingIntent.getActivity(MainActivity.this, 1, resultIntent, PendingIntent.FLAG_MUTABLE);
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "My Notification")
+                                .setContentTitle("Update")
+                                .setContentText("An Error Occured, List was not been Updated!")
+                                .setSmallIcon(R.drawable.img)
+                                .setAutoCancel(true)
+                                .setPriority(NotificationCompat.PRIORITY_MAX)
+                                .setContentIntent(resultPendingIntent);
+                        managerCompat = NotificationManagerCompat.from(MainActivity.this);
+                        managerCompat.notify(1, builder.build());
+                    }
+                } else if(message.contains("WebtoApp: Keep Alive")) {
                     String javascript = message.replace("WebtoApp: Keep Alive","");
                     webView.loadUrl("javascript:"+javascript);
                 }
@@ -212,6 +236,10 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
+        isVisible = hasFocus;
+        if(hasFocus&&managerCompat!=null){
+            managerCompat.cancelAll();
+        }
         webView.setKeepScreenOn(true);
         webView.resumeTimers();
         webView.setVisibility(View.VISIBLE);
