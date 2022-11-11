@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "306618588261",
+    "project_id": "kanshi-25882",
+    "storage_bucket": "kanshi-25882.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306618588261:android:302d228c133398cccafa8c",
+        "android_client_info": {
+          "package_name": "com.example.kanshi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306618588261-8kodao793aujqmfi6ues77i4qp2gc384.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf5V-xIjuplAWjqtS2fS_MErdiZ8UIUz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306618588261-8kodao793aujqmfi6ues77i4qp2gc384.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

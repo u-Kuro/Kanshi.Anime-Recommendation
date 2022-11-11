@@ -1,11 +1,7 @@
 package com.example.kanshi;
 
-import static android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-import static android.view.WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
 import static com.example.kanshi.Utils.*;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -16,23 +12,21 @@ import androidx.core.app.NotificationManagerCompat;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.os.PowerManager;
 import android.provider.DocumentsContract;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.ConsoleMessage;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -45,8 +39,6 @@ import android.widget.Toast;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -80,7 +72,7 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         // Add Webview on Layout
         ConstraintLayout constraintLayout = findViewById(R.id.activity_main);
-        webView = new MediaWebView(this);
+        webView = new MediaWebView(MainActivity.this);
         webView.setId(R.id.webView);
         constraintLayout.addView(webView);
         // Add Webview Layout Style
@@ -174,21 +166,27 @@ public class MainActivity extends AppCompatActivity  {
                         }
                     }
                 } else if("WebtoApp: List is Updated".equals(message)){
+                    Intent resultIntent = new Intent(MainActivity.this, MainActivity.class);
+                    PendingIntent resultPendingIntent = PendingIntent.getActivity(MainActivity.this,1,resultIntent,PendingIntent.FLAG_MUTABLE);
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "My Notification")
-                        .setContentTitle("Update")
-                        .setContentText("Recommendations List has been Updated!")
-                        .setSmallIcon(R.drawable.img)
-                        .setAutoCancel(true)
-                        .setPriority(NotificationCompat.PRIORITY_MAX);
+                            .setContentTitle("Update")
+                            .setContentText("Recommendations List has been Updated!")
+                            .setSmallIcon(R.drawable.img)
+                            .setAutoCancel(true)
+                            .setPriority(NotificationCompat.PRIORITY_MAX)
+                            .setContentIntent(resultPendingIntent);
                     NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MainActivity.this);
                     managerCompat.notify(1, builder.build());
                 } else if("WebtoApp: Update Error".equals(message)){
+                    Intent resultIntent = new Intent(MainActivity.this, MainActivity.class);
+                    PendingIntent resultPendingIntent = PendingIntent.getActivity(MainActivity.this,1,resultIntent,PendingIntent.FLAG_MUTABLE);
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "My Notification")
-                        .setContentTitle("Update")
-                        .setContentText("An Error occured, List was not been Updated!")
-                        .setSmallIcon(R.drawable.img)
-                        .setAutoCancel(true)
-                        .setPriority(NotificationCompat.PRIORITY_MAX);
+                            .setContentTitle("Update")
+                            .setContentText("An Error Occured, List was not been Updated!")
+                            .setSmallIcon(R.drawable.img)
+                            .setAutoCancel(true)
+                            .setPriority(NotificationCompat.PRIORITY_MAX)
+                            .setContentIntent(resultPendingIntent);
                     NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MainActivity.this);
                     managerCompat.notify(1, builder.build());
                 } else if(message.contains("WebtoApp: Keep Alive")){
@@ -201,6 +199,11 @@ public class MainActivity extends AppCompatActivity  {
         });
         // Load the Saved/Page
         if (savedInstanceState != null){
+            webView.setLayoutParams(new ConstraintLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+            ));
+            constraintSet.applyTo(constraintLayout);
             webView.restoreState(savedInstanceState);
         } else {
             webView.loadUrl("file:///android_asset/www/index.html");
