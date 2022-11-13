@@ -2711,7 +2711,6 @@
                                                 })
                                             },
                                             error: (xhr) =>{
-                                                console.log(xhr)
                                                 try{
                                                     if(xhr.responseJSON.errors[0].message==='Not Found.'){
                                                         $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
@@ -3018,7 +3017,6 @@
                             }
                         },
                         error: function(xhr) {
-                            console.log(xhr)
                             var err = xhr
                             try{
                                 if(err.responseJSON.errors[0].message==='Not Found.'){
@@ -3106,7 +3104,6 @@
                                                                         })
                                                                     },
                                                                     error: (xhr) =>{
-                                                                        console.log(xhr)
                                                                         try{
                                                                             if(xhr.responseJSON.errors[0].message==='Not Found.'){
                                                                                 $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
@@ -3331,7 +3328,6 @@
                         }
                     },
                     error: function(xhr) {
-                        console.log(xhr)
                         var err = xhr
                         try {
                             if(isJsonString(xhr.responseText)){
@@ -3520,7 +3516,6 @@
                             }
                         },
                         error: function(xhr) {
-                            console.log(xhr)
                             var err = xhr
                             try {
                                 if(isJsonString(xhr.responseText)){
@@ -3898,7 +3893,6 @@
                                     })
                                 },
                                 error: (xhr) =>{
-                                    console.log(xhr)
                                     try{
                                         if(xhr.responseJSON.errors[0].message==='Not Found.'){
                                             $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
