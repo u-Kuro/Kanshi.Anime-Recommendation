@@ -118,7 +118,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
         disabled: null,
         maxShownResults: 100,
         removeOnBackspace: true,
-        noResultsText: 'Filter Word/Number (!Exclude/Score>N/etc.)',
+        noResultsText: '...',
         toggleSelected: false,
         allowDuplicateValues: false,
         redoSearchOnFocus: true,

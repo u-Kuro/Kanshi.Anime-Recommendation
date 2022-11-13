@@ -16,8 +16,8 @@
     <script type="text/javascript" src="./js-css/jquery tablesorter/jquery.metadata.min.js" defer></script>
     <script type="text/javascript" src="./js-css/jquery tablesorter/jquery.tablesorter.pager.min.js" defer></script>
     <!-- Datalist Search Code -->
-    <link rel="stylesheet" href="./js-css/flexdatalist/jquery.flexdatalist.css">
-    <script src="./js-css/flexdatalist/jquery.flexdatalist.js" defer></script>
+    <link rel="stylesheet" href="./js-css/flexdatalist/jquery.flex-datalist.css">
+    <script src="./js-css/flexdatalist/jquery.flex-datalist.js" defer></script>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="./js-css/bootstrap-3.3.6.min.css"/>
     <!-- Fontawesome -->
@@ -538,7 +538,24 @@
                 -webkit-user-select: none;
                 user-select: none;
             }
-            .swal2-validation-message-custom-success::before {
+            .swal2-validation-message.no-before::before{
+                content: none;
+            }
+            .swal2-validation-message.error-before::before {
+                content: "!";
+                display: inline-block;
+                width: 1.5em;
+                min-width: 1.5em;
+                height: 1.5em;
+                margin: 0 0.625em;
+                border-radius: 50%;
+                background-color: #f27474;
+                color: #fff;
+                font-weight: 600;
+                line-height: 1.5em;
+                text-align: center;
+            }
+            .swal2-validation-message.success-before::before {
                 content: "✓";
                 display: inline-block;
                 width: 1.5em;
@@ -867,6 +884,35 @@
             #dataStatus>span{
                 padding-block: 0.5ch;
             }
+            /* Browser */
+            ::-webkit-input-placeholder {
+                white-space:pre-line !important;  
+                position:relative !important;
+                top: 0px;
+                bottom: 0px;
+            }
+            ::-moz-placeholder {
+                white-space:pre-line !important;  
+                position:relative !important;
+                top: 0px;
+                bottom: 0px;
+            }
+            :-ms-input-placeholder {
+                white-space:pre-line !important;  
+                position:relative !important;
+                top: 0px;
+                bottom: 0px;
+            }
+            :-moz-placeholder {
+                white-space:pre-line !important;  
+                position:relative !important;
+                top: 0px;
+                bottom: 0px;
+            }
+            /* Browser */
+            .flexdatalist-alias{
+                height: 41px !important;
+            }
         </style>
 </head>
 <body>
@@ -903,7 +949,7 @@
         </div>
         <div id="filters" class="filter-container">
             <input type="text"
-                placeholder="Filter Word/Number (!Exclude/Score>N/etc.)"
+                placeholder="Filter Contents (Include: Content / Exclude: !Content / WScore>=N / etc.)"
                 class="flexdatalist"
                 data-search-in="info"
                 multiple="multiple"
@@ -1010,12 +1056,12 @@
 <div id="warnAnimeContainer" class="swal2-container-custom swal2-center-custom swal2-backdrop-show-custom" style="display: none; overflow-y: auto;">
     <div id="warnAnimeModal" class="swal2-popup-custom swal2-modal-custom swal2-hide-custom" style="display: grid;">
         <div class="swal2-html-container-custom" style="display: block;">
-            Select Custom Contents to be Warned
+            Add Custom Contents to be Warned
         </div>
         <div class="swal2-html-container-custom" style="display: block;">
             <div class="filter-container-custom">
                 <input type="text"
-                    placeholder="Normal word for Semi-Warning or !Red-Warning"
+                    placeholder="Yellow-Warning (Content) or Red-Warning (!Content)"
                     class="flexdatalistWarnAnime"
                     data-search-in="info"
                     multiple="multiple"
@@ -1024,8 +1070,8 @@
             </div>
         </div>
         <div class="swal2-actions-custom" style="display: flex;">
-            <button id="cancelWarnAnime" type="button" class="swal2-deny-custom swal2-styled-custom swal2-default-outline-custom" style="display: inline-block; background-color: rgb(226, 125, 129);">No</button>
-            <button id="submitWarnAnime" type="button" class="swal2-confirm-custom swal2-styled-custom swal2-default-outline-custom" style="display: inline-block; background-color: rgb(0, 0, 0);">Yes</button>
+            <button id="cancelWarnAnime" type="button" class="swal2-deny-custom swal2-styled-custom swal2-default-outline-custom" style="display: inline-block; background-color: rgb(226, 125, 129);">Later</button>
+            <button id="submitWarnAnime" type="button" class="swal2-confirm-custom swal2-styled-custom swal2-default-outline-custom" style="display: inline-block; background-color: rgb(0, 0, 0);">Submit</button>
         </div>
         <div class="swal2-timer-progress-bar-container-custom"></div>
     </div>
@@ -2217,6 +2263,8 @@
                             } catch(ex) {
                                 $("#importFile")[0].value = null
                                 $(".swal2-validation-message")
+                                    .addClass("no-before").removeClass("no-before")
+                                    .addClass("error-before")
                                     .html(
                                         `Error: Invalid Backup File`
                                     )
@@ -2226,13 +2274,16 @@
                             if(fileContent.savedUsername===undefined||fileContent.savedUsername===null) {
                                 $("#importFile")[0].value = null
                                 $(".swal2-validation-message")
+                                    .addClass("no-before").removeClass("no-before")
+                                    .addClass("error-before")
                                     .html(
                                         `Error: Backup file does not Have a Username`
                                     )
                                     .css({display:"flex"})
                                 reject()
                             } else {
-                                $(".swal2-validation-message").addClass("no-before")
+                                $(".swal2-validation-message")
+                                    .addClass("no-before")
                                     .css({display:"flex"})
                                     .html(
                                         `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
@@ -2701,6 +2752,7 @@
                 if(value.isConfirmed){
                     await window.open('https://anilist.co/signup', '_blank')
                     if(!requestIsRunning){
+                        var initStartTime = await retrieveJSON("initStartTime") || undefined
                         const { value: username} = await Swal.fire({
                             heightAuto: false,
                             text: "Done signing-up your new account with Anilist? Update with your new username to load your own data.",
@@ -2736,20 +2788,24 @@
                                                 query: `{User(name:"${value}"){name}}`
                                             }),
                                             beforeSend: () => {
-                                                $(".swal2-validation-message").addClass("no-before")
-                                                .css({display:"flex"})
-                                                .html(
-                                                    `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
-                                                        <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div></div>
-                                                        <div>Checking Username...</div>
-                                                    </div>`
-                                                )
+                                                $(".swal2-validation-message")
+                                                    .addClass("no-before")
+                                                    .css({display:"flex"})
+                                                    .html(
+                                                        `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                                            <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div></div>
+                                                            <div>Checking Username...</div>
+                                                        </div>`
+                                                    )
                                             },
                                             success: (data) => {
+                                                initStartTime = undefined
+                                                saveJSON(initStartTime,"initStartTime")
                                                 $("#UsernameValidation").fadeOut(1000,()=>{
                                                     $("#UsernameValidation").remove()
                                                     $(".swal2-validation-message")
-                                                        .addClass("swal2-validation-message-custom-success")
+                                                        .addClass("no-before").removeClass("no-before")
+                                                        .addClass("success-before")
                                                         .html("Username Found")
                                                     setTimeout(()=>{
                                                         resolve()
@@ -2759,18 +2815,26 @@
                                             error: (xhr) =>{
                                                 try{
                                                     if(xhr.responseJSON.errors[0].message==='Not Found.'){
+                                                        initStartTime = undefined
+                                                        saveJSON(initStartTime,"initStartTime")
                                                         $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
                                                         resolve("Username not Found, Please Try Again")
                                                     }
                                                 } catch(ex){}
                                                 try{
                                                     if(xhr.responseJSON.data.User==null){
+                                                        initStartTime = undefined
+                                                        saveJSON(initStartTime,"initStartTime")
                                                         $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
                                                         resolve("Username not Found, Please Try Again")
                                                     }
                                                 } catch(ex){
+                                                    if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
+                                                        initStartTime = new Date()
+                                                        saveJSON(initStartTime,"initStartTime")
+                                                    }
                                                     $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
-                                                    resolve("An error occured, Please Try again later")
+                                                    resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
                                                 }
                                             }
                                         })
@@ -3093,6 +3157,7 @@
                                         if(value.isConfirmed){
                                             await window.open('https://anilist.co/signup', '_blank');
                                             if(!requestIsRunning){
+                                                var initStartTime = await retrieveJSON("initStartTime") || undefined
                                                 const { value: xusername} = await Swal.fire({
                                                     heightAuto: false,
                                                     text: "Done signing-up your new account with Anilist? Update with your new username or Return to the old username.",
@@ -3129,20 +3194,24 @@
                                                                         query: `{User(name:"${value}"){name}}`
                                                                     }),
                                                                     beforeSend: () => {
-                                                                        $(".swal2-validation-message").addClass("no-before")
-                                                                        .css({display:"flex"})
-                                                                        .html(
-                                                                            `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
-                                                                                <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div></div>
-                                                                                <div>Checking Username...</div>
-                                                                            </div>`
-                                                                        )
+                                                                        $(".swal2-validation-message")
+                                                                            .addClass("no-before")
+                                                                            .css({display:"flex"})
+                                                                            .html(
+                                                                                `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                                                                    <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div></div>
+                                                                                    <div>Checking Username...</div>
+                                                                                </div>`
+                                                                            )
                                                                     },
                                                                     success: (data) => {
+                                                                        initStartTime = undefined
+                                                                        saveJSON(initStartTime,"initStartTime")
                                                                         $("#UsernameValidation").fadeOut(1000,()=>{
                                                                             $("#UsernameValidation").remove()
                                                                             $(".swal2-validation-message")
-                                                                                .addClass("swal2-validation-message-custom-success")
+                                                                                .addClass("no-before").removeClass("no-before")
+                                                                                .addClass("success-before")
                                                                                 .html("Username Found")
                                                                             setTimeout(()=>{
                                                                                 resolve()
@@ -3152,18 +3221,26 @@
                                                                     error: (xhr) =>{
                                                                         try{
                                                                             if(xhr.responseJSON.errors[0].message==='Not Found.'){
+                                                                                initStartTime = undefined
+                                                                                saveJSON(initStartTime,"initStartTime")
                                                                                 $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
                                                                                 resolve("Username not Found, Please Try Again")
                                                                             }
                                                                         } catch(ex){}
                                                                         try{
                                                                             if(xhr.responseJSON.data.User==null){
+                                                                                initStartTime = undefined
+                                                                                saveJSON(initStartTime,"initStartTime")
                                                                                 $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
                                                                                 resolve("Username not Found, Please Try Again")
                                                                             }
                                                                         } catch(ex){
+                                                                            if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
+                                                                                initStartTime = new Date()
+                                                                                saveJSON(initStartTime,"initStartTime")
+                                                                            }
                                                                             $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
-                                                                            resolve("An error occured, Please Try again later")
+                                                                            resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
                                                                         }
                                                                     }
                                                                 })
@@ -3880,6 +3957,7 @@
         }
 
         async function initUsernameData(){
+            var initStartTime = await retrieveJSON("initStartTime") || undefined
             const { value: username} = await Swal.fire({
                 heightAuto: false,
                 title: "Starting Up",
@@ -3897,7 +3975,7 @@
                 denyButtonColor: '#e27d81',
                 reverseButtons: true,
                 footer: `
-                    <a target="_blank" rel="noopener noreferrer" href="https://anilist.co/signup">I don't have an anilist account</a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://anilist.co/signup">Create an Anilist Account</a>
                     <a href="javascript:$('#importBtn').click()">Import Backup</a>
                 `,
                 inputValidator: async(value) => {
@@ -3918,41 +3996,53 @@
                                     query: `{User(name:"${value}"){name}}`
                                 }),
                                 beforeSend: () => {
-                                    $(".swal2-validation-message").addClass("no-before")
-                                    .css({display:"flex"})
-                                    .html(
-                                        `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
-                                            <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div></div>
-                                            <div>Checking Username...</div>
-                                        </div>`
-                                    )
+                                    $(".swal2-validation-message")
+                                        .addClass("no-before")
+                                        .css({display:"flex"})
+                                        .html(
+                                            `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                                <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div></div>
+                                                <div>Checking Username...</div>
+                                            </div>`
+                                        )
                                 },
                                 success: (data) => {
+                                    initStartTime = undefined
+                                    saveJSON(initStartTime,"initStartTime")
                                     $("#UsernameValidation").fadeOut(1000,()=>{
                                         $("#UsernameValidation").remove()
                                         $(".swal2-validation-message")
-                                            .addClass("swal2-validation-message-custom-success")
+                                            .addClass("no-before").removeClass("no-before")
+                                            .addClass("success-before")
                                             .html("Username Found")
                                         setTimeout(()=>{
                                             resolve()
-                                        },1000) 
+                                        },1000)
                                     })
                                 },
                                 error: (xhr) =>{
                                     try{
                                         if(xhr.responseJSON.errors[0].message==='Not Found.'){
+                                            initStartTime = undefined
+                                            saveJSON(initStartTime,"initStartTime")
                                             $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
                                             resolve("Username not Found, Please Try Again")
                                         }
                                     } catch(ex){}
                                     try{
                                         if(xhr.responseJSON.data.User==null){
+                                            initStartTime = undefined
+                                            saveJSON(initStartTime,"initStartTime")
                                             $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
                                             resolve("Username not Found, Please Try Again")
                                         }
                                     } catch(ex){
+                                        if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
+                                            initStartTime = new Date()
+                                            saveJSON(initStartTime,"initStartTime")
+                                        }
                                         $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
-                                        resolve("An error occured, Please Try again later")
+                                        resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
                                     }
                                 }
                             })
