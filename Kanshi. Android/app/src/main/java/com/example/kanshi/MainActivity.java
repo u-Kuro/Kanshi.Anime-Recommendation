@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity  {
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setAllowFileAccessFromFileURLs(true);
         webSettings.setBlockNetworkLoads(false);
-        webSettings.setBlockNetworkImage(false);
+        webView.setLongClickable(true);
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             webSettings.setAllowUniversalAccessFromFileURLs(true);
@@ -222,16 +222,17 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
         // Load the Saved/Page
-        if (savedInstanceState != null){
-            webView.setLayoutParams(new ConstraintLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT
-            ));
-            constraintSet.applyTo(constraintLayout);
-            webView.restoreState(savedInstanceState);
-        } else {
-            webView.loadUrl("file:///android_asset/www/index.html");
-        }
+//        if (savedInstanceState != null){
+//            webView.setLayoutParams(new ConstraintLayout.LayoutParams(
+//                    LinearLayout.LayoutParams.MATCH_PARENT,
+//                    LinearLayout.LayoutParams.MATCH_PARENT
+//            ));
+//            constraintSet.applyTo(constraintLayout);
+//            webView.restoreState(savedInstanceState);
+//        } else {
+//            webView.loadUrl("file:///android_asset/www/index.html");
+//        }
+        webView.loadUrl("file:///android_asset/www/index.html");
     }
 
     @Override

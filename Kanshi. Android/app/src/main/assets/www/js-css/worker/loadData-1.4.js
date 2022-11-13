@@ -290,7 +290,7 @@ self.onmessage = (message) => {
                             ${weightedScore||0}
                         </div>
                     </td>
-                    <td id="animeTitle">
+                    <td class="animeTitle">
                         <a target="_blank" rel="noopener noreferrer" href="${value.animeUrl||'javascript:;'}" data-value="${value.id||''}">${value.title||'Title: N/A'}</a>
                     </td>
                     <td>`
@@ -331,7 +331,7 @@ self.onmessage = (message) => {
                             ${weightedScore||0}
                         </div>
                     </td>
-                    <td id="animeTitle">
+                    <td class="animeTitle">
                         <a target="_blank" rel="noopener noreferrer" href="${value.animeUrl||'javascript:;'}" data-value="${value.id||''}">${value.title||'Title: N/A'}</a>
                     </td>
                     <td>
