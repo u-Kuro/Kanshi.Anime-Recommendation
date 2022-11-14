@@ -213,9 +213,6 @@ public class MainActivity extends AppCompatActivity  {
                         managerCompat = NotificationManagerCompat.from(MainActivity.this);
                         managerCompat.notify(1, builder.build());
                     }
-                } else if(message.contains("WebtoApp: Keep Alive")) {
-                    String javascript = message.replace("WebtoApp: Keep Alive","");
-                    webView.loadUrl("javascript:"+javascript);
                 }
                 Log.d("WebConsole",message+"-"+lineNumber);
                 return true;
@@ -392,8 +389,29 @@ public class MainActivity extends AppCompatActivity  {
                 System.out.println(exportPath);
                 prefsEdit.putString("savedExportPath",exportPath).apply();
                 webView.loadUrl("javascript:" +
-                        "exportPathIsAvailable=true;" +
-                        "saveJSON(exportPathIsAvailable,'exportPathIsAvailable');"
+                    "exportPathIsAvailable=true;" +
+                    "try {\n" +
+                    "    var write = db.transaction(\"MyObjectStore\",\"readwrite\").objectStore(\"MyObjectStore\").openCursor();\n" +
+                    "    write.onsuccess = (event) => {\n" +
+                    "        const cursor = event.target.result;\n" +
+                    "        if (cursor) {\n" +
+                    "            if(cursor.key==='exportPathIsAvailable'){\n" +
+                    "                cursor.update(exportPathIsAvailable);\n" +
+                    "            }\n" +
+                    "            cursor.continue();\n" +
+                    "        } else {\n" +
+                    "            db.transaction(\"MyObjectStore\",\"readwrite\").objectStore(\"MyObjectStore\").add(exportPathIsAvailable, 'exportPathIsAvailable');\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "} catch(ex) {\n" +
+                    "    try{\n" +
+                    "        console.error(ex);\n" +
+                    "        db.transaction(\"MyObjectStore\",\"readwrite\").objectStore(\"MyObjectStore\").add(exportPathIsAvailable, 'exportPathIsAvailable');\n" +
+                    "     } catch(ex2){\n" +
+                    "        console.error(ex2);\n" +
+                    "        localStorage.setItem('exportPathIsAvailable', JSON.stringify(exportPathIsAvailable));\n" +
+                    "     }\n" +
+                    "}"
                 );
             }
         } catch (Exception e) {
