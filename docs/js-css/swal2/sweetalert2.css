@@ -583,7 +583,7 @@
   font-weight: 300;
 }
 .swal2-validation-message::before {
-  content: "!";
+  /* content: "!"; */
   display: inline-block;
   width: 1.5em;
   min-width: 1.5em;
