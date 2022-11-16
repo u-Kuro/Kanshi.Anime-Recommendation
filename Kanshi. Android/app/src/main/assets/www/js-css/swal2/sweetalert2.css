@@ -583,11 +583,7 @@
   font-weight: 300;
 }
 .swal2-validation-message::before {
-<<<<<<< HEAD
-  content: "!";
-=======
   /* content: "!"; */
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
   display: inline-block;
   width: 1.5em;
   min-width: 1.5em;

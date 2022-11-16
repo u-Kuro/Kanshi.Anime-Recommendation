@@ -800,10 +800,7 @@
                 color: black !important;
             }
             /* Dark Mode */
-<<<<<<< HEAD
-=======
             html.darkMode,
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
             body.darkMode{
                 background-color: rgb(11,22,34) !important;
                 color: rgb(185, 202, 221) !important
@@ -972,13 +969,10 @@
             .flexdatalist-alias{
                 height: 41px !important;
             }
-<<<<<<< HEAD
-=======
             /* Top of Loader */
             .topOfLoader{
                 z-index: 10000 !important;
             }
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
         </style>
 </head>
 <body>
@@ -1188,11 +1182,7 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-<<<<<<< HEAD
-    const version = "1.6",
-=======
     const version = "1.7",
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
           backUpVersion = 1.0
         // IndexDB
     var request, db,
@@ -1222,9 +1212,6 @@
             // Load IndexedDB
             request = window.indexedDB.open("MyIndexDB", 1)
             request.onerror = (event) => {
-<<<<<<< HEAD
-                console.error("MyIndexDB is Not Allowed! Using Locale Storage Instead")
-=======
                 Swal.fire({
                     heightAuto: false,
                     title: "Oops, heh",
@@ -1244,7 +1231,6 @@
                     window.location.href = window.location.href
                 })
                 console.error("MyIndexDB is Not Allowed!")
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
             }
             request.onsuccess = (event) => {
                 db = event.target.result
@@ -2197,11 +2183,7 @@
                         })
                         .then(async(value) => {
                             if(value.isConfirmed){
-<<<<<<< HEAD
-                                $("#updateIntervalBtn").css({background:"black",color:"white"})
-=======
                                 $("#updateIntervalBtn").removeClass("selected")
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
                                 updateIntervalIsActive = false
                                 await saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
                             }
@@ -2221,11 +2203,7 @@
                         })
                         .then(async(value) => {
                             if(value.isConfirmed){
-<<<<<<< HEAD
-                                $("#updateIntervalBtn").css({background:"white",color:"black"})
-=======
                                 $("#updateIntervalBtn").addClass("selected")
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
                                 updateIntervalIsActive = true
                                 await saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
                                 updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
@@ -2270,11 +2248,7 @@
                         })
                         .then(async(value) => {
                             if(value.isConfirmed){
-<<<<<<< HEAD
-                                $("#exportIntervalBtn").css({background:"black",color:"white"})
-=======
                                 $("#exportIntervalBtn").removeClass("selected")
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
                                 exportIntervalIsActive = false
                                 await saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
                             }
@@ -2294,11 +2268,7 @@
                         })
                         .then(async(value) => {
                             if(value.isConfirmed){
-<<<<<<< HEAD
-                                $("#exportIntervalBtn").css({background:"white",color:"black"})
-=======
                                 $("#exportIntervalBtn").addClass("selected")
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
                                 exportIntervalIsActive = true
                                 await saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
                                 exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
@@ -2800,11 +2770,7 @@
                 savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson") || []
                 allFilterInfo = await retrieveJSON("allFilterInfo") || {}
                 savedBackUpVersion = await retrieveJSON(`backUpVersion`) || false
-<<<<<<< HEAD
-                kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden")
-=======
                 kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden") || true
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
                 savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                 savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs") || {}
                 savedSort = await retrieveJSON("savedSort") || [1,1]
@@ -2820,15 +2786,12 @@
                 resolve()
             })
         }).then(async()=>{
-<<<<<<< HEAD
-=======
             return await new Promise(async(resolve)=>{
                 // Initial SavedTheme
                 await loadTheme(savedTheme)
                 resolve()
             })
         }).then(async()=>{
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
             // Init Modules/Config/Functions
             return await new Promise(async(resolve)=>{
                 // Jquery Table Sorter
@@ -3047,22 +3010,12 @@
                 await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
                 
                 // Menu Filters
-<<<<<<< HEAD
-                if(await kidsAnimeIsHidden===undefined) {
-                    kidsAnimeIsHidden = await true
-                    await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
-                }
-=======
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
                 if(await kidsAnimeIsHidden){
                     await $("#hideKidsAnimeBtn").addClass("selected")
                 }
                 if(await savedTheme==="darkMode"){
                     await $("#themeBtn").addClass("selected")
                 }
-<<<<<<< HEAD
-                
-=======
                 if(await updateIntervalIsActive){
                     await $("#updateIntervalBtn").addClass("selected")
                 }
@@ -3070,7 +3023,6 @@
                     await $("#exportIntervalBtn").addClass("selected")
                 }
 
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
                 // Init Last List (Unhidden/Hidden) 
                 var filters = await $("#filters .flexdatalist-multiple").children("li.value")
                 for(let i=0; i<filters.length; i++) {
@@ -3114,18 +3066,6 @@
                     await $("#animeRecommendationList").empty()
                     await $("#animeRecommendationList").append(animeData)
                     await $("#anime-table").trigger("update")
-<<<<<<< HEAD
-                    // Already have in LoadData Fun
-                    // setTimeout(async()=>{
-                    //     let setPageInfo = await setInterval(async()=>{
-                    //         if(await typeof $('#anime-table')[0].config!=="undefined"){
-                    //             await clearInterval(setPageInfo)
-                    //             await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
-                    //         }
-                    //     },1)
-                    // },0)
-=======
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
                     resolve()
                 }
             })
@@ -3135,20 +3075,6 @@
                 await $.tablesorter.sortOn($('#anime-table')[0].config, [savedSort])
                 await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
                 await $('body').animate({scrollTop: savedYscroll},1)
-<<<<<<< HEAD
-                // Removed Below?
-                // await new Promise(async(resolve)=>{  
-                //     var reloadSavedYScrollStartDate = await new Date()
-                //     let reloadSavedYScroll = await setInterval(async()=>{
-                //         if(await ($("body").scrollTop()===savedYscroll||
-                //         // (((new Date()).getTime())-reloadSavedYScrollStartDate.getTime())>1000)){
-                //         //     await clearInterval(reloadSavedYScroll)
-                //         //     resolve()
-                //         // }      
-                //     },1)
-                // })
-=======
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
                 resolve()
             })
         }).then(async()=>{
@@ -4279,23 +4205,6 @@
                 },(savedUpdateAnalyzeAnimeTime-i)*1000)
                 updateStateText.push(timeout)
             }
-<<<<<<< HEAD
-            if(!notAnUpdate){
-                if(animeEntries.length===0) {
-                    animeEntries = await retrieveJSON("savedAnimeEntries") || []
-                }
-                // Username Changed
-                var savedUsername = await retrieveJSON("savedUsername") || ""
-                if(username!==savedUsername) {
-                    savedRecScheme = {}
-                // Reset All Anime Recommendations
-                } else if(isDeepUpdate) {
-                    savedRecScheme = {}
-                    await saveJSON(savedRecScheme,"savedRecScheme")   
-                } else {
-                    savedRecScheme = await retrieveJSON("savedRecScheme") || {}
-                }
-=======
             if(animeEntries.length===0) {
                 animeEntries = await retrieveJSON("savedAnimeEntries") || []
             }
@@ -4309,7 +4218,6 @@
                 await saveJSON(savedRecScheme,"savedRecScheme")   
             } else {
                 savedRecScheme = await retrieveJSON("savedRecScheme") || {}
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
             }
             var worker9 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
             worker9.postMessage({
@@ -4341,83 +4249,6 @@
                         worker10.terminate()
                         const data = message.data;
                         (async()=>{
-<<<<<<< HEAD
-                            if(!notAnUpdate){
-                                // Save Username
-                                await saveJSON(username,"savedUsername")
-                                // Save Current Filters
-                                var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
-                                var filters = []
-                                for(let i=0; i<filterInputs.length; i++){
-                                    var filterName = filterInputs[i].textContent
-                                    filters.push(filterName)
-                                }
-                                await saveJSON(filters, "savedFilters")
-                                // Save and Reload Filters
-                                savedFilterOptionsJson = data.savedFilterOptionsJson
-                                await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
-                                // Reload new Data
-                                LoadData(savedRecScheme)
-                                $('.flexdatalist').flexdatalist({
-                                    data: savedFilterOptionsJson
-                                })
-                                let reloadSavedData = setInterval(async () => {
-                                    if($("#filters .flexdatalist-multiple-value > .flexdatalist-alias").length){
-                                        clearInterval(reloadSavedData)
-                                        // Reload Filters
-                                        var filterInput
-                                        savedFilters = await retrieveJSON("savedFilters") || []
-                                        for(let i=0; i<savedFilters.length; i++) {
-                                            filterInput = $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
-                                            await filterInput.val(savedFilters[i])
-                                            var e = await $.Event("keyup",{keyCode:13})
-                                            await filterInput.trigger(e)
-                                            await filterInput.val("")
-                                        }
-                                    }
-                                },1)
-                                let reloadSavedData2 = setInterval(async () => {
-                                    if($("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
-                                        clearInterval(reloadSavedData2)
-                                        $("#warnAnimeContainer").css({visibility:"hidden"}).show()
-                                        savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
-                                                                                            "full cgi","kids","love triangle","!male harem","!mixed gender harem",
-                                                                                            "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
-                                                                                            "!rape"
-                                                                                        ]
-                                        
-                                        var warnAnimeInput
-                                        for(let i=0; i<savedWarnAnime.length; i++) {
-                                            warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
-                                            await warnAnimeInput.val(savedWarnAnime[i])
-                                            var e = await $.Event("keyup",{keyCode:13})
-                                            await warnAnimeInput.trigger(e)
-                                            await warnAnimeInput.val("")
-                                        }
-                                        await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
-                                    }
-                                },1)
-                                let reloadSavedData3 = setInterval(async () => {
-                                    if($("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
-                                        clearInterval(reloadSavedData3)
-                                        $("#filterAlgoContainer").css({visibility:"hidden"}).show()
-                                        savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
-                                        var filterAlgoInput
-                                        for(let i=0; i<savedFilterAlgo.length; i++) {
-                                            filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
-                                            await filterAlgoInput.val(savedFilterAlgo[i])
-                                            var e = await $.Event("keyup",{keyCode:13})
-                                            await filterAlgoInput.trigger(e)
-                                            await filterAlgoInput.val("")
-                                        }
-                                        await $("#filterAlgoContainer").css({visibility:"visible"}).hide()
-                                    }
-                                },1)
-                                var timeInterval = (new Date).getTime()-UpdateAnalyzeAnimeStartTime.getTime()
-                                await saveJSON(Math.max(Math.ceil(timeInterval/1000),savedUpdateAnalyzeAnimeTime), "savedUpdateAnalyzeAnimeTime")
-                            }
-                            console.log(notAnUpdate)
-=======
                             // Save Username
                             await saveJSON(username,"savedUsername")
                             // Save Current Filters
@@ -4496,7 +4327,6 @@
                             await saveJSON(Math.max(Math.ceil(timeInterval/1000),savedUpdateAnalyzeAnimeTime), "savedUpdateAnalyzeAnimeTime")
                             // Reload new Data
                             LoadData(savedRecScheme)
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
                             if(notAnUpdate){
                                 var filterAlgoInputs = $("#filterAlgoModal .flexdatalist-multiple > .value").children(".text")
                                 var filterAlgo = []
@@ -4511,12 +4341,6 @@
                                     .html("Filters have been applied")
                                 setTimeout(()=>{
                                     $("#filterAlgoModal #filterAlgo-validation").fadeOut(1000)
-<<<<<<< HEAD
-                                    setTimeout(()=>{
-                                        $("#filterAlgoModal #filterAlgo-validation").hide()
-                                    },1000)
-=======
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
                                 },1000)
                                 $("#dataStatusContainer").fadeOut(1000)
                                 requestIsRunning = false
@@ -4799,13 +4623,9 @@
     async function loadTheme(newTheme,prevTheme){
         return await new Promise(async(resolve)=>{
             if(prevTheme!==undefined){
-<<<<<<< HEAD
-                await $(` body,
-=======
                 await $(` 
                     html
                     body,
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
                     button,
                     .overlay,
                     #username, 
@@ -4846,13 +4666,9 @@
                 })
             }
             if(newTheme!=="lightMode"){
-<<<<<<< HEAD
-                await $(` body,
-=======
                 await $(` 
                     html,
                     body,
->>>>>>> f3ede68 (for android also added dark mode, and feature for filteringcontents/custom algorithm)
                     button,
                     .overlay,
                     #username, 
