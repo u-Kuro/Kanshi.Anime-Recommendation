@@ -276,12 +276,13 @@ self.onmessage = (message) => {
                 }
             }
             // Genres
-            var genre = anime.genres
-            for(let j=0; j<genre.length; j++){
-                if(genre[j]!==null&&genre[j]!==undefined){
-                    var fullGenre = "Genre: "+genre[j]
+            var genres = anime.genres
+            for(let j=0; j<genres.length; j++){
+                var genre = genres[j]
+                if(genre!==null&&genre!==undefined){
+                    var fullGenre = "Genre: "+genre
                     if(Object.values(include.genres).length>0){
-                        if((include.genres[genre[j].toLowerCase()]!==undefined&&exclude.genres[genre[j].toLowerCase()]===undefined
+                        if((include.genres[genre.toLowerCase()]!==undefined&&exclude.genres[genre.toLowerCase()]===undefined
                             &&exclude.genres["genres"]===undefined)||include.genres["genres"]!==undefined){
                             if(varScheme.genres[fullGenre]===undefined){
                                 varScheme.genres[fullGenre] = {userScore:[userScore],count:1}
@@ -296,7 +297,7 @@ self.onmessage = (message) => {
                             }
                         }
                     } else {
-                        if((exclude.genres[genre[j].toLowerCase()]===undefined
+                        if((exclude.genres[genre.toLowerCase()]===undefined
                             &&exclude.genres["genres"]===undefined)||include.genres["genres"]!==undefined){
                             if(varScheme.genres[fullGenre]===undefined){
                                 varScheme.genres[fullGenre] = {userScore:[userScore],count:1}
@@ -364,6 +365,21 @@ self.onmessage = (message) => {
                                         }
                                     }
                                 }
+                            } else {
+                                if((exclude.tags[tag.toLowerCase()]===undefined
+                                    &&exclude.tags["tags"]===undefined)||include.tags["tags"]!==undefined){
+                                    if(varScheme.tags[fullTag]===undefined){
+                                        varScheme.tags[fullTag] = {userScore:[userScore],count:1}
+                                    } else {
+                                        varScheme.tags[fullTag].userScore.push(userScore)
+                                        varScheme.tags[fullTag].count += 1
+                                    }
+                                    if(genresMeanCount[fullTag]===undefined){
+                                        genresMeanCount[fullTag] = 1
+                                    } else {
+                                        genresMeanCount[fullTag] += 1
+                                    }
+                                }
                             }
                         }
                     } else {
@@ -400,6 +416,21 @@ self.onmessage = (message) => {
                                         } else {
                                             tagsMeanCount[fullTag] += 1
                                         }
+                                    }
+                                }
+                            } else {
+                                if((exclude.tags[tag.toLowerCase()]===undefined
+                                    &&exclude.tags["tags"]===undefined)||include.tags["tags"]!==undefined){
+                                    if(varScheme.tags[fullTag]===undefined){
+                                        varScheme.tags[fullTag] = {userScore:[userScore],count:1}
+                                    } else {
+                                        varScheme.tags[fullTag].userScore.push(userScore)
+                                        varScheme.tags[fullTag].count += 1
+                                    }
+                                    if(genresMeanCount[fullTag]===undefined){
+                                        genresMeanCount[fullTag] = 1
+                                    } else {
+                                        genresMeanCount[fullTag] += 1
                                     }
                                 }
                             }

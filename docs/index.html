@@ -1182,8 +1182,8 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "1.7",
-          backUpVersion = 1.0
+    const version = "1.8",
+          backUpVersion = 1.1
         // IndexDB
     var request, db,
         // Saved Data
@@ -1200,9 +1200,9 @@
     savedAnalyzeVariableTime, savedUpdateAnalyzeAnimeTime, savedDeepUpdateTime,
     deepUpdateStartTime, updateStartTime,
     isRunning = false, requestIsRunning = false, isLoading = false,
-    isDeepUpdate = false, willAutoUpdate = false, updateStateText = [],
+    isDeepUpdate = false, willAutoUpdate = false, updateStateText = []
         // Browser
-    notificationGranted = false
+    ,notificationGranted = false
         // Browser
     
     // Create IndexDB
@@ -2493,7 +2493,7 @@
                                     <div>Analyzing Variables...</div>
                                 </div>`
                             )
-                        Update(true)
+                        Update(true, filterAlgo)
                     }
                 })
                 $("#filterAlgoContainer, #cancelFilterAlgo").on("click",async()=>{
@@ -3031,19 +3031,6 @@
                         await $("#hiddenUnhiddenBtn").text("Hidden")
                     }
                 }
-                
-                // Pre Loading Table ?
-                // await $("#animeRecommendationList").empty()
-                // await $("#animeRecommendationList").append(`
-                //     <tr class="item ${savedTheme}" role="row">
-                //         <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
-                //             <div style="display:flex; align-items:center;">
-                //                 <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner ${savedTheme}"></div></div>
-                //                 <div>Loading...</div>
-                //             </div>
-                //         </td>
-                //     </tr>
-                // `)
 
                 // Load Table
                 if(await Object.keys(savedRecScheme).length>0){
@@ -3270,7 +3257,7 @@
     }
 
     // Main Functions
-    function Update(notAnUpdate){
+    function Update(notAnUpdate, filterAlgo){
         updateStartTime = new Date
         var filterInput = $("#filters > ul > .flexdatalist-multiple-value > input")
         var username = $("#username").val()
@@ -3294,18 +3281,18 @@
             updateIDs.push(updateID)
             if(updateIDs.length>1){
                 setTimeout(()=>{
-                    analyzeVariables(updateID, username, notAnUpdate)
+                    analyzeVariables(updateID, username, notAnUpdate, filterAlgo)
                 },requestIntervalMS)
             } else {
-                analyzeVariables(updateID, username, notAnUpdate)
+                analyzeVariables(updateID, username, notAnUpdate, filterAlgo)
             }
         }
     }
 
-    async function analyzeVariables(updateID, username, notAnUpdate) {
+    async function analyzeVariables(updateID, username, notAnUpdate, filterAlgo) {
         var savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || 90
         savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
-        savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
+        savedFilterAlgo = await (filterAlgo || await retrieveJSON("savedFilterAlgo") || [])
         //
         $("#dataStatusContainer").fadeOut(1000)
         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
@@ -3784,7 +3771,7 @@
                     const varScheme = data.varScheme
                     const userListStatus = data.userListStatus
                     const alteredVariables = data.alteredVariables
-                    analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, true)
+                    analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, true, filterAlgo)
                 }
             } else {
                 requestIsRunning = false
@@ -4171,7 +4158,7 @@
         }
     }
 
-    async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser, notAnUpdate){
+    async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser, notAnUpdate, filterAlgo){
         return await new Promise(async(resolve)=>{
             var UpdateAnalyzeAnimeStartTime = new Date()
             var savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime") || 3
@@ -4205,17 +4192,15 @@
                 },(savedUpdateAnalyzeAnimeTime-i)*1000)
                 updateStateText.push(timeout)
             }
+            // Normal Update
             if(animeEntries.length===0) {
                 animeEntries = await retrieveJSON("savedAnimeEntries") || []
             }
-            // Username Changed
             var savedUsername = await retrieveJSON("savedUsername") || ""
-            if(username!==savedUsername) {
+            // Reset if Username Changed || isDeepUpdate
+            if(username!==savedUsername||isDeepUpdate) {
                 savedRecScheme = {}
-            // Reset All Anime Recommendations
-            } else if(isDeepUpdate) {
-                savedRecScheme = {}
-                await saveJSON(savedRecScheme,"savedRecScheme")   
+            // Normal Update
             } else {
                 savedRecScheme = await retrieveJSON("savedRecScheme") || {}
             }
@@ -4228,160 +4213,129 @@
                 allFilterInfo: allFilterInfo,
                 alteredVariables: alteredVariables,
             })
-            worker9.onmessage = (message) => {
+            worker9.onmessage = async(message) => {
                 worker9.terminate()
                 const data = message.data
                 savedRecScheme = data.savedRecScheme
-                allFilterInfo = data.allFilterInfo;
-                (async()=>{
+                // Save New Filter Options
+                if(!notAnUpdate){
+                    allFilterInfo = data.allFilterInfo
                     await saveJSON(allFilterInfo,"allFilterInfo")
-                    // Save new AnimeList json Data
-                    await saveJSON(savedRecScheme, "savedRecScheme")
-                    if(Object.keys(savedRecScheme).length>1){
-                        $("#updateBtn").show()
-                        $("#updateIntervalBtn").show()
+                }
+                // Save Filtered Algorithm Contents
+                if(notAnUpdate){
+                    await saveJSON(filterAlgo,"savedFilterAlgo")
+                }
+                // Save Table Filters
+                var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
+                var filters = []
+                for(let i=0; i<filterInputs.length; i++){
+                    var filterName = filterInputs[i].textContent
+                    filters.push(filterName)
+                }
+                await saveJSON(filters, "savedFilters")
+                // Save Username
+                await saveJSON(username,"savedUsername")
+                // Save new Recommendation List
+                await saveJSON(savedRecScheme, "savedRecScheme")
+                if(Object.keys(savedRecScheme).length>1){
+                    $("#updateBtn").show()
+                    $("#updateIntervalBtn").show()
+                }
+                var worker10 = new Worker(`./js-css/worker/updateOptions-${version}.js`)
+                worker10.postMessage({
+                    allFilterInfo: allFilterInfo
+                })
+                worker10.onmessage = async(message) => {
+                    worker10.terminate()
+                    const data = message.data
+                    if(!notAnUpdate){
+                        // Save and Reload Filters
+                        savedFilterOptionsJson = data.savedFilterOptionsJson
+                        await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
+                        // This Remove Current Filters in DOM
+                        $('.flexdatalist').flexdatalist({
+                            data: savedFilterOptionsJson
+                        })
+                        // So Reload Table Filters
+                        var filterInput
+                        savedFilters = await retrieveJSON("savedFilters") || []
+                        for(let i=0; i<savedFilters.length; i++) {
+                            filterInput = $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
+                            await filterInput.val(savedFilters[i])
+                            var e = await $.Event("keyup",{keyCode:13})
+                            await filterInput.trigger(e)
+                            await filterInput.val("")
+                        }
+                        // Reload Warn Anime Contents
+                        $("#warnAnimeContainer").css({visibility:"hidden"}).show()
+                        savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
+                                                                            "full cgi","kids","love triangle","!male harem","!mixed gender harem",
+                                                                            "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
+                                                                            "!rape"
+                                                                        ]
+                        var warnAnimeInput
+                        for(let i=0; i<savedWarnAnime.length; i++) {
+                            warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                            await warnAnimeInput.val(savedWarnAnime[i])
+                            var e = await $.Event("keyup",{keyCode:13})
+                            await warnAnimeInput.trigger(e)
+                            await warnAnimeInput.val("")
+                        }
+                        await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
                     }
-                    var worker10 = new Worker(`./js-css/worker/updateOptions-${version}.js`)
-                    worker10.postMessage({
-                        allFilterInfo: allFilterInfo
-                    })
-                    worker10.onmessage = (message) => {
-                        worker10.terminate()
-                        const data = message.data;
-                        (async()=>{
-                            // Save Username
-                            await saveJSON(username,"savedUsername")
-                            // Save Current Filters
-                            var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
-                            var filters = []
-                            for(let i=0; i<filterInputs.length; i++){
-                                var filterName = filterInputs[i].textContent
-                                filters.push(filterName)
-                            }
-                            await saveJSON(filters, "savedFilters")
-                            if(!notAnUpdate){
-                                // Save and Reload Filters
-                                savedFilterOptionsJson = data.savedFilterOptionsJson
-                                await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
-                                $('.flexdatalist').flexdatalist({
-                                    data: savedFilterOptionsJson
-                                })
-                            }
-                            let reloadSavedData = setInterval(async () => {
-                                if($("#filters .flexdatalist-multiple-value > .flexdatalist-alias").length){
-                                    clearInterval(reloadSavedData)
-                                    // Reload Filters
-                                    var filterInput
-                                    savedFilters = await retrieveJSON("savedFilters") || []
-                                    for(let i=0; i<savedFilters.length; i++) {
-                                        filterInput = $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
-                                        await filterInput.val(savedFilters[i])
-                                        var e = await $.Event("keyup",{keyCode:13})
-                                        await filterInput.trigger(e)
-                                        await filterInput.val("")
-                                    }
-                                }
-                            },1)
-                            let reloadSavedData2 = setInterval(async () => {
-                                if($("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
-                                    clearInterval(reloadSavedData2)
-                                    $("#warnAnimeContainer").css({visibility:"hidden"}).show()
-                                    savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
-                                                                                        "full cgi","kids","love triangle","!male harem","!mixed gender harem",
-                                                                                        "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
-                                                                                        "!rape"
-                                                                                    ]
-                                    
-                                    var warnAnimeInput
-                                    for(let i=0; i<savedWarnAnime.length; i++) {
-                                        warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
-                                        await warnAnimeInput.val(savedWarnAnime[i])
-                                        var e = await $.Event("keyup",{keyCode:13})
-                                        await warnAnimeInput.trigger(e)
-                                        await warnAnimeInput.val("")
-                                    }
-                                    await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
-                                }
-                            },1)
-                            let reloadSavedData3 = setInterval(async () => {
-                                if($("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
-                                    clearInterval(reloadSavedData3)
-                                    if(!notAnUpdate){
-                                        $("#filterAlgoContainer").css({visibility:"hidden"}).show()
-                                    }
-                                    savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
-                                    var filterAlgoInput
-                                    for(let i=0; i<savedFilterAlgo.length; i++) {
-                                        filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
-                                        await filterAlgoInput.val(savedFilterAlgo[i])
-                                        var e = await $.Event("keyup",{keyCode:13})
-                                        await filterAlgoInput.trigger(e)
-                                        await filterAlgoInput.val("")
-                                    }
-                                    if(!notAnUpdate){
-                                        await $("#filterAlgoContainer").css({visibility:"visible"}).hide()
-                                    }
-                                }
-                            },1)
-                            var timeInterval = (new Date).getTime()-UpdateAnalyzeAnimeStartTime.getTime()
-                            await saveJSON(Math.max(Math.ceil(timeInterval/1000),savedUpdateAnalyzeAnimeTime), "savedUpdateAnalyzeAnimeTime")
-                            // Reload new Data
-                            LoadData(savedRecScheme)
-                            if(notAnUpdate){
-                                var filterAlgoInputs = $("#filterAlgoModal .flexdatalist-multiple > .value").children(".text")
-                                var filterAlgo = []
-                                for(let i=0; i<filterAlgoInputs.length; i++){
-                                    var filterName = filterAlgoInputs[i].textContent
-                                    filterAlgo.push(filterName)
-                                }
-                                await saveJSON(filterAlgo,"savedFilterAlgo")
-                                $("#filterAlgoModal #filterAlgo-validation")
-                                    .addClass("no-before").removeClass("no-before")
-                                    .addClass("success-before")
-                                    .html("Filters have been applied")
-                                setTimeout(()=>{
-                                    $("#filterAlgoModal #filterAlgo-validation").fadeOut(1000)
-                                },1000)
-                                $("#dataStatusContainer").fadeOut(1000)
-                                requestIsRunning = false
-                            } else if(alertUser){
-                                console.log("WebtoApp: List is Updated")
-                                if(!swal.isVisible()){
-                                    Swal.fire({
-                                        heightAuto: false,
-                                        text: "List has been updated!",
-                                        icon: "success",
-                                        confirmButtonColor: "#000"
-                                    })
-                                }
-                                // Browser
-                                showNotification("List has been updated!")
-                                // Browser
-                                // Continue Extra Updates
-                                updateAnimeList(updateID, username, varScheme, userListStatus, alteredVariables)
-                            } else {
-                                if(willAutoUpdate){
-                                    (async()=>{
-                                        updateIntervalStartDate = await new Date()
-                                        await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                                        willAutoUpdate = false
-                                    })();
-                                }
-                                if(isDeepUpdate){
-                                    (async()=>{
-                                        isDeepUpdate = false
-                                        savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || 320
-                                        var timeInterval = (new Date).getTime()-deepUpdateStartTime.getTime()
-                                        await saveJSON(Math.max(Math.ceil(timeInterval/1000),savedDeepUpdateTime),"savedDeepUpdateTime")
-                                    })();
-                                }
-                                $("#dataStatusContainer").fadeOut(1000)
-                                requestIsRunning = false
-                            }
-                            resolve()
-                        })();
+                    // Lastly Update Update Time 
+                    var timeInterval = (new Date).getTime()-UpdateAnalyzeAnimeStartTime.getTime()
+                    await saveJSON(Math.max(Math.ceil(timeInterval/1000),savedUpdateAnalyzeAnimeTime), "savedUpdateAnalyzeAnimeTime")
+                    // Reload New Recommendation Data
+                    LoadData(savedRecScheme)
+                    if(notAnUpdate){
+                        $("#filterAlgoModal #filterAlgo-validation")
+                            .addClass("no-before").removeClass("no-before")
+                            .addClass("success-before")
+                            .html("Filters have been applied")
+                        setTimeout(()=>{
+                            $("#filterAlgoModal #filterAlgo-validation").fadeOut(1000)
+                        },1000)
+                        $("#dataStatusContainer").fadeOut(1000)
+                        requestIsRunning = false
+                        resolve()
+                    } else if(alertUser){
+                        console.log("WebtoApp: List is Updated")
+                        if(!swal.isVisible()){
+                            Swal.fire({
+                                heightAuto: false,
+                                text: "List has been updated!",
+                                icon: "success",
+                                confirmButtonColor: "#000"
+                            })
+                        }
+                        // Browser
+                        showNotification("List has been updated!")
+                        // Browser
+                        // Continue Extra Updates
+                        updateAnimeList(updateID, username, varScheme, userListStatus, alteredVariables)
+                    } else {
+                        if(willAutoUpdate){
+                            (async()=>{
+                                updateIntervalStartDate = await new Date()
+                                await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                                willAutoUpdate = false
+                            })();
+                        }
+                        if(isDeepUpdate){
+                            (async()=>{
+                                isDeepUpdate = false
+                                savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || 320
+                                var timeInterval = (new Date).getTime()-deepUpdateStartTime.getTime()
+                                await saveJSON(Math.max(Math.ceil(timeInterval/1000),savedDeepUpdateTime),"savedDeepUpdateTime")
+                            })();
+                        }
+                        $("#dataStatusContainer").fadeOut(1000)
+                        requestIsRunning = false
+                        resolve()
                     }
-                })();
+                }
             }
         })
     }
