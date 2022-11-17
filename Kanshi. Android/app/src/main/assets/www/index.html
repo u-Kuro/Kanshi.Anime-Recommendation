@@ -940,28 +940,6 @@
             #dataStatus>span{
                 padding-block: 0.5ch;
             }
-            /* Android */
-            ::-webkit-input-placeholder {
-                white-space:pre-line !important;  
-                position:relative !important;
-                top: -7px;
-            }
-            ::-moz-placeholder {
-                white-space:pre-line !important;  
-                position:relative !important;
-                top: -7px;
-            }
-            :-ms-input-placeholder {
-                white-space:pre-line !important;  
-                position:relative !important;
-                top: -7px;
-            }
-            :-moz-placeholder {
-                white-space:pre-line !important;  
-                position:relative !important;
-                top: -7px;
-            }
-            /* Android */
             .flexdatalist-alias{
                 height: 41px !important;
             }
@@ -1184,8 +1162,8 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "2.0",
-          backUpVersion = 1.1
+    const version = "2.1",
+          backUpVersion = 1.2
         // IndexDB
     var request, db,
         // Saved Data
@@ -1767,11 +1745,10 @@
                                             lastAnilistPage = await fileContent.lastAnilistPage || 284
                                             await saveJSON(lastAnilistPage,"lastAnilistPage")
                                         }).then(async()=>{
-                                            savedWarnAnime = await fileContent.savedWarnAnime || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
-                                                                                                "full cgi","kids","love triangle","!male harem","!mixed gender harem",
-                                                                                                "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
-                                                                                                "!rape"
-                                                                                                ]
+                                            savedWarnAnime = await fileContent.savedWarnAnime || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
+                                                                                                   "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
+                                                                                                   "!tag: nudity","!tag: slavery","!tag: suicide","!tag: yuri","!tag: netorare", "!tag: rape"
+                                                                                                 ]
                                             await saveJSON(savedWarnAnime,"savedWarnAnime")
                                             return
                                         }).then(async()=>{
@@ -1972,11 +1949,10 @@
                                     lastAnilistPage = await fileContent.lastAnilistPage || 284
                                     await saveJSON(lastAnilistPage,"lastAnilistPage")
                                 }).then(async()=>{
-                                    savedWarnAnime = await fileContent.savedWarnAnime || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
-                                                                                        "full cgi","kids","love triangle","!male harem","!mixed gender harem",
-                                                                                        "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
-                                                                                        "!rape"
-                                                                                        ]
+                                    savedWarnAnime = await fileContent.savedWarnAnime || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
+                                                                                           "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
+                                                                                           "!tag: nudity","!tag: slavery","!tag: suicide","!tag: yuri","!tag: netorare", "!tag: rape"
+                                                                                         ]
                                     await saveJSON(savedWarnAnime,"savedWarnAnime")
                                     return
                                 }).then(async()=>{
@@ -2445,7 +2421,10 @@
                     $("#warnAnimeModal").removeClass("swal2-show-custom").addClass("swal2-hide-custom")
                     setTimeout(async()=>{
                         $("#warnAnimeContainer").hide()
-                        savedWarnAnime = await retrieveJSON("savedWarnAnime") || []
+                        savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
+                                                                                   "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
+                                                                                   "!tag: nudity","!tag: slavery","!tag: suicide","!tag: yuri","!tag: netorare", "!tag: rape"
+                                                                                 ]
                         await new Promise(async(resolve)=>{
                             // Remove Current Filters
                             var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
@@ -2817,11 +2796,10 @@
                 savedSort = await retrieveJSON("savedSort") || [1,1]
                 savedYscroll = await retrieveJSON("savedYscroll") || 0.0
                 savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
-                savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
-                                                                            "full cgi","kids","love triangle","!male harem","!mixed gender harem",
-                                                                            "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
-                                                                            "!rape"
-                                                                            ]
+                savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
+                                                                           "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
+                                                                           "!tag: nudity","!tag: slavery","!tag: suicide","!tag: yuri","!tag: netorare", "!tag: rape"
+                                                                         ]
                 updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
                 exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
                 resolve()
@@ -4308,11 +4286,10 @@
                         }
                         // Reload Warn Anime Contents
                         $("#warnAnimeContainer").css({visibility:"hidden"}).show()
-                        savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
-                                                                            "full cgi","kids","love triangle","!male harem","!mixed gender harem",
-                                                                            "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
-                                                                            "!rape"
-                                                                        ]
+                        savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
+                                                                                   "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
+                                                                                   "!tag: nudity","!tag: slavery","!tag: suicide","!tag: yuri","!tag: netorare", "!tag: rape"
+                                                                                 ]
                         var warnAnimeInput
                         for(let i=0; i<savedWarnAnime.length; i++) {
                             warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
@@ -4399,11 +4376,10 @@
                     }
                 }
                 await saveJSON(filters, "savedFilters")
-                savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "ecchi","mahou shoujo","!boys' love","cgi","!ero guro","!female harem",
-                                                                        "full cgi","kids","love triangle","!male harem","!mixed gender harem",
-                                                                        "!nudity","!slavery","!suicide","tokusatsu","!yuri","wuxia","!netorare",
-                                                                        "!rape"
-                                                                        ]
+                savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
+                                                                           "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
+                                                                           "!tag: nudity","!tag: slavery","!tag: suicide","!tag: yuri","!tag: netorare", "!tag: rape"
+                                                                         ]
                 var savedWarnR = {}
                 var savedWarnY = {}
                 for(let i=0; i<savedWarnAnime.length; i++){

@@ -132,15 +132,19 @@ self.onmessage = (message) => {
                 }
             }
             if(includes[i].includes("genre:")){
-                if(findWord(recList[j].genres.split(", "),includes[i].split("genre:")[1])){
-                    tempRecScheme.push(recList[j])
-                    continue
+                if(recList[j].genres.length){
+                    if(findWord(recList[j].genres.split(", "),includes[i].split("genre:")[1])){
+                        tempRecScheme.push(recList[j])
+                        continue
+                    }
                 }
             }
             if(includes[i].includes("tag:")){
-                if(findWord(recList[j].tags.split(", "),includes[i].split("tag:")[1])){
-                    tempRecScheme.push(recList[j])
-                    continue
+                if(recList[j].tags.length){
+                    if(findWord(recList[j].tags.split(", "),includes[i].split("tag:")[1])){
+                        tempRecScheme.push(recList[j])
+                        continue
+                    }
                 }
             }
         }
@@ -192,13 +196,17 @@ self.onmessage = (message) => {
                 }
             }
             if(excludes[i].includes("genre:")){
-                if(findWord(recList[j].genres.split(", "),excludes[i].trim().split("genre:")[1])){
-                    continue
+                if(recList[j].genres.length){
+                    if(findWord(recList[j].genres.split(", "),excludes[i].trim().split("genre:")[1])){
+                        continue
+                    }
                 }
             }
             if(excludes[i].includes("tag:")){
-                if(findWord(recList[j].tags.split(", "),excludes[i].trim().split("tag:")[1])){
-                    continue
+                if(recList[j].tags.length){
+                    if(findWord(recList[j].tags.split(", "),excludes[i].trim().split("tag:")[1])){
+                        continue
+                    }
                 }
             }
             tempRecScheme.push(recList[j])
@@ -233,57 +241,64 @@ self.onmessage = (message) => {
                 similarities.push(v)
             }
         })
-        if(savedWarnR[value.title.toLowerCase()]!==undefined) {
+        var fullTitle = "title: "+(value.title||"").toLowerCase()
+        if(savedWarnR[fullTitle]!==undefined) {
             warns.push(value.title)
             hasWarnR = true
-        } else if(savedWarnY[value.title.toLowerCase()]!==undefined&&hasWarnR!==true){
+        } else if(savedWarnY[fullTitle]!==undefined&&hasWarnR!==true){
             warns.push(value.title)
             hasWarnY = true
         }
-        if(savedWarnR[value.status.toLowerCase()]!==undefined) {
+        var fullStatus = "status: "+(value.status||"").toLowerCase()
+        if(savedWarnR[fullStatus]!==undefined) {
             warns.push(value.status)
             hasWarnR = true
-        } else if(savedWarnY[value.status.toLowerCase()]!==undefined&&hasWarnR!==true) {
+        } else if(savedWarnY[fullStatus]!==undefined&&hasWarnR!==true) {
             warns.push(value.status)
             hasWarnY = true
         }
-        if(savedWarnR[value.format.toLowerCase()]!==undefined){
+        var fullFormat = "format: "+(value.format||"").toLowerCase()
+        if(savedWarnR[fullFormat]!==undefined){
             warns.push(value.format)
             hasWarnR = true
-        } else if(savedWarnY[value.format.toLowerCase()]!==undefined&&hasWarnR!==true) {
+        } else if(savedWarnY[fullFormat]!==undefined&&hasWarnR!==true) {
             warns.push(value.format)
             hasWarnY = true
         }
-        if(savedWarnR[`${value.year}`.toLowerCase()]!==undefined){
+        var fullYear = "year: "+`${(value.year||"")}`.toLowerCase()
+        if(savedWarnR[fullYear]!==undefined){
             warns.push(value.year)
             hasWarnR = true
-        } else if(savedWarnY[`${value.year}`.toLowerCase()]!==undefined&&hasWarnR!==true) {
+        } else if(savedWarnY[fullYear]!==undefined&&hasWarnR!==true) {
             warns.push(value.year)
             hasWarnY = true
         }
-        if(savedWarnR[value.season.toLowerCase()]!==undefined){
+        var fullSeason = "season: "+(value.season||"").toLowerCase()
+        if(savedWarnR[fullSeason]!==undefined){
             warns.push(value.season)
             hasWarnR = true
-        } else if(savedWarnY[value.season.toLowerCase()]!==undefined&&hasWarnR!==true){
+        } else if(savedWarnY[fullSeason]!==undefined&&hasWarnR!==true){
             warns.push(value.season)
             hasWarnY = true
         }
-        var genres = value.genres.split(", ")
+        var genres = value.genres.length? value.genres.split(", ") : []
         genres.forEach((name)=>{
-            if(savedWarnR[name.toLowerCase()]!==undefined) {
+            var fullGenre = "genre: "+name.toLowerCase()
+            if(savedWarnR[fullGenre]!==undefined) {
                 warns.push(name)
                 hasWarnR = true
-            }else if(savedWarnY[name.toLowerCase()]!==undefined&&hasWarnR!==true){
+            }else if(savedWarnY[fullGenre]!==undefined&&hasWarnR!==true){
                 warns.push(name)
                 hasWarnY = true
             }
         })
-        var tags = value.tags.split(", ")
+        var tags = value.tags.length? value.tags.split(", ") : []
         tags.forEach((name)=>{
-            if(savedWarnR[name.toLowerCase()]!==undefined) {
+            var fullTag = "tag: "+name.toLowerCase()
+            if(savedWarnR[fullTag]!==undefined) {
                 warns.push(name)
                 hasWarnR = true
-            }else if(savedWarnY[name.toLowerCase()]!==undefined&&hasWarnR!==true){
+            }else if(savedWarnY[fullTag]!==undefined&&hasWarnR!==true){
                 warns.push(name)
                 hasWarnY = true
             }
@@ -291,10 +306,11 @@ self.onmessage = (message) => {
         var studios = []
         Object.entries(value.studios).forEach(([name,url])=>{
             studios.push(`<a class="${savedTheme}" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"}>${name}</a>`)
-            if(savedWarnR[name.toLowerCase()]!==undefined) {
+            var fullStudio = "studio: "+name.toLowerCase()
+            if(savedWarnR[fullStudio]!==undefined) {
                 warns.push(name)
                 hasWarnR = true
-            }else if(savedWarnY[name.toLowerCase()]!==undefined&&hasWarnR!==true){
+            }else if(savedWarnY[fullStudio]!==undefined&&hasWarnR!==true){
                 warns.push(name)
                 hasWarnY = true
             }
@@ -302,10 +318,11 @@ self.onmessage = (message) => {
         var staff = []
         Object.entries(value.staff).forEach(([name,url])=>{
             staff.push(`<a class="${savedTheme}" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"}>${name}</a>`)
-            if(savedWarnR[name.toLowerCase()]!==undefined) {
+            var fullStaff = "staff: "+name.toLowerCase()
+            if(savedWarnR[fullStaff]!==undefined) {
                 warns.push(name)
                 hasWarnR = true
-            }else if(savedWarnY[name.toLowerCase()]!==undefined&&hasWarnR!==true){
+            }else if(savedWarnY[fullStaff]!==undefined&&hasWarnR!==true){
                 warns.push(name)
                 hasWarnY = true
             }

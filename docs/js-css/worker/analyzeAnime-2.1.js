@@ -39,44 +39,80 @@ self.onmessage = (message) => {
             var animeShallUpdate = false
             var anime = animeEntries[i]
 
-            var title = anime.title.userPreferred || "Title: N/A"
+            var title = anime.title.userPreferred
             var anilistId = anime.id
             var animeUrl = anime.siteUrl
-            var format = anime.format || "Format: N/A"
-            var year = anime.seasonYear || "Year: N/A"
-            var season = anime.season || "Season: N/A"
+            var format = anime.format
+            var year = anime.seasonYear
+            var season = anime.season
             var genres = anime.genres
             var tags = anime.tags
             var studios = anime.studios.nodes.filter((studio)=>{return studio.isAnimationStudio})
             var staff = anime.staff.edges
-            var status = anime.status || "Status: N/A"
+            var status = anime.status
             var userStatus = "UNWATCHED"
 
-            if(allFilterInfo["title: "+title.toLowerCase()]===undefined){
-                allFilterInfo["title: "+title.toLowerCase()] = 0
+            //
+            if(allFilterInfo["staff: "]===undefined&&allFilterInfo["!staff: "]===undefined){
+                allFilterInfo["staff: "] = 0
+                allFilterInfo["!staff: "] = 0
             }
-            if(allFilterInfo["format: "+format.toLowerCase()]===undefined&&allFilterInfo["!format: "+format.toLowerCase()]===undefined){
-                allFilterInfo["format: "+format.toLowerCase()] = 0
-                allFilterInfo["!format: "+format.toLowerCase()] = 0
+            //
+            if(allFilterInfo["format: all"]===undefined&&allFilterInfo["!format: all"]===undefined){
+                allFilterInfo["format: all"] = 0
+                allFilterInfo["!format: all"] = 0
             }
-            if(allFilterInfo[`year: ${year}`.toLowerCase()]===undefined&&allFilterInfo[`!year: ${year}`.toLowerCase()]===undefined){
-                allFilterInfo[`year: ${year}`.toLowerCase()] = 0  
-                allFilterInfo[`!year: ${year}`.toLowerCase()] = 0
+            if(allFilterInfo["genre: all"]===undefined&&allFilterInfo["!genre: all"]===undefined){
+                allFilterInfo["genre: all"] = 0 
+                allFilterInfo["!genre: all"] = 0
             }
-            if(allFilterInfo["season: "+season.toLowerCase()]===undefined&&allFilterInfo["!season: "+season.toLowerCase()]===undefined){
-                allFilterInfo["season: "+season.toLowerCase()] = 0
-                allFilterInfo["!season: "+season.toLowerCase()] = 0
+            if(allFilterInfo["tag category: all"]===undefined&&allFilterInfo["!tag category: all"]===undefined){
+                allFilterInfo["tag category: all"] = 0 
+                allFilterInfo["!tag category: all"] = 0
             }
-            if(allFilterInfo["status: "+status.toLowerCase()]===undefined&&allFilterInfo["!status: "+status.toLowerCase()]===undefined){
-                allFilterInfo["status: "+status.toLowerCase()] = 0
-                allFilterInfo["!status: "+status.toLowerCase()] = 0
+            if(allFilterInfo["tag: all"]===undefined&&allFilterInfo["!tag: all"]===undefined){
+                allFilterInfo["tag: all"] = 0 
+                allFilterInfo["!tag: all"] = 0
+            }
+            if(allFilterInfo["studio: all"]===undefined&&allFilterInfo["!studio: all"]===undefined){
+                allFilterInfo["studio: all"] = 0  
+                allFilterInfo["!studio: all"] = 0
+            }
+            if(allFilterInfo["staff role: all"]===undefined&&allFilterInfo["!staff role: all"]===undefined){
+                allFilterInfo["staff role: all"] = 0
+                allFilterInfo["!staff role: all"] = 0
+            }
+            if(allFilterInfo["staff: all"]===undefined&&allFilterInfo["!staff: all"]===undefined){
+                allFilterInfo["staff: all"] = 0
+                allFilterInfo["!staff: all"] = 0
+            }
+            //
+            if(allFilterInfo["title: "+(title||"n/a").toString().toLowerCase()]===undefined){
+                allFilterInfo["title: "+(title||"n/a").toString().toLowerCase()] = 0
+            }
+            if(allFilterInfo["format: "+(format||"n/a").toString().toLowerCase()]===undefined&&allFilterInfo["!format: "+(format||"n/a").toString().toLowerCase()]===undefined){
+                allFilterInfo["format: "+(format||"n/a").toString().toLowerCase()] = 0
+                allFilterInfo["!format: "+(format||"n/a").toString().toLowerCase()] = 0
+            }
+            if(allFilterInfo[`year: ${(year||"n/a")}`.toLowerCase()]===undefined&&allFilterInfo[`!year: ${(year||"n/a")}`.toLowerCase()]===undefined){
+                allFilterInfo[`year: ${(year||"n/a")}`.toLowerCase()] = 0  
+                allFilterInfo[`!year: ${(year||"n/a")}`.toLowerCase()] = 0
+            }
+            if(allFilterInfo["season: "+(season||"n/a").toString().toLowerCase()]===undefined&&allFilterInfo["!season: "+(season||"n/a").toString().toLowerCase()]===undefined){
+                allFilterInfo["season: "+(season||"n/a").toString().toLowerCase()] = 0
+                allFilterInfo["!season: "+(season||"n/a").toString().toLowerCase()] = 0
+            }
+            if(allFilterInfo["status: "+(status||"n/a").toString().toLowerCase()]===undefined&&allFilterInfo["!status: "+(status||"n/a").toString().toLowerCase()]===undefined){
+                allFilterInfo["status: "+(status||"n/a").toString().toLowerCase()] = 0
+                allFilterInfo["!status: "+(status||"n/a").toString().toLowerCase()] = 0
             }
 
             // Arrange
-            var xformat = format!=="Format: N/A"?`Format: ${format}`:`${Math.random()}`
-            if(alteredVariables.format_in["Format: "+format]!==undefined||recSchemeIsNew) animeShallUpdate=true
+            var xformat = format?`Format: ${format}`:Math.random()
+            if(alteredVariables.format_in["Format: "+xformat]!==undefined||recSchemeIsNew) animeShallUpdate=true
             var xgenres = []
             for(let j=0; j<genres.length; j++){
+                if(typeof genres[j]!=="string") continue
                 if((alteredVariables.genres_in["Genre: "+genres[j]]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
                     animeShallUpdate = true
                 }
@@ -88,15 +124,16 @@ self.onmessage = (message) => {
             }
             var xtags = []
             for(let j=0; j<tags.length; j++){
+                if(typeof tags[j].name!=="string"&&typeof tags[j].category!=="string"&&typeof tags[j].rank!=="number") continue
                 if((alteredVariables.tags_in["Tag: "+tags[j].name]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
                     animeShallUpdate = true
                 }
-                xtags.push({name:"Tag: "+tags[j].name,rank:tags[j].rank,category:tags[j].category})
-                if(allFilterInfo[("tag category: "+tags[j].category).toLowerCase()]===undefined&&allFilterInfo[("!tag category: "+tags[j].category).toLowerCase()]===undefined){
+                xtags.push({name:"Tag: "+tags[j].name,rank:tags[j].rank,category:"Category: "+tags[j].category})
+                if(allFilterInfo["tag category: "+tags[j].category.toLowerCase()]===undefined&&allFilterInfo["!tag category: "+tags[j].category.toLowerCase()]===undefined){
                     allFilterInfo["tag category: "+tags[j].category.toLowerCase()] = 0 
                     allFilterInfo["!tag category: "+tags[j].category.toLowerCase()] = 0
                 }
-                if(allFilterInfo[("tag: "+tags[j].name).toLowerCase()]===undefined){
+                if(allFilterInfo["tag: "+tags[j].name.toLowerCase()]===undefined&&allFilterInfo["!tag: "+tags[j].name.toLowerCase()]===undefined){
                     allFilterInfo["tag: "+tags[j].name.toLowerCase()] = 0 
                     allFilterInfo["!tag: "+tags[j].name.toLowerCase()] = 0
                 }
@@ -104,6 +141,7 @@ self.onmessage = (message) => {
             var xstudios = []
             var includedStudio = {}
             for(let j=0; j<studios.length; j++){
+                if(typeof studios[j].name!=="string") continue
                 if(!studios[j].isAnimationStudio) continue
                 if(includedStudio[studios[j].name]!==undefined) continue
                 else includedStudio[studios[j].name] = null
@@ -112,7 +150,7 @@ self.onmessage = (message) => {
                 }
                 xstudios.push({name:"Studio: "+studios[j].name,siteUrl:studios[j].siteUrl})
                 // Should Remove Since It's Lagging on Too Much Filters
-                if(allFilterInfo[("studio: "+studios[j].name).toLowerCase()]===undefined&&allFilterInfo[("!studio: "+studios[j].name).toLowerCase()]===undefined){
+                if(allFilterInfo["studio: "+studios[j].name.toLowerCase()]===undefined&&allFilterInfo["!studio: "+studios[j].name.toLowerCase()]===undefined){
                     allFilterInfo["studio: "+studios[j].name.toLowerCase()] = 0  
                     allFilterInfo["!studio: "+studios[j].name.toLowerCase()] = 0
                 }
@@ -120,13 +158,16 @@ self.onmessage = (message) => {
             var xstaff = []
             var includedStaff = {}
             for(let j=0; j<staff.length; j++){
+                if(!staff[j].node&&typeof staff[j].role!=="string") continue
+                if(!staff[j].node.name) continue
+                if(typeof staff[j].node.name.userPreferred!=="string") continue
                 if(includedStaff[staff[j].node.name.userPreferred]!==undefined) continue
                 else includedStaff[staff[j].node.name.userPreferred] = null
                 if((alteredVariables.staff_in["Staff: "+staff[j].node.name.userPreferred]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
                     animeShallUpdate = true
                 }
                 xstaff.push({staff:"Staff: "+staff[j].node.name.userPreferred, role:"Role: "+staff[j].role.split(" (")[0], siteUrl:staff[j].node.siteUrl})
-                if(allFilterInfo[("staff role: "+staff[j].role.split(" (")[0]).toLowerCase()]===undefined&&allFilterInfo[("!staff role: "+staff[j].role.split(" (")[0]).toLowerCase()]===undefined){
+                if(allFilterInfo["staff role: "+staff[j].role.split(" (")[0].toLowerCase()]===undefined&&allFilterInfo["!staff role: "+staff[j].role.split(" (")[0].toLowerCase()]===undefined){
                     allFilterInfo["staff role: "+staff[j].role.split(" (")[0].toLowerCase()] = 0
                     allFilterInfo["!staff role: "+staff[j].role.split(" (")[0].toLowerCase()] = 0
                 }
@@ -345,12 +386,12 @@ self.onmessage = (message) => {
                 }
             }
             // Other Anime Recommendation Info
-            genres = genres.length>0?genres.join(", "):"Genres: N/A"
+            genres = genres.length>0?genres.join(", "):[]
             var tempTags = []
             for(let k=0; k<tags.length; k++){
                 tempTags.push(tags[k].name)
             }
-            tags = tempTags.length>0?tempTags.join(", "):"Tags: N/A"
+            tags = tempTags.length>0?tempTags.join(", "):[]
             var xxstudios = {}
             for(let k=0; k<studios.length; k++){
                 if(!studios[k].isAnimationStudio) continue
@@ -430,64 +471,101 @@ self.onmessage = (message) => {
             var anilistId = anime.id
             var animeUrl = anime.siteUrl
             var format = anime.format
-            var year = anime.seasonYear || "Year: N/A"
-            var season = anime.season || "Season: N/A"
+            var year = anime.seasonYear
+            var season = anime.season
             var genres = anime.genres
             var tags = anime.tags
             var studios = anime.studios.nodes.filter((studio)=>{return studio.isAnimationStudio})
             var staff = anime.staff.edges
-            var status = anime.status || "Status: N/A"
+            var status = anime.status
             var userStatus = "UNWATCHED"
             
-            if(allFilterInfo["title: "+title.toLowerCase()]===undefined){
-                allFilterInfo["title: "+title.toLowerCase()] = 0
+            //
+            if(allFilterInfo["staff: "]===undefined&&allFilterInfo["!staff: "]===undefined){
+                allFilterInfo["staff: "] = 0
+                allFilterInfo["!staff: "] = 0
             }
-            if(allFilterInfo["format: "+format.toLowerCase()]===undefined&&allFilterInfo["!format: "+format.toLowerCase()]===undefined){
-                allFilterInfo["format: "+format.toLowerCase()] = 0
-                allFilterInfo["!format: "+format.toLowerCase()] = 0
+            //
+            if(allFilterInfo["format: all"]===undefined&&allFilterInfo["!format: all"]===undefined){
+                allFilterInfo["format: all"] = 0
+                allFilterInfo["!format: all"] = 0
             }
-            if(allFilterInfo["year: "+year]===undefined&&allFilterInfo["year: "+year]===undefined){
-                allFilterInfo["year: "+year] = 0  
-                allFilterInfo[`!year: ${year}`] = 0
+            if(allFilterInfo["genre: all"]===undefined&&allFilterInfo["!genre: all"]===undefined){
+                allFilterInfo["genre: all"] = 0 
+                allFilterInfo["!genre: all"] = 0
             }
-            if(allFilterInfo["season: "+season.toLowerCase()]===undefined&&allFilterInfo["!season: "+season.toLowerCase()]===undefined){
-                allFilterInfo["season: "+season.toLowerCase()] = 0
-                allFilterInfo["!season: "+season.toLowerCase()] = 0
+            if(allFilterInfo["tag category: all"]===undefined&&allFilterInfo["!tag category: all"]===undefined){
+                allFilterInfo["tag category: all"] = 0 
+                allFilterInfo["!tag category: all"] = 0
             }
-            if(allFilterInfo["status: "+status.toLowerCase()]===undefined&&allFilterInfo["!status: "+status.toLowerCase()]===undefined){
-                allFilterInfo["status: "+status.toLowerCase()] = 0
-                allFilterInfo["!status: "+status.toLowerCase()] = 0
+            if(allFilterInfo["tag: all"]===undefined&&allFilterInfo["!tag: all"]===undefined){
+                allFilterInfo["tag: all"] = 0 
+                allFilterInfo["!tag: all"] = 0
             }
-            if(allFilterInfo["user status: "+userStatus.toLowerCase()]===undefined&&allFilterInfo["!user status: "+userStatus.toLowerCase()]===undefined){
-                allFilterInfo["user status: "+userStatus.toLowerCase()] = 0
-                allFilterInfo["!user status: "+userStatus.toLowerCase()] = 0
+            if(allFilterInfo["studio: all"]===undefined&&allFilterInfo["!studio: all"]===undefined){
+                allFilterInfo["studio: all"] = 0  
+                allFilterInfo["!studio: all"] = 0
+            }
+            if(allFilterInfo["staff role: all"]===undefined&&allFilterInfo["!staff role: all"]===undefined){
+                allFilterInfo["staff role: all"] = 0
+                allFilterInfo["!staff role: all"] = 0
+            }
+            if(allFilterInfo["staff: all"]===undefined&&allFilterInfo["!staff: all"]===undefined){
+                allFilterInfo["staff: all"] = 0
+                allFilterInfo["!staff: all"] = 0
+            }
+            //
+            if(allFilterInfo["title: "+(title||"n/a").toString().toLowerCase()]===undefined){
+                allFilterInfo["title: "+(title||"n/a").toString().toLowerCase()] = 0
+            }
+            if(allFilterInfo["format: "+(format||"n/a").toString().toLowerCase()]===undefined&&allFilterInfo["!format: "+(format||"n/a").toString().toLowerCase()]===undefined){
+                allFilterInfo["format: "+(format||"n/a").toString().toLowerCase()] = 0
+                allFilterInfo["!format: "+(format||"n/a").toString().toLowerCase()] = 0
+            }
+            if(allFilterInfo[`year: ${(year||"n/a")}`.toLowerCase()]===undefined&&allFilterInfo[`!year: ${(year||"n/a")}`.toLowerCase()]===undefined){
+                allFilterInfo[`year: ${(year||"n/a")}`.toLowerCase()] = 0  
+                allFilterInfo[`!year: ${(year||"n/a")}`.toLowerCase()] = 0
+            }
+            if(allFilterInfo["season: "+(season||"n/a").toString().toLowerCase()]===undefined&&allFilterInfo["!season: "+(season||"n/a").toString().toLowerCase()]===undefined){
+                allFilterInfo["season: "+(season||"n/a").toString().toLowerCase()] = 0
+                allFilterInfo["!season: "+(season||"n/a").toString().toLowerCase()] = 0
+            }
+            if(allFilterInfo["status: "+(status||"n/a").toString().toLowerCase()]===undefined&&allFilterInfo["!status: "+(status||"n/a").toString().toLowerCase()]===undefined){
+                allFilterInfo["status: "+(status||"n/a").toString().toLowerCase()] = 0
+                allFilterInfo["!status: "+(status||"n/a").toString().toLowerCase()] = 0
             }
             // Arrange
             for(let j=0; j<genres.length; j++){
+                if(typeof genres[j]!=="string") continue
                 if(allFilterInfo["genre: "+genres[j].toLowerCase()]===undefined&&allFilterInfo["!genre: "+genres[j].toLowerCase()]===undefined){
                     allFilterInfo["genre: "+genres[j].toLowerCase()] = 0 
                     allFilterInfo["!genre: "+genres[j].toLowerCase()] = 0
                 }
             }
             for(let j=0; j<tags.length; j++){
-                if(allFilterInfo[("tag category: "+tags[j].category).toLowerCase()]===undefined&&allFilterInfo[("!tag category: "+tags[j].category).toLowerCase()]===undefined){
+                if(typeof tags[j].category!=="string"&&typeof tags[j].name!=="string") continue
+                if(allFilterInfo["tag category: "+tags[j].category.toLowerCase()]===undefined&&allFilterInfo["!tag category: "+tags[j].category.toLowerCase()]===undefined){
                     allFilterInfo["tag category: "+tags[j].category.toLowerCase()] = 0 
                     allFilterInfo["!tag category: "+tags[j].category.toLowerCase()] = 0
                 }
-                if(allFilterInfo[("tag: "+tags[j].name).toLowerCase()]===undefined&&allFilterInfo[("!tag: "+tags[j].name).toLowerCase()]===undefined){
+                if(allFilterInfo["tag: "+tags[j].name.toLowerCase()]===undefined&&allFilterInfo["!tag: "+tags[j].name.toLowerCase()]===undefined){
                     allFilterInfo["tag: "+tags[j].name.toLowerCase()] = 0 
                     allFilterInfo["!tag: "+tags[j].name.toLowerCase()] = 0
                 }
             }
             for(let j=0; j<studios.length; j++){
+                if(typeof studios[j].name!=="string") continue
                 // Should Remove Since It's Lagging on Too Much Filters
-                if(allFilterInfo[("studio: "+studios[j].name).toLowerCase()]===undefined&&allFilterInfo[("!studio: "+studios[j].name).toLowerCase()]===undefined){
+                if(allFilterInfo["studio: "+studios[j].name.toLowerCase()]===undefined&&allFilterInfo["!studio: "+studios[j].name.toLowerCase()]===undefined){
                     allFilterInfo["studio: "+studios[j].name.toLowerCase()] = 0  
                     allFilterInfo["!studio: "+studios[j].name.toLowerCase()] = 0
                 }
             }
             for(let j=0; j<staff.length; j++){
-                if(allFilterInfo[("staff role: "+staff[j].role.split(" (")[0]).toLowerCase()]===undefined&&allFilterInfo[("!staff role: "+staff[j].role.split(" (")[0]).toLowerCase()]===undefined){
+                if(typeof staff[j].role!=="string") continue//&&!staff[j].node) continue
+                //if(!staff[j].node.name) continue
+                //if(typeof staff[j].node.name.userPreferred!=="string") continue
+                if(allFilterInfo["staff role: "+staff[j].role.split(" (")[0].toLowerCase()]===undefined&&allFilterInfo["!staff role: "+staff[j].role.split(" (")[0].toLowerCase()]===undefined){
                     allFilterInfo["staff role: "+staff[j].role.split(" (")[0].toLowerCase()] = 0
                     allFilterInfo["!staff role: "+staff[j].role.split(" (")[0].toLowerCase()] = 0
                 }
@@ -543,12 +621,12 @@ self.onmessage = (message) => {
                 score = weightedScore = (favOverpop)*(AVmul>=1?1:AVmul)
             }
             // Other Anime Recommendation Info
-            genres = genres.length>0?genres.join(", "):"Genres: N/A"
+            genres = genres.length>0?genres.join(", "):[]
             var tempTags = []
             for(let k=0; k<tags.length; k++){
                 tempTags.push(tags[k].name)
             }
-            tags = tempTags.length>0?tempTags.join(", "):"Tags: N/A"
+            tags = tempTags.length>0?tempTags.join(", "):[]
             var xxstudios = {}
             for(let k=0; k<studios.length; k++){
                 if(!studios[k].isAnimationStudio) continue
@@ -599,6 +677,11 @@ self.onmessage = (message) => {
         else if(typeof num==='string'){if(num.split(' ').join('').length===0){return false}}
         else if(typeof num==='boolean'){return false}
         else return !isNaN(num)
+    }
+    function isJson(j){
+        if(j instanceof Array||typeof j==="string") return false
+        for(e in j) return true
+        return false
     }
     function jsonIsEmpty(obj){
         for(var i in obj) return false
