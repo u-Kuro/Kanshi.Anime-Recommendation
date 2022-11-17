@@ -4348,7 +4348,7 @@
                 var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
                 var filters = []
                 var includes = []
-                var excludes = kidsAnimeIsHidden? ["kids"] : []
+                var excludes = kidsAnimeIsHidden? ["tag: kids"] : []
                 for(let i=0; i<filterInputs.length; i++){
                     var filterName = filterInputs[i].textContent
                     filters.push(filterName)
