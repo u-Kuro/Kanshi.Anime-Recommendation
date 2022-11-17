@@ -187,7 +187,7 @@ self.onmessage = (message) => {
         includedAnimeRelations[anilistId] = null
         if(anime.relations!==null){
             var animeRelations = anime.relations.edges
-            for(let j=0;j<animeRelations;j++){
+            for(let j=0;j<animeRelations.length;j++){
                 var animeRelationsNode = animeRelations[j].node
                 var animeRelationType = animeRelations[j].relationType
                 if(animeRelationsNode!==null&&animeRelationType!==null){

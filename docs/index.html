@@ -1182,7 +1182,7 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "1.9",
+    const version = "2.0",
           backUpVersion = 1.1
         // IndexDB
     var request, db,
@@ -2452,6 +2452,7 @@
                 $("#submitFilterAlgo").on("click",async()=>{
                     savedUserList = await retrieveJSON("savedUserList") || {}
                     var savedUserListValues = Object.values(savedUserList)
+                    console.log(!isJson(savedUserList),!isJson(savedUserListValues[0]),jsonIsEmpty(savedUserList))
                     if(!isJson(savedUserList)||!isJson(savedUserListValues[0])||jsonIsEmpty(savedUserList)){
                         Swal.fire({
                             heightAuto: false,
@@ -3527,8 +3528,8 @@
                                     (async()=>{
                                         await saveJSON(Math.max(Math.ceil(timeInterval/1000),savedAnalyzeVariableTime), "savedAnalyzeVariableTime");
                                         if(savedAnimeEntries.length>0){
-                                            await analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, true)
                                             await saveJSON(savedUserList,"savedUserList")
+                                            await analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, true)
                                         } else {
                                             await updateAllAnimeList(updateID, username, varScheme, userListStatus, alteredVariables, savedUserList)
                                         }
