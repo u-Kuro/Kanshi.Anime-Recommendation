@@ -238,7 +238,7 @@ self.onmessage = (message) => {
                 var fullFormat = "Format: "+format
                 if(Object.values(include.formats).length>0){
                     if((include.formats[format]!==undefined&&exclude.formats[format]===undefined
-                        &&exclude.formats["formats"]===undefined)||include.formats["formats"]!==undefined){
+                        &&exclude.formats["all"]===undefined)||include.formats["all"]!==undefined){
                         if(varScheme.format[fullFormat]===undefined){
                             varScheme.format[fullFormat] = {userScore:[userScore],count:1}
                         } else {
@@ -253,7 +253,7 @@ self.onmessage = (message) => {
                     }
                 } else {
                     if((exclude.formats[format]===undefined
-                        &&exclude.formats["formats"]===undefined)||include.formats["formats"]!==undefined){
+                        &&exclude.formats["all"]===undefined)||include.formats["all"]!==undefined){
                         if(varScheme.format[fullFormat]===undefined){
                             varScheme.format[fullFormat] = {userScore:[userScore],count:1}
                         } else {
@@ -283,7 +283,7 @@ self.onmessage = (message) => {
                     var fullGenre = "Genre: "+genre
                     if(Object.values(include.genres).length>0){
                         if((include.genres[genre.toLowerCase()]!==undefined&&exclude.genres[genre.toLowerCase()]===undefined
-                            &&exclude.genres["genres"]===undefined)||include.genres["genres"]!==undefined){
+                            &&exclude.genres["all"]===undefined)||include.genres["all"]!==undefined){
                             if(varScheme.genres[fullGenre]===undefined){
                                 varScheme.genres[fullGenre] = {userScore:[userScore],count:1}
                             } else {
@@ -298,7 +298,7 @@ self.onmessage = (message) => {
                         }
                     } else {
                         if((exclude.genres[genre.toLowerCase()]===undefined
-                            &&exclude.genres["genres"]===undefined)||include.genres["genres"]!==undefined){
+                            &&exclude.genres["all"]===undefined)||include.genres["all"]!==undefined){
                             if(varScheme.genres[fullGenre]===undefined){
                                 varScheme.genres[fullGenre] = {userScore:[userScore],count:1}
                             } else {
@@ -331,13 +331,13 @@ self.onmessage = (message) => {
                     var fullTagCategory = "Category: "+tagCategory
                     if(Object.values(include.categories).length>0){
                         if((include.categories[tagCategory.toLowerCase()]!==undefined&&exclude.tags[tagCategory.toLowerCase()]===undefined
-                            &&exclude.categories["tag categories"]===undefined)||include.categories["tag categories"]!==undefined){
+                            &&exclude.categories["all"]===undefined)||include.categories["all"]!==undefined){
                             if(varScheme.categories[fullTagCategory]===undefined){
                                 varScheme.categories[fullTagCategory] = null
                             }
                             if(Object.values(include.tags).length>0){
                                 if((include.tags[tag.toLowerCase()]!==undefined&&exclude.tags[tag.toLowerCase()]===undefined
-                                    &&exclude.tags["tags"]===undefined)||include.tags["tags"]!==undefined){
+                                    &&exclude.tags["all"]===undefined)||include.tags["all"]!==undefined){
                                     if(varScheme.tags[fullTag]===undefined){
                                         varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                     } else {
@@ -351,7 +351,7 @@ self.onmessage = (message) => {
                                     }
                                 } else {
                                     if((exclude.tags[tag.toLowerCase()]===undefined
-                                        &&exclude.tags["tags"]===undefined)||include.tags["tags"]!==undefined){
+                                        &&exclude.tags["all"]===undefined)||include.tags["all"]!==undefined){
                                         if(varScheme.tags[fullTag]===undefined){
                                             varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                         } else {
@@ -367,7 +367,7 @@ self.onmessage = (message) => {
                                 }
                             } else {
                                 if((exclude.tags[tag.toLowerCase()]===undefined
-                                    &&exclude.tags["tags"]===undefined)||include.tags["tags"]!==undefined){
+                                    &&exclude.tags["all"]===undefined)||include.tags["all"]!==undefined){
                                     if(varScheme.tags[fullTag]===undefined){
                                         varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                     } else {
@@ -390,7 +390,7 @@ self.onmessage = (message) => {
                             }
                             if(Object.values(include.tags).length>0){
                                 if((include.tags[tag.toLowerCase()]!==undefined&&exclude.tags[tag.toLowerCase()]===undefined
-                                    &&exclude.tags["tags"]===undefined)||include.tags["tags"]!==undefined){
+                                    &&exclude.tags["all"]===undefined)||include.tags["all"]!==undefined){
                                     if(varScheme.tags[fullTag]===undefined){
                                         varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                     } else {
@@ -404,7 +404,7 @@ self.onmessage = (message) => {
                                     }
                                 } else {
                                     if((exclude.tags[tag.toLowerCase()]===undefined
-                                        &&exclude.tags["tags"]===undefined)||include.tags["tags"]!==undefined){
+                                        &&exclude.tags["all"]===undefined)||include.tags["all"]!==undefined){
                                         if(varScheme.tags[fullTag]===undefined){
                                             varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                         } else {
@@ -420,7 +420,7 @@ self.onmessage = (message) => {
                                 }
                             } else {
                                 if((exclude.tags[tag.toLowerCase()]===undefined
-                                    &&exclude.tags["tags"]===undefined)||include.tags["tags"]!==undefined){
+                                    &&exclude.tags["all"]===undefined)||include.tags["all"]!==undefined){
                                     if(varScheme.tags[fullTag]===undefined){
                                         varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                     } else {
@@ -457,7 +457,7 @@ self.onmessage = (message) => {
                 if(studio!==null){
                     if(Object.values(include.studios).length>0){
                         if((include.studios[studio.toLowerCase()]!==undefined&&exclude.studios[studio.toLowerCase()]===undefined
-                            &&exclude.studios["studios"]===undefined)||include.studios["studios"]!==undefined){
+                            &&exclude.studios["all"]===undefined)||include.studios["all"]!==undefined){
                             if(varScheme.studios[fullStudio]===undefined){
                                 varScheme.studios[fullStudio] = {userScore:[userScore],count:1}
                             } else {
@@ -472,7 +472,7 @@ self.onmessage = (message) => {
                         }
                     } else {
                         if((exclude.studios[studio.toLowerCase()]===undefined
-                            &&exclude.studios["studios"]===undefined)||include.studios["studios"]!==undefined){
+                            &&exclude.studios["all"]===undefined)||include.studios["all"]!==undefined){
                             if(varScheme.studios[fullStudio]===undefined){
                                 varScheme.studios[fullStudio] = {userScore:[userScore],count:1}
                             } else {
@@ -508,13 +508,13 @@ self.onmessage = (message) => {
                     var fullStaffRole = "Role: "+staffRole
                     if(Object.values(include.roles).length>0){
                         if((include.roles[staffRole.toLowerCase()]!==undefined&&exclude.roles[staffRole.toLowerCase()]===undefined
-                            &&exclude.roles["staff roles"]===undefined)||include.roles["staff roles"]!==undefined){
+                            &&exclude.roles["all"]===undefined)||include.roles["all"]!==undefined){
                             if(varScheme.roles[fullStaffRole]===undefined){
                                 varScheme.roles[fullStaffRole] = null
                             }
                             if(Object.values(include.staffs).length>0){
                                 if((include.staffs[staff.toLowerCase()]!==undefined&&exclude.staffs[staff.toLowerCase()]===undefined
-                                    &&exclude.staffs["staffs"]===undefined)||include.staffs["staffs"]!==undefined){
+                                    &&exclude.staffs["all"]===undefined)||include.staffs["all"]!==undefined){
                                     if(varScheme.staff[fullStaff]===undefined){
                                         varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
                                     } else {
@@ -529,7 +529,7 @@ self.onmessage = (message) => {
                                 }
                             } else {
                                 if((exclude.staffs[staff.toLowerCase()]===undefined
-                                    &&exclude.staffs["staffs"]===undefined)||include.staffs["staffs"]!==undefined){
+                                    &&exclude.staffs["all"]===undefined)||include.staffs["all"]!==undefined){
                                     if(varScheme.staff[fullStaff]===undefined){
                                         varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
                                     } else {
@@ -546,13 +546,13 @@ self.onmessage = (message) => {
                         }
                     } else {
                         if((exclude.roles[staffRole.toLowerCase()]===undefined
-                            &&exclude.roles["staff roles"]===undefined)||include.roles["staff roles"]!==undefined){
+                            &&exclude.roles["all"]===undefined)||include.roles["all"]!==undefined){
                             if(varScheme.roles[fullStaffRole]===undefined){
                                 varScheme.roles[fullStaffRole] = null
                             }
                             if(Object.values(include.staffs).length>0){
                                 if((include.staffs[staff.toLowerCase()]!==undefined&&exclude.staffs[staff.toLowerCase()]===undefined
-                                    &&exclude.staffs["staffs"]===undefined)||include.staffs["staffs"]!==undefined){
+                                    &&exclude.staffs["all"]===undefined)||include.staffs["all"]!==undefined){
                                     if(varScheme.staff[fullStaff]===undefined){
                                         varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
                                     } else {
@@ -567,7 +567,7 @@ self.onmessage = (message) => {
                                 }
                             } else {
                                 if((exclude.staffs[staff.toLowerCase()]===undefined
-                                    &&exclude.staffs["staffs"]===undefined)||include.staffs["staffs"]!==undefined){
+                                    &&exclude.staffs["all"]===undefined)||include.staffs["all"]!==undefined){
                                     if(varScheme.staff[fullStaff]===undefined){
                                         varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
                                     } else {
