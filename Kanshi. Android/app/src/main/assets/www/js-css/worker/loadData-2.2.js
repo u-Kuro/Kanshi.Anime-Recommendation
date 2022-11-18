@@ -13,135 +13,136 @@ self.onmessage = (message) => {
     var tempRecScheme = []
     for(let i=0; i<includes.length; i++){
         for(let j=0; j<recList.length; j++){
-            if(includes[i].includes("format:")){
-                if(findWord(recList[j].format,includes[i].split("format:")[1])){
+            var included = includes[i].trim().toLowerCase()
+            if(included.includes("format:")){
+                if(findWord(recList[j].format,included.split("format:")[1])){
                     tempRecScheme.push(recList[j])
                     continue
                 }
             }
-            if(includes[i].includes("year:")){
-                if(findWord(recList[j].year,includes[i].split("year:")[1])){
+            if(included.includes("year:")){
+                if(findWord(recList[j].year,included.split("year:")[1])){
                     tempRecScheme.push(recList[j])
                     continue
                 }
             }
-            if(includes[i].includes("season:")){
-                if(findWord(recList[j].season,includes[i].split("season:")[1])){
+            if(included.includes("season:")){
+                if(findWord(recList[j].season,included.split("season:")[1])){
                     tempRecScheme.push(recList[j])
                     continue
                 }
             }
-            if(includes[i].includes("user status:")){
-                if(findWord(recList[j].userStatus,includes[i].split("user status:")[1])){
+            if(included.includes("user status:")){
+                if(findWord(recList[j].userStatus,included.split("user status:")[1])){
                     tempRecScheme.push(recList[j])
                     continue
                 }
             }
-            if(includes[i].includes("status:")){
-                if(findWord(recList[j].status,includes[i].split("status:")[1])){
+            if(included.includes("status:")){
+                if(findWord(recList[j].status,included.split("status:")[1])){
                     tempRecScheme.push(recList[j])
                     continue
                 }
             }
-            if(includes[i].includes("title:")){
-                if(findWord(recList[j].title,includes[i].split("title:")[1])){
+            if(included.includes("title:")){
+                if(findWord(recList[j].title,included.split("title:")[1])){
                     tempRecScheme.push(recList[j])
                     continue
                 }
             }
-            if(equalsNCS("hidden",includes[i].trim())){
+            if(equalsNCS("hidden",included)){
                 isHiddenTable = true
                 tempRecScheme.push(recList[j])
                 continue
             }
             // Numbers
             // Weighted Score
-            if(includes[i].toLowerCase().includes("wscore>=")){
-                var score=includes[i].toLowerCase().replace("wscore>=", "")
+            if(included.includes("wscore>=")){
+                var score=included.replace("wscore>=", "")
                 if(!isNaN(score)) if(recList[j].weightedScore>=parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("wscore>")&&!includes[i].toLowerCase().includes("wscore>=")){
-                var score=includes[i].toLowerCase().replace("wscore>", "")
+            if(included.includes("wscore>")&&!included.includes("wscore>=")){
+                var score=included.replace("wscore>", "")
                 if(!isNaN(score)) if(recList[j].weightedScore>parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("wscore<=")){
-                var score=includes[i].toLowerCase().replace("wscore<=", "")
+            if(included.includes("wscore<=")){
+                var score=included.replace("wscore<=", "")
                 if(!isNaN(score)) if(recList[j].weightedScore<=parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("wscore<")&&!includes[i].toLowerCase().includes("wscore<=")){
-                var score=includes[i].toLowerCase().replace("wscore<", "")
+            if(included.includes("wscore<")&&!included.includes("wscore<=")){
+                var score=included.replace("wscore<", "")
                 if(!isNaN(score)) if(recList[j].weightedScore<parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
             // Score
-            if(includes[i].toLowerCase().includes("score>=")&&!includes[i].toLowerCase().includes("wscore>=")){
-                var score=includes[i].toLowerCase().replace("score>=", "")
+            if(included.includes("score>=")&&!included.includes("wscore>=")){
+                var score=included.replace("score>=", "")
                 if(!isNaN(score)) if(recList[j].score>=parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("score>")&&!includes[i].toLowerCase().includes("score>=")&&!includes[i].toLowerCase().includes("wscore>")){
-                var score=includes[i].toLowerCase().replace("score>", "")
+            if(included.includes("score>")&&!included.includes("score>=")&&!included.includes("wscore>")){
+                var score=included.replace("score>", "")
                 if(!isNaN(score)) if(recList[j].score>parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("score<=")&&!includes[i].toLowerCase().includes("wscore<=")){
-                var score=includes[i].toLowerCase().replace("score<=", "")
+            if(included.includes("score<=")&&!included.includes("wscore<=")){
+                var score=included.replace("score<=", "")
                 if(!isNaN(score)) if(recList[j].score<=parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("score<")&&!includes[i].toLowerCase().includes("score<=")&&!includes[i].toLowerCase().includes("wscore<")){
-                var score=includes[i].toLowerCase().replace("score<", "")
+            if(included.includes("score<")&&!included.includes("score<=")&&!included.includes("wscore<")){
+                var score=included.replace("score<", "")
                 if(!isNaN(score)) if(recList[j].score<parseFloat(score)) tempRecScheme.push(recList[j])
                 continue
             }
             // Year
-            if(includes[i].toLowerCase().includes("year>=")){
-                var year=includes[i].toLowerCase().replace("year>=", "")
+            if(included.includes("year>=")){
+                var year=included.replace("year>=", "")
                 if(!isNaN(year)) if(recList[j].year>=parseFloat(year)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("year>")&&!includes[i].toLowerCase().includes("year>=")){
-                var year=includes[i].toLowerCase().replace("year>", "")
+            if(included.includes("year>")&&!included.includes("year>=")){
+                var year=included.replace("year>", "")
                 if(!isNaN(year)) if(recList[j].year>parseFloat(year)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("year<=")){
-                var year=includes[i].toLowerCase().replace("year<=", "")
+            if(included.includes("year<=")){
+                var year=included.replace("year<=", "")
                 if(!isNaN(year)) if(recList[j].year<=parseFloat(year)) tempRecScheme.push(recList[j])
                 continue
             }
-            if(includes[i].toLowerCase().includes("year<")&&!includes[i].toLowerCase().includes("year<=")){
-                var year=includes[i].toLowerCase().replace("year<", "")
+            if(included.includes("year<")&&!included.includes("year<=")){
+                var year=included.replace("year<", "")
                 if(!isNaN(year)) if(recList[j].year<parseFloat(year)) tempRecScheme.push(recList[j])
                 continue
             }
             // Arrays
-            if(includes[i].includes("studio:")){
-                if(findWord(Object.keys(recList[j].studios),includes[i].split("studio:")[1])){
+            if(included.includes("studio:")){
+                if(findWord(Object.keys(recList[j].studios),included.split("studio:")[1])){
                     tempRecScheme.push(recList[j])
                     continue
                 }
             }
-            if(includes[i].includes("staff:")){
-                if(findWord(Object.keys(recList[j].staff),includes[i].split("staff:")[1])){
+            if(included.includes("staff:")){
+                if(findWord(Object.keys(recList[j].staff),included.split("staff:")[1])){
                     tempRecScheme.push(recList[j])
                     continue
                 }
             }
-            if(includes[i].includes("genre:")){
+            if(included.includes("genre:")){
                 if(recList[j].genres.length){
-                    if(findWord(recList[j].genres.split(", "),includes[i].split("genre:")[1])){
+                    if(findWord(recList[j].genres.split(", "),included.split("genre:")[1])){
                         tempRecScheme.push(recList[j])
                         continue
                     }
                 }
             }
-            if(includes[i].includes("tag:")){
+            if(included.includes("tag:")){
                 if(recList[j].tags.length){
-                    if(findWord(recList[j].tags.split(", "),includes[i].split("tag:")[1])){
+                    if(findWord(recList[j].tags.split(", "),included.split("tag:")[1])){
                         tempRecScheme.push(recList[j])
                         continue
                     }
@@ -154,57 +155,58 @@ self.onmessage = (message) => {
     // Exclude
     for(let i=0; i<excludes.length; i++){
         for(let j=0; j<recList.length; j++){
-            if(excludes[i].includes("format:")){
-                if(findWord(recList[j].format,excludes[i].trim().split("format:")[1])){
+            var excluded = excludes[i].trim().toLowerCase()
+            if(excluded.includes("format:")){
+                if(findWord(recList[j].format,excluded.split("format:")[1])){
                     continue
                 }
             }
-            if(excludes[i].includes("year:")){
-                if(findWord(recList[j].year,excludes[i].trim().split("year:")[1])){
+            if(excluded.includes("year:")){
+                if(findWord(recList[j].year,excluded.split("year:")[1])){
                     continue
                 }
             }
-            if(excludes[i].includes("season:")){
-                if(findWord(recList[j].season,excludes[i].trim().split("season:")[1])){
+            if(excluded.includes("season:")){
+                if(findWord(recList[j].season,excluded.split("season:")[1])){
                     continue
                 }
             }
-            if(excludes[i].includes("user status:")){
-                if(findWord(recList[j].userStatus,excludes[i].trim().split("user status:")[1])){
+            if(excluded.includes("user status:")){
+                if(findWord(recList[j].userStatus,excluded.split("user status:")[1])){
                     continue
                 }
             }
-            if(excludes[i].includes("status:")){
-                if(findWord(recList[j].status,excludes[i].trim().split("status:")[1])){
+            if(excluded.includes("status:")){
+                if(findWord(recList[j].status,excluded.split("status:")[1])){
                     continue
                 }
             }
-            if(excludes[i].includes("title:")){
-                if(findWord(recList[j].title,excludes[i].trim().split("title:")[1])){
+            if(excluded.includes("title:")){
+                if(findWord(recList[j].title,excluded.split("title:")[1])){
                     continue
                 }
             }
             // Arrays
-            if(excludes[i].includes("studio:")){
-                if(findWord(Object.keys(recList[j].studios),includes[i].trim().split("studio:")[1])){
+            if(excluded.includes("studio:")){
+                if(findWord(Object.keys(recList[j].studios),excluded.trim().toLowerCase().split("studio:")[1])){
                     continue
                 }
             }
-            if(excludes[i].includes("staff:")){
-                if(findWord(Object.keys(recList[j].staff),excludes[i].trim().split("staff:")[1])){
+            if(excluded.includes("staff:")){
+                if(findWord(Object.keys(recList[j].staff),excluded.split("staff:")[1])){
                     continue
                 }
             }
-            if(excludes[i].includes("genre:")){
+            if(excluded.includes("genre:")){
                 if(recList[j].genres.length){
-                    if(findWord(recList[j].genres.split(", "),excludes[i].trim().split("genre:")[1])){
+                    if(findWord(recList[j].genres.split(", "),excluded.split("genre:")[1])){
                         continue
                     }
                 }
             }
-            if(excludes[i].includes("tag:")){
+            if(excluded.includes("tag:")){
                 if(recList[j].tags.length){
-                    if(findWord(recList[j].tags.split(", "),excludes[i].trim().split("tag:")[1])){
+                    if(findWord(recList[j].tags.split(", "),excluded.split("tag:")[1])){
                         continue
                     }
                 }
@@ -425,7 +427,7 @@ self.onmessage = (message) => {
         if(typeof data==="string"){
             return data.toLowerCase().includes(word.trim().toLowerCase())
         } else if(Array.isArray(data)){
-            return data.some((e)=>e.trim().toLowerCase()===word.trim().toLowerCase())
+            return data.some((e)=>e.trim().toLowerCase().includes(word.trim().toLowerCase()))
         }
     }
     function equalsNCS(str1, str2) {

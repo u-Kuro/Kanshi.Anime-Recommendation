@@ -241,7 +241,8 @@ self.onmessage = (message) => {
                 if(varScheme.genres[xgenres[j]]!==undefined) {
                     if(varScheme.genres[xgenres[j]]>=varScheme.meanGenres
                         &&genresIncluded[xgenres[j]]===undefined){
-                        genresIncluded[xgenres[j]] = [xgenres[j].replace("Genre: ",""),varScheme.genres[xgenres[j]]]
+                        var tmpscore = varScheme.genres[xgenres[j]]
+                        genresIncluded[xgenres[j]] = [xgenres[j].replace("Genre: ","").trim()+" ("+tmpscore.toFixed(2)+")",tmpscore]
                     }
                 }
             }
@@ -261,7 +262,8 @@ self.onmessage = (message) => {
                 if(varScheme.tags[xtags[j].name]!==undefined && xtags[j].rank>=50 && varScheme.categories[xtags[j].category]!==undefined){
                     if(varScheme.tags[xtags[j].name]>=varScheme.meanTags
                         &&tagsIncluded[xtags[j].name]===undefined){
-                        tagsIncluded[xtags[j].name] = [xtags[j].name.replace("Tag: ",""),varScheme.tags[xtags[j].name]]
+                        var tmpscore = varScheme.tags[xtags[j].name]
+                        tagsIncluded[xtags[j].name] = [xtags[j].name.replace("Tag: ","").trim()+" ("+tmpscore.toFixed(2)+")",tmpscore]
                     }
                 }
             }
@@ -282,7 +284,8 @@ self.onmessage = (message) => {
                 if(varScheme.studios[xstudios[j].name]!==undefined) {
                     if(varScheme.studios[xstudios[j].name]>=varScheme.meanStudios
                         &&studiosIncluded[xstudios[j].name]===undefined){
-                        studiosIncluded[xstudios[j].name] = [{[xstudios[j].name.replace("Studio: ","")]: xstudios[j].siteUrl},varScheme.studios[xstudios[j].name]]
+                        var tmpscore = varScheme.studios[xstudios[j].name]
+                        studiosIncluded[xstudios[j].name] = [{[xstudios[j].name.replace("Studio: ","").trim()+" ("+tmpscore.toFixed(2)+")"]: xstudios[j].siteUrl},tmpscore]
                     }
                 }
             }
@@ -311,7 +314,8 @@ self.onmessage = (message) => {
                 if(varScheme.staff[xstaff[j].staff]!==undefined && varScheme.roles[xstaff[j].role]!==undefined) {
                     if(varScheme.staff[xstaff[j].staff]>=varScheme.meanStaff
                         &&staffIncluded[xstaff[j].staff]===undefined){
-                        staffIncluded[xstaff[j].staff] = [{[xstaff[j].staff.replace("Staff",xstaff[j].role.replace("Role: ",""))]: xstaff[j].siteUrl},varScheme.staff[xstaff[j].staff]]
+                        var tmpscore = varScheme.staff[xstaff[j].staff]
+                        staffIncluded[xstaff[j].staff] = [{[xstaff[j].staff.replace("Staff",xstaff[j].role.replace("Role: ","")).trim()+" ("+tmpscore.toFixed(2)+")"]: xstaff[j].siteUrl},tmpscore]
                     }
                 }
             }
@@ -403,28 +407,11 @@ self.onmessage = (message) => {
                 xxstaff[staff[k].node.name.userPreferred] = staff[k].node.siteUrl
             }
             staff = staff.length>0? xxstaff : {}
-            genresIncluded = Object.values(genresIncluded)
-                .sort((a,b)=>{
-                    return b[1] - a[1]
-                }) || []
-            tagsIncluded = Object.values(tagsIncluded)
-                .sort((a,b)=>{
-                    return b[1] - a[1]
-                }) || []
-            studiosIncluded = Object.values(studiosIncluded)
-                .sort((a,b)=>{
-                    return b[1] - a[1]
-                }) || []
-            staffIncluded = Object.values(staffIncluded)
-                .sort((a,b)=>{
-                    return b[1] - a[1]
-                }) || []
-            const limit = 3
-            var variablesIncluded = 
-                genresIncluded.slice(0,limit)
-                .concat(tagsIncluded.slice(0,limit))
-                .concat(studiosIncluded.slice(0,limit))
-                .concat(staffIncluded.slice(0,limit))
+            //
+            var variablesIncluded = Object.values(genresIncluded)
+                .concat(Object.values(tagsIncluded))
+                .concat(Object.values(studiosIncluded))
+                .concat(Object.values(staffIncluded))
             // Sort Variable Influence
             variablesIncluded.sort((a,b)=>{
                 return b[1] - a[1]

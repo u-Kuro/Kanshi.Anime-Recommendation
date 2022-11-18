@@ -13,97 +13,97 @@ self.onmessage = (message) => {
     savedIncluded = data.savedIncluded,
     savedExcluded = data.savedExcluded
     for(let i=0;i<savedIncluded.length;i++){
-        var savedIncludes = savedIncluded[i]
-        if(savedIncludes.toLowerCase().includes("format:")){
-            include.formats[savedIncludes.trim().split("format:")[1].trim().toLowerCase()] = null
+        var savedIncludes = savedIncluded[i].trim().toLowerCase()
+        if(savedIncludes.includes("format:")){
+            include.formats[savedIncludes.split("format:")[1].trim()] = null
             continue
         }
-        if(savedIncludes.toLowerCase().includes("genre:")){
-            include.genres[savedIncludes.trim().split("genre:")[1].trim().toLowerCase()] = null
+        if(savedIncludes.includes("genre:")){
+            include.genres[savedIncludes.split("genre:")[1].trim()] = null
             continue
         }
-        if(savedIncludes.toLowerCase().includes("tag-category:")){
-            include.categories[savedIncludes.trim().split("tag-category:")[1].trim().toLowerCase()] = null
+        if(savedIncludes.includes("tag-category:")){
+            include.categories[savedIncludes.split("tag-category:")[1].trim()] = null
             continue
         }
-        if(savedIncludes.toLowerCase().includes("tag category:")){
-            include.categories[savedIncludes.trim().split("tag category:")[1].trim().toLowerCase()] = null
+        if(savedIncludes.includes("tag category:")){
+            include.categories[savedIncludes.split("tag category:")[1].trim()] = null
             continue
         }
-        if(savedIncludes.toLowerCase().includes("tag-categories:")){
-            include.categories[savedIncludes.trim().split("tag-categories:")[1].trim().toLowerCase()] = null
+        if(savedIncludes.includes("tag-categories:")){
+            include.categories[savedIncludes.split("tag-categories:")[1].trim()] = null
             continue
         }
-        if(savedIncludes.toLowerCase().includes("tag categories:")){
-            include.categories[savedIncludes.trim().split("tag categories:")[1].trim().toLowerCase()] = null
+        if(savedIncludes.includes("tag categories:")){
+            include.categories[savedIncludes.split("tag categories:")[1].trim()] = null
             continue
         }
-        if(savedIncludes.toLowerCase().includes("tag:")){
-            include.tags[savedIncludes.trim().split("tag:")[1].trim().toLowerCase()] = null
+        if(savedIncludes.includes("tag:")){
+            include.tags[savedIncludes.split("tag:")[1].trim()] = null
             continue
         }
-        if(savedIncludes.toLowerCase().includes("studio:")){
-            include.studios[savedIncludes.trim().split("studio:")[1].trim().toLowerCase()] = null
+        if(savedIncludes.includes("studio:")){
+            include.studios[savedIncludes.split("studio:")[1].trim()] = null
             continue
         }
-        if(savedIncludes.toLowerCase().includes("staff-role:")){
-            include.roles[savedIncludes.trim().split("staff-role:")[1].trim().toLowerCase()] = null
+        if(savedIncludes.includes("staff-role:")){
+            include.roles[savedIncludes.split("staff-role:")[1].trim()] = null
             continue
         }
-        if(savedIncludes.toLowerCase().includes("staff role:")){
-            include.roles[savedIncludes.trim().split("staff role:")[1].trim().toLowerCase()] = null
+        if(savedIncludes.includes("staff role:")){
+            include.roles[savedIncludes.split("staff role:")[1].trim()] = null
             continue
         }
-        if(savedIncludes.toLowerCase().includes("staff:")){
-            include.staffs[savedIncludes.trim().split("staff:")[1].trim().toLowerCase()] = null
+        if(savedIncludes.includes("staff:")){
+            include.staffs[savedIncludes.split("staff:")[1].trim()] = null
             continue
         }
     }
     //
     for(let i=0;i<savedExcluded.length;i++){
-        var savedExcludes = savedExcluded[i]
-        if(savedExcludes.toLowerCase().includes("format:")){
-            exclude.formats[savedExcludes.trim().split("format:")[1].trim().toLowerCase()] = null
+        var savedExcludes = savedExcluded[i].trim().toLowerCase()
+        if(savedExcludes.includes("format:")){
+            exclude.formats[savedExcludes.split("format:")[1].trim()] = null
             continue
         }
-        if(savedExcludes.toLowerCase().includes("genre:")){
-            exclude.genres[savedExcludes.trim().split("genre:")[1].trim().toLowerCase()] = null
+        if(savedExcludes.includes("genre:")){
+            exclude.genres[savedExcludes.split("genre:")[1].trim()] = null
             continue
         }
-        if(savedExcludes.toLowerCase().includes("tag category:")){
-            exclude.categories[savedExcludes.trim().split("tag category:")[1].trim().toLowerCase()] = null
+        if(savedExcludes.includes("tag category:")){
+            exclude.categories[savedExcludes.split("tag category:")[1].trim()] = null
             continue
         }
-        if(savedExcludes.toLowerCase().includes("tag-category:")){
-            exclude.categories[savedExcludes.trim().split("tag-category:")[1].trim().toLowerCase()] = null
+        if(savedExcludes.includes("tag-category:")){
+            exclude.categories[savedExcludes.split("tag-category:")[1].trim()] = null
             continue
         }
-        if(savedExcludes.toLowerCase().includes("tag categories:")){
-            exclude.categories[savedExcludes.trim().split("tag categories:")[1].trim().toLowerCase()] = null
+        if(savedExcludes.includes("tag categories:")){
+            exclude.categories[savedExcludes.split("tag categories:")[1].trim()] = null
             continue
         }
-        if(savedExcludes.toLowerCase().includes("tag-categories:")){
-            exclude.categories[savedExcludes.trim().split("tag-categories:")[1].trim().toLowerCase()] = null
+        if(savedExcludes.includes("tag-categories:")){
+            exclude.categories[savedExcludes.split("tag-categories:")[1].trim()] = null
             continue
         }
-        if(savedExcludes.toLowerCase().includes("tag:")){
-            exclude.tags[savedExcludes.trim().split("tag:")[1].trim().toLowerCase()] = null
+        if(savedExcludes.includes("tag:")){
+            exclude.tags[savedExcludes.split("tag:")[1].trim()] = null
             continue
         }
-        if(savedExcludes.toLowerCase().includes("studio:")){
-            exclude.studios[savedExcludes.trim().split("studio:")[1].trim().toLowerCase()] = null
+        if(savedExcludes.includes("studio:")){
+            exclude.studios[savedExcludes.split("studio:")[1].trim()] = null
             continue
         }
-        if(savedExcludes.toLowerCase().includes("staff role:")){
-            exclude.roles[savedExcludes.trim().split("staff role:")[1].trim().toLowerCase()] = null
+        if(savedExcludes.includes("staff role:")){
+            exclude.roles[savedExcludes.split("staff role:")[1].trim()] = null
             continue
         }
-        if(savedExcludes.toLowerCase().includes("staff-role:")){
-            exclude.roles[savedExcludes.trim().split("staff-role:")[1].trim().toLowerCase()] = null
+        if(savedExcludes.includes("staff-role:")){
+            exclude.roles[savedExcludes.split("staff-role:")[1].trim()] = null
             continue
         }
-        if(savedExcludes.toLowerCase().includes("staff:")){
-            exclude.staffs[savedExcludes.trim().split("staff:")[1].trim().toLowerCase()] = null
+        if(savedExcludes.includes("staff:")){
+            exclude.staffs[savedExcludes.split("staff:")[1].trim()] = null
             continue
         }
     }
