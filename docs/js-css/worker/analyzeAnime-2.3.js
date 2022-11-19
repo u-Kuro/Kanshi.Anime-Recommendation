@@ -373,7 +373,7 @@ self.onmessage = (message) => {
                 zstaffRolesArray[i] = arrayMean(zstaffRolesArray[i])
             }
             if(zstaffRolesArray.length>0){
-                animeProductionOS.push(arrayMean(zstaffRolesArray))
+                animeProductionOS.push(...zstaffRolesArray)
             }
             // Scores
             var score = arrayMean([
@@ -420,8 +420,7 @@ self.onmessage = (message) => {
             for(let i=0;i<variablesIncluded.length;i++){
                 tempVariablesIncluded.push(variablesIncluded[i][0])
             }
-            const limitShown = 10
-            variablesIncluded = tempVariablesIncluded.length>0?tempVariablesIncluded.slice(0,limitShown) : []
+            variablesIncluded = tempVariablesIncluded.length>0?tempVariablesIncluded : []
             savedRecScheme[anilistId] = {
                 id: anilistId, title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
                 userStatus: userStatus, status: status, genres: genres, tags: tags, year: year, 

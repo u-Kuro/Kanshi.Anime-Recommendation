@@ -131,9 +131,16 @@ self.onmessage = (message) => {
     }
     // sort by popularity for unique anime in franchise
     if(userEntries.length>1){
-        if(userEntries[0].media!==null&&userEntries[1].media!==null){
+        if(userEntries[0].score!==null&&userEntries[1].score!==null&&userEntries[0].media!==null&&userEntries[1].media!==null){
+            userEntries.sort((a,b)=>{
+                return b.score-a.score
+            })
             if(userEntries[0].media.popularity!==null&&userEntries[1].media.popularity!==null){
-                userEntries.sort((a,b)=>b.media.popularity-a.media.popularity)
+                userEntries.sort((a,b)=>{
+                    if(a.score===b.score){
+                        return b.media.popularity-a.media.popularity
+                    }
+                })
             }
         }
     }
@@ -374,17 +381,17 @@ self.onmessage = (message) => {
                                         varScheme.tags[fullTag].userScore.push(userScore)
                                         varScheme.tags[fullTag].count += 1
                                     }
-                                    if(genresMeanCount[fullTag]===undefined){
-                                        genresMeanCount[fullTag] = 1
+                                    if(tagsMeanCount[fullTag]===undefined){
+                                        tagsMeanCount[fullTag] = 1
                                     } else {
-                                        genresMeanCount[fullTag] += 1
+                                        tagsMeanCount[fullTag] += 1
                                     }
                                 }
                             }
                         }
                     } else {
                         if((exclude.tags[tagCategory.toLowerCase()]===undefined
-                            &&exclude.categories["tag categories"]===undefined)||include.categories["tag categories"]!==undefined){
+                            &&exclude.categories["all"]===undefined)||include.categories["all"]!==undefined){
                             if(varScheme.categories[fullTagCategory]===undefined){
                                 varScheme.categories[fullTagCategory] = null
                             }
@@ -427,10 +434,10 @@ self.onmessage = (message) => {
                                         varScheme.tags[fullTag].userScore.push(userScore)
                                         varScheme.tags[fullTag].count += 1
                                     }
-                                    if(genresMeanCount[fullTag]===undefined){
-                                        genresMeanCount[fullTag] = 1
+                                    if(tagsMeanCount[fullTag]===undefined){
+                                        tagsMeanCount[fullTag] = 1
                                     } else {
-                                        genresMeanCount[fullTag] += 1
+                                        tagsMeanCount[fullTag] += 1
                                     }
                                 }
                             }
