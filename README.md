@@ -20,17 +20,17 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) To only allow Weighted SCORES of 7-10, type wscore>=7.  
   8. Hidden/Unhidden List to hide an Anime in the apps list or show to bring it back.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) Click the black button on the left side of the Wscore table header named Unhidden or Hidden to change the list to Hidden or Unhidden respectively.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) Click the Hide or Show button to transfer an Anime to the Hidden list or Unhidden list respectively.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) Click the Hide or Show button to transfer an Anime to the Hidden list or Unhidden list respectively.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) In the settings, the 'Show All' button can be used to Unhide all your Hidden Anime in the app, it transfers all Hidden anime to Unhidden list.
-  9. Content Warning in the settings allows users to select Anime Content like Netorare, Nudity, etc. that will show a Warning Icon to Avoid any Undesired Content. You can also see the Warned Content by Clicking the Warning Icon Shown beside Wscore. Set custom warnings in the settings by clicking 'Choose Content Warn' Button.
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) To have a Yellow Icon Semi-Warning for Netorare, type [tag: netorare].
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To have a Red Icon Warning for Netorare, type [!tag: netorare].
+  9. Content Warning in the settings allows users to select Anime Content like Netorare, Nudity, etc. that will show a Warning Icon to Avoid any Undesired Content. You can also see the Warned Content by Clicking the Warning Icon Shown beside Wscore. Set custom warnings in the settings by clicking 'Choose Content Warn' Button.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) To have a Yellow Icon Semi-Warning for Netorare, type [tag: netorare].  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To have a Red Icon Warning for Netorare, type [!tag: netorare].  
   10.  Filtering Algorithm Contents in the settings allows the user to include and exclude contents in calculating the recommendation and prediction. The currently available fIlters are Formats, Genres, Tags, Tag Categories, Studios, Staff, and Staff Roles. You can use this as follows:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) In the settings click the button to filter the algorithm, which works similarly to table/list filters in instruction number 7.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) In order to exclude all the staff or staff roles in the algorithm, type [!staff: all] or [!staff role: all].  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) In order to only include directors or original creators in staff, type [staff role: director] or [staff role: original creator].  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) To change the minimum sample size for the algorithm, type [sample size: N], the default is 10.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) Algorithm Filter Indicators are as follows are [sample size: ], [format: ], [genre: ], [tag: ], [tag category: ], [studio: ], [staff: ], [staff role: ], and add ! as the first character to exclude.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e) Algorithm Filter Indicators are as follows are [sample size: ], [format: ], [genre: ], [tag: ], [tag category: ], [studio: ], [staff: ], [staff role: ], and add ! as the first character to exclude.  
 
 ## Kanshi.VI (Recommended)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Format, Studios, and Staffs by Role as Categorical. Each variables or variable component are averaged. Numeric variables including Anilist Average-Score, Popularity, Year, Favourites, Episodes, Trending, Duration have their own Linear Regression Model to be predicted and accepted at 0.1 r-squared. Finally, all anime in Anilist are then analyzed based on the Variable Importance Schema from ones' rating.
