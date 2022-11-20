@@ -1,5 +1,6 @@
 self.onmessage = (message) => {
     const savedFilterOptionsJson = [
+        {"info":"sample size:"},
         {"info":"wscore>="},
         {"info":"wscore>"},
         {"info":"wscore<="},

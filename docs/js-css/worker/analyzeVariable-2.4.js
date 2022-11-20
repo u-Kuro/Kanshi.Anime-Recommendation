@@ -4,6 +4,7 @@ self.onmessage = (message) => {
     const notAnUpdate = data.notAnUpdate || undefined
     var savedUserList = data.savedUserList
     var tempUserList = {}
+    var minSampleSize
     var include = {
         formats: {}, genres: {}, tags: {}, categories: {}, studios: {}, staffs: {}, roles: {}
     }, 
@@ -15,47 +16,37 @@ self.onmessage = (message) => {
     for(let i=0;i<savedIncluded.length;i++){
         var savedIncludes = savedIncluded[i].trim().toLowerCase()
         if(savedIncludes.includes("format:")){
-            include.formats[savedIncludes.split("format:")[1].trim()] = null
+            include.formats["format: "+savedIncludes.split("format:")[1].trim()] = null
             continue
         }
         if(savedIncludes.includes("genre:")){
-            include.genres[savedIncludes.split("genre:")[1].trim()] = null
-            continue
-        }
-        if(savedIncludes.includes("tag-category:")){
-            include.categories[savedIncludes.split("tag-category:")[1].trim()] = null
+            include.genres["genre: "+savedIncludes.split("genre:")[1].trim()] = null
             continue
         }
         if(savedIncludes.includes("tag category:")){
-            include.categories[savedIncludes.split("tag category:")[1].trim()] = null
-            continue
-        }
-        if(savedIncludes.includes("tag-categories:")){
-            include.categories[savedIncludes.split("tag-categories:")[1].trim()] = null
-            continue
-        }
-        if(savedIncludes.includes("tag categories:")){
-            include.categories[savedIncludes.split("tag categories:")[1].trim()] = null
+            include.categories["category: "+savedIncludes.split("tag category:")[1].trim()] = null
             continue
         }
         if(savedIncludes.includes("tag:")){
-            include.tags[savedIncludes.split("tag:")[1].trim()] = null
+            include.tags["tag: "+savedIncludes.split("tag:")[1].trim()] = null
             continue
         }
         if(savedIncludes.includes("studio:")){
-            include.studios[savedIncludes.split("studio:")[1].trim()] = null
-            continue
-        }
-        if(savedIncludes.includes("staff-role:")){
-            include.roles[savedIncludes.split("staff-role:")[1].trim()] = null
+            include.studios["studio: "+savedIncludes.split("studio:")[1].trim()] = null
             continue
         }
         if(savedIncludes.includes("staff role:")){
-            include.roles[savedIncludes.split("staff role:")[1].trim()] = null
+            include.roles["role: "+savedIncludes.split("staff role:")[1].trim()] = null
             continue
         }
         if(savedIncludes.includes("staff:")){
-            include.staffs[savedIncludes.split("staff:")[1].trim()] = null
+            include.staffs["staff: "+savedIncludes.split("staff:")[1].trim()] = null
+            continue
+        }
+        if(savedIncludes.includes("sample size:")){
+            var tempNum = savedIncludes.split("sample size:")[1].trim()
+            if(isNaN(tempNum)) continue
+            minSampleSize = parseInt(tempNum)
             continue
         }
     }
@@ -63,47 +54,31 @@ self.onmessage = (message) => {
     for(let i=0;i<savedExcluded.length;i++){
         var savedExcludes = savedExcluded[i].trim().toLowerCase()
         if(savedExcludes.includes("format:")){
-            exclude.formats[savedExcludes.split("format:")[1].trim()] = null
+            exclude.formats["format: "+savedExcludes.split("format:")[1].trim()] = null
             continue
         }
         if(savedExcludes.includes("genre:")){
-            exclude.genres[savedExcludes.split("genre:")[1].trim()] = null
+            exclude.genres["genre: "+savedExcludes.split("genre:")[1].trim()] = null
             continue
         }
         if(savedExcludes.includes("tag category:")){
-            exclude.categories[savedExcludes.split("tag category:")[1].trim()] = null
-            continue
-        }
-        if(savedExcludes.includes("tag-category:")){
-            exclude.categories[savedExcludes.split("tag-category:")[1].trim()] = null
-            continue
-        }
-        if(savedExcludes.includes("tag categories:")){
-            exclude.categories[savedExcludes.split("tag categories:")[1].trim()] = null
-            continue
-        }
-        if(savedExcludes.includes("tag-categories:")){
-            exclude.categories[savedExcludes.split("tag-categories:")[1].trim()] = null
+            exclude.categories["category: "+savedExcludes.split("tag category:")[1].trim()] = null
             continue
         }
         if(savedExcludes.includes("tag:")){
-            exclude.tags[savedExcludes.split("tag:")[1].trim()] = null
+            exclude.tags["tag: "+savedExcludes.split("tag:")[1].trim()] = null
             continue
         }
         if(savedExcludes.includes("studio:")){
-            exclude.studios[savedExcludes.split("studio:")[1].trim()] = null
+            exclude.studios["studio: "+savedExcludes.split("studio:")[1].trim()] = null
             continue
         }
         if(savedExcludes.includes("staff role:")){
-            exclude.roles[savedExcludes.split("staff role:")[1].trim()] = null
-            continue
-        }
-        if(savedExcludes.includes("staff-role:")){
-            exclude.roles[savedExcludes.split("staff-role:")[1].trim()] = null
+            exclude.roles["role: "+savedExcludes.split("staff role:")[1].trim()] = null
             continue
         }
         if(savedExcludes.includes("staff:")){
-            exclude.staffs[savedExcludes.split("staff:")[1].trim()] = null
+            exclude.staffs["staff: "+savedExcludes.split("staff:")[1].trim()] = null
             continue
         }
     }
@@ -242,10 +217,10 @@ self.onmessage = (message) => {
             // Formats
             var format = anime.format
             if(format!==null&&format!==undefined){
-                var fullFormat = "Format: "+format
+                var fullFormat = "format: "+format.toLowerCase()
                 if(Object.values(include.formats).length>0){
-                    if((include.formats[format]!==undefined&&exclude.formats[format]===undefined
-                        &&exclude.formats["all"]===undefined)||include.formats["all"]!==undefined){
+                    if((include.formats[fullFormat]!==undefined&&exclude.formats[fullFormat]===undefined
+                        &&exclude.formats["format: all"]===undefined)||include.formats["format: all"]!==undefined){
                         if(varScheme.format[fullFormat]===undefined){
                             varScheme.format[fullFormat] = {userScore:[userScore],count:1}
                         } else {
@@ -259,8 +234,8 @@ self.onmessage = (message) => {
                         }
                     }
                 } else {
-                    if((exclude.formats[format]===undefined
-                        &&exclude.formats["all"]===undefined)||include.formats["all"]!==undefined){
+                    if((exclude.formats[fullFormat]===undefined
+                        &&exclude.formats["format: all"]===undefined)||include.formats["format: all"]!==undefined){
                         if(varScheme.format[fullFormat]===undefined){
                             varScheme.format[fullFormat] = {userScore:[userScore],count:1}
                         } else {
@@ -287,10 +262,10 @@ self.onmessage = (message) => {
             for(let j=0; j<genres.length; j++){
                 var genre = genres[j]
                 if(genre!==null&&genre!==undefined){
-                    var fullGenre = "Genre: "+genre
+                    var fullGenre = "genre: "+genre.toLowerCase()
                     if(Object.values(include.genres).length>0){
-                        if((include.genres[genre.toLowerCase()]!==undefined&&exclude.genres[genre.toLowerCase()]===undefined
-                            &&exclude.genres["all"]===undefined)||include.genres["all"]!==undefined){
+                        if((include.genres[fullGenre]!==undefined&&exclude.genres[fullGenre]===undefined
+                            &&exclude.genres["genre: all"]===undefined)||include.genres["genre: all"]!==undefined){
                             if(varScheme.genres[fullGenre]===undefined){
                                 varScheme.genres[fullGenre] = {userScore:[userScore],count:1}
                             } else {
@@ -304,8 +279,8 @@ self.onmessage = (message) => {
                             }
                         }
                     } else {
-                        if((exclude.genres[genre.toLowerCase()]===undefined
-                            &&exclude.genres["all"]===undefined)||include.genres["all"]!==undefined){
+                        if((exclude.genres[fullGenre]===undefined
+                            &&exclude.genres["genre: all"]===undefined)||include.genres["genre: all"]!==undefined){
                             if(varScheme.genres[fullGenre]===undefined){
                                 varScheme.genres[fullGenre] = {userScore:[userScore],count:1}
                             } else {
@@ -334,17 +309,14 @@ self.onmessage = (message) => {
                 var tag = tags[j].name
                 var tagCategory = tags[j].category
                 if(tag!==null && tagCategory!==null && tags[j].rank>=50){
-                    var fullTag = "Tag: "+tag
-                    var fullTagCategory = "Category: "+tagCategory
+                    var fullTag = "tag: "+tag.toLowerCase()
+                    var fullTagCategory = "category: "+tagCategory.toLowerCase()
                     if(Object.values(include.categories).length>0){
-                        if((include.categories[tagCategory.toLowerCase()]!==undefined&&exclude.tags[tagCategory.toLowerCase()]===undefined
-                            &&exclude.categories["all"]===undefined)||include.categories["all"]!==undefined){
-                            if(varScheme.categories[fullTagCategory]===undefined){
-                                varScheme.categories[fullTagCategory] = null
-                            }
+                        if((include.categories[fullTagCategory]!==undefined&&exclude.tags[fullTagCategory]===undefined
+                            &&exclude.categories["category: all"]===undefined)||include.categories["category: all"]!==undefined){
                             if(Object.values(include.tags).length>0){
-                                if((include.tags[tag.toLowerCase()]!==undefined&&exclude.tags[tag.toLowerCase()]===undefined
-                                    &&exclude.tags["all"]===undefined)||include.tags["all"]!==undefined){
+                                if((include.tags[fullTag]!==undefined&&exclude.tags[fullTag]===undefined
+                                    &&exclude.tags["tag: all"]===undefined)||include.tags["tag: all"]!==undefined){
                                     if(varScheme.tags[fullTag]===undefined){
                                         varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                     } else {
@@ -356,25 +328,10 @@ self.onmessage = (message) => {
                                     } else {
                                         tagsMeanCount[fullTag] += 1
                                     }
-                                } else {
-                                    if((exclude.tags[tag.toLowerCase()]===undefined
-                                        &&exclude.tags["all"]===undefined)||include.tags["all"]!==undefined){
-                                        if(varScheme.tags[fullTag]===undefined){
-                                            varScheme.tags[fullTag] = {userScore:[userScore],count:1}
-                                        } else {
-                                            varScheme.tags[fullTag].userScore.push(userScore)
-                                            varScheme.tags[fullTag].count += 1
-                                        }
-                                        if(tagsMeanCount[fullTag]===undefined){
-                                            tagsMeanCount[fullTag] = 1
-                                        } else {
-                                            tagsMeanCount[fullTag] += 1
-                                        }
-                                    }
                                 }
                             } else {
-                                if((exclude.tags[tag.toLowerCase()]===undefined
-                                    &&exclude.tags["all"]===undefined)||include.tags["all"]!==undefined){
+                                if((exclude.tags[fullTag]===undefined
+                                    &&exclude.tags["tag: all"]===undefined)||include.tags["tag: all"]!==undefined){
                                     if(varScheme.tags[fullTag]===undefined){
                                         varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                     } else {
@@ -390,14 +347,11 @@ self.onmessage = (message) => {
                             }
                         }
                     } else {
-                        if((exclude.tags[tagCategory.toLowerCase()]===undefined
-                            &&exclude.categories["all"]===undefined)||include.categories["all"]!==undefined){
-                            if(varScheme.categories[fullTagCategory]===undefined){
-                                varScheme.categories[fullTagCategory] = null
-                            }
+                        if((exclude.tags[fullTagCategory]===undefined
+                            &&exclude.categories["category: all"]===undefined)||include.categories["category: all"]!==undefined){
                             if(Object.values(include.tags).length>0){
-                                if((include.tags[tag.toLowerCase()]!==undefined&&exclude.tags[tag.toLowerCase()]===undefined
-                                    &&exclude.tags["all"]===undefined)||include.tags["all"]!==undefined){
+                                if((include.tags[fullTag]!==undefined&&exclude.tags[fullTag]===undefined
+                                    &&exclude.tags["tag: all"]===undefined)||include.tags["tag: all"]!==undefined){
                                     if(varScheme.tags[fullTag]===undefined){
                                         varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                     } else {
@@ -409,25 +363,10 @@ self.onmessage = (message) => {
                                     } else {
                                         tagsMeanCount[fullTag] += 1
                                     }
-                                } else {
-                                    if((exclude.tags[tag.toLowerCase()]===undefined
-                                        &&exclude.tags["all"]===undefined)||include.tags["all"]!==undefined){
-                                        if(varScheme.tags[fullTag]===undefined){
-                                            varScheme.tags[fullTag] = {userScore:[userScore],count:1}
-                                        } else {
-                                            varScheme.tags[fullTag].userScore.push(userScore)
-                                            varScheme.tags[fullTag].count += 1
-                                        }
-                                        if(tagsMeanCount[fullTag]===undefined){
-                                            tagsMeanCount[fullTag] = 1
-                                        } else {
-                                            tagsMeanCount[fullTag] += 1
-                                        }
-                                    }
                                 }
                             } else {
-                                if((exclude.tags[tag.toLowerCase()]===undefined
-                                    &&exclude.tags["all"]===undefined)||include.tags["all"]!==undefined){
+                                if((exclude.tags[fullTag]===undefined
+                                    &&exclude.tags["tag: all"]===undefined)||include.tags["tag: all"]!==undefined){
                                     if(varScheme.tags[fullTag]===undefined){
                                         varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                     } else {
@@ -458,13 +397,13 @@ self.onmessage = (message) => {
             for(let j=0; j<studios.length; j++){
                 if(!studios[j].isAnimationStudio) continue
                 var studio = studios[j].name
-                var fullStudio = "Studio: "+studio
+                var fullStudio = "studio: "+studio.toLowerCase()
                 if(includedStudio[studio]!==undefined) continue
                 else includedStudio[studio] = null
                 if(studio!==null){
                     if(Object.values(include.studios).length>0){
-                        if((include.studios[studio.toLowerCase()]!==undefined&&exclude.studios[studio.toLowerCase()]===undefined
-                            &&exclude.studios["all"]===undefined)||include.studios["all"]!==undefined){
+                        if((include.studios[fullStudio]!==undefined&&exclude.studios[fullStudio]===undefined
+                            &&exclude.studios["studio: all"]===undefined)||include.studios["studio: all"]!==undefined){
                             if(varScheme.studios[fullStudio]===undefined){
                                 varScheme.studios[fullStudio] = {userScore:[userScore],count:1}
                             } else {
@@ -478,8 +417,8 @@ self.onmessage = (message) => {
                             }
                         }
                     } else {
-                        if((exclude.studios[studio.toLowerCase()]===undefined
-                            &&exclude.studios["all"]===undefined)||include.studios["all"]!==undefined){
+                        if((exclude.studios[fullStudio]===undefined
+                            &&exclude.studios["studio: all"]===undefined)||include.studios["studio: all"]!==undefined){
                             if(varScheme.studios[fullStudio]===undefined){
                                 varScheme.studios[fullStudio] = {userScore:[userScore],count:1}
                             } else {
@@ -511,17 +450,14 @@ self.onmessage = (message) => {
                     if(includedStaff[staff]!==undefined) continue
                     else includedStaff[staff] = null
                     var staffRole = staffs[j].role.split(" (")[0]
-                    var fullStaff = "Staff: "+staff
-                    var fullStaffRole = "Role: "+staffRole
+                    var fullStaff = "staff: "+staff.toLowerCase()
+                    var fullStaffRole = "role: "+staffRole.toLowerCase()
                     if(Object.values(include.roles).length>0){
-                        if((include.roles[staffRole.toLowerCase()]!==undefined&&exclude.roles[staffRole.toLowerCase()]===undefined
-                            &&exclude.roles["all"]===undefined)||include.roles["all"]!==undefined){
-                            if(varScheme.roles[fullStaffRole]===undefined){
-                                varScheme.roles[fullStaffRole] = null
-                            }
+                        if((include.roles[fullStaffRole]!==undefined&&exclude.roles[fullStaffRole]===undefined
+                            &&exclude.roles["role: all"]===undefined)||include.roles["role: all"]!==undefined){
                             if(Object.values(include.staffs).length>0){
-                                if((include.staffs[staff.toLowerCase()]!==undefined&&exclude.staffs[staff.toLowerCase()]===undefined
-                                    &&exclude.staffs["all"]===undefined)||include.staffs["all"]!==undefined){
+                                if((include.staffs[fullStaff]!==undefined&&exclude.staffs[fullStaff]===undefined
+                                    &&exclude.staffs["staff: all"]===undefined)||include.staffs["staff: all"]!==undefined){
                                     if(varScheme.staff[fullStaff]===undefined){
                                         varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
                                     } else {
@@ -535,8 +471,8 @@ self.onmessage = (message) => {
                                     }
                                 }
                             } else {
-                                if((exclude.staffs[staff.toLowerCase()]===undefined
-                                    &&exclude.staffs["all"]===undefined)||include.staffs["all"]!==undefined){
+                                if((exclude.staffs[fullStaff]===undefined
+                                    &&exclude.staffs["staff: all"]===undefined)||include.staffs["staff: all"]!==undefined){
                                     if(varScheme.staff[fullStaff]===undefined){
                                         varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
                                     } else {
@@ -552,14 +488,11 @@ self.onmessage = (message) => {
                             }
                         }
                     } else {
-                        if((exclude.roles[staffRole.toLowerCase()]===undefined
-                            &&exclude.roles["all"]===undefined)||include.roles["all"]!==undefined){
-                            if(varScheme.roles[fullStaffRole]===undefined){
-                                varScheme.roles[fullStaffRole] = null
-                            }
+                        if((exclude.roles[fullStaffRole]===undefined
+                            &&exclude.roles["role: all"]===undefined)||include.roles["role: all"]!==undefined){
                             if(Object.values(include.staffs).length>0){
-                                if((include.staffs[staff.toLowerCase()]!==undefined&&exclude.staffs[staff.toLowerCase()]===undefined
-                                    &&exclude.staffs["all"]===undefined)||include.staffs["all"]!==undefined){
+                                if((include.staffs[fullStaff]!==undefined&&exclude.staffs[fullStaff]===undefined
+                                    &&exclude.staffs["staff: all"]===undefined)||include.staffs["staff: all"]!==undefined){
                                     if(varScheme.staff[fullStaff]===undefined){
                                         varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
                                     } else {
@@ -573,8 +506,8 @@ self.onmessage = (message) => {
                                     }
                                 }
                             } else {
-                                if((exclude.staffs[staff.toLowerCase()]===undefined
-                                    &&exclude.staffs["all"]===undefined)||include.staffs["all"]!==undefined){
+                                if((exclude.staffs[fullStaff]===undefined
+                                    &&exclude.staffs["staff: all"]===undefined)||include.staffs["staff: all"]!==undefined){
                                     if(varScheme.staff[fullStaff]===undefined){
                                         varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
                                     } else {
@@ -636,7 +569,7 @@ self.onmessage = (message) => {
                 if(anime!==undefined){
                     var format = anime.format
                     if(format!==null&&format!==undefined){
-                        var fullFormat = "Format: "+format
+                        var fullFormat = "format: "+format
                         if(alteredVariables.format_in[fullFormat]===undefined){
                             alteredVariables.format_in[fullFormat] = 1
                         }
@@ -644,7 +577,7 @@ self.onmessage = (message) => {
                     var genres = anime.genres
                     if(genres!==null&&genres!==undefined){
                         for(let j=0; j<genres.length; j++){   
-                            var fullGenre = "Genre: "+genres[j]
+                            var fullGenre = "genre: "+genres[j]
                             if(alteredVariables.genres_in[fullGenre]===undefined){
                                 alteredVariables.genres_in[fullGenre] = 1
                             }
@@ -653,7 +586,7 @@ self.onmessage = (message) => {
                     var tags = anime.tags
                     if(tags!==null&&tags!==undefined){
                         for(let j=0; j<tags.length; j++){
-                            var fullTag = "Tag: "+tags[j].name
+                            var fullTag = "tag: "+tags[j].name
                             if(alteredVariables.tags_in[fullTag]===undefined){
                                 alteredVariables.tags_in[fullTag] = 1
                             }
@@ -663,7 +596,7 @@ self.onmessage = (message) => {
                     if(studios!==null&&studios!==undefined){
                         for(let j=0; j<studios.length; j++){
                             if(!studios[j].isAnimationStudio) continue
-                            var fullStudio = "Studio: "+studios[j].name
+                            var fullStudio = "studio: "+studios[j].name
                             if(alteredVariables.studios_in[fullStudio]===undefined){
                                 alteredVariables.studios_in[fullStudio] = 1
                             }
@@ -672,7 +605,7 @@ self.onmessage = (message) => {
                     var staffs = anime.staff.edges
                     if(staffs!==null&&staffs!==undefined){
                         for(let j=0; j<staffs.length; j++){
-                            var fullStaff = "Staff: "+staffs[j].node.name.userPreferred
+                            var fullStaff = "staff: "+staffs[j].node.name.userPreferred
                             if(alteredVariables.staff_in[fullStaff]===undefined){
                                 alteredVariables.staff_in[fullStaff] = 1
                             }
@@ -685,7 +618,8 @@ self.onmessage = (message) => {
         }
     }
     // Clean Data JSON
-    const minSampleSize = 2
+    minSampleSize = minSampleSize?minSampleSize:10
+    console.log(minSampleSize)
     if(Object.values(formatMeanCount).length>0){
         var tempformatMeanCount = arrayMode(Object.values(formatMeanCount))
         formatMeanCount = tempformatMeanCount<minSampleSize?minSampleSize:tempformatMeanCount
@@ -809,6 +743,10 @@ self.onmessage = (message) => {
         varScheme.meanTags = tagsMean
         varScheme.meanStudios = studiosMean
         varScheme.meanStaff = staffMean
+        varScheme.includeRoles = include.roles
+        varScheme.excludeRoles = exclude.roles
+        varScheme.includeCategories = include.categories
+        varScheme.excludeCategories = exclude.categories
         // Create Model for Numbers| y is predicted so userscore
         // Average Score Model
         const r2Thresh = 0.1 // Lowered Since Media is Subjective
@@ -901,6 +839,7 @@ self.onmessage = (message) => {
             varScheme[sortedWellKnownAnimeModels[1]] = sortedWellKnownAnimeModels[0]
         }
     }
+    console.log(JSON.stringify(varScheme))
     self.postMessage({
         varScheme: varScheme, 
         userListStatus: userListStatus,

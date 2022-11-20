@@ -108,15 +108,15 @@ self.onmessage = (message) => {
             }
 
             // Arrange
-            var xformat = format?`Format: ${format}`:Math.random()
-            if(alteredVariables.format_in["Format: "+xformat]!==undefined||recSchemeIsNew) animeShallUpdate=true
+            var xformat = format?`format: ${format.toLowerCase()}`:Math.random()
+            if(alteredVariables.format_in["format: "+xformat]!==undefined||recSchemeIsNew) animeShallUpdate=true
             var xgenres = []
             for(let j=0; j<genres.length; j++){
                 if(typeof genres[j]!=="string") continue
-                if((alteredVariables.genres_in["Genre: "+genres[j]]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
+                if((alteredVariables.genres_in["genre: "+genres[j].toLowerCase()]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
                     animeShallUpdate = true
                 }
-                xgenres.push("Genre: "+genres[j])
+                xgenres.push("genre: "+genres[j].toLowerCase())
                 if(allFilterInfo["genre: "+genres[j].toLowerCase()]===undefined&&allFilterInfo["!genre: "+genres[j].toLowerCase()]===undefined){
                     allFilterInfo["genre: "+genres[j].toLowerCase()] = 0 
                     allFilterInfo["!genre: "+genres[j].toLowerCase()] = 0
@@ -125,10 +125,10 @@ self.onmessage = (message) => {
             var xtags = []
             for(let j=0; j<tags.length; j++){
                 if(typeof tags[j].name!=="string"&&typeof tags[j].category!=="string"&&typeof tags[j].rank!=="number") continue
-                if((alteredVariables.tags_in["Tag: "+tags[j].name]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
+                if((alteredVariables.tags_in["tag: "+tags[j].name.toLowerCase()]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
                     animeShallUpdate = true
                 }
-                xtags.push({name:"Tag: "+tags[j].name,rank:tags[j].rank,category:"Category: "+tags[j].category})
+                xtags.push({name:"tag: "+tags[j].name.toLowerCase(),rank:tags[j].rank,category:"category: "+tags[j].category.toLowerCase()})
                 if(allFilterInfo["tag category: "+tags[j].category.toLowerCase()]===undefined&&allFilterInfo["!tag category: "+tags[j].category.toLowerCase()]===undefined){
                     allFilterInfo["tag category: "+tags[j].category.toLowerCase()] = 0 
                     allFilterInfo["!tag category: "+tags[j].category.toLowerCase()] = 0
@@ -143,12 +143,12 @@ self.onmessage = (message) => {
             for(let j=0; j<studios.length; j++){
                 if(typeof studios[j].name!=="string") continue
                 if(!studios[j].isAnimationStudio) continue
-                if(includedStudio[studios[j].name]!==undefined) continue
-                else includedStudio[studios[j].name] = null
-                if((alteredVariables.studios_in["Studio: "+studios[j].name]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
+                if(includedStudio[studios[j].name.toLowerCase()]!==undefined) continue
+                else includedStudio[studios[j].name.toLowerCase()] = null
+                if((alteredVariables.studios_in["studio: "+studios[j].name.toLowerCase()]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
                     animeShallUpdate = true
                 }
-                xstudios.push({name:"Studio: "+studios[j].name,siteUrl:studios[j].siteUrl})
+                xstudios.push({name:"studio: "+studios[j].name.toLowerCase(),siteUrl:studios[j].siteUrl})
                 // Should Remove Since It's Lagging on Too Much Filters
                 if(allFilterInfo["studio: "+studios[j].name.toLowerCase()]===undefined&&allFilterInfo["!studio: "+studios[j].name.toLowerCase()]===undefined){
                     allFilterInfo["studio: "+studios[j].name.toLowerCase()] = 0  
@@ -161,12 +161,12 @@ self.onmessage = (message) => {
                 if(!staff[j].node&&typeof staff[j].role!=="string") continue
                 if(!staff[j].node.name) continue
                 if(typeof staff[j].node.name.userPreferred!=="string") continue
-                if(includedStaff[staff[j].node.name.userPreferred]!==undefined) continue
-                else includedStaff[staff[j].node.name.userPreferred] = null
-                if((alteredVariables.staff_in["Staff: "+staff[j].node.name.userPreferred]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
+                if(includedStaff[staff[j].node.name.userPreferred.toLowerCase()]!==undefined) continue
+                else includedStaff[staff[j].node.name.userPreferred.toLowerCase()] = null
+                if((alteredVariables.staff_in["staff: "+staff[j].node.name.userPreferred.toLowerCase()]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
                     animeShallUpdate = true
                 }
-                xstaff.push({staff:"Staff: "+staff[j].node.name.userPreferred, role:"Role: "+staff[j].role.split(" (")[0], siteUrl:staff[j].node.siteUrl})
+                xstaff.push({staff:"staff: "+staff[j].node.name.userPreferred.toLowerCase(), role:"role: "+staff[j].role.split(" (")[0].toLowerCase(), siteUrl:staff[j].node.siteUrl})
                 if(allFilterInfo["staff role: "+staff[j].role.split(" (")[0].toLowerCase()]===undefined&&allFilterInfo["!staff role: "+staff[j].role.split(" (")[0].toLowerCase()]===undefined){
                     allFilterInfo["staff role: "+staff[j].role.split(" (")[0].toLowerCase()] = 0
                     allFilterInfo["!staff role: "+staff[j].role.split(" (")[0].toLowerCase()] = 0
@@ -242,7 +242,7 @@ self.onmessage = (message) => {
                     if(varScheme.genres[xgenres[j]]>=varScheme.meanGenres
                         &&genresIncluded[xgenres[j]]===undefined){
                         var tmpscore = varScheme.genres[xgenres[j]]
-                        genresIncluded[xgenres[j]] = [xgenres[j].replace("Genre: ","").trim()+" ("+tmpscore.toFixed(2)+")",tmpscore]
+                        genresIncluded[xgenres[j]] = [xgenres[j].replace("genre: ","").trim()+" ("+tmpscore.toFixed(2)+")",tmpscore]
                     }
                 }
             }
@@ -252,18 +252,41 @@ self.onmessage = (message) => {
                 savedAnalyzedVariablesCount.all[anilistId] += 1
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.tags += 1
-                if(varScheme.tags[xtags[j].name]!==undefined && varScheme.categories[xtags[j].category]!==undefined){
-                    if(xtags[j].rank>=50 || varScheme.tags[xtags[j].name]<varScheme.meanTags){
-                        ztags.push(varScheme.tags[xtags[j].name])
-                    } else {
-                        ztags.push(varScheme.meanTags-minNumber)
+                if(!jsonIsEmpty(varScheme.includeCategories)){
+                    console.log("run")
+                    if(varScheme.includeCategories[xtags[j].category]!==undefined){
+                        if(varScheme.tags[xtags[j].name]!==undefined){
+                            if(xtags[j].rank>=50 || varScheme.tags[xtags[j].name]<varScheme.meanTags){
+                                ztags.push(varScheme.tags[xtags[j].name])
+                            } else {
+                                ztags.push(varScheme.meanTags-minNumber)
+                            }
+                        }
+                        if(varScheme.tags[xtags[j].name]!==undefined && xtags[j].rank>=50){
+                            if(varScheme.tags[xtags[j].name]>=varScheme.meanTags
+                                &&tagsIncluded[xtags[j].name]===undefined){
+                                var tmpscore = varScheme.tags[xtags[j].name]
+                                tagsIncluded[xtags[j].name] = [xtags[j].name.replace("tag: ","").trim()+" ("+tmpscore.toFixed(2)+")",tmpscore]
+                            }
+                        }
                     }
-                }
-                if(varScheme.tags[xtags[j].name]!==undefined && xtags[j].rank>=50 && varScheme.categories[xtags[j].category]!==undefined){
-                    if(varScheme.tags[xtags[j].name]>=varScheme.meanTags
-                        &&tagsIncluded[xtags[j].name]===undefined){
-                        var tmpscore = varScheme.tags[xtags[j].name]
-                        tagsIncluded[xtags[j].name] = [xtags[j].name.replace("Tag: ","").trim()+" ("+tmpscore.toFixed(2)+")",tmpscore]
+                } else {
+                    console.log("run1")
+                    if(varScheme.excludeCategories[xtags[j].category]===undefined){
+                        if(varScheme.tags[xtags[j].name]!==undefined){
+                            if(xtags[j].rank>=50 || varScheme.tags[xtags[j].name]<varScheme.meanTags){
+                                ztags.push(varScheme.tags[xtags[j].name])
+                            } else {
+                                ztags.push(varScheme.meanTags-minNumber)
+                            }
+                        }
+                        if(varScheme.tags[xtags[j].name]!==undefined && xtags[j].rank>=50){
+                            if(varScheme.tags[xtags[j].name]>=varScheme.meanTags
+                                &&tagsIncluded[xtags[j].name]===undefined){
+                                var tmpscore = varScheme.tags[xtags[j].name]
+                                tagsIncluded[xtags[j].name] = [xtags[j].name.replace("tag: ","").trim()+" ("+tmpscore.toFixed(2)+")",tmpscore]
+                            }
+                        }
                     }
                 }
             }
@@ -285,7 +308,7 @@ self.onmessage = (message) => {
                     if(varScheme.studios[xstudios[j].name]>=varScheme.meanStudios
                         &&studiosIncluded[xstudios[j].name]===undefined){
                         var tmpscore = varScheme.studios[xstudios[j].name]
-                        studiosIncluded[xstudios[j].name] = [{[xstudios[j].name.replace("Studio: ","").trim()+" ("+tmpscore.toFixed(2)+")"]: xstudios[j].siteUrl},tmpscore]
+                        studiosIncluded[xstudios[j].name] = [{[xstudios[j].name.replace("studio: ","").trim()+" ("+tmpscore.toFixed(2)+")"]: xstudios[j].siteUrl},tmpscore]
                     }
                 }
             }
@@ -298,24 +321,53 @@ self.onmessage = (message) => {
                 savedAnalyzedVariablesCount.all[anilistId] += 1
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.staff += 1
-                if(varScheme.staff[xstaff[j].staff]!==undefined && varScheme.roles[xstaff[j].role]!==undefined){
-                    if(zstaff[xstaff[j].role]===undefined){
-                        zstaff[xstaff[j].role] = [varScheme.staff[xstaff[j].staff]]
-                    } else {
-                        zstaff[xstaff[j].role].push(varScheme.staff[xstaff[j].staff])
+                if(!jsonIsEmpty(varScheme.includeRoles)){
+                    console.log("run2")
+                    if(varScheme.includeRoles[xstaff[j].role]!==undefined){
+                        if(varScheme.staff[xstaff[j].staff]!==undefined){
+                            if(zstaff[xstaff[j].role]===undefined){
+                                zstaff[xstaff[j].role] = [varScheme.staff[xstaff[j].staff]]
+                            } else {
+                                zstaff[xstaff[j].role].push(varScheme.staff[xstaff[j].staff])
+                            }
+                        } else {
+                            if(zstaff[xstaff[j].role]===undefined){
+                                zstaff[xstaff[j].role] = [varScheme.meanStaff-minNumber]
+                            } else {
+                                zstaff[xstaff[j].role].push(varScheme.meanStaff-minNumber)
+                            }
+                        }
+                        if(varScheme.staff[xstaff[j].staff]!==undefined) {
+                            if(varScheme.staff[xstaff[j].staff]>=varScheme.meanStaff
+                                &&staffIncluded[xstaff[j].staff]===undefined){
+                                var tmpscore = varScheme.staff[xstaff[j].staff]
+                                staffIncluded[xstaff[j].staff] = [{[xstaff[j].staff.replace("staff",xstaff[j].role.replace("role: ","")).trim()+" ("+tmpscore.toFixed(2)+")"]: xstaff[j].siteUrl},tmpscore]
+                            }
+                        }
                     }
                 } else {
-                    if(zstaff[xstaff[j].role]===undefined){
-                        zstaff[xstaff[j].role] = [varScheme.meanStaff-minNumber]
-                    } else {
-                        zstaff[xstaff[j].role].push(varScheme.meanStaff-minNumber)
-                    }
-                }
-                if(varScheme.staff[xstaff[j].staff]!==undefined && varScheme.roles[xstaff[j].role]!==undefined) {
-                    if(varScheme.staff[xstaff[j].staff]>=varScheme.meanStaff
-                        &&staffIncluded[xstaff[j].staff]===undefined){
-                        var tmpscore = varScheme.staff[xstaff[j].staff]
-                        staffIncluded[xstaff[j].staff] = [{[xstaff[j].staff.replace("Staff",xstaff[j].role.replace("Role: ","")).trim()+" ("+tmpscore.toFixed(2)+")"]: xstaff[j].siteUrl},tmpscore]
+                    console.log("run3")
+                    if(varScheme.excludeRoles[xstaff[j].role]===undefined){
+                        if(varScheme.staff[xstaff[j].staff]!==undefined){
+                            if(zstaff[xstaff[j].role]===undefined){
+                                zstaff[xstaff[j].role] = [varScheme.staff[xstaff[j].staff]]
+                            } else {
+                                zstaff[xstaff[j].role].push(varScheme.staff[xstaff[j].staff])
+                            }
+                        } else {
+                            if(zstaff[xstaff[j].role]===undefined){
+                                zstaff[xstaff[j].role] = [varScheme.meanStaff-minNumber]
+                            } else {
+                                zstaff[xstaff[j].role].push(varScheme.meanStaff-minNumber)
+                            }
+                        }
+                        if(varScheme.staff[xstaff[j].staff]!==undefined) {
+                            if(varScheme.staff[xstaff[j].staff]>=varScheme.meanStaff
+                                &&staffIncluded[xstaff[j].staff]===undefined){
+                                var tmpscore = varScheme.staff[xstaff[j].staff]
+                                staffIncluded[xstaff[j].staff] = [{[xstaff[j].staff.replace("staff",xstaff[j].role.replace("role: ","")).trim()+" ("+tmpscore.toFixed(2)+")"]: xstaff[j].siteUrl},tmpscore]
+                            }
+                        }
                     }
                 }
             }
@@ -373,7 +425,7 @@ self.onmessage = (message) => {
                 zstaffRolesArray[i] = arrayMean(zstaffRolesArray[i])
             }
             if(zstaffRolesArray.length>0){
-                animeProductionOS.push(...zstaffRolesArray)
+                animeProductionOS.push(arrayMean(zstaffRolesArray))
             }
             // Scores
             var score = arrayMean([

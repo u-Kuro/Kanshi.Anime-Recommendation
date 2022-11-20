@@ -1162,8 +1162,8 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "2.3",
-          backUpVersion = 1.2
+    const version = "2.4",
+          backUpVersion = 1.3
         // IndexDB
     var request, db,
         // Saved Data
@@ -2933,10 +2933,13 @@
         }).then(async()=>{
             // Init Backup Data
             return await new Promise(async(resolve)=>{
+                console.log(savedBackUpVersion,backUpVersion)
                 if(savedAnimeEntries.length<1||lastSavedUpdateTime===0||savedBackUpVersion<backUpVersion){
+                    console.log(savedBackUpVersion,backUpVersion)
                     var worker0 = await new Worker(`./js-css/worker/getAnimeEntries-${version}.js`)
                     await worker0.postMessage("")
                     worker0.onmessage = async (message) => {
+                        console.log(savedBackUpVersion,backUpVersion)
                         await worker0.terminate()
                         const data = await message.data
                         savedAnimeEntries = await data.savedAnimeEntries
