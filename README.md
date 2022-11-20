@@ -9,21 +9,28 @@
   Features/Usage Instructions
   1. Settings can be shown by clicking the small icon or the logo at the top.
   2. Sort by Scores/Status/Year/etc. to the desired order.
-  3. Update button in the settings to update your recommendation list (used when you change an anime score in your list).
-  4. Deep Update button in the settings to reset all data in the app (this will take a longer time).
-  5. Import/Export in the settings your user data recommendation (this is recommended, a backup will be useful when anilist API had a problem with the app).
-  6. Auto Recommendation Updates and Auto Export every 1 hour in the settings.   
-  7. Filters are available, insert Title/Genres/Tags/User Status/Anime Status/Format/Year/Season/Studios/Staff to include and/or exclude an anime in your recommendation list. Numeric Filters >,<,>=,<= for numeric columns including WScore, Score, and Year.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) To only see Unwatched Anime, type unwatched in the filter.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To remove completed anime, type !completed.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) To only allow wscores 7-10, type wscore>=7.  
-  8. Hidden/Unhidden List to hide an Anime from one's list or show it back to your recommendations list.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) Click the black button on the left side of the Wscore header named Unhidden or Hidden to change the list to Hidden or Unhidden respectively.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) Click the hide or show button to transfer anime to the hidden list or unhidden list respectively.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) In the settings, click show all to transfer all hidden anime to unhidden list.
-  9. Content Warning in the settings (only for VI and Web) allows users to select Anime Information like Netorare, Nudity, etc. to show a warning besides an anime recommendation in order to be alerted by any undesired content. Users can also see the warned anime content by clicking the warning icon shown.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) To have a yellow icon warning for netorare, type netorare.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To have a red icon warning for netorare, type !netorare.
+  3. Auto Recommendation Updates and Exports every hour in the settings.   
+  3. Dark/Light Theme in the settings (This lags rendering, follow the suggestion below to have faster performance).   
+  4. Update button in the settings to update your recommendation list (used when you change an anime score in your list).
+  5. Deep Update button in the settings to reset all data in the app (this will take a longer time to finish).
+  6. Import/Export your user data recommendation in the settings (this is recommended, a backup will be useful when Anilist is Down or the API had a problem with the Tool).
+  7. Table/List Filter Anime, used to filter the list shown in the table by adding Title/Genres/Tags/User Status/Anime Status/Format/Year/Season/Studios/Staff to include and/or exclude an anime in your recommendation list. Numeric Filters >,<,>=,<= for numeric columns including WScore, Score, and Year.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) To only see the Unwatched Anime, type [user status: unwatched] in the filter.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To remove the Completed and Dropped anime, type [!user status: completed] and [!user status: dropped].  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) To only allow Weighted SCORES of 7-10, type wscore>=7.  
+  8. Hidden/Unhidden List to hide an Anime in the apps list or show to bring it back.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) Click the black button on the left side of the Wscore table header named Unhidden or Hidden to change the list to Hidden or Unhidden respectively.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) Click the Hide or Show button to transfer an Anime to the Hidden list or Unhidden list respectively.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) In the settings, the 'Show All' button can be used to Unhide all your Hidden Anime in the app, it transfers all Hidden anime to Unhidden list.
+  9. Content Warning in the settings allows users to select Anime Content like Netorare, Nudity, etc. that will show a Warning Icon to Avoid any Undesired Content. You can also see the Warned Content by Clicking the Warning Icon Shown beside Wscore. Set custom warnings in the settings by clicking 'Choose Content Warn' Button.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) To have a Yellow Icon Semi-Warning for Netorare, type [tag: netorare].
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To have a Red Icon Warning for Netorare, type [!tag: netorare].
+  10.  Filtering Algorithm Contents in the settings allows the user to include and exclude contents in calculating the recommendation and prediction. The currently available fIlters are Formats, Genres, Tags, Tag Categories, Studios, Staff, and Staff Roles. You can use this as follows:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) In the settings click the button to filter the algorithm, which works similarly to table/list filters in instruction number 7.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) In order to exclude all the staff or staff roles in the algorithm, type [!staff: all] or [!staff role: all].  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) In order to only include directors or original creators in staff, type [staff role: director] or [staff role: original creator].  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) To change the minimum sample size for the algorithm, type [sample size: N], the default is 10.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) Algorithm Filter Indicators are as follows are [sample size: ], [format: ], [genre: ], [tag: ], [tag category: ], [studio: ], [staff: ], [staff role: ], and add ! as the first character to exclude.  
 
 ## Kanshi.VI (Recommended)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Format, Studios, and Staffs by Role as Categorical. Each variables or variable component are averaged. Numeric variables including Anilist Average-Score, Popularity, Year, Favourites, Episodes, Trending, Duration have their own Linear Regression Model to be predicted and accepted at 0.1 r-squared. Finally, all anime in Anilist are then analyzed based on the Variable Importance Schema from ones' rating.
