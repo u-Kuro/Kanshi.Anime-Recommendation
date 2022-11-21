@@ -253,7 +253,6 @@ self.onmessage = (message) => {
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.tags += 1
                 if(!jsonIsEmpty(varScheme.includeCategories)){
-                    console.log("run")
                     if(varScheme.includeCategories[xtags[j].category]!==undefined){
                         if(varScheme.tags[xtags[j].name]!==undefined){
                             if(xtags[j].rank>=50 || varScheme.tags[xtags[j].name]<varScheme.meanTags){
@@ -271,7 +270,6 @@ self.onmessage = (message) => {
                         }
                     }
                 } else {
-                    console.log("run1")
                     if(varScheme.excludeCategories[xtags[j].category]===undefined){
                         if(varScheme.tags[xtags[j].name]!==undefined){
                             if(xtags[j].rank>=50 || varScheme.tags[xtags[j].name]<varScheme.meanTags){
@@ -322,7 +320,6 @@ self.onmessage = (message) => {
                 analyzedVariableCount.all += 1
                 analyzedVariableCount.staff += 1
                 if(!jsonIsEmpty(varScheme.includeRoles)){
-                    console.log("run2")
                     if(varScheme.includeRoles[xstaff[j].role]!==undefined){
                         if(varScheme.staff[xstaff[j].staff]!==undefined){
                             if(zstaff[xstaff[j].role]===undefined){
@@ -346,7 +343,6 @@ self.onmessage = (message) => {
                         }
                     }
                 } else {
-                    console.log("run3")
                     if(varScheme.excludeRoles[xstaff[j].role]===undefined){
                         if(varScheme.staff[xstaff[j].staff]!==undefined){
                             if(zstaff[xstaff[j].role]===undefined){
@@ -431,7 +427,7 @@ self.onmessage = (message) => {
             var score = arrayMean([
                 arrayMean(animeTypeOS),
                 arrayMean(animeContentOS),
-                arrayMean(animeProductionOS),
+                arrayMean(animeProductionOS)
             ])
             var weightedScore = score
             // Low Average
@@ -482,12 +478,12 @@ self.onmessage = (message) => {
             }
         }
         // Add Weight to Scores
-        var analyzedVariableMean = arrayMean(Object.values(savedAnalyzedVariablesCount.all)) || 0
+        var analyzedVariableMean = arrayMean(Object.values(savedAnalyzedVariablesCount.all)) || 33
         var analyzedVariableSum = arraySum(Object.values(savedAnalyzedVariablesCount.all)) || 0
         var savedRecSchemeEntries = Object.keys(savedRecScheme)
         for(let i=0;i<savedRecSchemeEntries.length;i++){
             var anime = savedRecScheme[savedRecSchemeEntries[i]]
-            if( (anime.analyzedVariableCount.all||0)<analyzedVariableMean
+            if( (anime.analyzedVariableCount.all||0)<(Math.max(analyzedVariableMean,33))
                 ){
                 savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
                     (anime.analyzedVariableCount.all||0)===0? (minNumber/analyzedVariableSum)*anime.weightedScore
@@ -498,6 +494,12 @@ self.onmessage = (message) => {
                     (anime.popularity||0)===0? (minNumber/popularitySum)*anime.weightedScore
                     : (anime.popularity/popularitySum)*anime.weightedScore
                 )
+            }
+            if(!anime.weightedScore||!isFinite(anime.weightedScore)){
+                savedRecScheme[savedRecSchemeEntries[i]].weightedScore = 0
+            }
+            if(!anime.score||!isFinite(anime.score)){
+                savedRecScheme[savedRecSchemeEntries[i]].score = 0
             }
         }
     } else {
@@ -686,12 +688,12 @@ self.onmessage = (message) => {
             }
         }
         // Add Weight to Scores
-        var analyzedVariableMean = arrayMean(Object.values(savedAnalyzedVariablesCount.all))
+        var analyzedVariableMean = arrayMean(Object.values(savedAnalyzedVariablesCount.all)) || 33
         var analyzedVariableSum = arraySum(Object.values(savedAnalyzedVariablesCount.all))
         var savedRecSchemeEntries = Object.keys(savedRecScheme)
         for(let i=0;i<savedRecSchemeEntries.length;i++){
             var anime = savedRecScheme[savedRecSchemeEntries[i]]
-            if( (anime.analyzedVariableCount.all||0)<analyzedVariableMean
+            if( (anime.analyzedVariableCount.all||0)<(Math.max(analyzedVariableMean,33))
                 ){
                 savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
                     (anime.analyzedVariableCount.all||0)===0? (minNumber/analyzedVariableSum)*anime.weightedScore
@@ -702,6 +704,12 @@ self.onmessage = (message) => {
                     (anime.popularity||0)===0? (minNumber/popularitySum)*anime.weightedScore
                     : (anime.popularity/popularitySum)*anime.weightedScore
                 )
+            }
+            if(!anime.weightedScore||!isFinite(anime.weightedScore)){
+                savedRecScheme[savedRecSchemeEntries[i]].weightedScore = 0
+            }
+            if(!anime.score||!isFinite(anime.score)){
+                savedRecScheme[savedRecSchemeEntries[i]].score = 0
             }
         }
     }

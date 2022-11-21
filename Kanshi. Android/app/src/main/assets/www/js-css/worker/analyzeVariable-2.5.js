@@ -618,8 +618,7 @@ self.onmessage = (message) => {
         }
     }
     // Clean Data JSON
-    minSampleSize = minSampleSize?minSampleSize:10
-    console.log(minSampleSize)
+    minSampleSize = minSampleSize? minSampleSize : 33
     if(Object.values(formatMeanCount).length>0){
         var tempformatMeanCount = arrayMode(Object.values(formatMeanCount))
         formatMeanCount = tempformatMeanCount<minSampleSize?minSampleSize:tempformatMeanCount
@@ -749,15 +748,14 @@ self.onmessage = (message) => {
         varScheme.excludeCategories = exclude.categories
         // Create Model for Numbers| y is predicted so userscore
         // Average Score Model
-        const r2Thresh = 0.1 // Lowered Since Media is Subjective
-        const limitSample = 30
+        const r2Thresh = 0.1 // Lower than 0.3 Since Media is Subjective
         // For Anime Date Model
         var animeDateModel = []
         var yearXY = []
         for(let i=0; i<year.length;i++){
             yearXY.push([year[i].year,year[i].userScore])
         }
-        if(yearXY.length>=limitSample){
+        if(yearXY.length>=minSampleSize){
             var tempLinearReg = linearRegression(yearXY)
             animeDateModel.push([tempLinearReg,"yearModel"])
         }
@@ -774,7 +772,7 @@ self.onmessage = (message) => {
         for(let i=0; i<episodes.length;i++){
             episodesXY.push([episodes[i].episodes,episodes[i].userScore])
         }
-        if(episodesXY.length>=limitSample){
+        if(episodesXY.length>=minSampleSize){
             var tempLinearReg = linearRegression(episodesXY)
             if(tempLinearReg.r2>r2Thresh){
                 animeLengthModels.push([tempLinearReg,"episodesModel"])
@@ -784,7 +782,7 @@ self.onmessage = (message) => {
         for(let i=0; i<duration.length;i++){
             durationXY.push([duration[i].duration,duration[i].userScore])
         }
-        if(durationXY.length>=limitSample){
+        if(durationXY.length>=minSampleSize){
             var tempLinearReg = linearRegression(durationXY)
             if(tempLinearReg.r2>r2Thresh){
                 animeLengthModels.push([tempLinearReg,"durationModel"])
@@ -803,7 +801,7 @@ self.onmessage = (message) => {
         for(let i=0; i<averageScore.length;i++){
             averageScoreXY.push([averageScore[i].averageScore,averageScore[i].userScore])
         }
-        if(averageScoreXY.length>=limitSample){
+        if(averageScoreXY.length>=minSampleSize){
             var tempLinearReg = linearRegression(averageScoreXY)
             wellKnownAnimeModels.push([tempLinearReg,"averageScoreModel"])
         }
@@ -811,7 +809,7 @@ self.onmessage = (message) => {
         for(let i=0; i<trending.length;i++){
             trendingXY.push([trending[i].trending,trending[i].userScore])
         }
-        if(trendingXY.length>=limitSample){
+        if(trendingXY.length>=minSampleSize){
             var tempLinearReg = linearRegression(trendingXY)
             wellKnownAnimeModels.push([tempLinearReg,"trendingModel"])
         }
@@ -819,7 +817,7 @@ self.onmessage = (message) => {
         for(let i=0; i<popularity.length;i++){
             popularityXY.push([popularity[i].popularity,popularity[i].userScore])
         }
-        if(popularityXY.length>=limitSample){
+        if(popularityXY.length>=minSampleSize){
             var tempLinearReg = linearRegression(popularityXY)
             wellKnownAnimeModels.push([tempLinearReg,"popularityModel"])
         }
@@ -827,7 +825,7 @@ self.onmessage = (message) => {
         for(let i=0; i<favourites.length;i++){
             favouritesXY.push([favourites[i].favourites,favourites[i].userScore])
         }
-        if(favouritesXY.length>=limitSample){
+        if(favouritesXY.length>=minSampleSize){
             var tempLinearReg = linearRegression(favouritesXY)
             wellKnownAnimeModels.push([tempLinearReg,"favouritesModel"])
         }
@@ -839,7 +837,6 @@ self.onmessage = (message) => {
             varScheme[sortedWellKnownAnimeModels[1]] = sortedWellKnownAnimeModels[0]
         }
     }
-    console.log(JSON.stringify(varScheme))
     self.postMessage({
         varScheme: varScheme, 
         userListStatus: userListStatus,
