@@ -4562,7 +4562,6 @@
                     if(!notAnUpdate){
                         // Save and Reload Filters
                         savedFilterOptionsJson = data.savedFilterOptionsJson
-                        downloadObjectAsJson(JSON.stringify(savedFilterOptionsJson),"asd.json")
                         await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
                         // This Remove Current Filters in DOM
                         $('.flexdatalist').flexdatalist({
