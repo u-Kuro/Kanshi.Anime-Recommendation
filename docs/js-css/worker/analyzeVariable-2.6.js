@@ -449,7 +449,7 @@ self.onmessage = (message) => {
                 if(staff!==null){
                     if(includedStaff[staff]!==undefined) continue
                     else includedStaff[staff] = null
-                    var staffRole = staffs[j].role.split(" (")[0]
+                    var staffRole = staffs[j].role.split("(")[0].trim()
                     var fullStaff = "staff: "+staff.toLowerCase()
                     var fullStaffRole = "role: "+staffRole.toLowerCase()
                     if(Object.values(include.roles).length>0){

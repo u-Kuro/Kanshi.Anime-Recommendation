@@ -166,10 +166,10 @@ self.onmessage = (message) => {
                 if((alteredVariables.staff_in["staff: "+staff[j].node.name.userPreferred.toLowerCase()]!==undefined&&!animeShallUpdate)||recSchemeIsNew) {
                     animeShallUpdate = true
                 }
-                xstaff.push({staff:"staff: "+staff[j].node.name.userPreferred.toLowerCase(), role:"role: "+staff[j].role.split(" (")[0].toLowerCase(), siteUrl:staff[j].node.siteUrl})
-                if(allFilterInfo["staff role: "+staff[j].role.split(" (")[0].toLowerCase()]===undefined&&allFilterInfo["!staff role: "+staff[j].role.split(" (")[0].toLowerCase()]===undefined){
-                    allFilterInfo["staff role: "+staff[j].role.split(" (")[0].toLowerCase()] = 0
-                    allFilterInfo["!staff role: "+staff[j].role.split(" (")[0].toLowerCase()] = 0
+                xstaff.push({staff:"staff: "+staff[j].node.name.userPreferred.toLowerCase(), role:"role: "+staff[j].role.split("(")[0].trim().toLowerCase(), siteUrl:staff[j].node.siteUrl})
+                if(allFilterInfo["staff role: "+staff[j].role.split("(")[0].trim().toLowerCase()]===undefined&&allFilterInfo["!staff role: "+staff[j].role.split("(")[0].trim().toLowerCase()]===undefined){
+                    allFilterInfo["staff role: "+staff[j].role.split("(")[0].trim().toLowerCase()] = 0
+                    allFilterInfo["!staff role: "+staff[j].role.split("(")[0].trim().toLowerCase()] = 0
                 }
                 // Removed Since It's Lagging on Too Much Filters
                 // if(allFilterInfo[("staff: "+staff[j].node.name.userPreferred).toLowerCase()]===undefined&&allFilterInfo[("!staff: "+staff[j].node.name.userPreferred).toLowerCase()]===undefined){
@@ -605,9 +605,9 @@ self.onmessage = (message) => {
                 if(typeof staff[j].role!=="string") continue//&&!staff[j].node) continue
                 //if(!staff[j].node.name) continue
                 //if(typeof staff[j].node.name.userPreferred!=="string") continue
-                if(allFilterInfo["staff role: "+staff[j].role.split(" (")[0].toLowerCase()]===undefined&&allFilterInfo["!staff role: "+staff[j].role.split(" (")[0].toLowerCase()]===undefined){
-                    allFilterInfo["staff role: "+staff[j].role.split(" (")[0].toLowerCase()] = 0
-                    allFilterInfo["!staff role: "+staff[j].role.split(" (")[0].toLowerCase()] = 0
+                if(allFilterInfo["staff role: "+staff[j].role.split("(")[0].trim().toLowerCase()]===undefined&&allFilterInfo["!staff role: "+staff[j].role.split("(")[0].trim().toLowerCase()]===undefined){
+                    allFilterInfo["staff role: "+staff[j].role.split("(")[0].trim().toLowerCase()] = 0
+                    allFilterInfo["!staff role: "+staff[j].role.split("(")[0].trim().toLowerCase()] = 0
                 }
                 // Removed Since It's Lagging on Too Much Filters
                 // if(allFilterInfo[("staff: "+staff[j].node.name.userPreferred).toLowerCase()]===undefined&&allFilterInfo[("!staff: "+staff[j].node.name.userPreferred).toLowerCase()]===undefined){

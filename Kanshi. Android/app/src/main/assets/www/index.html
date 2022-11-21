@@ -1164,8 +1164,8 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "2.5",
-          backUpVersion = 1.5
+    const version = "2.6",
+          backUpVersion = 1.6
         // IndexDB
     var request, db,
         // Saved Data
@@ -3839,7 +3839,7 @@
                                         Swal.fire({
                                             heightAuto: false,
                                             title: "Let us know you've liked...",
-                                            text: `You currently rated ≥${userListCount} unique anime in your Anilist account, a minimum of 30-100 will suffice the recommendation analysis.`,
+                                            text: `You currently rated ≤${userListCount} unique anime in your Anilist account, a minimum of 30-100 will suffice the recommendation analysis.`,
                                             showConfirmButton: true,
                                             confirmButtonText: "Sure, Later",
                                             showDenyButton: true,
