@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="darkMode">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -841,6 +841,7 @@
             .flexdatalist-results.darkMode>li.item{
                 border: 1px solid rgb(21,34,50) !important;
             }
+            #anime-table.darkMode,
             #anime-table thead.darkMode,
             #anime-table tbody.darkMode,
             #anime-table th.darkMode,
@@ -951,43 +952,43 @@
             }
         </style>
 </head>
-<body>
-<nav class="nav">
+<body class="darkMode">
+<nav class="nav darkMode">
     <div><h1 id="menuTitle" class="textLogo">Kanshi.</h1></div>
     <div><img id="menuIcon" src="./public/logo.png" alt="menubar"></div>
 </nav>
 <div class="menu-container">
     <div>
-        <button id="updateBtn">Update</button>
-        <button id="showAllAnime">Show All</button>
-        <input type="file" id="importFile" style="display: none;" accept=".json"/>
-        <button id="deepUpdateBtn">Deep Update</button>
-        <button id="importBtn">Import</button>
-        <button id="exportBtn">Export</button>
-        <button id="warnAnimeBtn">Choose Content to Warn</button>
-        <button id="filterAlgoBtn">Filter Algorithm Contents</button>
-        <button id="themeBtn">Dark Mode</button>
-        <button id="hideKidsAnimeBtn">Hide Kids Anime</button>
-        <button id="updateIntervalBtn">Update Every Hour</button>
-        <button id="exportIntervalBtn">Export Every Hour</button>
-        <button id="sign-up">Create Another Account</button>
+        <button class="darkMode" id="updateBtn">Update</button>
+        <button class="darkMode" id="showAllAnime">Show All</button>
+        <input class="darkMode" type="file" id="importFile" style="display: none;" accept=".json"/>
+        <button class="darkMode" id="deepUpdateBtn">Deep Update</button>
+        <button class="darkMode" id="importBtn">Import</button>
+        <button class="darkMode" id="exportBtn">Export</button>
+        <button class="darkMode" id="warnAnimeBtn">Choose Content to Warn</button>
+        <button class="darkMode" id="filterAlgoBtn">Filter Algorithm Contents</button>
+        <button class="darkMode" id="themeBtn">Dark Mode</button>
+        <button class="darkMode" id="hideKidsAnimeBtn">Hide Kids Anime</button>
+        <button class="darkMode" id="updateIntervalBtn">Update Every Hour</button>
+        <button class="darkMode" id="exportIntervalBtn">Export Every Hour</button>
+        <button class="darkMode" id="sign-up">Create Another Account</button>
     </div>
 </div>
 <header>
-    <div class="overlay">
+    <div class="overlay darkMode">
         <h1 class="textLogo">Kanshi.</h1>
         <h3>Anime - Anilist</h3>
         <h3>Recommendations</h3>
     </div>
 </header>
-<div class="Home">
-    <div class="searchData">
+<div class="Home darkMode">
+    <div class="searchData darkMode">
         <div class="userInputContainer">
-            <input class="userInput" placeholder="Anilist Username" name="username" id="username" type="text">
+            <input class="userInput darkMode" placeholder="Anilist Username" name="username" id="username" type="text">
         </div>
         <div id="filters" class="filter-container">
             <input type="text"
-                placeholder="Filter Contents (Include: Content / Exclude: !Content / WScore>=N / etc.)"
+                placeholder="Filter Table/List Contents (Include: Content / Exclude: !Content / WScore>=N / etc.)"
                 class="flexdatalist"
                 data-search-in="info"
                 multiple="multiple"
@@ -998,39 +999,39 @@
                 name="filter">
         </div>
         <div class="btn-container">
-            <button id="searchBtn" class="btn" type="submit">Search</button>
+            <button id="searchBtn" class="btn darkMode" type="submit">Search</button>
         </div>
         <div id="dataStatusContainer" class="data-status-container">
             <div id="dataStatusWrapper">
-                <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div></div>
+                <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner darkMode"></div></div>
                 <h6 id="dataStatus"></h6>
             </div>
         </div>
     </div>
-    <div class="table-responsive">
-        <table id="anime-table" class="tablesorter table table-bordered table-striped">
-            <thead>
-            <tr class="anime-table-headers">
-                <th id="hiddenUnhiddenBtn" class="trigger-btn sorter-false show-hidden-anime-btn">Unhidden</th>
-                <th>WScore</th>
-                <th>Title</th>
-                <th>Top Similarities</th>
-                <th>Score</th>
-                <th>User Status</th>
-                <th>Status</th>
-                <th>Genres</th>
-                <th>Tags</th>
-                <th>Format</th>
-                <th>Year</th>
-                <th>Season</th>
-                <th>Studios</th>
-                <th>Staff</th>
+    <div class="table-responsive darkMode">
+        <table id="anime-table" class="tablesorter table table-bordered table-striped darkMode">
+            <thead class="darkMode">
+            <tr class="anime-table-headers darkMode">
+                <th id="hiddenUnhiddenBtn" class="trigger-btn sorter-false show-hidden-anime-btn darkMode">Unhidden</th>
+                <th class="darkMode">WScore</th>
+                <th class="darkMode">Title</th>
+                <th class="darkMode">Top Similarities</th>
+                <th class="darkMode">Score</th>
+                <th class="darkMode">User Status</th>
+                <th class="darkMode">Status</th>
+                <th class="darkMode">Genres</th>
+                <th class="darkMode">Tags</th>
+                <th class="darkMode">Format</th>
+                <th class="darkMode">Year</th>
+                <th class="darkMode">Season</th>
+                <th class="darkMode">Studios</th>
+                <th class="darkMode">Staff</th>
             </tr>
             </thead>
-            <tbody id="animeRecommendationList">
-            <tr class="item" role="row">
-                <td style="padding: 1.5em !important;" colspan="14">
-                    <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+            <tbody id="animeRecommendationList" class="darkMode">
+            <tr class="item darkMode" role="row">
+                <td class="darkMode" style="padding: 1.5em !important;" colspan="14">
+                    <i class="fa fa-solid fa-file fa-xl darkMode" style="padding-right: 1ch;"></i>
                     No Data
                 </td>
             </tr>
@@ -1040,59 +1041,20 @@
 </div>
 
 <!-- pager -->
-<div id="pager" class="pager">
+<div id="pager" class="pager darkMode">
     <form class="pager-form">
         <span id="first" class="first"><h5>First</h5></span>
         <span id="prev" class="prev"><h5>Prev</h5></span>
         <span id="selectPageNumber">
-            <select id="pageNumberOptions" class="custom-select pagenum" title="Select page number"></select>
+            <select id="pageNumberOptions" class="custom-select pagenum darkMode" title="Select page number"></select>
         </span>
         <span id="next" class="next"><h5>Next</h5></span>
         <span id="last" class="last"><h5>Last</h5></span>
     </form>
 </div>
 
-<!-- Modal -->
-<div id="myModal" class="modal fade">
-    <div class="modal-dialog modal-confirm">
-        <div class="modal-content">
-            <div class="modal-header flex-column">
-                <h4 class="modal-title w-100">Are you sure?</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>Do you really want to delete these records? This process cannot be undone.</p>
-            </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- confirmation modal-->
-<div id="confirm-modal" class="modal fade" >
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete?&hellip;</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger">Confirm</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div id="warnAnimeContainer" class="swal2-container-custom swal2-center-custom swal2-backdrop-show-custom" style="display: none; overflow-y: auto;">
-    <div id="warnAnimeModal" class="swal2-popup-custom swal2-modal-custom swal2-hide-custom" style="display: grid;">
+    <div id="warnAnimeModal" class="swal2-popup-custom swal2-modal-custom swal2-hide-custom darkMode" style="display: grid;">
         <div class="swal2-html-container-custom" style="display: block;">
             Add Custom Contents to be Warned
         </div>
@@ -1111,15 +1073,15 @@
             </div>
         </div>
         <div class="swal2-actions-custom" style="display: flex;">
-            <button id="cancelWarnAnime" type="button" class="swal2-deny-custom swal2-styled-custom swal2-default-outline-custom" style="display: inline-block; background-color: rgb(226, 125, 129);">Later</button>
-            <button id="submitWarnAnime" type="button" class="swal2-confirm-custom swal2-styled-custom swal2-default-outline-custom" style="display: inline-block; background-color: rgb(0, 0, 0);">Submit</button>
+            <button id="cancelWarnAnime" type="button" class="darkMode swal2-deny-custom swal2-styled-custom swal2-default-outline-custom" style="display: inline-block; background-color: rgb(226, 125, 129);">Later</button>
+            <button id="submitWarnAnime" type="button" class="darkMode swal2-confirm-custom swal2-styled-custom swal2-default-outline-custom" style="display: inline-block; background-color: rgb(0, 0, 0);">Submit</button>
         </div>
         <div class="swal2-timer-progress-bar-container-custom"></div>
     </div>
 </div>
 
 <div id="filterAlgoContainer" class="swal2-container-custom swal2-center-custom swal2-backdrop-show-custom" style="overflow-y: auto;">
-    <div id="filterAlgoModal" class="swal2-popup-custom swal2-modal-custom" style="display: grid;"> <!--removed class swal2-hide-custom -->
+    <div id="filterAlgoModal" class="darkMode swal2-popup-custom swal2-modal-custom" style="display: grid;"> <!--removed class swal2-hide-custom -->
         <div class="swal2-html-container-custom" style="display: block;">
             Filter Algorithm Contents
         </div>
@@ -1137,15 +1099,15 @@
                     name="filter">
             </div>
         </div>
-        <div class="swal2-validation-message" id="filterAlgo-validation" style="display: none;">
+        <div class="darkMode swal2-validation-message" id="filterAlgo-validation" style="display: none;">
             <div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
-                <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner"></div></div>
+                <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner darkMode"></div></div>
                 <div>Checking Username...</div>
             </div>
         </div>
         <div class="swal2-actions-custom" style="display: flex;">
-            <button id="cancelFilterAlgo" type="button" class="swal2-deny-custom swal2-styled-custom swal2-default-outline-custom" style="display: inline-block; background-color: rgb(226, 125, 129);">Later</button>
-            <button id="submitFilterAlgo" type="button" class="swal2-confirm-custom swal2-styled-custom swal2-default-outline-custom" style="display: inline-block; background-color: rgb(0, 0, 0);">Submit</button>
+            <button id="cancelFilterAlgo" type="button" class="darkMode swal2-deny-custom swal2-styled-custom swal2-default-outline-custom" style="display: inline-block; background-color: rgb(226, 125, 129);">Later</button>
+            <button id="submitFilterAlgo" type="button" class="darkMode swal2-confirm-custom swal2-styled-custom swal2-default-outline-custom" style="display: inline-block; background-color: rgb(0, 0, 0);">Submit</button>
         </div>
         <div class="swal2-timer-progress-bar-container-custom"></div>
     </div>
@@ -2094,86 +2056,86 @@
                     }
                 })
                 $("#exportBtn").on("click", async()=>{
-                    Swal.fire({
-                        heightAuto: false,
-                        text: `Do you want to export your data?`,
-                        showConfirmButton: true,
-                        confirmButtonText: "Yes",
-                        showDenyButton: true,
-                        denyButtonText: "No",
-                        confirmButtonColor: '#000',
-                        denyButtonColor: '#e27d81',
-                        icon: "question",
-                        reverseButtons: true
-                    })
-                    .then(async(value) => {
-                        if(value.isConfirmed){
-                            await new Promise(async(resolve)=>{
-                                await $(".menu-container").fadeOut(250)
-                                $("#dataStatusContainer").fadeOut(1000)
-                                setTimeout(()=>{
-                                    $("#dataStatusSpinner").show()
-                                    $("#dataStatus")
-                                        .empty()
-                                        .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                    $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                                },1000)
-                                resolve()
-                            }).then(async()=>{
-                                var worker4 = new Worker(`./js-css/worker/export-${version}.js`)
-                                const savedUsername = await retrieveJSON("savedUsername")
-                                const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
-                                const savedWarnAnime = await retrieveJSON("savedWarnAnime")
-                                const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
-                                const savedUserList = await retrieveJSON("savedUserList")
-                                const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                                const savedRecScheme = await retrieveJSON("savedRecScheme")
-                                const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
-                                const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
-                                const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
-                                const lastAnilistPage = await retrieveJSON("lastAnilistPage")
-                                const lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
-                                const backUpVersion = await retrieveJSON("backUpVersion")
-                                worker4.postMessage({
-                                    savedUsername: savedUsername,
-                                    savedWarnAnime: savedWarnAnime,
-                                    savedFilterAlgo: savedFilterAlgo,
-                                    savedHiddenAnimeIDs: savedHiddenAnimeIDs,
-                                    savedRecScheme: savedRecScheme,
-                                    savedAnimeEntries: savedAnimeEntries,
-                                    savedUserList: savedUserList,
-                                    savedAnalyzeVariableTime: savedAnalyzeVariableTime,
-                                    savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
-                                    savedDeepUpdateTime: savedDeepUpdateTime,
-                                    lastAnilistPage: lastAnilistPage,
-                                    lastSavedUpdateTime: lastSavedUpdateTime,
-                                    backUpVersion: backUpVersion,
-                                })
-                                worker4.onmessage = async(message) => {
-                                    worker4.terminate()
-                                    // Browser
-                                    await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
-                                    // Browser
-                                    if(!requestIsRunning){
-                                        await $("#dataStatusContainer").fadeOut(1000)
-                                    }
-                                    await Swal.fire({
-                                        heightAuto: false,
-                                        text: "Data has been exported!",
-                                        icon: "success",
-                                        confirmButtonColor: "#000"
+                        Swal.fire({
+                            heightAuto: false,
+                            text: `Do you want to export your data?`,
+                            showConfirmButton: true,
+                            confirmButtonText: "Yes",
+                            showDenyButton: true,
+                            denyButtonText: "No",
+                            confirmButtonColor: '#000',
+                            denyButtonColor: '#e27d81',
+                            icon: "question",
+                            reverseButtons: true
+                        })
+                        .then(async(value) => {
+                            if(value.isConfirmed){
+                                await new Promise(async(resolve)=>{
+                                    await $(".menu-container").fadeOut(250)
+                                    $("#dataStatusContainer").fadeOut(1000)
+                                    setTimeout(()=>{
+                                        $("#dataStatusSpinner").show()
+                                        $("#dataStatus")
+                                            .empty()
+                                            .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                        $("#dataStatusContainer").css("display","flex").fadeIn(1000)
+                                    },1000)
+                                    resolve()
+                                }).then(async()=>{
+                                    var worker4 = new Worker(`./js-css/worker/export-${version}.js`)
+                                    const savedUsername = await retrieveJSON("savedUsername")
+                                    const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
+                                    const savedWarnAnime = await retrieveJSON("savedWarnAnime")
+                                    const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
+                                    const savedUserList = await retrieveJSON("savedUserList")
+                                    const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
+                                    const savedRecScheme = await retrieveJSON("savedRecScheme")
+                                    const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                                    const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                                    const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                                    const lastAnilistPage = await retrieveJSON("lastAnilistPage")
+                                    const lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                    const backUpVersion = await retrieveJSON("backUpVersion")
+                                    worker4.postMessage({
+                                        savedUsername: savedUsername,
+                                        savedWarnAnime: savedWarnAnime,
+                                        savedFilterAlgo: savedFilterAlgo,
+                                        savedHiddenAnimeIDs: savedHiddenAnimeIDs,
+                                        savedRecScheme: savedRecScheme,
+                                        savedAnimeEntries: savedAnimeEntries,
+                                        savedUserList: savedUserList,
+                                        savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                                        savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                                        savedDeepUpdateTime: savedDeepUpdateTime,
+                                        lastAnilistPage: lastAnilistPage,
+                                        lastSavedUpdateTime: lastSavedUpdateTime,
+                                        backUpVersion: backUpVersion,
                                     })
-                                }
-                            })
-                        }
-                    })
+                                    worker4.onmessage = async(message) => {
+                                        worker4.terminate()
+                                        // Browser
+                                        await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                                        // Browser
+                                        if(!requestIsRunning){
+                                            await $("#dataStatusContainer").fadeOut(1000)
+                                        }
+                                        await Swal.fire({
+                                            heightAuto: false,
+                                            text: "Data has been exported!",
+                                            icon: "success",
+                                            confirmButtonColor: "#000"
+                                        })
+                                    }
+                                })
+                            }
+                        })
                 })
                 $("#updateIntervalBtn").on("click",async()=>{
                     updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
                     if(updateIntervalIsActive){
                         Swal.fire({
                             heightAuto: false,
-                            text: `Do you want to disable auto update for your recommendations list every 1 hour?`,
+                            text: `Do you want to disable auto update for your recommendations list every hour?`,
                             showConfirmButton: true,
                             confirmButtonText: "Yes",
                             showDenyButton: true,
@@ -2193,7 +2155,7 @@
                     } else {
                         Swal.fire({
                             heightAuto: false,
-                            text: `Do you want to enable auto update for your recommendations list every 1 hour?`,
+                            text: `Do you want to enable auto update for your recommendations list every hour?`,
                             showConfirmButton: true,
                             confirmButtonText: "Yes",
                             showDenyButton: true,
@@ -2255,287 +2217,287 @@
                     }
                 })
                 $("#exportIntervalBtn").on("click",async()=>{
-                    exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
-                    if(exportIntervalIsActive){
-                        Swal.fire({
-                            heightAuto: false,
-                            text: `Do you want to disable data back-up every 1 hour?`,
-                            showConfirmButton: true,
-                            confirmButtonText: "Yes",
-                            showDenyButton: true,
-                            denyButtonText: "No",
-                            confirmButtonColor: '#000',
-                            denyButtonColor: '#e27d81',
-                            icon: "question",
-                            reverseButtons: true
-                        })
-                        .then(async(value) => {
-                            if(value.isConfirmed){
-                                $("#exportIntervalBtn").removeClass("selected")
-                                exportIntervalIsActive = false
-                                await saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
-                            }
-                        })
-                    } else {
-                        Swal.fire({
-                            heightAuto: false,
-                            text: `Do you want to enable data Back-Up every 1 hour?`,
-                            showConfirmButton: true,
-                            confirmButtonText: "Yes",
-                            showDenyButton: true,
-                            denyButtonText: "No",
-                            confirmButtonColor: '#000',
-                            denyButtonColor: '#e27d81',
-                            icon: "question",
-                            reverseButtons: true
-                        })
-                        .then(async(value) => {
-                            if(value.isConfirmed){
-                                $("#exportIntervalBtn").addClass("selected")
-                                exportIntervalIsActive = true
-                                await saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
-                                exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
-                                await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                                if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
-                                    await new Promise(async(resolve)=>{
-                                        await $(".menu-container").fadeOut(250)
-                                        $("#dataStatusContainer").fadeOut(1000)
-                                        setTimeout(()=>{
-                                            $("#dataStatusSpinner").show()
-                                            $("#dataStatus")
-                                                .empty()
-                                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                            $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                                        },1000)
-                                        resolve()
-                                    }).then(async()=>{
-                                        var worker5 = new Worker(`./js-css/worker/export-${version}.js`)
-                                        const savedUsername = await retrieveJSON("savedUsername")
-                                        const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
-                                        const savedWarnAnime = await retrieveJSON("savedWarnAnime")
-                                        const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
-                                        const savedUserList = await retrieveJSON("savedUserList")
-                                        const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                                        const savedRecScheme = await retrieveJSON("savedRecScheme")
-                                        const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
-                                        const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
-                                        const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
-                                        const lastAnilistPage = await retrieveJSON("lastAnilistPage")
-                                        const lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
-                                        const backUpVersion = await retrieveJSON("backUpVersion")
-                                        worker5.postMessage({
-                                            savedUsername: savedUsername,
-                                            savedWarnAnime: savedWarnAnime,
-                                            savedFilterAlgo: savedFilterAlgo,
-                                            savedHiddenAnimeIDs: savedHiddenAnimeIDs,
-                                            savedRecScheme: savedRecScheme,
-                                            savedAnimeEntries: savedAnimeEntries,
-                                            savedUserList: savedUserList,
-                                            savedAnalyzeVariableTime: savedAnalyzeVariableTime,
-                                            savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
-                                            savedDeepUpdateTime: savedDeepUpdateTime,
-                                            lastAnilistPage: lastAnilistPage,
-                                            lastSavedUpdateTime: lastSavedUpdateTime,
-                                            backUpVersion: backUpVersion,
-                                        })
-                                        worker5.onmessage = async(message) => {
-                                            worker5.terminate()
-                                            // Browser
-                                            await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
-                                            // Browser
-                                            exportIntervalStartDate = await new Date()
-                                            await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                                            if(!requestIsRunning){
-                                                await $("#dataStatusContainer").fadeOut(1000)
-                                            }
-                                            await Swal.fire({
-                                                heightAuto: false,
-                                                text: "Data has been exported!",
-                                                icon: "success",
-                                                confirmButtonColor: "#000"
-                                            })
-                                            // Interval
-                                            for(let i=0;i<exportIntervalTimeout.length;i++) clearInterval(exportIntervalTimeout[i])
-                                            var saveExportIntervalTimeout = setInterval(async()=>{
-                                                $("#dataStatusContainer").fadeOut(1000)
-                                                setTimeout(()=>{
-                                                    $("#dataStatusSpinner").show()
-                                                    $("#dataStatus")
-                                                        .empty()
-                                                        .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                                    $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                                                },1000)
-                                                var worker6 = new Worker(`./js-css/worker/export-${version}.js`)
-                                                const savedUsername = await retrieveJSON("savedUsername")
-                                                const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
-                                                const savedWarnAnime = await retrieveJSON("savedWarnAnime")
-                                                const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
-                                                const savedUserList = await retrieveJSON("savedUserList")
-                                                const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                                                const savedRecScheme = await retrieveJSON("savedRecScheme")
-                                                const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
-                                                const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
-                                                const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
-                                                const lastAnilistPage = await retrieveJSON("lastAnilistPage")
-                                                const lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
-                                                const backUpVersion = await retrieveJSON("backUpVersion")
-                                                worker6.postMessage({
-                                                    savedUsername: savedUsername,
-                                                    savedWarnAnime: savedWarnAnime,
-                                                    savedFilterAlgo: savedFilterAlgo,
-                                                    savedHiddenAnimeIDs: savedHiddenAnimeIDs,
-                                                    savedRecScheme: savedRecScheme,
-                                                    savedAnimeEntries: savedAnimeEntries,
-                                                    savedUserList: savedUserList,
-                                                    savedAnalyzeVariableTime: savedAnalyzeVariableTime,
-                                                    savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
-                                                    savedDeepUpdateTime: savedDeepUpdateTime,
-                                                    lastAnilistPage: lastAnilistPage,
-                                                    lastSavedUpdateTime: lastSavedUpdateTime,
-                                                    backUpVersion: backUpVersion,
-                                                })
-                                                worker6.onmessage = async(message) => {
-                                                    worker6.terminate()
-                                                    // Browser
-                                                    await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
-                                                    // Browser
-                                                    exportIntervalStartDate = await new Date()
-                                                    await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                                                    if(!requestIsRunning){
-                                                        await $("#dataStatusContainer").fadeOut(1000)
-                                                    }
-                                                    await Swal.fire({
-                                                        heightAuto: false,
-                                                        text: "Data has been exported!",
-                                                        icon: "success",
-                                                        confirmButtonColor: "#000"
-                                                    })
-                                                }
-                                            },3600000)
-                                            exportIntervalTimeout.push(saveExportIntervalTimeout)
-                                        }
-                                    })
-                                } else {
-                                    // Timeout
-                                    setTimeout(async()=>{
-                                        $("#dataStatusContainer").fadeOut(1000)
-                                        setTimeout(()=>{
-                                            $("#dataStatusSpinner").show()
-                                            $("#dataStatus")
-                                                .empty()
-                                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                            $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                                        },1000)
-                                        var worker6 = new Worker(`./js-css/worker/export-${version}.js`)
-                                        const savedUsername = await retrieveJSON("savedUsername")
-                                        const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
-                                        const savedWarnAnime = await retrieveJSON("savedWarnAnime")
-                                        const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
-                                        const savedUserList = await retrieveJSON("savedUserList")
-                                        const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                                        const savedRecScheme = await retrieveJSON("savedRecScheme")
-                                        const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
-                                        const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
-                                        const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
-                                        const lastAnilistPage = await retrieveJSON("lastAnilistPage")
-                                        const lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
-                                        const backUpVersion = await retrieveJSON("backUpVersion")
-                                        worker6.postMessage({
-                                            savedUsername: savedUsername,
-                                            savedWarnAnime: savedWarnAnime,
-                                            savedFilterAlgo: savedFilterAlgo,
-                                            savedHiddenAnimeIDs: savedHiddenAnimeIDs,
-                                            savedRecScheme: savedRecScheme,
-                                            savedAnimeEntries: savedAnimeEntries,
-                                            savedUserList: savedUserList,
-                                            savedAnalyzeVariableTime: savedAnalyzeVariableTime,
-                                            savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
-                                            savedDeepUpdateTime: savedDeepUpdateTime,
-                                            lastAnilistPage: lastAnilistPage,
-                                            lastSavedUpdateTime: lastSavedUpdateTime,
-                                            backUpVersion: backUpVersion,
-                                        })
-                                        worker6.onmessage = async(message) => {
-                                            worker6.terminate()
-                                            // Browser
-                                            await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
-                                            // Browser
-                                            exportIntervalStartDate = await new Date()
-                                            await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                                            if(!requestIsRunning){
-                                                await $("#dataStatusContainer").fadeOut(1000)
-                                            }
-                                            await Swal.fire({
-                                                heightAuto: false,
-                                                text: "Data has been exported!",
-                                                icon: "success",
-                                                confirmButtonColor: "#000"
-                                            })
-                                            // Interval
-                                            for(let i=0;i<exportIntervalTimeout.length;i++) clearInterval(exportIntervalTimeout[i])
-                                            var saveExportIntervalTimeout = setInterval(async()=>{
-                                                $("#dataStatusContainer").fadeOut(1000)
-                                                setTimeout(()=>{
-                                                    $("#dataStatusSpinner").show()
-                                                    $("#dataStatus")
-                                                        .empty()
-                                                        .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                                    $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                                                },1000)
-                                                var worker6 = new Worker(`./js-css/worker/export-${version}.js`)
-                                                const savedUsername = await retrieveJSON("savedUsername")
-                                                const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
-                                                const savedWarnAnime = await retrieveJSON("savedWarnAnime")
-                                                const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
-                                                const savedUserList = await retrieveJSON("savedUserList")
-                                                const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-                                                const savedRecScheme = await retrieveJSON("savedRecScheme")
-                                                const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
-                                                const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
-                                                const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
-                                                const lastAnilistPage = await retrieveJSON("lastAnilistPage")
-                                                const lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
-                                                const backUpVersion = await retrieveJSON("backUpVersion")
-                                                worker6.postMessage({
-                                                    savedUsername: savedUsername,
-                                                    savedWarnAnime: savedWarnAnime,
-                                                    savedFilterAlgo: savedFilterAlgo,
-                                                    savedHiddenAnimeIDs: savedHiddenAnimeIDs,
-                                                    savedRecScheme: savedRecScheme,
-                                                    savedAnimeEntries: savedAnimeEntries,
-                                                    savedUserList: savedUserList,
-                                                    savedAnalyzeVariableTime: savedAnalyzeVariableTime,
-                                                    savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
-                                                    savedDeepUpdateTime: savedDeepUpdateTime,
-                                                    lastAnilistPage: lastAnilistPage,
-                                                    lastSavedUpdateTime: lastSavedUpdateTime,
-                                                    backUpVersion: backUpVersion,
-                                                })
-                                                worker6.onmessage = async(message) => {
-                                                    worker6.terminate()
-                                                    // Browser
-                                                    await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
-                                                    // Browser
-                                                    exportIntervalStartDate = await new Date()
-                                                    await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                                                    if(!requestIsRunning){
-                                                        await $("#dataStatusContainer").fadeOut(1000)
-                                                    }
-                                                    await Swal.fire({
-                                                        heightAuto: false,
-                                                        text: "Data has been exported!",
-                                                        icon: "success",
-                                                        confirmButtonColor: "#000"
-                                                    })
-                                                }
-                                            },3600000)
-                                            exportIntervalTimeout.push(saveExportIntervalTimeout)
-                                        }
-                                    },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
+                        exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
+                        if(exportIntervalIsActive){
+                            Swal.fire({
+                                heightAuto: false,
+                                text: `Do you want to disable data back-up every hour?`,
+                                showConfirmButton: true,
+                                confirmButtonText: "Yes",
+                                showDenyButton: true,
+                                denyButtonText: "No",
+                                confirmButtonColor: '#000',
+                                denyButtonColor: '#e27d81',
+                                icon: "question",
+                                reverseButtons: true
+                            })
+                            .then(async(value) => {
+                                if(value.isConfirmed){
+                                    $("#exportIntervalBtn").removeClass("selected")
+                                    exportIntervalIsActive = false
+                                    await saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
                                 }
-                            }
-                        })
-                    }
+                            })
+                        } else {
+                            Swal.fire({
+                                heightAuto: false,
+                                text: `Do you want to enable data Back-Up every hour?`,
+                                showConfirmButton: true,
+                                confirmButtonText: "Yes",
+                                showDenyButton: true,
+                                denyButtonText: "No",
+                                confirmButtonColor: '#000',
+                                denyButtonColor: '#e27d81',
+                                icon: "question",
+                                reverseButtons: true
+                            })
+                            .then(async(value) => {
+                                if(value.isConfirmed){
+                                    $("#exportIntervalBtn").addClass("selected")
+                                    exportIntervalIsActive = true
+                                    await saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
+                                    exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
+                                    await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                    if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
+                                        await new Promise(async(resolve)=>{
+                                            await $(".menu-container").fadeOut(250)
+                                            $("#dataStatusContainer").fadeOut(1000)
+                                            setTimeout(()=>{
+                                                $("#dataStatusSpinner").show()
+                                                $("#dataStatus")
+                                                    .empty()
+                                                    .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                                $("#dataStatusContainer").css("display","flex").fadeIn(1000)
+                                            },1000)
+                                            resolve()
+                                        }).then(async()=>{
+                                            var worker5 = new Worker(`./js-css/worker/export-${version}.js`)
+                                            const savedUsername = await retrieveJSON("savedUsername")
+                                            const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
+                                            const savedWarnAnime = await retrieveJSON("savedWarnAnime")
+                                            const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
+                                            const savedUserList = await retrieveJSON("savedUserList")
+                                            const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
+                                            const savedRecScheme = await retrieveJSON("savedRecScheme")
+                                            const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                                            const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                                            const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                                            const lastAnilistPage = await retrieveJSON("lastAnilistPage")
+                                            const lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                            const backUpVersion = await retrieveJSON("backUpVersion")
+                                            worker5.postMessage({
+                                                savedUsername: savedUsername,
+                                                savedWarnAnime: savedWarnAnime,
+                                                savedFilterAlgo: savedFilterAlgo,
+                                                savedHiddenAnimeIDs: savedHiddenAnimeIDs,
+                                                savedRecScheme: savedRecScheme,
+                                                savedAnimeEntries: savedAnimeEntries,
+                                                savedUserList: savedUserList,
+                                                savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                                                savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                                                savedDeepUpdateTime: savedDeepUpdateTime,
+                                                lastAnilistPage: lastAnilistPage,
+                                                lastSavedUpdateTime: lastSavedUpdateTime,
+                                                backUpVersion: backUpVersion,
+                                            })
+                                            worker5.onmessage = async(message) => {
+                                                worker5.terminate()
+                                                // Browser
+                                                await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                                                // Browser
+                                                exportIntervalStartDate = await new Date()
+                                                await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                                if(!requestIsRunning){
+                                                    await $("#dataStatusContainer").fadeOut(1000)
+                                                }
+                                                await Swal.fire({
+                                                    heightAuto: false,
+                                                    text: "Data has been exported!",
+                                                    icon: "success",
+                                                    confirmButtonColor: "#000"
+                                                })
+                                                // Interval
+                                                for(let i=0;i<exportIntervalTimeout.length;i++) clearInterval(exportIntervalTimeout[i])
+                                                var saveExportIntervalTimeout = setInterval(async()=>{
+                                                    $("#dataStatusContainer").fadeOut(1000)
+                                                    setTimeout(()=>{
+                                                        $("#dataStatusSpinner").show()
+                                                        $("#dataStatus")
+                                                            .empty()
+                                                            .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                                        $("#dataStatusContainer").css("display","flex").fadeIn(1000)
+                                                    },1000)
+                                                    var worker6 = new Worker(`./js-css/worker/export-${version}.js`)
+                                                    const savedUsername = await retrieveJSON("savedUsername")
+                                                    const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
+                                                    const savedWarnAnime = await retrieveJSON("savedWarnAnime")
+                                                    const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
+                                                    const savedUserList = await retrieveJSON("savedUserList")
+                                                    const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
+                                                    const savedRecScheme = await retrieveJSON("savedRecScheme")
+                                                    const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                                                    const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                                                    const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                                                    const lastAnilistPage = await retrieveJSON("lastAnilistPage")
+                                                    const lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                                    const backUpVersion = await retrieveJSON("backUpVersion")
+                                                    worker6.postMessage({
+                                                        savedUsername: savedUsername,
+                                                        savedWarnAnime: savedWarnAnime,
+                                                        savedFilterAlgo: savedFilterAlgo,
+                                                        savedHiddenAnimeIDs: savedHiddenAnimeIDs,
+                                                        savedRecScheme: savedRecScheme,
+                                                        savedAnimeEntries: savedAnimeEntries,
+                                                        savedUserList: savedUserList,
+                                                        savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                                                        savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                                                        savedDeepUpdateTime: savedDeepUpdateTime,
+                                                        lastAnilistPage: lastAnilistPage,
+                                                        lastSavedUpdateTime: lastSavedUpdateTime,
+                                                        backUpVersion: backUpVersion,
+                                                    })
+                                                    worker6.onmessage = async(message) => {
+                                                        worker6.terminate()
+                                                        // Browser
+                                                        await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                                                        // Browser
+                                                        exportIntervalStartDate = await new Date()
+                                                        await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                                        if(!requestIsRunning){
+                                                            await $("#dataStatusContainer").fadeOut(1000)
+                                                        }
+                                                        await Swal.fire({
+                                                            heightAuto: false,
+                                                            text: "Data has been exported!",
+                                                            icon: "success",
+                                                            confirmButtonColor: "#000"
+                                                        })
+                                                    }
+                                                },3600000)
+                                                exportIntervalTimeout.push(saveExportIntervalTimeout)
+                                            }
+                                        })
+                                    } else {
+                                        // Timeout
+                                        setTimeout(async()=>{
+                                            $("#dataStatusContainer").fadeOut(1000)
+                                            setTimeout(()=>{
+                                                $("#dataStatusSpinner").show()
+                                                $("#dataStatus")
+                                                    .empty()
+                                                    .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                                $("#dataStatusContainer").css("display","flex").fadeIn(1000)
+                                            },1000)
+                                            var worker6 = new Worker(`./js-css/worker/export-${version}.js`)
+                                            const savedUsername = await retrieveJSON("savedUsername")
+                                            const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
+                                            const savedWarnAnime = await retrieveJSON("savedWarnAnime")
+                                            const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
+                                            const savedUserList = await retrieveJSON("savedUserList")
+                                            const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
+                                            const savedRecScheme = await retrieveJSON("savedRecScheme")
+                                            const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                                            const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                                            const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                                            const lastAnilistPage = await retrieveJSON("lastAnilistPage")
+                                            const lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                            const backUpVersion = await retrieveJSON("backUpVersion")
+                                            worker6.postMessage({
+                                                savedUsername: savedUsername,
+                                                savedWarnAnime: savedWarnAnime,
+                                                savedFilterAlgo: savedFilterAlgo,
+                                                savedHiddenAnimeIDs: savedHiddenAnimeIDs,
+                                                savedRecScheme: savedRecScheme,
+                                                savedAnimeEntries: savedAnimeEntries,
+                                                savedUserList: savedUserList,
+                                                savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                                                savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                                                savedDeepUpdateTime: savedDeepUpdateTime,
+                                                lastAnilistPage: lastAnilistPage,
+                                                lastSavedUpdateTime: lastSavedUpdateTime,
+                                                backUpVersion: backUpVersion,
+                                            })
+                                            worker6.onmessage = async(message) => {
+                                                worker6.terminate()
+                                                // Browser
+                                                await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                                                // Browser
+                                                exportIntervalStartDate = await new Date()
+                                                await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                                if(!requestIsRunning){
+                                                    await $("#dataStatusContainer").fadeOut(1000)
+                                                }
+                                                await Swal.fire({
+                                                    heightAuto: false,
+                                                    text: "Data has been exported!",
+                                                    icon: "success",
+                                                    confirmButtonColor: "#000"
+                                                })
+                                                // Interval
+                                                for(let i=0;i<exportIntervalTimeout.length;i++) clearInterval(exportIntervalTimeout[i])
+                                                var saveExportIntervalTimeout = setInterval(async()=>{
+                                                    $("#dataStatusContainer").fadeOut(1000)
+                                                    setTimeout(()=>{
+                                                        $("#dataStatusSpinner").show()
+                                                        $("#dataStatus")
+                                                            .empty()
+                                                            .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                                        $("#dataStatusContainer").css("display","flex").fadeIn(1000)
+                                                    },1000)
+                                                    var worker6 = new Worker(`./js-css/worker/export-${version}.js`)
+                                                    const savedUsername = await retrieveJSON("savedUsername")
+                                                    const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
+                                                    const savedWarnAnime = await retrieveJSON("savedWarnAnime")
+                                                    const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
+                                                    const savedUserList = await retrieveJSON("savedUserList")
+                                                    const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
+                                                    const savedRecScheme = await retrieveJSON("savedRecScheme")
+                                                    const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
+                                                    const savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
+                                                    const savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
+                                                    const lastAnilistPage = await retrieveJSON("lastAnilistPage")
+                                                    const lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                                    const backUpVersion = await retrieveJSON("backUpVersion")
+                                                    worker6.postMessage({
+                                                        savedUsername: savedUsername,
+                                                        savedWarnAnime: savedWarnAnime,
+                                                        savedFilterAlgo: savedFilterAlgo,
+                                                        savedHiddenAnimeIDs: savedHiddenAnimeIDs,
+                                                        savedRecScheme: savedRecScheme,
+                                                        savedAnimeEntries: savedAnimeEntries,
+                                                        savedUserList: savedUserList,
+                                                        savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                                                        savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                                                        savedDeepUpdateTime: savedDeepUpdateTime,
+                                                        lastAnilistPage: lastAnilistPage,
+                                                        lastSavedUpdateTime: lastSavedUpdateTime,
+                                                        backUpVersion: backUpVersion,
+                                                    })
+                                                    worker6.onmessage = async(message) => {
+                                                        worker6.terminate()
+                                                        // Browser
+                                                        await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                                                        // Browser
+                                                        exportIntervalStartDate = await new Date()
+                                                        await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                                        if(!requestIsRunning){
+                                                            await $("#dataStatusContainer").fadeOut(1000)
+                                                        }
+                                                        await Swal.fire({
+                                                            heightAuto: false,
+                                                            text: "Data has been exported!",
+                                                            icon: "success",
+                                                            confirmButtonColor: "#000"
+                                                        })
+                                                    }
+                                                },3600000)
+                                                exportIntervalTimeout.push(saveExportIntervalTimeout)
+                                            }
+                                        },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
+                                    }
+                                }
+                            })
+                        }
                 })
                 $("#warnAnimeBtn").on("click", async ()=>{
                     await $("#warnAnimeContainer").show()
@@ -4911,6 +4873,55 @@
     
     async function loadTheme(newTheme,prevTheme){
         return await new Promise(async(resolve)=>{
+            // Remove default
+            if(newTheme!=="dakMode"&&prevTheme===undefined){
+                await $(` 
+                    html
+                    body,
+                    .Home,
+                    .searchData,
+                    button,
+                    .overlay,
+                    #username, 
+                    .flexdatalist-multiple,
+                    .flexdatalist-alias,
+                    .flexdatalist-results,
+                    .flexdatalist-multiple li.value,
+                    #animeRecommendationList td,
+                    #anime-table,
+                    #anime-table thead,
+                    #anime-table tbody,
+                    #anime-table th,
+                    #anime-table tr,
+                    #anime-table td,
+                    .table-responsive,
+                    #animeRecommendationList a,
+                    .userInput, 
+                    .nav, 
+                    #pager,
+                    #pageNumberOptions,
+                    .swal2-popup,
+                    .swal2-popup-custom,
+                    .swal2-validation-message,
+                    .swal2-footer a,
+                    .swal2-confirm, 
+                    .swal2-confirm-custom,
+                    .spinner
+                `).removeClass("darkMode")
+                await $(`#pager`).on('click',()=>{
+                    $(`#animeRecommendationList td,
+                        #anime-table,
+                        #anime-table thead,
+                        #anime-table tbody,
+                        #anime-table th,
+                        #anime-table tr,
+                        #anime-table td,
+                        .table-responsive,
+                        #animeRecommendationList a
+                    `).removeClass("darkMode")
+                })
+            }
+            // Remove Previous
             if(prevTheme!==undefined){
                 await $(` 
                     html
@@ -4925,6 +4936,7 @@
                     .flexdatalist-results,
                     .flexdatalist-multiple li.value,
                     #animeRecommendationList td,
+                    #anime-table,
                     #anime-table thead,
                     #anime-table tbody,
                     #anime-table th,
@@ -4946,6 +4958,7 @@
                 `).removeClass(prevTheme)
                 await $(`#pager`).on('click',()=>{
                     $(`#animeRecommendationList td,
+                        #anime-table,
                         #anime-table thead,
                         #anime-table tbody,
                         #anime-table th,
@@ -4956,54 +4969,53 @@
                     `).removeClass(prevTheme)
                 })
             }
-            if(newTheme!=="lightMode"){
-                await $(` 
-                    html,
-                    body,
-                    .Home,
-                    .searchData,
-                    button,
-                    .overlay,
-                    #username, 
-                    .flexdatalist-multiple,
-                    .flexdatalist-alias,
-                    .flexdatalist-results,
-                    .flexdatalist-multiple li.value,
-                    #animeRecommendationList td,
+            // Apply New
+            await $(` 
+                html,
+                body,
+                .Home,
+                .searchData,
+                button,
+                .overlay,
+                #username, 
+                .flexdatalist-multiple,
+                .flexdatalist-alias,
+                .flexdatalist-results,
+                .flexdatalist-multiple li.value,
+                #animeRecommendationList td,
+                #anime-table,
+                #anime-table thead,
+                #anime-table tbody,
+                #anime-table th,
+                #anime-table tr,
+                #anime-table td,
+                .table-responsive,
+                #animeRecommendationList a,
+                .userInput, 
+                .nav, 
+                #pager,
+                #pageNumberOptions,
+                .swal2-popup,
+                .swal2-popup-custom,
+                .swal2-validation-message,
+                .swal2-footer a,
+                .swal2-confirm, 
+                .swal2-confirm-custom,
+                .spinner
+            `).addClass(newTheme)
+            await $(`#pager`).on('click',()=>{
+                $(`#animeRecommendationList td,
+                    #anime-table,
                     #anime-table thead,
                     #anime-table tbody,
                     #anime-table th,
                     #anime-table tr,
                     #anime-table td,
                     .table-responsive,
-                    #animeRecommendationList a,
-                    .userInput, 
-                    .nav, 
-                    #pager,
-                    #pageNumberOptions,
-                    .swal2-popup,
-                    .swal2-popup-custom,
-                    .swal2-validation-message,
-                    .swal2-footer a,
-                    .swal2-confirm, 
-                    .swal2-confirm-custom,
-                    .spinner
+                    #animeRecommendationList a
                 `).addClass(newTheme)
-                await $(`#pager`).on('click',()=>{
-                    $(`#animeRecommendationList td,
-                        #anime-table thead,
-                        #anime-table tbody,
-                        #anime-table th,
-                        #anime-table tr,
-                        #anime-table td,
-                        .table-responsive,
-                        #animeRecommendationList a
-                    `).addClass(newTheme)
-                })
-                resolve()
-            } else {
-                resolve()
-            }
+            })
+            resolve()
         })
     }
     
