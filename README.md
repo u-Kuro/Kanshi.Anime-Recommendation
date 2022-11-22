@@ -29,7 +29,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) In the settings click the button to filter the algorithm, which works similarly to table/list filters in instruction number 7.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) In order to exclude all the staff or staff roles in the algorithm, type [!staff: all] or [!staff role: all].  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) In order to only include directors or original creators in staff, type [staff role: director] or [staff role: original creator].  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) To change the minimum sample size for the algorithm, type [sample size: N], the default is 10.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) To change the minimum sample size for the algorithm, type [sample size: N], the default is 33.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e) Algorithm Filter Indicators are as follows are [sample size: ], [format: ], [genre: ], [tag: ], [tag category: ], [studio: ], [staff: ], [staff role: ], and add ! as the first character to exclude.  
 
 ## Kanshi.VI (Recommended)
