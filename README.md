@@ -14,18 +14,19 @@
   4. Update button in the settings to update your recommendation list (used when you change an anime score in your list).
   5. Deep Update button in the settings to reset all data in the app (this will take a longer time to finish).
   6. Import/Export your user data recommendation in the settings (this is recommended, a backup will be useful when Anilist is Down or the API had a problem with the Tool).
-  7. Table/List Filter Anime, used to filter the list shown in the table by adding Title/Genres/Tags/User Status/Anime Status/Format/Year/Season/Studios/Staff to include and/or exclude an anime in your recommendation list. Numeric Filters >,<,>=,<= for numeric columns including WScore, Score, and Year.  
+  7. Hide Unwatched Sequel button in the settings will only show the first season for each anime franchise or the very first unwatched sequel (for example: it shows standalone movies / specials / etc., or if you already completed / currently-rewatching an anime season only the next unwatched sequel will show [If there's a case where prequel is unneeded for the series {prequel-popularity<sequel-popularity} it is ignored through the process but will still be included in the list]).
+  8. Table/List Filter Anime, used to filter the list shown in the table by adding Title/Genres/Tags/User Status/Anime Status/Format/Year/Season/Studios/Staff to include and/or exclude an anime in your recommendation list. Numeric Filters >,<,>=,<= for numeric columns including WScore, Score, and Year.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) To only see the Unwatched Anime, type [user status: unwatched] in the filter.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To remove the Completed and Dropped anime, type [!user status: completed] and [!user status: dropped].  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) To only allow Weighted SCORES of 7-10, type wscore>=7.  
-  8. Hidden/Unhidden List to hide an Anime in the apps list or show to bring it back.  
+  9. Hidden/Unhidden List to hide an Anime in the apps list or show to bring it back.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) Click the black button on the left side of the Wscore table header named Unhidden or Hidden to change the list to Hidden or Unhidden respectively.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) Click the Hide or Show button to transfer an Anime to the Hidden list or Unhidden list respectively.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) In the settings, the 'Show All' button can be used to Unhide all your Hidden Anime in the app, it transfers all Hidden anime to Unhidden list.
-  9. Content Warning in the settings allows users to select Anime Content like Netorare, Nudity, etc. that will show a Warning Icon to Avoid any Undesired Content. You can also see the Warned Content by Clicking the Warning Icon Shown beside Wscore. Set custom warnings in the settings by clicking 'Choose Content Warn' Button.  
+  10. Content Warning in the settings allows users to select Anime Content like Netorare, Nudity, etc. that will show a Warning Icon to Avoid any Undesired Content. You can also see the Warned Content by Clicking the Warning Icon Shown beside Wscore. Set custom warnings in the settings by clicking 'Choose Content Warn' Button.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) To have a Yellow Icon Semi-Warning for Netorare, type [tag: netorare].  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To have a Red Icon Warning for Netorare, type [!tag: netorare].  
-  10.  Filtering Algorithm Contents in the settings allows the user to include and exclude contents in calculating the recommendation and prediction. The currently available fIlters are Formats, Genres, Tags, Tag Categories, Studios, Staff, and Staff Roles. You can use this as follows:
+  11.  Filtering Algorithm Contents in the settings allows the user to include and exclude contents in calculating the recommendation and prediction. The currently available fIlters are Formats, Genres, Tags, Tag Categories, Studios, Staff, and Staff Roles. You can use this as follows:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) In the settings click the button to filter the algorithm, which works similarly to table/list filters in instruction number 7.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) In order to exclude all the staff or staff roles in the algorithm, type [!staff: all] or [!staff role: all].  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) In order to only include directors or original creators in staff, type [staff role: director] or [staff role: original creator].  
