@@ -972,6 +972,7 @@
         <button class="darkMode" id="filterAlgoBtn">Filter Algorithm Contents</button>
         <button class="darkMode" id="themeBtn">Dark Mode</button>
         <button class="darkMode" id="hideKidsAnimeBtn">Hide Kids Anime</button>
+        <button class="darkMode" id="hideUnwatchedSequelsBtn">Hide Unwatched Sequels</button>
         <button class="darkMode" id="updateIntervalBtn">Update Every Hour</button>
         <button class="darkMode" id="exportIntervalBtn">Export Every Hour</button>
         <button class="darkMode" id="sign-up">Create Another Account</button>
@@ -1126,15 +1127,15 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "2.6",
-          backUpVersion = 1.6
+    const version = "2.9",
+          backUpVersion = 1.9
         // IndexDB
     var request, db,
         // Saved Data
     savedUsername, savedRecScheme, savedUserList, savedAnimeEntries, savedHiddenAnimeIDs, 
     savedFilters, savedWarnAnime, savedFilterAlgo, savedBackUpVersion,
     savedHiddenTablePage, savedUnhiddenTablePage, savedTableStatus, savedYscroll, savedSort, 
-    savedTheme, kidsAnimeIsHidden,
+    savedTheme, kidsAnimeIsHidden, hideUnwatchedSequels,
     savedFilterOptionsJson, allFilterInfo, 
     exportIntervalIsActive, updateIntervalIsActive, exportIntervalStartDate, updateIntervalStartDate,
     exportIntervalTimeout = [], updateIntervalTimeout = [],
@@ -2803,18 +2804,100 @@
                 })
                 $("#hideKidsAnimeBtn").on("click", async ()=>{
                     kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden")
-                    if(kidsAnimeIsHidden){
-                        kidsAnimeIsHidden = false
-                        await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
-                        $("#hideKidsAnimeBtn").removeClass("selected")
-                        savedRecScheme = await retrieveJSON("savedRecScheme")
-                        LoadData(savedRecScheme)
-                    } else {
+                    if(kidsAnimeIsHidden===undefined){
                         kidsAnimeIsHidden = true
-                        await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
-                        $("#hideKidsAnimeBtn").addClass("selected")
-                        savedRecScheme = await retrieveJSON("savedRecScheme")
-                        LoadData(savedRecScheme)
+                    }
+                    if(kidsAnimeIsHidden){
+                        Swal.fire({
+                            heightAuto: false,
+                            text: `Do you want to show all anime with Kids tag?`,
+                            showConfirmButton: true,
+                            confirmButtonText: "Show",
+                            showDenyButton: true,
+                            denyButtonText: "Cancel",
+                            confirmButtonColor: '#000',
+                            denyButtonColor: '#e27d81',
+                            icon: "question",
+                            reverseButtons: true
+                        })
+                        .then(async(value)=>{
+                            if(value.isConfirmed){
+                                kidsAnimeIsHidden = false
+                                await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
+                                $("#hideKidsAnimeBtn").removeClass("selected")
+                                savedRecScheme = await retrieveJSON("savedRecScheme")
+                                LoadData(savedRecScheme)
+                            }
+                        })
+                    } else {
+                        Swal.fire({
+                            heightAuto: false,
+                            text: `Do you want to hide all anime with Kids tag?`,
+                            showConfirmButton: true,
+                            confirmButtonText: "Hide",
+                            showDenyButton: true,
+                            denyButtonText: "Cancel",
+                            confirmButtonColor: '#000',
+                            denyButtonColor: '#e27d81',
+                            icon: "question",
+                            reverseButtons: true
+                        })
+                        .then(async(value)=>{
+                            if(value.isConfirmed){
+                                kidsAnimeIsHidden = true
+                                await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
+                                $("#hideKidsAnimeBtn").addClass("selected")
+                                savedRecScheme = await retrieveJSON("savedRecScheme")
+                                LoadData(savedRecScheme)
+                            }
+                        })
+                    }
+                })
+                $("#hideUnwatchedSequelsBtn").on("click", async ()=>{
+                    hideUnwatchedSequels = await retrieveJSON("hideUnwatchedSequels")
+                    if(hideUnwatchedSequels===undefined){
+                        hideUnwatchedSequels = true
+                    }
+                    if(hideUnwatchedSequels){
+                        Swal.fire({
+                            heightAuto: false,
+                            text: `Do you want to show all unwatched-Anime's sequels?`,
+                            showConfirmButton: true,
+                            confirmButtonText: "Show",
+                            showDenyButton: true,
+                            denyButtonText: "Cancel",
+                            confirmButtonColor: '#000',
+                            denyButtonColor: '#e27d81',
+                            icon: "question",
+                            reverseButtons: true
+                        })
+                        .then(async(value)=>{
+                            if(value.isConfirmed){
+                                $("#hideUnwatchedSequelsBtn").removeClass("selected")
+                                Update(true, undefined, false)
+                                $(".menu-container").fadeOut(250)
+                            }
+                        })
+                    } else {
+                        Swal.fire({
+                            heightAuto: false,
+                            text: `Do you want to hide all unwatched-Anime's sequels?`,
+                            showConfirmButton: true,
+                            confirmButtonText: "Hide",
+                            showDenyButton: true,
+                            denyButtonText: "Cancel",
+                            confirmButtonColor: '#000',
+                            denyButtonColor: '#e27d81',
+                            icon: "question",
+                            reverseButtons: true
+                        })
+                        .then(async(value)=>{
+                            if(value.isConfirmed){
+                                $("#hideUnwatchedSequelsBtn").addClass("selected")
+                                Update(true, undefined, true)
+                                $(".menu-container").fadeOut(250)
+                            }
+                        })
                     }
                 })
                 $("#animeRecommendationList").delegate('td.anime-score', 'click' , async function() {
@@ -2920,7 +3003,14 @@
                 savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson") || []
                 allFilterInfo = await retrieveJSON("allFilterInfo") || {}
                 savedBackUpVersion = await retrieveJSON(`backUpVersion`) || 0
-                kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden") || true
+                kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden")
+                if(kidsAnimeIsHidden===undefined){
+                    kidsAnimeIsHidden = true
+                }
+                hideUnwatchedSequels = await retrieveJSON("hideUnwatchedSequels")
+                if(hideUnwatchedSequels===undefined){
+                    hideUnwatchedSequels = true
+                }
                 savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                 savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs") || {}
                 savedSort = await retrieveJSON("savedSort") || [1,1]
@@ -3100,6 +3190,7 @@
                         await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                         lastSavedUpdateTime = await data.lastSavedUpdateTime
                         await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                        Update(true)
                         return
                     }
                     worker0.onerror = () => {
@@ -3188,6 +3279,9 @@
                 // Menu Filters
                 if(await kidsAnimeIsHidden){
                     await $("#hideKidsAnimeBtn").addClass("selected")
+                }
+                if(await hideUnwatchedSequels){
+                    await $("#hideUnwatchedSequelsBtn").addClass("selected")
                 }
                 if(await savedTheme==="darkMode"){
                     await $("#themeBtn").addClass("selected")
@@ -3419,6 +3513,10 @@
                                 }
                             },3600000)
                             await exportIntervalTimeout.push(saveExportIntervalTimeout)
+                            return
+                        }
+                        worker2.onerror = () => {
+                            return
                         }
                     } else {
                         // Timeout
@@ -3572,7 +3670,7 @@
     }
 
     // Main Functions
-    function Update(notAnUpdate, filterAlgo){
+    function Update(notAnUpdate, filterAlgo, doHideUnwatchedSeq){
         updateStartTime = new Date
         var filterInput = $("#filters > ul > .flexdatalist-multiple-value > input")
         var username = $("#username").val()
@@ -3596,15 +3694,15 @@
             updateIDs.push(updateID)
             if(updateIDs.length>1){
                 setTimeout(()=>{
-                    analyzeVariables(updateID, username, notAnUpdate, filterAlgo)
+                    analyzeVariables(updateID, username, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
                 },requestIntervalMS)
             } else {
-                analyzeVariables(updateID, username, notAnUpdate, filterAlgo)
+                analyzeVariables(updateID, username, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
             }
         }
     }
 
-    async function analyzeVariables(updateID, username, notAnUpdate, filterAlgo) {
+    async function analyzeVariables(updateID, username, notAnUpdate, filterAlgo, doHideUnwatchedSeq) {
         var savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || [90]
         var analyzeVariableTime = arrayMean(savedAnalyzeVariableTime)
         savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
@@ -4084,14 +4182,14 @@
             var savedUserListValues = Object.values(savedUserList)
             if(isJson(savedUserList)&&isJson(savedUserListValues[0])&&!jsonIsEmpty(savedUserList)){
                 var worker12 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
-                worker12.postMessage({savedUserList: savedUserList, notAnUpdate: true, savedIncluded: savedIncluded, savedExcluded: savedExcluded})
+                worker12.postMessage({savedUserList: savedUserList, notAnUpdate: notAnUpdate, savedIncluded: savedIncluded, savedExcluded: savedExcluded})
                 worker12.onmessage = (message) => {
                     worker12.terminate()
                     const data = message.data
                     const varScheme = data.varScheme
                     const userListStatus = data.userListStatus
                     const alteredVariables = data.alteredVariables
-                    analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, true, filterAlgo)
+                    analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
                 }
             } else {
                 requestIsRunning = false
@@ -4139,6 +4237,15 @@
                                 ${page===1?'updatedAt':''}
                                 title {
                                     userPreferred
+                                }
+                                relations {
+                                    edges { 
+                                        relationType      
+                                        node{
+                                            id
+                                            popularity
+                                        }
+                                    }
                                 }
                                 siteUrl
                                 averageScore
@@ -4319,6 +4426,15 @@
                                     title {
                                         userPreferred
                                     }
+                                    relations {
+                                        edges { 
+                                            relationType      
+                                            node{
+                                                id
+                                                popularity
+                                            }
+                                        }
+                                    }
                                     siteUrl
                                     averageScore
                                     episodes
@@ -4472,11 +4588,19 @@
         }
     }
 
-    async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser, notAnUpdate, filterAlgo){
+    async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser, notAnUpdate, filterAlgo, doHideUnwatchedSeq){
         return await new Promise(async(resolve)=>{
             var UpdateAnalyzeAnimeStartTime = new Date()
             var savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime") || [3]
             var updateAnalyzeAnimeTime = arrayMean(savedUpdateAnalyzeAnimeTime)
+            if(doHideUnwatchedSeq!==undefined){   
+                hideUnwatchedSequels = doHideUnwatchedSeq
+            } else {
+                hideUnwatchedSequels = await retrieveJSON("hideUnwatchedSequels")
+                if(hideUnwatchedSequels===undefined){
+                    hideUnwatchedSequels = true
+                }
+            }
             allFilterInfo = await retrieveJSON("allFilterInfo") || {}
             if(notAnUpdate){
                 $("#filterAlgoModal #filterAlgo-validation")
@@ -4527,6 +4651,7 @@
                 varScheme: varScheme,
                 allFilterInfo: allFilterInfo,
                 alteredVariables: alteredVariables,
+                hideUnwatchedSequels: hideUnwatchedSequels
             })
             worker9.onmessage = async(message) => {
                 worker9.terminate()
@@ -4538,7 +4663,7 @@
                     await saveJSON(allFilterInfo,"allFilterInfo")
                 }
                 // Save Filtered Algorithm Contents
-                if(notAnUpdate){
+                if(notAnUpdate&&filterAlgo!==undefined){
                     await saveJSON(filterAlgo,"savedFilterAlgo")
                 }
                 // Save Table Filters
@@ -4556,6 +4681,9 @@
                 if(Object.keys(savedRecScheme).length>1){
                     $("#updateBtn").show()
                     $("#updateIntervalBtn").show()
+                }
+                if(doHideUnwatchedSeq!==undefined){
+                    await saveJSON(doHideUnwatchedSeq,"hideUnwatchedSequels")
                 }
                 var worker10 = new Worker(`./js-css/worker/updateOptions-${version}.js`)
                 worker10.postMessage({
