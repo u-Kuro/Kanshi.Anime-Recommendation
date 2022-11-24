@@ -192,6 +192,14 @@ self.onmessage = (message) => {
         if(!notAnUpdate){
             savedUserList[anilistId] = userEntries[i]
         }
+        // Variables
+        var format = anime.format
+        var genres = anime.genres
+        var tags = anime.tags
+        var studios = anime.studios.nodes
+        var includedStudio = {}
+        var staffs = anime.staff.edges
+        var includedStaff = {}
         if(userEntries[i].score>0){
             // Check if a related anime is already analyzed
             if(includedAnimeRelations[anilistId]!==undefined) continue
@@ -212,7 +220,6 @@ self.onmessage = (message) => {
             ++userListCount
             var userScore = userEntries[i].score
             // Formats
-            var format = anime.format
             if(format!==null&&format!==undefined){
                 var fullFormat = "format: "+format.toLowerCase()
                 if(Object.values(include.formats).length>0){
@@ -246,16 +253,8 @@ self.onmessage = (message) => {
                         }
                     }
                 }
-                // Altered Formats
-                if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
-                    tempUserList[anilistId] = newAnimeObjStr
-                    if(alteredVariables.format_in[fullFormat]===undefined){
-                        alteredVariables.format_in[fullFormat] = 1
-                    }
-                }
             }
             // Genres
-            var genres = anime.genres
             for(let j=0; j<genres.length; j++){
                 var genre = genres[j]
                 if(genre!==null&&genre!==undefined){
@@ -291,17 +290,9 @@ self.onmessage = (message) => {
                             }
                         }
                     }
-                    // Altered Genres
-                    if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
-                        tempUserList[anilistId] = newAnimeObjStr
-                        if(alteredVariables.genres_in[fullGenre]===undefined){
-                            alteredVariables.genres_in[fullGenre] = 1
-                        }
-                    }
                 }
             }
             // Tags
-            var tags = anime.tags
             for(let j=0; j<tags.length; j++){
                 var tag = tags[j].name
                 var tagCategory = tags[j].category
@@ -378,19 +369,10 @@ self.onmessage = (message) => {
                                 }
                             }
                         }
-                        // Altered Tags
-                        if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
-                            tempUserList[anilistId] = newAnimeObjStr
-                            if(alteredVariables.tags_in[fullTag]===undefined){
-                                alteredVariables.tags_in[fullTag] = 1
-                            }
-                        }
                     }
                 }
             }
             // Studios
-            var studios = anime.studios.nodes
-            var includedStudio = {}
             for(let j=0; j<studios.length; j++){
                 if(!studios[j].isAnimationStudio) continue
                 var studio = studios[j].name
@@ -429,18 +411,9 @@ self.onmessage = (message) => {
                             }
                         }
                     }
-                    // Altered Studios
-                    if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
-                        tempUserList[anilistId] = newAnimeObjStr
-                        if(alteredVariables.studios_in[fullStudio]===undefined){
-                            alteredVariables.studios_in[fullStudio] = 1
-                        }
-                    }
                 }
             }
             // Staffs
-            var staffs = anime.staff.edges
-            var includedStaff = {}
             for(let j=0; j<staffs.length; j++){
                 var staff = staffs[j].node.name.userPreferred
                 if(staff!==null){
@@ -519,12 +492,6 @@ self.onmessage = (message) => {
                                 }
                             }
                         }
-                        if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
-                            tempUserList[anilistId] = newAnimeObjStr
-                            if(alteredVariables.staff_in[fullStaff]===undefined){
-                                alteredVariables.staff_in[fullStaff] = 1
-                            }
-                        }
                     }
                 }
             }
@@ -550,6 +517,75 @@ self.onmessage = (message) => {
             }
             if(isaN(parseInt(anime.seasonYear))){
                 year.push({userScore: userScore, year: parseInt(anime.seasonYear)})
+            }
+        }
+        // Altered Variables
+          // Altered Formats
+        if(format!==null&&format!==undefined){
+            var fullFormat = "format: "+format.toLowerCase()
+            if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
+                tempUserList[anilistId] = newAnimeObjStr
+                if(alteredVariables.format_in[fullFormat]===undefined){
+                    alteredVariables.format_in[fullFormat] = 1
+                }
+            }
+        }
+          // Altered Genres
+        for(let j=0; j<genres.length; j++){
+            var genre = genres[j]
+            if(genre!==null&&genre!==undefined){
+                var fullGenre = "genre: "+genre.toLowerCase()
+                if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
+                    tempUserList[anilistId] = newAnimeObjStr
+                    if(alteredVariables.genres_in[fullGenre]===undefined){
+                        alteredVariables.genres_in[fullGenre] = 1
+                    }
+                }
+            }
+        }
+          // Altered Tags
+        for(let j=0; j<tags.length; j++){
+            var tag = tags[j].name
+            var tagCategory = tags[j].category
+            if(tag!==null && tagCategory!==null && tags[j].rank>=50){
+                var fullTag = "tag: "+tag.toLowerCase()
+                if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
+                    tempUserList[anilistId] = newAnimeObjStr
+                    if(alteredVariables.tags_in[fullTag]===undefined){
+                        alteredVariables.tags_in[fullTag] = 1
+                    }
+                }
+            }
+        }
+          // Altered Studios
+        for(let j=0; j<studios.length; j++){
+            if(!studios[j].isAnimationStudio) continue
+            var studio = studios[j].name
+            var fullStudio = "studio: "+studio.toLowerCase()
+            if(includedStudio[studio]!==undefined) continue
+            else includedStudio[studio] = null
+            if(studio!==null){
+                if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
+                    tempUserList[anilistId] = newAnimeObjStr
+                    if(alteredVariables.studios_in[fullStudio]===undefined){
+                        alteredVariables.studios_in[fullStudio] = 1
+                    }
+                }
+            }
+        }
+          // Altered Staff
+        for(let j=0; j<staffs.length; j++){
+            var staff = staffs[j].node.name.userPreferred
+            if(staff!==null){
+                if(includedStaff[staff]!==undefined) continue
+                else includedStaff[staff] = null
+                var fullStaff = "staff: "+staff.toLowerCase()
+                if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
+                    tempUserList[anilistId] = newAnimeObjStr
+                    if(alteredVariables.staff_in[fullStaff]===undefined){
+                        alteredVariables.staff_in[fullStaff] = 1
+                    }
+                }
             }
         }
     }
