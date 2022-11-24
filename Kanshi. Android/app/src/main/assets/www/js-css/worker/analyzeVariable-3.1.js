@@ -192,23 +192,23 @@ self.onmessage = (message) => {
         if(!notAnUpdate){
             savedUserList[anilistId] = userEntries[i]
         }
-        // Check if a related anime is already analyzed
-        if(includedAnimeRelations[anilistId]!==undefined) continue
-        includedAnimeRelations[anilistId] = null
-        if(anime.relations!==null){
-            var animeRelations = anime.relations.edges
-            for(let j=0;j<animeRelations.length;j++){
-                var animeRelationNode = animeRelations[j].node
-                var animeRelationType = animeRelations[j].relationType
-                if(animeRelationNode!==null&&animeRelationType!==null){
-                    // Other characters may cast at a completely different anime
-                    if(animeRelationNode.id!==null&&animeRelationType.toLowerCase()!=="character"){
-                        includedAnimeRelations[animeRelationNode.id] = null
+        if(userEntries[i].score>0){
+            // Check if a related anime is already analyzed
+            if(includedAnimeRelations[anilistId]!==undefined) continue
+            includedAnimeRelations[anilistId] = null
+            if(anime.relations!==null){
+                var animeRelations = anime.relations.edges
+                for(let j=0;j<animeRelations.length;j++){
+                    var animeRelationNode = animeRelations[j].node
+                    var animeRelationType = animeRelations[j].relationType
+                    if(animeRelationNode!==null&&animeRelationType!==null){
+                        // Other characters may cast at a completely different anime
+                        if(animeRelationNode.id!==null&&animeRelationType.toLowerCase()!=="character"){
+                            includedAnimeRelations[animeRelationNode.id] = null
+                        }
                     }
                 }
             }
-        }
-        if(userEntries[i].score>0){
             ++userListCount
             var userScore = userEntries[i].score
             // Formats
