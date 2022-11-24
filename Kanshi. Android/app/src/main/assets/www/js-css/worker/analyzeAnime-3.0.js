@@ -9,14 +9,6 @@ self.onmessage = (message) => {
     var allFilterInfo = data.allFilterInfo || {}
     var alteredVariables = data.alteredVariables
     const hideUnwatchedSequels = data.hideUnwatchedSequels || undefined
-    var savedAnalyzedVariablesCount = {
-        all: {},
-        format: {},
-        genres: {},
-        tags: {},
-        studios: {},
-        staff: {}
-    }
     // Add Popularity Weight
     var popularityMode = []
     var averageScoreMode = []
@@ -32,8 +24,8 @@ self.onmessage = (message) => {
         }
     }
     var popularitySum = popularityMode.length>0?arraySum(popularityMode):0
-    popularityMode = popularityMode.length>0?arrayMode(popularityMode):0
-    averageScoreMode = averageScoreMode.length>0?arrayMode(averageScoreMode):0
+    popularityMode = popularityMode.length>0?Math.min(arrayMean(popularityMode),arrayMode(popularityMode)):0
+    averageScoreMode = averageScoreMode.length>0?Math.min(arrayMean(averageScoreMode),arrayMode(averageScoreMode)):0
     if(!jsonIsEmpty(varScheme)){
         for(let i=0; i<animeEntries.length; i++){
             var animeShallUpdate = false
@@ -235,22 +227,6 @@ self.onmessage = (message) => {
             }
             // Check if any variable is Altered, and continue
             if(!animeShallUpdate) continue
-            // Continue Analyzing Affected Anime
-            // Reset Anime Weights
-            savedAnalyzedVariablesCount.all[anilistId] = 0
-            savedAnalyzedVariablesCount.format[anilistId] = 0
-            savedAnalyzedVariablesCount.genres[anilistId] = 0
-            savedAnalyzedVariablesCount.tags[anilistId] = 0
-            savedAnalyzedVariablesCount.studios[anilistId] = 0
-            savedAnalyzedVariablesCount.staff[anilistId] = 0
-            var analyzedVariableCount = {
-                all: 0,
-                format: 0,
-                genres: 0,
-                tags: 0,
-                studios: 0,
-                staff: 0
-            }
             var genresIncluded = {}
             var tagsIncluded = {}
             var studiosIncluded = {}
@@ -262,17 +238,8 @@ self.onmessage = (message) => {
             } else {
                 zformat.push(varScheme.meanFormat-minNumber)
             }
-            savedAnalyzedVariablesCount.format[anilistId] += 1
-            savedAnalyzedVariablesCount.all[anilistId] += 1
-            analyzedVariableCount.all += 1
-            analyzedVariableCount.format += 1
-            //
             var zgenres = []
             for(let j=0; j<xgenres.length; j++){
-                savedAnalyzedVariablesCount.genres[anilistId] += 1
-                savedAnalyzedVariablesCount.all[anilistId] += 1
-                analyzedVariableCount.all += 1
-                analyzedVariableCount.genres += 1
                 if(varScheme.genres[xgenres[j]]!==undefined) {
                     zgenres.push(varScheme.genres[xgenres[j]])
                 } else {
@@ -288,10 +255,6 @@ self.onmessage = (message) => {
             }
             var ztags = []
             for(let j=0; j<xtags.length; j++){
-                savedAnalyzedVariablesCount.tags[anilistId] += 1
-                savedAnalyzedVariablesCount.all[anilistId] += 1
-                analyzedVariableCount.all += 1
-                analyzedVariableCount.tags += 1
                 if(!jsonIsEmpty(varScheme.includeCategories)){
                     if(varScheme.includeCategories[xtags[j].category]!==undefined){
                         if(varScheme.tags[xtags[j].name]!==undefined){
@@ -333,10 +296,6 @@ self.onmessage = (message) => {
             for(let j=0; j<xstudios.length; j++){
                 if(includedStudio[xstudios[j].name]!==undefined) continue
                 else includedStudio[xstudios[j].name] = null
-                savedAnalyzedVariablesCount.studios[anilistId] += 1
-                savedAnalyzedVariablesCount.all[anilistId] += 1
-                analyzedVariableCount.all += 1
-                analyzedVariableCount.studios += 1
                 if(varScheme.studios[xstudios[j].name]!==undefined){
                     zstudios.push(varScheme.studios[xstudios[j].name])
                 } else {
@@ -355,10 +314,6 @@ self.onmessage = (message) => {
             for(let j=0; j<xstaff.length; j++){
                 if(includedStaff[xstaff[j].staff+xstaff[j].role]!==undefined) continue
                 else includedStaff[xstaff[j].staff+xstaff[j].role] = null
-                savedAnalyzedVariablesCount.staff[anilistId] += 1
-                savedAnalyzedVariablesCount.all[anilistId] += 1
-                analyzedVariableCount.all += 1
-                analyzedVariableCount.staff += 1
                 if(!jsonIsEmpty(varScheme.includeRoles)){
                     if(varScheme.includeRoles[xstaff[j].role]!==undefined){
                         if(varScheme.staff[xstaff[j].staff]!==undefined){
@@ -518,18 +473,10 @@ self.onmessage = (message) => {
             }
         }
         // Add Weight to Scores
-        var analyzedVariableMean = arrayMean(Object.values(savedAnalyzedVariablesCount.all)) || 33
-        var analyzedVariableSum = arraySum(Object.values(savedAnalyzedVariablesCount.all)) || 0
         var savedRecSchemeEntries = Object.keys(savedRecScheme)
         for(let i=0;i<savedRecSchemeEntries.length;i++){
             var anime = savedRecScheme[savedRecSchemeEntries[i]]
-            if( (anime.analyzedVariableCount.all||0)<(Math.max(analyzedVariableMean,33))
-                ){
-                savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
-                    (anime.analyzedVariableCount.all||0)===0? (minNumber/analyzedVariableSum)*anime.weightedScore
-                    : (anime.analyzedVariableCount.all/analyzedVariableSum)*anime.weightedScore                
-                )
-            } else if(anime.popularity<popularityMode) {
+            if(anime.popularity<popularityMode) {
                 savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
                     (anime.popularity||0)===0? (minNumber/popularitySum)*anime.weightedScore
                     : (anime.popularity/popularitySum)*anime.weightedScore
@@ -655,14 +602,6 @@ self.onmessage = (message) => {
                 //     allFilterInfo["!staff: "+(staff[j].node.name.userPreferred).toLowerCase()] = 0
                 // }
             }
-            // Continue Analyzing Affected Anime
-            // Reset Anime Weights
-            savedAnalyzedVariablesCount.all[anilistId] = 0
-            savedAnalyzedVariablesCount.format[anilistId] = 0
-            savedAnalyzedVariablesCount.genres[anilistId] = 0
-            savedAnalyzedVariablesCount.tags[anilistId] = 0
-            savedAnalyzedVariablesCount.studios[anilistId] = 0
-            savedAnalyzedVariablesCount.staff[anilistId] = 0
             var analyzedVariableCount = {
                 all: 0,
                 format: 0,
@@ -671,26 +610,6 @@ self.onmessage = (message) => {
                 studios: 0,
                 staff: 0
             }
-            savedAnalyzedVariablesCount.format[anilistId] += 1
-            savedAnalyzedVariablesCount.all[anilistId] += 1
-            analyzedVariableCount.all += 1
-            analyzedVariableCount.format += 1
-            savedAnalyzedVariablesCount.genres[anilistId] += genres.length
-            savedAnalyzedVariablesCount.all[anilistId] += genres.length
-            analyzedVariableCount.all += genres.length
-            analyzedVariableCount.genres += genres.length
-            savedAnalyzedVariablesCount.tags[anilistId] += tags.length
-            savedAnalyzedVariablesCount.all[anilistId] += tags.length
-            analyzedVariableCount.all += tags.length
-            analyzedVariableCount.tags += tags.length
-            savedAnalyzedVariablesCount.studios[anilistId] += studios.length
-            savedAnalyzedVariablesCount.all[anilistId] += studios.length
-            analyzedVariableCount.all += studios.length
-            analyzedVariableCount.studios += studios.length
-            savedAnalyzedVariablesCount.staff[anilistId] += staff.length
-            savedAnalyzedVariablesCount.all[anilistId] += staff.length
-            analyzedVariableCount.all += staff.length
-            analyzedVariableCount.staff += staff.length
             var score = weightedScore = 0
             if(anime.averageScore!==null&&anime.favourites!==null&&anime.popularity!==null&&anime.averageScore>0&&anime.favourites>0&&anime.popularity>0){
                 var favOverpop = 1
@@ -728,18 +647,10 @@ self.onmessage = (message) => {
             }
         }
         // Add Weight to Scores
-        var analyzedVariableMean = arrayMean(Object.values(savedAnalyzedVariablesCount.all)) || 33
-        var analyzedVariableSum = arraySum(Object.values(savedAnalyzedVariablesCount.all))
         var savedRecSchemeEntries = Object.keys(savedRecScheme)
         for(let i=0;i<savedRecSchemeEntries.length;i++){
             var anime = savedRecScheme[savedRecSchemeEntries[i]]
-            if( (anime.analyzedVariableCount.all||0)<(Math.max(analyzedVariableMean,33))
-                ){
-                savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
-                    (anime.analyzedVariableCount.all||0)===0? (minNumber/analyzedVariableSum)*anime.weightedScore
-                    : (anime.analyzedVariableCount.all/analyzedVariableSum)*anime.weightedScore                
-                )
-            } else if(anime.popularity<popularityMode) {
+            if(anime.popularity<popularityMode) {
                 savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
                     (anime.popularity||0)===0? (minNumber/popularitySum)*anime.weightedScore
                     : (anime.popularity/popularitySum)*anime.weightedScore

@@ -615,36 +615,51 @@ self.onmessage = (message) => {
         }
     }
     // Clean Data JSON
-    minSampleSize = minSampleSize? minSampleSize : 33
+    formatMeanCount = 33
     if(Object.values(formatMeanCount).length>0){
-        var tempformatMeanCount = arrayMode(Object.values(formatMeanCount))
-        formatMeanCount = tempformatMeanCount<minSampleSize?minSampleSize:tempformatMeanCount
+        var formatCountValues = Object.values(formatMeanCount)
+        var formatCountMode = arrayMode(Object.values(formatCountValues))
+        var formatCountMean = arrayMean(Object.values(formatCountValues))
+        var tempformatMeanCount = formatCountMean>=33? 33 : Math.min(formatCountMode,formatCountMean)
+        formatMeanCount = minSampleSize? minSampleSize : tempformatMeanCount
     } else {
-        formatMeanCount = minSampleSize
+        genresMeanCount = 10
     }
     if(Object.values(genresMeanCount).length>0){
-        var tempgenresMeanCount = arrayMode(Object.values(genresMeanCount))
-        genresMeanCount = tempgenresMeanCount<minSampleSize?minSampleSize:tempgenresMeanCount
+        var genresCountValues = Object.values(genresMeanCount)
+        var genresCountMode = arrayMode(Object.values(genresCountValues))
+        var genresCountMean = arrayMean(Object.values(genresCountValues))
+        var tempgenresMeanCount = genresCountMean>=33? 33 : Math.min(genresCountMode,genresCountMean)
+        genresMeanCount = minSampleSize? minSampleSize : tempgenresMeanCount
     } else {
-        genresMeanCount = minSampleSize
+        genresMeanCount = 10
     }
     if(Object.values(tagsMeanCount).length>0){
-        var temptagsMeanCount = arrayMode(Object.values(tagsMeanCount))
-        tagsMeanCount = temptagsMeanCount<minSampleSize?minSampleSize:temptagsMeanCount
+        var tagsCountValues = Object.values(tagsMeanCount)
+        var tagsCountMode = arrayMode(Object.values(tagsCountValues))
+        var tagsCountMean = arrayMean(Object.values(tagsCountValues))
+        var temptagsMeanCount = tagsCountMean>=33? 33 : Math.min(tagsCountMode,tagsCountMean)
+        tagsMeanCount = minSampleSize? minSampleSize : temptagsMeanCount
     } else {
-        tagsMeanCount = minSampleSize
+        tagsMeanCount = 10
     }
     if(Object.values(studiosMeanCount).length>0){
-        var tempstudiosMeanCount = arrayMode(Object.values(studiosMeanCount))
-        studiosMeanCount = tempstudiosMeanCount<minSampleSize?minSampleSize:tempstudiosMeanCount
+        var studiosCountValues = Object.values(studiosMeanCount)
+        var studiosCountMode = arrayMode(Object.values(studiosCountValues))
+        var studiosCountMean = arrayMean(Object.values(studiosCountValues))
+        var tempstudiosMeanCount = studiosCountMean>=33? 33 : Math.min(studiosCountMode,studiosCountMean)
+        studiosMeanCount = minSampleSize? minSampleSize : tempstudiosMeanCount
     } else {
-        studiosMeanCount = minSampleSize
+        studiosMeanCount = 10
     }
     if(Object.values(staffMeanCount).length>0){
-        var tempstaffMeanCount = arrayMode(Object.values(staffMeanCount))
-        staffMeanCount = tempstaffMeanCount<minSampleSize?minSampleSize:tempstaffMeanCount
+        var staffCountValues = Object.values(staffMeanCount)
+        var staffCountMode = arrayMode(Object.values(staffCountValues))
+        var staffCountMean = arrayMean(Object.values(staffCountValues))
+        var tempstaffMeanCount = staffCountMean>=33? 33 : Math.min(staffCountMode,staffCountMean)
+        staffMeanCount = minSampleSize? minSampleSize : tempstaffMeanCount
     } else {
-        staffMeanCount = minSampleSize
+        staffMeanCount = 10
     }
     //
     if(Object.keys(varScheme).length>0){
@@ -752,7 +767,7 @@ self.onmessage = (message) => {
         for(let i=0; i<year.length;i++){
             yearXY.push([year[i].year,year[i].userScore])
         }
-        if(yearXY.length>=minSampleSize){
+        if(yearXY.length>=(minSampleSize||33)){
             var tempLinearReg = linearRegression(yearXY)
             animeDateModel.push([tempLinearReg,"yearModel"])
         }
@@ -769,7 +784,7 @@ self.onmessage = (message) => {
         for(let i=0; i<episodes.length;i++){
             episodesXY.push([episodes[i].episodes,episodes[i].userScore])
         }
-        if(episodesXY.length>=minSampleSize){
+        if(episodesXY.length>=(minSampleSize||33)){
             var tempLinearReg = linearRegression(episodesXY)
             if(tempLinearReg.r2>r2Thresh){
                 animeLengthModels.push([tempLinearReg,"episodesModel"])
@@ -779,7 +794,7 @@ self.onmessage = (message) => {
         for(let i=0; i<duration.length;i++){
             durationXY.push([duration[i].duration,duration[i].userScore])
         }
-        if(durationXY.length>=minSampleSize){
+        if(durationXY.length>=(minSampleSize||33)){
             var tempLinearReg = linearRegression(durationXY)
             if(tempLinearReg.r2>r2Thresh){
                 animeLengthModels.push([tempLinearReg,"durationModel"])
@@ -798,7 +813,7 @@ self.onmessage = (message) => {
         for(let i=0; i<averageScore.length;i++){
             averageScoreXY.push([averageScore[i].averageScore,averageScore[i].userScore])
         }
-        if(averageScoreXY.length>=minSampleSize){
+        if(averageScoreXY.length>=(minSampleSize||33)){
             var tempLinearReg = linearRegression(averageScoreXY)
             wellKnownAnimeModels.push([tempLinearReg,"averageScoreModel"])
         }
@@ -806,7 +821,7 @@ self.onmessage = (message) => {
         for(let i=0; i<trending.length;i++){
             trendingXY.push([trending[i].trending,trending[i].userScore])
         }
-        if(trendingXY.length>=minSampleSize){
+        if(trendingXY.length>=(minSampleSize||33)){
             var tempLinearReg = linearRegression(trendingXY)
             wellKnownAnimeModels.push([tempLinearReg,"trendingModel"])
         }
@@ -814,7 +829,7 @@ self.onmessage = (message) => {
         for(let i=0; i<popularity.length;i++){
             popularityXY.push([popularity[i].popularity,popularity[i].userScore])
         }
-        if(popularityXY.length>=minSampleSize){
+        if(popularityXY.length>=(minSampleSize||33)){
             var tempLinearReg = linearRegression(popularityXY)
             wellKnownAnimeModels.push([tempLinearReg,"popularityModel"])
         }
@@ -822,7 +837,7 @@ self.onmessage = (message) => {
         for(let i=0; i<favourites.length;i++){
             favouritesXY.push([favourites[i].favourites,favourites[i].userScore])
         }
-        if(favouritesXY.length>=minSampleSize){
+        if(favouritesXY.length>=(minSampleSize||33)){
             var tempLinearReg = linearRegression(favouritesXY)
             wellKnownAnimeModels.push([tempLinearReg,"favouritesModel"])
         }
