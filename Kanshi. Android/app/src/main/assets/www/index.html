@@ -225,7 +225,7 @@
             }
             .flexdatalist-multiple{
                 display: flex;
-                flex-wrap: wrap-reverse;
+                flex-wrap: wrap;
                 max-height: 120px;
                 overflow-y: scroll;
             }
@@ -2535,6 +2535,7 @@
                 $("#warnAnimeBtn").on("click", async ()=>{
                     await $("#warnAnimeContainer").show()
                     $("#warnAnimeModal").removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
+                    $(`ul.flex1`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
                 })
                 $("#submitWarnAnime").on("click",async()=>{
                     var warnAnimeInputs = $("#warnAnimeModal .flexdatalist-multiple > .value").children(".text")
@@ -2587,6 +2588,7 @@
                 $("#filterAlgoBtn").on("click", async ()=>{
                     await $("#filterAlgoContainer").show()
                     $("#filterAlgoModal").removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
+                    $(`ul.flex2`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
                 })
                 $("#submitFilterAlgo").on("click",async()=>{
                     savedUserList = await retrieveJSON("savedUserList") || {}
@@ -2988,6 +2990,9 @@
                     if(savedTheme==="darkMode"){
                         $(`.flexdatalist-multiple li.value`).addClass('darkMode')
                     }
+                    $(`#flex0`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
+                    $(`#flex1`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
+                    $(`#flex2`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
                 })
                 $("body").on('scroll', function () {
                     setTimeout(async()=>{
@@ -3346,6 +3351,9 @@
                 await $.tablesorter.sortOn($('#anime-table')[0].config, [savedSort])
                 await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
                 await $('body').animate({scrollTop: savedYscroll},1)
+                $(`ul.flex0`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
+                $(`ul.flex1`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
+                $(`ul.flex2`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
                 resolve()
             })
         }).then(async()=>{
@@ -4773,6 +4781,7 @@
                                     if(typeof currentInputValue==="string"){
                                         $("#filters .flexdatalist-multiple-value > .flexdatalist-alias").val(currentInputValue)
                                     }
+                                    $(`ul.flex0`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
                                 })
                                 // Reload Saved Algorithm Filters
                                 if($("#filterAlgoContainer").css("display")!=="none"){                            
@@ -4798,6 +4807,7 @@
                                         await filterAlgoInput.val("")
                                     }
                                     await $("#filterAlgoContainer").css({visibility:"visible"}).hide()
+                                    $(`ul.flex2`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
                                 })
                                 // Reload Warn Anime Contents
                                 if($("#warnAnimeContainer").css("display")!=="none"){                            
@@ -4826,6 +4836,7 @@
                                         await warnAnimeInput.val("")
                                     }
                                     await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
+                                    $(`ul.flex1`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
                                 })
                             }
                         },250))
