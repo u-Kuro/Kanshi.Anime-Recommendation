@@ -1492,8 +1492,9 @@
                             } else {
                                 if($("#filters .flexdatalist-multiple-value").length){
                                     var filters = await $("#filters .flexdatalist-multiple").children("li.value")
+                                    var filterName
                                     for(let i=0; i<filters.length; i++) {
-                                        var filterName = await filters.eq(i).children(".text")[0].innerText
+                                        filterName = await filters.eq(i).children(".text")[0].innerText
                                         if(filterName.toLowerCase()==="hidden"){
                                             await filters.eq(i).children(".fdl-remove").trigger("click")
                                             await $("#filters .flexdatalist-alias").blur()
@@ -1544,8 +1545,9 @@
                             await saveJSON({}, "savedHiddenAnimeIDs")
                             if(await $("#filters .flexdatalist-multiple-value").length){
                                 var filters = await $("#filters .flexdatalist-multiple").children("li.value")
+                                var filterName
                                 for(let i=0; i<filters.length; i++) {
-                                    var filterName = await filters.eq(i).children(".text")[0].innerText
+                                    filterName = await filters.eq(i).children(".text")[0].innerText
                                     if(filterName.toLowerCase()==="hidden"){
                                         await filters.eq(i).children(".fdl-remove").trigger("click")
                                         await $("#filters .flexdatalist-alias").blur()
@@ -1742,8 +1744,9 @@
                                                 await $("#warnAnimeContainer").css({visibility:"hidden"}).show()
                                                 // Remove Current Filters
                                                 var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
+                                                var infoName
                                                 for(let i=0; i<warnInfo.length; i++) {
-                                                    var infoName = await warnInfo.eq(i).children(".text")[0].innerText
+                                                    infoName = await warnInfo.eq(i).children(".text")[0].innerText
                                                     await warnInfo.eq(i).children(".fdl-remove").trigger("click")
                                                     await $("#warnAnimeModal .flexdatalist-alias").blur()
                                                 }
@@ -1766,8 +1769,9 @@
                                                 await $("#filterAlgoContainer").css({visibility:"hidden"}).show()
                                                 // Remove Current Filters
                                                 var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
+                                                var infoName
                                                 for(let i=0; i<filterInfo.length; i++) {
-                                                    var infoName = await filterInfo.eq(i).children(".text")[0].innerText
+                                                    infoName = await filterInfo.eq(i).children(".text")[0].innerText
                                                     await filterInfo.eq(i).children(".fdl-remove").trigger("click")
                                                     await $("#filterAlgoModal .flexdatalist-alias").blur()
                                                 }
@@ -1959,8 +1963,9 @@
                                         await $("#warnAnimeContainer").css({visibility:"hidden"}).show()
                                         // Remove Current Filters
                                         var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
+                                        var infoName
                                         for(let i=0; i<warnInfo.length; i++) {
-                                            var infoName = await warnInfo.eq(i).children(".text")[0].innerText
+                                            infoName = await warnInfo.eq(i).children(".text")[0].innerText
                                             await warnInfo.eq(i).children(".fdl-remove").trigger("click")
                                             await $("#warnAnimeModal .flexdatalist-alias").blur()
                                         }
@@ -1983,8 +1988,9 @@
                                         await $("#filterAlgoContainer").css({visibility:"hidden"}).show()
                                         // Remove Current Filters
                                         var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
+                                        var infoName
                                         for(let i=0; i<filterInfo.length; i++) {
-                                            var infoName = await filterInfo.eq(i).children(".text")[0].innerText
+                                            infoName = await filterInfo.eq(i).children(".text")[0].innerText
                                             await filterInfo.eq(i).children(".fdl-remove").trigger("click")
                                             await $("#filterAlgoModal .flexdatalist-alias").blur()
                                         }
@@ -2527,8 +2533,9 @@
                         await new Promise(async(resolve)=>{
                             // Remove Current Filters
                             var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
+                            var infoName
                             for(let i=0; i<warnInfo.length; i++) {
-                                var infoName = await warnInfo.eq(i).children(".text")[0].innerText
+                                infoName = await warnInfo.eq(i).children(".text")[0].innerText
                                 await warnInfo.eq(i).children(".fdl-remove").trigger("click")
                                 await $("#warnAnimeModal .flexdatalist-alias").blur()
                             }
@@ -2582,8 +2589,9 @@
                     } else {
                         var filterAlgoInputs = $("#filterAlgoModal .flexdatalist-multiple > .value").children(".text")
                         var filterAlgo = []
+                        var filterName
                         for(let i=0; i<filterAlgoInputs.length; i++){
-                            var filterName = filterAlgoInputs[i].textContent
+                            filterName = filterAlgoInputs[i].textContent
                             filterAlgo.push(filterName)
                         }
                         $("#filterAlgoModal #filterAlgo-validation")
@@ -2607,13 +2615,15 @@
                         savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
                         await new Promise(async(resolve)=>{
                             var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
+                            var infoName
                             for(let i=0; i<filterInfo.length; i++) {
-                                var infoName = await filterInfo.eq(i).children(".text")[0].innerText
+                                infoName = await filterInfo.eq(i).children(".text")[0].innerText
                                 await filterInfo.eq(i).children(".fdl-remove").trigger("click")
                                 await $("#filterAlgoModal .flexdatalist-alias").blur()
                             }
                             resolve()
                         }).then(async()=>{
+                            var filterAlgoInput
                             for(let i=0; i<savedFilterAlgo.length; i++) {
                                 filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                 await filterAlgoInput.val(savedFilterAlgo[i])
@@ -3195,8 +3205,8 @@
                     // Table Filters
                 if(savedUsername!==undefined){
                     if(savedUsername.length>0){
-                        var filterInput
                         savedFilters = await retrieveJSON("savedFilters") || []
+                        var filterInput
                         for(let i=0; i<savedFilters.length; i++) {
                             filterInput = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
                             await filterInput.val(savedFilters[i])
@@ -3246,8 +3256,9 @@
 
                 // Init Last List (Unhidden/Hidden) 
                 var filters = await $("#filters .flexdatalist-multiple").children("li.value")
+                var filterName
                 for(let i=0; i<filters.length; i++) {
-                    var filterName = await filters.eq(i).children(".text")[0].innerText
+                    filterName = await filters.eq(i).children(".text")[0].innerText
                     if(await filterName.toLowerCase()==="hidden"){
                         await $("#hiddenUnhiddenBtn").text("Hidden")
                     }
@@ -3684,8 +3695,9 @@
         }
         var savedIncluded = []
         var savedExcluded = []
+        var filterName
         for(let i=0; i<savedFilterAlgo.length; i++){
-            var filterName = savedFilterAlgo[i].toLowerCase()
+            filterName = savedFilterAlgo[i].toLowerCase()
             if(filterName.charAt(0)==="!") savedExcluded.push(filterName.slice(1))
             else savedIncluded.push(filterName)
         }
@@ -4636,8 +4648,9 @@
                 // Save Table Filters
                 var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
                 var filters = []
+                var filterName
                 for(let i=0; i<filterInputs.length; i++){
-                    var filterName = filterInputs[i].textContent
+                    filterName = filterInputs[i].textContent
                     filters.push(filterName)
                 }
                 await saveJSON(filters, "savedFilters")
@@ -4682,12 +4695,66 @@
                                 &&$("#warnAnimeContainer").css("display")==="none"
                                 &&$("#filterAlgoContainer").css("display")==="none"
                             ){
+                                // Get Current Value
+                                var currentInputValue = $("#filters .flexdatalist-multiple-value > .flexdatalist-alias").val()
                                 // Double Check
                                 for(let i=0;i<checkFiltersFocus.length;i++) clearInterval(checkFiltersFocus[i])
                                 checkFiltersFocus = []
                                 // Update
                                 $('.flexdatalist').flexdatalist({
                                     data: savedFilterOptionsJson
+                                })
+                                // Reload Saved Table Filters
+                                savedFilters = await retrieveJSON("savedFilters") || []
+                                var filters
+                                await new Promise(async(resolve)=>{
+                                    filters = await $("#filters .flexdatalist-multiple").children("li.value")
+                                    var filterName
+                                    for(let i=0; i<filters.length; i++) {
+                                        filterName = await filters.eq(i).children(".text")[0].innerText
+                                        if(filterName.toLowerCase()==="hidden"){
+                                            await filters.eq(i).children(".fdl-remove").trigger("click")
+                                            await $("#filters .flexdatalist-alias").blur()
+                                        }
+                                    }
+                                    resolve()
+                                }).then(async()=>{
+                                    var filterInput
+                                    for(let i=0; i<savedFilters.length; i++) {
+                                        filterInput = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
+                                        await filterInput.val(savedFilters[i])
+                                        var e = await $.Event("keyup",{keyCode:13})
+                                        await filterInput.trigger(e)
+                                        await filterInput.val("")
+                                    }
+                                    if(typeof currentInputValue==="string"){
+                                        $("#filters .flexdatalist-multiple-value > .flexdatalist-alias").val(currentInputValue)
+                                    }
+                                })
+                                // Reload Saved Algorithm Filters
+                                if($("#filterAlgoContainer").css("display")!=="none"){                            
+                                    $("#filterAlgoContainer").css({visibility:"hidden"}).show()
+                                }
+                                savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
+                                await new Promise(async(resolve)=>{
+                                    var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
+                                    var infoName
+                                    for(let i=0; i<filterInfo.length; i++) {
+                                        infoName = await filterInfo.eq(i).children(".text")[0].innerText
+                                        await filterInfo.eq(i).children(".fdl-remove").trigger("click")
+                                        await $("#filterAlgoModal .flexdatalist-alias").blur()
+                                    }
+                                    resolve()
+                                }).then(async()=>{
+                                    var filterAlgoInput
+                                    for(let i=0; i<savedFilterAlgo.length; i++) {
+                                        filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                                        await filterAlgoInput.val(savedFilterAlgo[i])
+                                        var e = await $.Event("keyup",{keyCode:13})
+                                        await filterAlgoInput.trigger(e)
+                                        await filterAlgoInput.val("")
+                                    }
+                                    await $("#filterAlgoContainer").css({visibility:"visible"}).hide()
                                 })
                                 // Reload Warn Anime Contents
                                 if($("#warnAnimeContainer").css("display")!=="none"){                            
@@ -4697,27 +4764,28 @@
                                                                                         "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
                                                                                         "!tag: nudity","!tag: slavery","!tag: suicide","!tag: yuri","!tag: netorare", "!tag: rape"
                                                                                         ]
-                                var warnAnimeInput
-                                for(let i=0; i<savedWarnAnime.length; i++) {
-                                    warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
-                                    await warnAnimeInput.val(savedWarnAnime[i])
-                                    var e = await $.Event("keyup",{keyCode:13})
-                                    await warnAnimeInput.trigger(e)
-                                    await warnAnimeInput.val("")
-                                }
-                                await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
+                                await new Promise(async(resolve)=>{
+                                    var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
+                                    var infoName
+                                    for(let i=0; i<warnInfo.length; i++) {
+                                        infoName = await warnInfo.eq(i).children(".text")[0].innerText
+                                        await warnInfo.eq(i).children(".fdl-remove").trigger("click")
+                                        await $("#warnAnimeModal .flexdatalist-alias").blur()
+                                    }
+                                    resolve()
+                                }).then(async()=>{
+                                    var warnAnimeInput
+                                    for(let i=0; i<savedWarnAnime.length; i++) {
+                                        warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                                        await warnAnimeInput.val(savedWarnAnime[i])
+                                        var e = await $.Event("keyup",{keyCode:13})
+                                        await warnAnimeInput.trigger(e)
+                                        await warnAnimeInput.val("")
+                                    }
+                                    await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
+                                })
                             }
                         },250))
-                    }
-                    // Reload Table Filters
-                    var filterInput
-                    savedFilters = await retrieveJSON("savedFilters") || []
-                    for(let i=0; i<savedFilters.length; i++) {
-                        filterInput = $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
-                        await filterInput.val(savedFilters[i])
-                        var e = await $.Event("keyup",{keyCode:13})
-                        await filterInput.trigger(e)
-                        await filterInput.val("")
                     }
                     // Lastly Update Update Time 
                     var timeInterval = (new Date).getTime()-UpdateAnalyzeAnimeStartTime.getTime()
@@ -4735,15 +4803,17 @@
                         savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
                         await new Promise(async(resolve)=>{
                             var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
+                            var infoName
                             for(let i=0; i<filterInfo.length; i++) {
-                                var infoName = await filterInfo.eq(i).children(".text")[0].innerText
+                                infoName = await filterInfo.eq(i).children(".text")[0].innerText
                                 await filterInfo.eq(i).children(".fdl-remove").trigger("click")
                                 await $("#filterAlgoModal .flexdatalist-alias").blur()
                             }
                             resolve()
                         }).then(async()=>{
+                            var filterAlgoInput
                             for(let i=0; i<savedFilterAlgo.length; i++) {
-                                var filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                                filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                 await filterAlgoInput.val(savedFilterAlgo[i])
                                 var e = await $.Event("keyup",{keyCode:13})
                                 await filterAlgoInput.trigger(e)
@@ -4819,8 +4889,9 @@
                 var filters = []
                 var includes = []
                 var excludes = kidsAnimeIsHidden? ["tag: kids"] : []
+                var filterName
                 for(let i=0; i<filterInputs.length; i++){
-                    var filterName = filterInputs[i].textContent
+                    filterName = filterInputs[i].textContent
                     filters.push(filterName)
                     if(filterName.charAt(0)==="!") excludes.push(filterName.slice(1))
                     else includes.push(filterName)
