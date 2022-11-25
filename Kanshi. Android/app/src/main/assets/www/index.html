@@ -1127,12 +1127,12 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "3.2",
-          backUpVersion = 2.0
+    const version = "3.3",
+          backUpVersion = 2.1
         // IndexDB
     var request, db,
         // Saved Data
-    savedUsername, savedRecScheme, savedUserList, savedAnimeEntries, savedHiddenAnimeIDs, 
+    savedUsername, savedRecScheme, savedUserList, savedAnimeEntries, savedHiddenAnimeIDs, savedAnimeFranchises,
     savedFilters, savedWarnAnime, savedFilterAlgo, savedBackUpVersion,
     savedHiddenTablePage, savedUnhiddenTablePage, savedTableStatus, savedYscroll, savedSort, 
     savedTheme, kidsAnimeIsHidden, hideUnwatchedSequels,
@@ -1675,10 +1675,11 @@
                                             if(importedBackUpVersion>=backUpVersion){
                                                 await saveJSON(importedBackUpVersion, "backUpVersion")
                                             }
+                                            return
                                         }).then(async()=>{
                                             savedUsername = await fileContent.savedUsername || ""
-                                            await $("#username").val(savedUsername)
                                             await saveJSON(savedUsername,"savedUsername")
+                                            await $("#username").val(savedUsername)
                                             return
                                         }).then(async()=>{
                                             savedHiddenAnimeIDs = await fileContent.savedHiddenAnimeIDs || {}
@@ -1692,39 +1693,57 @@
                                         }).then(async()=>{
                                             savedRecScheme = await fileContent.savedRecScheme || {}
                                             await saveJSON(savedRecScheme,"savedRecScheme")
+                                            return
                                         }).then(async()=>{
                                             var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
                                                 savedAnimeEntries = await fileContent.savedAnimeEntries || []
                                                 await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                                             }
+                                            return
                                         }).then(async()=>{
-                                            lastSavedUpdateTime = await fileContent.lastSavedUpdateTime || 0
-                                            await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                            var importedBackUpVersion = await fileContent.backUpVersion
+                                            if(importedBackUpVersion>=backUpVersion){
+                                                lastSavedUpdateTime = await fileContent.lastSavedUpdateTime || 0
+                                                await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                            }
+                                            return
+                                        }).then(async()=>{
+                                            var importedBackUpVersion = await fileContent.backUpVersion
+                                            if(importedBackUpVersion>=backUpVersion){
+                                                savedAnimeFranchises = await fileContent.savedAnimeFranchises || []
+                                                await saveJSON(savedAnimeFranchises,"savedAnimeFranchises") || []
+                                            }
+                                            return
                                         }).then(async()=>{
                                             savedUserList = await fileContent.savedUserList || {}
                                             await saveJSON(savedUserList,"savedUserList")
+                                            return
                                         }).then(async()=>{
                                             var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
                                                 savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || [90]
                                                 await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
                                             }
+                                            return
                                         }).then(async()=>{
                                             var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
                                                 savedUpdateAnalyzeAnimeTime = await fileContent.savedUpdateAnalyzeAnimeTime || [3]
                                                 await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
                                             }
+                                            return
                                         }).then(async()=>{
                                             var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
                                                 savedDeepUpdateTime = await fileContent.savedDeepUpdateTime || [320]
                                                 await saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
                                             }
+                                            return
                                         }).then(async()=>{
                                             lastAnilistPage = await fileContent.lastAnilistPage || 284
                                             await saveJSON(lastAnilistPage,"lastAnilistPage")
+                                            return
                                         }).then(async()=>{
                                             savedWarnAnime = await fileContent.savedWarnAnime || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
                                                                                                    "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
@@ -1742,69 +1761,51 @@
                                         }).then(async()=>{
                                             await new Promise(async(resolve)=>{
                                                 await $("#warnAnimeContainer").css({visibility:"hidden"}).show()
-                                                let reloadSavedData = await setInterval(async () => {
-                                                    if(await $("#warnAnimeContainer .flexdatalist-multiple-value > .flexdatalist-alias").length){
-                                                        await clearInterval(reloadSavedData)
-                                                        await new Promise(async(resolve)=>{
-                                                            // Remove Current Filters
-                                                            var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
-                                                            for(let i=0; i<warnInfo.length; i++) {
-                                                                var infoName = await warnInfo.eq(i).children(".text")[0].innerText
-                                                                await warnInfo.eq(i).children(".fdl-remove").trigger("click")
-                                                                await $("#warnAnimeModal .flexdatalist-alias").blur()
-                                                            }
-                                                            resolve()
-                                                        }).then(async()=>{
-                                                            // Reload Filters
-                                                            var warnAnimeInput
-                                                            for(let i=0; i<savedWarnAnime.length; i++) {
-                                                                warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
-                                                                await warnAnimeInput.val(savedWarnAnime[i])
-                                                                var e = await $.Event("keyup",{keyCode:13})
-                                                                await warnAnimeInput.trigger(e)
-                                                                await warnAnimeInput.val("")
-                                                            }
-                                                            await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
-                                                            return
-                                                        })
-                                                        resolve()
-                                                    }
-                                                },1)
+                                                // Remove Current Filters
+                                                var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
+                                                for(let i=0; i<warnInfo.length; i++) {
+                                                    var infoName = await warnInfo.eq(i).children(".text")[0].innerText
+                                                    await warnInfo.eq(i).children(".fdl-remove").trigger("click")
+                                                    await $("#warnAnimeModal .flexdatalist-alias").blur()
+                                                }
+                                                resolve()
+                                            }).then(async()=>{
+                                                // Reload Filters
+                                                var warnAnimeInput
+                                                for(let i=0; i<savedWarnAnime.length; i++) {
+                                                    warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                                                    await warnAnimeInput.val(savedWarnAnime[i])
+                                                    var e = await $.Event("keyup",{keyCode:13})
+                                                    await warnAnimeInput.trigger(e)
+                                                    await warnAnimeInput.val("")
+                                                }
+                                                await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
+                                                return
                                             })
-                                            return
                                         }).then(async()=>{
-                                            await new Promise(async(resolve)=>{
+                                            return await new Promise(async(resolve)=>{
                                                 await $("#filterAlgoContainer").css({visibility:"hidden"}).show()
-                                                let reloadSavedData = await setInterval(async () => {
-                                                    if(await $("#filterAlgoContainer .flexdatalist-multiple-value > .flexdatalist-alias").length){
-                                                        await clearInterval(reloadSavedData)
-                                                        await new Promise(async(resolve)=>{
-                                                            // Remove Current Filters
-                                                            var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
-                                                            for(let i=0; i<filterInfo.length; i++) {
-                                                                var infoName = await filterInfo.eq(i).children(".text")[0].innerText
-                                                                await filterInfo.eq(i).children(".fdl-remove").trigger("click")
-                                                                await $("#filterAlgoModal .flexdatalist-alias").blur()
-                                                            }
-                                                            resolve()
-                                                        }).then(async()=>{
-                                                            // Reload Filters
-                                                            var filterAlgoInput
-                                                            for(let i=0; i<savedFilterAlgo.length; i++) {
-                                                                filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
-                                                                await filterAlgoInput.val(savedFilterAlgo[i])
-                                                                var e = await $.Event("keyup",{keyCode:13})
-                                                                await filterAlgoInput.trigger(e)
-                                                                await filterAlgoInput.val("")
-                                                            }
-                                                            await $("#filterAlgoContainer").css({visibility:"visible"}).hide()
-                                                            return
-                                                        })
-                                                        resolve()
-                                                    }
-                                                },1)
+                                                // Remove Current Filters
+                                                var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
+                                                for(let i=0; i<filterInfo.length; i++) {
+                                                    var infoName = await filterInfo.eq(i).children(".text")[0].innerText
+                                                    await filterInfo.eq(i).children(".fdl-remove").trigger("click")
+                                                    await $("#filterAlgoModal .flexdatalist-alias").blur()
+                                                }
+                                                resolve()
+                                            }).then(async()=>{
+                                                // Reload Filters
+                                                var filterAlgoInput
+                                                for(let i=0; i<savedFilterAlgo.length; i++) {
+                                                    filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                                                    await filterAlgoInput.val(savedFilterAlgo[i])
+                                                    var e = await $.Event("keyup",{keyCode:13})
+                                                    await filterAlgoInput.trigger(e)
+                                                    await filterAlgoInput.val("")
+                                                }
+                                                await $("#filterAlgoContainer").css({visibility:"visible"}).hide()
+                                                return
                                             })
-                                            return
                                         }).then(async()=>{
                                             if(Object.keys(savedRecScheme).length) {
                                                 await $("#updateBtn").show()
@@ -1891,10 +1892,11 @@
                                     if(importedBackUpVersion>=backUpVersion){
                                         await saveJSON(importedBackUpVersion, "backUpVersion")
                                     }
+                                    return
                                 }).then(async()=>{
                                     savedUsername = await fileContent.savedUsername || ""
-                                    await $("#username").val(savedUsername)
                                     await saveJSON(savedUsername,"savedUsername")
+                                    await $("#username").val(savedUsername)
                                     return
                                 }).then(async()=>{
                                     savedHiddenAnimeIDs = await fileContent.savedHiddenAnimeIDs || {}
@@ -1908,39 +1910,57 @@
                                 }).then(async()=>{
                                     savedRecScheme = await fileContent.savedRecScheme || {}
                                     await saveJSON(savedRecScheme,"savedRecScheme")
+                                    return
                                 }).then(async()=>{
                                     var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
                                         savedAnimeEntries = await fileContent.savedAnimeEntries || []
                                         await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                                     }
+                                    return
                                 }).then(async()=>{
-                                    lastSavedUpdateTime = await fileContent.lastSavedUpdateTime || 0
-                                    await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                    var importedBackUpVersion = await fileContent.backUpVersion
+                                    if(importedBackUpVersion>=backUpVersion){
+                                        lastSavedUpdateTime = await fileContent.lastSavedUpdateTime || 0
+                                        await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                    }
+                                    return
+                                }).then(async()=>{
+                                    var importedBackUpVersion = await fileContent.backUpVersion
+                                    if(importedBackUpVersion>=backUpVersion){
+                                        savedAnimeFranchises = await fileContent.savedAnimeFranchises || []
+                                        await saveJSON(savedAnimeFranchises,"savedAnimeFranchises") || []
+                                    }
+                                    return
                                 }).then(async()=>{
                                     savedUserList = await fileContent.savedUserList || {}
                                     await saveJSON(savedUserList,"savedUserList")
+                                    return
                                 }).then(async()=>{
                                     var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
                                         savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || [90]
                                         await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
                                     }
+                                    return
                                 }).then(async()=>{
                                     var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
                                         savedUpdateAnalyzeAnimeTime = await fileContent.savedUpdateAnalyzeAnimeTime || [3]
                                         await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
                                     }
+                                    return
                                 }).then(async()=>{
                                     var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
                                         savedDeepUpdateTime = await fileContent.savedDeepUpdateTime || [320]
                                         await saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
                                     }
+                                    return
                                 }).then(async()=>{
                                     lastAnilistPage = await fileContent.lastAnilistPage || 284
                                     await saveJSON(lastAnilistPage,"lastAnilistPage")
+                                    return
                                 }).then(async()=>{
                                     savedWarnAnime = await fileContent.savedWarnAnime || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
                                                                                            "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
@@ -1956,71 +1976,53 @@
                                     await $("#username").val(savedUsername)
                                     return
                                 }).then(async()=>{
-                                    await new Promise(async(resolve)=>{
+                                    return await new Promise(async(resolve)=>{
                                         await $("#warnAnimeContainer").css({visibility:"hidden"}).show()
-                                        let reloadSavedData = await setInterval(async () => {
-                                            if(await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
-                                                await clearInterval(reloadSavedData)
-                                                await new Promise(async(resolve)=>{
-                                                    // Remove Current Filters
-                                                    var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
-                                                    for(let i=0; i<warnInfo.length; i++) {
-                                                        var infoName = await warnInfo.eq(i).children(".text")[0].innerText
-                                                        await warnInfo.eq(i).children(".fdl-remove").trigger("click")
-                                                        await $("#warnAnimeModal .flexdatalist-alias").blur()
-                                                    }
-                                                    resolve()
-                                                }).then(async()=>{
-                                                    // Reload Filters
-                                                    var warnAnimeInput
-                                                    for(let i=0; i<savedWarnAnime.length; i++) {
-                                                        warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
-                                                        await warnAnimeInput.val(savedWarnAnime[i])
-                                                        var e = await $.Event("keyup",{keyCode:13})
-                                                        await warnAnimeInput.trigger(e)
-                                                        await warnAnimeInput.val("")
-                                                    }
-                                                    await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
-                                                    return
-                                                })
-                                                resolve()
-                                            }
-                                        },1)
+                                        // Remove Current Filters
+                                        var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
+                                        for(let i=0; i<warnInfo.length; i++) {
+                                            var infoName = await warnInfo.eq(i).children(".text")[0].innerText
+                                            await warnInfo.eq(i).children(".fdl-remove").trigger("click")
+                                            await $("#warnAnimeModal .flexdatalist-alias").blur()
+                                        }
+                                        resolve()
+                                    }).then(async()=>{
+                                        // Reload Filters
+                                        var warnAnimeInput
+                                        for(let i=0; i<savedWarnAnime.length; i++) {
+                                            warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                                            await warnAnimeInput.val(savedWarnAnime[i])
+                                            var e = await $.Event("keyup",{keyCode:13})
+                                            await warnAnimeInput.trigger(e)
+                                            await warnAnimeInput.val("")
+                                        }
+                                        await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
+                                        return
                                     })
-                                    return
                                 }).then(async()=>{
-                                    await new Promise(async(resolve)=>{
+                                    return await new Promise(async(resolve)=>{
                                         await $("#filterAlgoContainer").css({visibility:"hidden"}).show()
-                                        let reloadSavedData = await setInterval(async () => {
-                                            if(await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias").length){
-                                                await clearInterval(reloadSavedData)
-                                                await new Promise(async(resolve)=>{
-                                                    // Remove Current Filters
-                                                    var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
-                                                    for(let i=0; i<filterInfo.length; i++) {
-                                                        var infoName = await filterInfo.eq(i).children(".text")[0].innerText
-                                                        await filterInfo.eq(i).children(".fdl-remove").trigger("click")
-                                                        await $("#filterAlgoModal .flexdatalist-alias").blur()
-                                                    }
-                                                    resolve()
-                                                }).then(async()=>{
-                                                    // Reload Filters
-                                                    var filterAlgoInput
-                                                    for(let i=0; i<savedFilterAlgo.length; i++) {
-                                                        filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
-                                                        await filterAlgoInput.val(savedFilterAlgo[i])
-                                                        var e = await $.Event("keyup",{keyCode:13})
-                                                        await filterAlgoInput.trigger(e)
-                                                        await filterAlgoInput.val("")
-                                                    }
-                                                    await $("#filterAlgoContainer").css({visibility:"visible"}).hide()
-                                                    return
-                                                })
-                                                resolve()
-                                            }
-                                        },1)
+                                        // Remove Current Filters
+                                        var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
+                                        for(let i=0; i<filterInfo.length; i++) {
+                                            var infoName = await filterInfo.eq(i).children(".text")[0].innerText
+                                            await filterInfo.eq(i).children(".fdl-remove").trigger("click")
+                                            await $("#filterAlgoModal .flexdatalist-alias").blur()
+                                        }
+                                        resolve()
+                                    }).then(async()=>{
+                                        // Reload Filters
+                                        var filterAlgoInput
+                                        for(let i=0; i<savedFilterAlgo.length; i++) {
+                                            filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                                            await filterAlgoInput.val(savedFilterAlgo[i])
+                                            var e = await $.Event("keyup",{keyCode:13})
+                                            await filterAlgoInput.trigger(e)
+                                            await filterAlgoInput.val("")
+                                        }
+                                        await $("#filterAlgoContainer").css({visibility:"visible"}).hide()
+                                        return
                                     })
-                                    return
                                 }).then(async()=>{
                                     if(Object.keys(savedRecScheme).length) {
                                         await $("#updateBtn").show()
@@ -2099,6 +2101,7 @@
                                     const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                                     const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
                                     const savedUserList = await retrieveJSON("savedUserList")
+                                    const savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises")
                                     const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                                     const savedRecScheme = await retrieveJSON("savedRecScheme")
                                     const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -2115,6 +2118,7 @@
                                         savedRecScheme: savedRecScheme,
                                         savedAnimeEntries: savedAnimeEntries,
                                         savedUserList: savedUserList,
+                                        savedAnimeFranchises: savedAnimeFranchises,
                                         savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                                         savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
                                         savedDeepUpdateTime: savedDeepUpdateTime,
@@ -2297,6 +2301,7 @@
                                             const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                                             const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
                                             const savedUserList = await retrieveJSON("savedUserList")
+                                            const savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises")
                                             const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                                             const savedRecScheme = await retrieveJSON("savedRecScheme")
                                             const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -2313,6 +2318,7 @@
                                                 savedRecScheme: savedRecScheme,
                                                 savedAnimeEntries: savedAnimeEntries,
                                                 savedUserList: savedUserList,
+                                                savedAnimeFranchises: savedAnimeFranchises,
                                                 savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                                                 savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
                                                 savedDeepUpdateTime: savedDeepUpdateTime,
@@ -2353,6 +2359,7 @@
                                                     const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                                                     const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
                                                     const savedUserList = await retrieveJSON("savedUserList")
+                                                    const savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises")
                                                     const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                                                     const savedRecScheme = await retrieveJSON("savedRecScheme")
                                                     const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -2369,6 +2376,7 @@
                                                         savedRecScheme: savedRecScheme,
                                                         savedAnimeEntries: savedAnimeEntries,
                                                         savedUserList: savedUserList,
+                                                        savedAnimeFranchises: savedAnimeFranchises,
                                                         savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                                                         savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
                                                         savedDeepUpdateTime: savedDeepUpdateTime,
@@ -2414,6 +2422,7 @@
                                             const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                                             const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
                                             const savedUserList = await retrieveJSON("savedUserList")
+                                            const savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises")
                                             const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                                             const savedRecScheme = await retrieveJSON("savedRecScheme")
                                             const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -2430,6 +2439,7 @@
                                                 savedRecScheme: savedRecScheme,
                                                 savedAnimeEntries: savedAnimeEntries,
                                                 savedUserList: savedUserList,
+                                                savedAnimeFranchises: savedAnimeFranchises,
                                                 savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                                                 savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
                                                 savedDeepUpdateTime: savedDeepUpdateTime,
@@ -2470,6 +2480,7 @@
                                                     const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                                                     const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
                                                     const savedUserList = await retrieveJSON("savedUserList")
+                                                    const savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises")
                                                     const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                                                     const savedRecScheme = await retrieveJSON("savedRecScheme")
                                                     const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -2486,6 +2497,7 @@
                                                         savedRecScheme: savedRecScheme,
                                                         savedAnimeEntries: savedAnimeEntries,
                                                         savedUserList: savedUserList,
+                                                        savedAnimeFranchises: savedAnimeFranchises,
                                                         savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                                                         savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
                                                         savedDeepUpdateTime: savedDeepUpdateTime,
@@ -3002,6 +3014,7 @@
                 savedUsername = await retrieveJSON("savedUsername") || ""
                 savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson") || []
                 allFilterInfo = await retrieveJSON("allFilterInfo") || {}
+                savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises") || []
                 savedBackUpVersion = await retrieveJSON(`backUpVersion`) || 0
                 kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden")
                 if(kidsAnimeIsHidden===undefined){
@@ -3190,7 +3203,7 @@
                         await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                         lastSavedUpdateTime = await data.lastSavedUpdateTime
                         await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
-                        Update(true)
+                        Update(true, undefined, undefined, true)
                         return
                     }
                     worker0.onerror = () => {
@@ -3200,7 +3213,7 @@
                     return
                 }
             }).then(async()=>{  
-                if(await savedFilterOptionsJson.length===0||savedBackUpVersion<backUpVersion){
+                if(await savedFilterOptionsJson.length<1||savedBackUpVersion<backUpVersion){
                     var worker1 = await new Worker(`./js-css/worker/getOptions-${version}.js`)
                     await worker1.postMessage("")
                     worker1.onmessage = async (message) => {
@@ -3227,6 +3240,20 @@
                         data: savedFilterOptionsJson
                     })
                     return
+                }
+            }).then(async()=>{
+                if(await savedAnimeFranchises.length<1||savedBackUpVersion<backUpVersion){
+                    var worker13 = await new Worker(`./js-css/worker/getAnimeFranchises-${version}.js`)
+                    await worker13.postMessage("")
+                    worker13.onmessage = async (message) => {
+                        await worker13.terminate()
+                        const data = await message.data
+                        savedAnimeFranchises = await data.savedAnimeFranchises
+                        await saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
+                    }
+                    worker13.onerror = async (message) => {
+                        return
+                    }
                 }
             })
         }).then(async()=>{
@@ -3354,7 +3381,7 @@
                             savedUsername = await retrieveJSON("savedUsername") || ""
                             if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                             willAutoUpdate = true
-                            await Update(false)
+                            Update(false)
                         }
                         // Interval
                         for(let i=0;i<updateIntervalTimeout.length;i++) await clearInterval(updateIntervalTimeout[i])
@@ -3415,6 +3442,7 @@
                         const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                         const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
                         const savedUserList = await retrieveJSON("savedUserList")
+                        const savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises")
                         const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                         const savedRecScheme = await retrieveJSON("savedRecScheme")
                         const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -3431,6 +3459,7 @@
                             savedRecScheme: savedRecScheme,
                             savedAnimeEntries: savedAnimeEntries,
                             savedUserList: savedUserList,
+                            savedAnimeFranchises: savedAnimeFranchises,
                             savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                             savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
                             savedDeepUpdateTime: savedDeepUpdateTime,
@@ -3471,6 +3500,7 @@
                                 const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                                 const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
                                 const savedUserList = await retrieveJSON("savedUserList")
+                                const savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises")
                                 const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                                 const savedRecScheme = await retrieveJSON("savedRecScheme")
                                 const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -3487,6 +3517,7 @@
                                     savedRecScheme: savedRecScheme,
                                     savedAnimeEntries: savedAnimeEntries,
                                     savedUserList: savedUserList,
+                                    savedAnimeFranchises: savedAnimeFranchises,
                                     savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                                     savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
                                     savedDeepUpdateTime: savedDeepUpdateTime,
@@ -3535,6 +3566,7 @@
                             const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                             const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
                             const savedUserList = await retrieveJSON("savedUserList")
+                            const savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises")
                             const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                             const savedRecScheme = await retrieveJSON("savedRecScheme")
                             const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -3551,6 +3583,7 @@
                                 savedRecScheme: savedRecScheme,
                                 savedAnimeEntries: savedAnimeEntries,
                                 savedUserList: savedUserList,
+                                savedAnimeFranchises: savedAnimeFranchises,
                                 savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                                 savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
                                 savedDeepUpdateTime: savedDeepUpdateTime,
@@ -3591,6 +3624,7 @@
                                     const savedWarnAnime = await retrieveJSON("savedWarnAnime")
                                     const savedFilterAlgo = await retrieveJSON("savedFilterAlgo")
                                     const savedUserList = await retrieveJSON("savedUserList")
+                                    const savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises")
                                     const savedAnimeEntries = await retrieveJSON("savedAnimeEntries")
                                     const savedRecScheme = await retrieveJSON("savedRecScheme")
                                     const savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
@@ -3607,6 +3641,7 @@
                                         savedRecScheme: savedRecScheme,
                                         savedAnimeEntries: savedAnimeEntries,
                                         savedUserList: savedUserList,
+                                        savedAnimeFranchises: savedAnimeFranchises,
                                         savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                                         savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
                                         savedDeepUpdateTime: savedDeepUpdateTime,
@@ -3670,13 +3705,13 @@
     }
 
     // Main Functions
-    function Update(notAnUpdate, filterAlgo, doHideUnwatchedSeq){
+    function Update(notAnUpdate, filterAlgo, doHideUnwatchedSeq, dontValidate = false){
         updateStartTime = new Date
         var filterInput = $("#filters > ul > .flexdatalist-multiple-value > input")
         var username = $("#username").val()
         var filter = filterInput.val()
         // Check Input Validity
-        if(username===""||username===null||typeof username==="undefined"){
+        if(!dontValidate&&(username===""||username===null||typeof username==="undefined")){
             $("#username")[0].setCustomValidity("Anilist Username is Required!")
             $("#username")[0].reportValidity()
         } else if($("#filters .flexdatalist-multiple").children("li").length<2&&filterInput.val()!=""){
@@ -3705,6 +3740,7 @@
     async function analyzeVariables(updateID, username, notAnUpdate, filterAlgo, doHideUnwatchedSeq) {
         var savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || [90]
         var analyzeVariableTime = arrayMean(savedAnalyzeVariableTime)
+        savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises") || []
         savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
         savedFilterAlgo = await (filterAlgo || await retrieveJSON("savedFilterAlgo") || [])
         //
@@ -3846,7 +3882,7 @@
                                     })();
                                 }
                                 var worker7 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
-                                worker7.postMessage({savedUserList: savedUserList, userEntries: userEntries, savedIncluded: savedIncluded, savedExcluded: savedExcluded})
+                                worker7.postMessage({savedUserList: savedUserList, userEntries: userEntries, savedAnimeFranchises: savedAnimeFranchises, savedIncluded: savedIncluded, savedExcluded: savedExcluded})
                                 worker7.onmessage = (message) => {
                                     worker7.terminate()
                                     const data = message.data
@@ -4182,7 +4218,7 @@
             var savedUserListValues = Object.values(savedUserList)
             if(isJson(savedUserList)&&isJson(savedUserListValues[0])&&!jsonIsEmpty(savedUserList)){
                 var worker12 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
-                worker12.postMessage({savedUserList: savedUserList, notAnUpdate: notAnUpdate, savedIncluded: savedIncluded, savedExcluded: savedExcluded})
+                worker12.postMessage({savedUserList: savedUserList, savedAnimeFranchises: savedAnimeFranchises, notAnUpdate: notAnUpdate, savedIncluded: savedIncluded, savedExcluded: savedExcluded})
                 worker12.onmessage = (message) => {
                     worker12.terminate()
                     const data = message.data
@@ -4657,10 +4693,15 @@
                 worker9.terminate()
                 const data = message.data
                 savedRecScheme = data.savedRecScheme
-                // Save New Filter Options
                 if(!notAnUpdate){
+                    // Save New Filter Options
                     allFilterInfo = data.allFilterInfo
                     await saveJSON(allFilterInfo,"allFilterInfo")
+                    // Save New anime Franchises
+                    if(!alertUser&&tempSavedAnimeFranchises!==undefined&&tempSavedAnimeFranchises!==null){
+                        savedAnimeFranchises = data.animeFranchises
+                        saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
+                    }
                 }
                 // Save Filtered Algorithm Contents
                 if(notAnUpdate&&filterAlgo!==undefined){
