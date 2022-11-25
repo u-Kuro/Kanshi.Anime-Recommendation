@@ -4686,7 +4686,7 @@
                         savedFilterOptionsJson = data.savedFilterOptionsJson
                         await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
                         // Check input Focus before updating
-                        if($("#flex0").is(":focus")
+                        if( $("#flex0").is(":focus")
                             ||$("#flex1").is(":focus")
                             ||$("#flex2").is(":focus")
                             ||$("#warnAnimeContainer").css("display")!=="none"
@@ -4697,7 +4697,8 @@
                         // This Remove Current Filters in DOM so Check First
                         for(let i=0;i<checkFiltersFocus.length;i++) clearInterval(checkFiltersFocus[i])
                         checkFiltersFocus.push(setInterval(async()=>{
-                            if( !$("#flex0").is(":focus")
+                            if( !requestIsRunning
+                                &&!$("#flex0").is(":focus")
                                 &&!$("#flex1").is(":focus")
                                 &&!$("#flex2").is(":focus")
                                 &&$("#warnAnimeContainer").css("display")==="none"
@@ -4809,7 +4810,7 @@
                         await saveJSON(savedUpdateAnalyzeAnimeTime, "savedUpdateAnalyzeAnimeTime")
                     }
                     // Reload New Recommendation Data
-                    LoadData(savedRecScheme)
+                    await LoadData(savedRecScheme)
                     if(notAnUpdate){
                         savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
                         await new Promise(async(resolve)=>{
