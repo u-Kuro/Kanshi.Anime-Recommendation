@@ -88,7 +88,7 @@ self.onmessage = (message) => {
                 afIdx = animeFranchises.findIndex((e)=>e.includes(anilistId))
             }
             // Next add each Anime relations to its franchise
-            if(anime.relations!==null){
+            if(anime.relations!==null&&anime.relations!==undefined){
                 var animeRelations = anime.relations.edges
                 if(animeRelations instanceof Array){
                     animeRelations.forEach((e)=>{
@@ -104,7 +104,7 @@ self.onmessage = (message) => {
                 }
             }
             // Hide Unwatched Sequels
-            if(anime.relations!==null&&hideUnwatchedSequels){
+            if(anime.relations!==undefined&&anime.relations!==null&&hideUnwatchedSequels){
                 var animeRelations = anime.relations.edges
                 // Conditions
                 var isUnwatchedSequel = 

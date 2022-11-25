@@ -218,7 +218,7 @@ self.onmessage = (message) => {
                 }
             }
             // Second Check for Recent Anime
-            if(anime.relations!==null){
+            if(anime.relations!==null&&anime.relations!==undefined){
                 var animeRelations = anime.relations.edges
                 for(let j=0;j<animeRelations.length;j++){
                     var animeRelationNode = animeRelations[j].node
