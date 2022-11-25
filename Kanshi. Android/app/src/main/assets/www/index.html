@@ -4698,7 +4698,7 @@
                     allFilterInfo = data.allFilterInfo
                     await saveJSON(allFilterInfo,"allFilterInfo")
                     // Save New anime Franchises
-                    if(!alertUser&&tempSavedAnimeFranchises!==undefined&&tempSavedAnimeFranchises!==null){
+                    if(!alertUser){
                         savedAnimeFranchises = data.animeFranchises
                         saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
                     }
