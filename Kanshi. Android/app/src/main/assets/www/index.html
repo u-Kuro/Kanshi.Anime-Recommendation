@@ -4732,16 +4732,6 @@
                                 $('.flexdatalist').flexdatalist({
                                     data: savedFilterOptionsJson
                                 })
-                                // Reload Table Filters
-                                var filterInput
-                                savedFilters = await retrieveJSON("savedFilters") || []
-                                for(let i=0; i<savedFilters.length; i++) {
-                                    filterInput = $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
-                                    await filterInput.val(savedFilters[i])
-                                    var e = await $.Event("keyup",{keyCode:13})
-                                    await filterInput.trigger(e)
-                                    await filterInput.val("")
-                                }
                                 // Reload Warn Anime Contents
                                 if($("#warnAnimeContainer").css("display")!=="none"){                            
                                     $("#warnAnimeContainer").css({visibility:"hidden"}).show()
@@ -4761,6 +4751,16 @@
                                 await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
                             }
                         },250))
+                    }
+                    // Reload Table Filters
+                    var filterInput
+                    savedFilters = await retrieveJSON("savedFilters") || []
+                    for(let i=0; i<savedFilters.length; i++) {
+                        filterInput = $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
+                        await filterInput.val(savedFilters[i])
+                        var e = await $.Event("keyup",{keyCode:13})
+                        await filterInput.trigger(e)
+                        await filterInput.val("")
                     }
                     // Lastly Update Update Time 
                     var timeInterval = (new Date).getTime()-UpdateAnalyzeAnimeStartTime.getTime()
@@ -4786,7 +4786,7 @@
                             resolve()
                         }).then(async()=>{
                             for(let i=0; i<savedFilterAlgo.length; i++) {
-                                filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                                var filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                 await filterAlgoInput.val(savedFilterAlgo[i])
                                 var e = await $.Event("keyup",{keyCode:13})
                                 await filterAlgoInput.trigger(e)
