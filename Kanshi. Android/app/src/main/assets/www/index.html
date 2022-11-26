@@ -225,9 +225,15 @@
             }
             .flexdatalist-multiple{
                 display: flex;
-                flex-wrap: wrap;
                 max-height: 120px;
                 overflow-y: scroll;
+            }
+            .flex0.flexdatalist-multiple{
+                flex-wrap: wrap;
+            }
+            .flex1.flexdatalist-multiple,
+            .flex2.flexdatalist-multiple{
+                flex-wrap: wrap-reverse;
             }
             .flexdatalist-multiple>.flexdatalist-multiple-value{
                 flex-grow: 1;
@@ -1201,63 +1207,68 @@
                     if(Object.keys(savedRecScheme).length>0) {
                         savedUsername = await retrieveJSON("savedUsername")
                         var newUsername = $("#username").val()
-                        if(equalsNCS(newUsername,savedUsername)){
-                            await $("#animeRecommendationList").empty()
-                            await $("#animeRecommendationList").append(`
-                                <tr class="item ${savedTheme}" role="row">
-                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
-                                        <div style="display:flex; align-items:center;">
-                                            <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner ${savedTheme}"></div></div>
-                                            <div>Loading...</div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `)
-                            LoadData(savedRecScheme)
+                        if(!newUsername){
+                            $("#username")[0].setCustomValidity("Anilist Username is Required!")
+                            $("#username")[0].reportValidity()
                         } else {
-                            Swal.fire({
-                                heightAuto: false,
-                                text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
-                                showConfirmButton: true,
-                                confirmButtonText: "Yes",
-                                showDenyButton: true,
-                                denyButtonText: "No",
-                                confirmButtonColor: '#000',
-                                denyButtonColor: '#e27d81',
-                                icon: "question",
-                                reverseButtons: true
-                            }).then(async(value)=>{
-                                if(value.isConfirmed){
-                                    if(requestIsRunning){
-                                        Swal.fire({
-                                            heightAuto: false,
-                                            text: `List is already updating! Do you want to restart the update?`,
-                                            showConfirmButton: true,
-                                            confirmButtonText: "Yes",
-                                            showDenyButton: true,
-                                            denyButtonText: "No",
-                                            confirmButtonColor: '#000',
-                                            denyButtonColor: '#e27d81',
-                                            icon: "question",
-                                            reverseButtons: true
-                                        }).then(async(value)=>{
-                                            if(value.isConfirmed){
-                                                // Reset User List
-                                                savedUserList = {}
-                                                await saveJSON(savedUserList,"savedUserList")
-                                                Update(false)
-                                            }
-                                        })
+                            if(equalsNCS(newUsername,savedUsername)){
+                                await $("#animeRecommendationList").empty()
+                                await $("#animeRecommendationList").append(`
+                                    <tr class="item ${savedTheme}" role="row">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
+                                            <div style="display:flex; align-items:center;">
+                                                <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner ${savedTheme}"></div></div>
+                                                <div>Loading...</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `)
+                                LoadData(savedRecScheme)
+                            } else {
+                                Swal.fire({
+                                    heightAuto: false,
+                                    text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
+                                    showConfirmButton: true,
+                                    confirmButtonText: "Yes",
+                                    showDenyButton: true,
+                                    denyButtonText: "No",
+                                    confirmButtonColor: '#000',
+                                    denyButtonColor: '#e27d81',
+                                    icon: "question",
+                                    reverseButtons: true
+                                }).then(async(value)=>{
+                                    if(value.isConfirmed){
+                                        if(requestIsRunning){
+                                            Swal.fire({
+                                                heightAuto: false,
+                                                text: `List is already updating! Do you want to restart the update?`,
+                                                showConfirmButton: true,
+                                                confirmButtonText: "Yes",
+                                                showDenyButton: true,
+                                                denyButtonText: "No",
+                                                confirmButtonColor: '#000',
+                                                denyButtonColor: '#e27d81',
+                                                icon: "question",
+                                                reverseButtons: true
+                                            }).then(async(value)=>{
+                                                if(value.isConfirmed){
+                                                    // Reset User List
+                                                    savedUserList = {}
+                                                    await saveJSON(savedUserList,"savedUserList")
+                                                    Update(false)
+                                                }
+                                            })
+                                        } else {
+                                            // Reset User List
+                                            savedUserList = {}
+                                            await saveJSON(savedUserList,"savedUserList")
+                                            Update(false)
+                                        }
                                     } else {
-                                        // Reset User List
-                                        savedUserList = {}
-                                        await saveJSON(savedUserList,"savedUserList")
-                                        Update(false)
+                                        $("#username").focus()
                                     }
-                                } else {
-                                    $("#username").focus()
-                                }
-                            })
+                                })
+                            }
                         }
                     } else {
                         if(requestIsRunning){
@@ -1333,32 +1344,38 @@
                             if(value.isConfirmed){
                                 var newUsername = await $("#username").val()
                                 savedUsername = await retrieveJSON("savedUsername") || ""
-                                if(newUsername!==savedUsername){
-                                    Swal.fire({
-                                        heightAuto: false,
-                                        text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
-                                        showConfirmButton: true,
-                                        confirmButtonText: "Yes",
-                                        showDenyButton: true,
-                                        denyButtonText: "No",
-                                        confirmButtonColor: '#000',
-                                        denyButtonColor: '#e27d81',
-                                        icon: "question",
-                                        reverseButtons: true
-                                    }).then(async(value)=>{
-                                        $(".menu-container").fadeOut(250)
-                                        if(value.isConfirmed){
-                                            // Reset User List
-                                            savedUserList = {}
-                                            await saveJSON(savedUserList,"savedUserList")
-                                            Update(false)
-                                        } else {
-                                            $("#username").focus()
-                                        }
-                                    })
-                                } else {
-                                    Update(false)
+                                if(!newUsername){
                                     $(".menu-container").fadeOut(250)
+                                    $("#username")[0].setCustomValidity("Anilist Username is Required!")
+                                    $("#username")[0].reportValidity()
+                                } else {
+                                    if(newUsername!==savedUsername){
+                                        Swal.fire({
+                                            heightAuto: false,
+                                            text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
+                                            showConfirmButton: true,
+                                            confirmButtonText: "Yes",
+                                            showDenyButton: true,
+                                            denyButtonText: "No",
+                                            confirmButtonColor: '#000',
+                                            denyButtonColor: '#e27d81',
+                                            icon: "question",
+                                            reverseButtons: true
+                                        }).then(async(value)=>{
+                                            $(".menu-container").fadeOut(250)
+                                            if(value.isConfirmed){
+                                                // Reset User List
+                                                savedUserList = {}
+                                                await saveJSON(savedUserList,"savedUserList")
+                                                Update(false)
+                                            } else {
+                                                $("#username").focus()
+                                            }
+                                        })
+                                    } else {
+                                        Update(false)
+                                        $(".menu-container").fadeOut(250)
+                                    }
                                 }
                             }
                         })
@@ -1380,32 +1397,38 @@
                             if(value.isConfirmed){
                                 var newUsername = await $("#username").val()
                                 savedUsername = await retrieveJSON("savedUsername") || ""
-                                if(newUsername!==savedUsername){
-                                    Swal.fire({
-                                        heightAuto: false,
-                                        text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
-                                        showConfirmButton: true,
-                                        confirmButtonText: "Yes",
-                                        showDenyButton: true,
-                                        denyButtonText: "No",
-                                        confirmButtonColor: '#000',
-                                        denyButtonColor: '#e27d81',
-                                        icon: "question",
-                                        reverseButtons: true
-                                    }).then(async(value)=>{
-                                        $(".menu-container").fadeOut(250)
-                                        if(value.isConfirmed){
-                                            // Reset User List
-                                            savedUserList = {}
-                                            await saveJSON(savedUserList,"savedUserList")
-                                            Update(false)
-                                        } else {
-                                            $("#username").focus()
-                                        }
-                                    })
-                                } else {
-                                    Update(false)
+                                if(!newUsername){
                                     $(".menu-container").fadeOut(250)
+                                    $("#username")[0].setCustomValidity("Anilist Username is Required!")
+                                    $("#username")[0].reportValidity()
+                                } else {
+                                    if(newUsername!==savedUsername){
+                                        Swal.fire({
+                                            heightAuto: false,
+                                            text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
+                                            showConfirmButton: true,
+                                            confirmButtonText: "Yes",
+                                            showDenyButton: true,
+                                            denyButtonText: "No",
+                                            confirmButtonColor: '#000',
+                                            denyButtonColor: '#e27d81',
+                                            icon: "question",
+                                            reverseButtons: true
+                                        }).then(async(value)=>{
+                                            $(".menu-container").fadeOut(250)
+                                            if(value.isConfirmed){
+                                                // Reset User List
+                                                savedUserList = {}
+                                                await saveJSON(savedUserList,"savedUserList")
+                                                Update(false)
+                                            } else {
+                                                $("#username").focus()
+                                            }
+                                        })
+                                    } else {
+                                        Update(false)
+                                        $(".menu-container").fadeOut(250)
+                                    }
                                 }
                             }
                         })
@@ -2535,7 +2558,7 @@
                 $("#warnAnimeBtn").on("click", async ()=>{
                     await $("#warnAnimeContainer").show()
                     $("#warnAnimeModal").removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
-                    $(`ul.flex1`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
+                    $(`ul.flex1`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
                 })
                 $("#submitWarnAnime").on("click",async()=>{
                     var warnAnimeInputs = $("#warnAnimeModal .flexdatalist-multiple > .value").children(".text")
@@ -2588,7 +2611,7 @@
                 $("#filterAlgoBtn").on("click", async ()=>{
                     await $("#filterAlgoContainer").show()
                     $("#filterAlgoModal").removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
-                    $(`ul.flex2`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
+                    $(`ul.flex2`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
                 })
                 $("#submitFilterAlgo").on("click",async()=>{
                     savedUserList = await retrieveJSON("savedUserList") || {}
@@ -2986,13 +3009,10 @@
                         $(`.flexdatalist-results`).addClass('darkMode')
                     }
                 })
-                $(".flexdatalist-multiple").on('DOMNodeInserted',()=>{
+                $(".filter-container-custom, .filter-container").on('DOMNodeInserted','li.value',()=>{
                     if(savedTheme==="darkMode"){
                         $(`.flexdatalist-multiple li.value`).addClass('darkMode')
                     }
-                    $(`#flex0`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
-                    $(`#flex1`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
-                    $(`#flex2`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
                 })
                 $("body").on('scroll', function () {
                     setTimeout(async()=>{
@@ -3187,7 +3207,9 @@
                         await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                         lastSavedUpdateTime = await data.lastSavedUpdateTime
                         await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
-                        Update(true, undefined, undefined, true)
+                        if(savedUsername){
+                            Update(true)
+                        }
                         return
                     }
                     worker0.onerror = () => {
@@ -3352,8 +3374,8 @@
                 await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
                 await $('body').animate({scrollTop: savedYscroll},1)
                 $(`ul.flex0`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
-                $(`ul.flex1`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
-                $(`ul.flex2`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
+                $(`ul.flex1`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
+                $(`ul.flex2`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
                 resolve()
             })
         }).then(async()=>{
@@ -3693,18 +3715,15 @@
     }
 
     // Main Functions
-    function Update(notAnUpdate, filterAlgo, doHideUnwatchedSeq, dontValidate = false){
+    function Update(notAnUpdate, filterAlgo, doHideUnwatchedSeq){
         updateStartTime = new Date
         var filterInput = $("#filters > ul > .flexdatalist-multiple-value > input")
         var username = $("#username").val()
         var filter = filterInput.val()
         // Check Input Validity
-        if(!dontValidate&&(username===""||username===null||typeof username==="undefined")){
+        if(!username){
             $("#username")[0].setCustomValidity("Anilist Username is Required!")
             $("#username")[0].reportValidity()
-        } else if($("#filters .flexdatalist-multiple").children("li").length<2&&filterInput.val()!=""){
-            filterInput[0].setCustomValidity("Select or Enter a word to Filter!")
-            filterInput[0].reportValidity()
         } else {
             // Start Update Request
             if(!requestIsRunning){
@@ -4808,7 +4827,7 @@
                                         await filterAlgoInput.val("")
                                     }
                                     await $("#filterAlgoContainer").css({visibility:"visible"}).hide()
-                                    $(`ul.flex2`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
+                                    $(`ul.flex2`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
                                 })
                                 // Reload Warn Anime Contents
                                 if($("#warnAnimeContainer").css("display")!=="none"){                            
@@ -4837,7 +4856,7 @@
                                         await warnAnimeInput.val("")
                                     }
                                     await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
-                                    $(`ul.flex1`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
+                                    $(`ul.flex1`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
                                 })
                             }
                         },250))
