@@ -553,7 +553,6 @@ self.onmessage = (message) => {
             var staff = anime.staff.edges
             var status = anime.status
             var userStatus = "UNWATCHED"
-            
             //
             if(allFilterInfo["staff: "]===undefined&&allFilterInfo["!staff: "]===undefined){
                 allFilterInfo["staff: "] = 0

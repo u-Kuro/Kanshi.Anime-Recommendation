@@ -9,19 +9,19 @@
     <script src="./js-css/jquery-3.6.0.js" defer></script>
     <!-- Swal 2 -->
     <script src="./js-css/swal2/sweetalert2.all.js" defer></script>
-    <link rel="stylesheet" href="./js-css/swal2/sweetalert2.css">
+    <link rel="stylesheet" href="./js-css/swal2/sweetalert2.css" defer>
     <!-- Table Sort -->
-    <link rel="stylesheet" href="./js-css/jquery tablesorter/theme.default.min.css">
+    <link rel="stylesheet" href="./js-css/jquery tablesorter/theme.default.min.css" defer>
     <script type="text/javascript" src="./js-css/jquery tablesorter/jquery.tablesorter.js" defer></script>
     <script type="text/javascript" src="./js-css/jquery tablesorter/jquery.metadata.min.js" defer></script>
     <script type="text/javascript" src="./js-css/jquery tablesorter/jquery.tablesorter.pager.min.js" defer></script>
     <!-- Datalist Search Code -->
-    <link rel="stylesheet" href="./js-css/flexdatalist/jquery.flex-datalist.css">
+    <link rel="stylesheet" href="./js-css/flexdatalist/jquery.flex-datalist.css" defer>
     <script src="./js-css/flexdatalist/jquery.flex-datalist-edited.js" defer></script>
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="./js-css/bootstrap-3.3.6.min.css"/>
+    <link rel="stylesheet" href="./js-css/bootstrap-3.3.6.min.css" defer/>
     <!-- Fontawesome -->
-    <link rel="stylesheet" href="./js-css/font-awesome.min.css">
+    <link rel="stylesheet" href="./js-css/font-awesome.min.css" defer>
     <script src="./js-css/fontawesome-5.0.js" crossorigin="anonymous" defer></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PPMY92TJCE" defer></script>
@@ -152,9 +152,11 @@
                 max-width: 100%;
             }
             /* Additional */
+            *{
+                scrollbar-width: none !important;
+            }
             body{
                 -ms-overflow-style: none;
-                scrollbar-width: none;
             }
             ::-webkit-scrollbar {
                 display: none;
@@ -208,6 +210,9 @@
                 margin-block: 15px;
             }
             .flexdatalist-multiple > .value {
+                height: fit-content;
+                max-height: fit-content;
+                min-height: fit-content;
                 max-width: -moz-fit-content;
                 max-width: fit-content;
                 cursor: pointer;
@@ -238,10 +243,13 @@
             .flexdatalist-multiple>.flexdatalist-multiple-value{
                 flex-grow: 1;
                 display: flex !important;
+                min-width: calc(100% - 10px) !important;
             }
             .flexdatalist-multiple>.flexdatalist-multiple-value>.flexdatalist-alias{
                 outline: none;
                 flex-grow: 1;
+                padding-left: 5px !important;
+                padding-right: 5px !important;
             }
             .tableLoadingContainer{
                 display: flex;
@@ -1133,7 +1141,7 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "3.4",
+    const version = "3.5",
           backUpVersion = 2.1
         // IndexDB
     var request, db,
@@ -2559,6 +2567,7 @@
                     await $("#warnAnimeContainer").show()
                     $("#warnAnimeModal").removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
                     $(`ul.flex1`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
+                    $(`ul.flex1`)[0].scroll(0, -Number.MAX_SAFE_INTEGER)
                 })
                 $("#submitWarnAnime").on("click",async()=>{
                     var warnAnimeInputs = $("#warnAnimeModal .flexdatalist-multiple > .value").children(".text")
@@ -2612,6 +2621,7 @@
                     await $("#filterAlgoContainer").show()
                     $("#filterAlgoModal").removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
                     $(`ul.flex2`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
+                    $(`ul.flex2`)[0].scroll(0, -Number.MAX_SAFE_INTEGER)
                 })
                 $("#submitFilterAlgo").on("click",async()=>{
                     savedUserList = await retrieveJSON("savedUserList") || {}
@@ -2975,7 +2985,14 @@
                         if(typeof $('#anime-table')[0].config!=="undefined"){
                             $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
                         }
-                    },250)
+                    },1)
+                })
+                $("#pageNumberOptions").on('change',()=>{
+                    setTimeout(()=>{
+                        if(typeof $('#anime-table')[0].config!=="undefined"){
+                            $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
+                        }
+                    },1)
                 })
                 $(".filter-container, .filter-container-custom").on('DOMNodeInserted','.flexdatalist-multiple',()=>{
                     if(savedTheme==="darkMode"){
@@ -3376,6 +3393,12 @@
                 $(`ul.flex0`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
                 $(`ul.flex1`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
                 $(`ul.flex2`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
+                // Only Works with SetTimeout >=1 in firefox idk why
+                setTimeout(()=>{
+                    $(`ul.flex0`)[0].scroll(0, $(`ul.flex0`).outerHeight())
+                },1)
+                $(`ul.flex1`)[0].scroll(0, -Number.MAX_SAFE_INTEGER)
+                $(`ul.flex2`)[0].scroll(0, -Number.MAX_SAFE_INTEGER)
                 resolve()
             })
         }).then(async()=>{
@@ -4802,6 +4825,7 @@
                                         $("#filters .flexdatalist-multiple-value > .flexdatalist-alias").val(currentInputValue)
                                     }
                                     $(`ul.flex0`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
+                                    $(`ul.flex0`)[0].scroll(0, $(`ul.flex0`).outerHeight())
                                 })
                                 // Reload Saved Algorithm Filters
                                 if($("#filterAlgoContainer").css("display")!=="none"){                            
@@ -4828,6 +4852,7 @@
                                     }
                                     await $("#filterAlgoContainer").css({visibility:"visible"}).hide()
                                     $(`ul.flex2`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
+                                    $(`ul.flex2`)[0].scroll(0, -Number.MAX_SAFE_INTEGER)
                                 })
                                 // Reload Warn Anime Contents
                                 if($("#warnAnimeContainer").css("display")!=="none"){                            
@@ -4857,6 +4882,7 @@
                                     }
                                     await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
                                     $(`ul.flex1`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
+                                    $(`ul.flex1`)[0].scroll(0, -Number.MAX_SAFE_INTEGER)
                                 })
                             }
                         },250))
@@ -5050,7 +5076,7 @@
             reverseButtons: true,
             footer: `
                 <a target="_blank" rel="noopener noreferrer" href="https://anilist.co/signup">Create an Anilist Account</a>
-                <a href="javascript:$('#importBtn').click()">Import Backup</a>
+                <a href="javascript:;" onclick="$('#importBtn').click()">Import Backup</a>
             `,
             inputValidator: async(value) => {
                 return await new Promise(async(resolve) => {

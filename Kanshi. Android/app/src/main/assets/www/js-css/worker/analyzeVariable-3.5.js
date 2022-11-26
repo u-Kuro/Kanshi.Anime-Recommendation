@@ -899,6 +899,10 @@ self.onmessage = (message) => {
             varScheme[sortedWellKnownAnimeModels[1]] = sortedWellKnownAnimeModels[0]
         }
     }
+    // If User List Scores is Empty
+    if(userListCount<1){
+        varScheme={}
+    }
     self.postMessage({
         varScheme: varScheme, 
         userListStatus: userListStatus,
