@@ -17,7 +17,7 @@
     <script type="text/javascript" src="./js-css/jquery tablesorter/jquery.tablesorter.pager.min.js" defer></script>
     <!-- Datalist Search Code -->
     <link rel="stylesheet" href="./js-css/flexdatalist/jquery.flex-datalist.css" defer>
-    <script src="./js-css/flexdatalist/jquery.flex-datalist-edited.js" defer></script>
+    <script src="./js-css/flexdatalist/jquery.flex-datalist-v2.0.js" defer></script>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="./js-css/bootstrap-3.3.6.min.css" defer/>
     <!-- Fontawesome -->
@@ -210,6 +210,13 @@
                 margin-top: 15px;
                 margin-bottom: 15px;
             }
+            .searchData,
+            .btn-container{
+                margin-bottom: 10px !important;
+            }
+            .table-responsive{
+                margin-top: 10px !important;
+            }
             .flexdatalist-multiple > .value {
                 height: fit-content;
                 max-height: fit-content;
@@ -231,7 +238,9 @@
             }
             .flexdatalist-multiple{
                 display: flex;
-                max-height: 120px;
+                max-height: 100px;
+                min-height: 100px;
+                height: 100px;
                 overflow-y: scroll;
             }
             .flex0.flexdatalist-multiple{
@@ -389,7 +398,7 @@
                 100% { transform: rotate(360deg); }
             }
             .data-status-container{
-                display: none;
+                display: flex;
                 align-items: center;
                 justify-content: center;
             }
@@ -924,23 +933,31 @@
             td.animeTitle>i{
                 padding: 0.5ch;
             }
+            .searchData #filters{
+                height: 100px !important;
+                max-height: 100px !important;
+                min-height: 100px !important;
+            }
             #warnAnimeContainer,
             #filterAlgoContainer{
                 -ms-user-select: none;
                 -webkit-user-select: none;
                 user-select: none;
             }
+            #dataStatusHolder{
+                height: 20px;
+                min-height: 20px;
+                max-height: 20px;
+            }
             #dataStatusContainer{
-                margin: 15px;
                 justify-content: center;
                 align-items: center;
             }
             #dataStatusWrapper{
-                flex: 1;
                 display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
+                flex-wrap: nowrap;
                 align-items: center;
+                overflow-x: auto;
             }
             #dataStatusSpinner{
                 flex: 1;
@@ -949,8 +966,10 @@
             }
             #dataStatus{
                 display: flex;
-                flex-wrap: wrap;
+                flex-wrap: nowrap;
                 justify-content: center;
+                margin: 0 !important;
+                overflow-x: auto;
             }
             #dataStatus{
                 text-align: center;
@@ -1024,6 +1043,14 @@
             <button id="searchBtn" class="btn darkMode" type="submit">Search</button>
         </div>
     </div>
+    <div id="dataStatusHolder">
+        <div id="dataStatusContainer" class="data-status-container">
+            <div id="dataStatusWrapper">
+                <div style="display: inline-table;"><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner darkMode"></div></div>
+                <h6 id="dataStatus">Latest Anilist Update: N/A</h6>
+            </div>
+        </div>
+    </div>
     <div class="table-responsive darkMode">
         <table id="anime-table" class="tablesorter table table-bordered table-striped darkMode">
             <thead class="darkMode">
@@ -1053,12 +1080,6 @@
             </tr>
             </tbody>
         </table>
-        <div id="dataStatusContainer" class="data-status-container">
-            <div id="dataStatusWrapper">
-                <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner darkMode"></div></div>
-                <h6 id="dataStatus"></h6>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -1142,8 +1163,8 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "3.6",
-          backUpVersion = 2.2
+    const version = "3.7",
+          backUpVersion = 2.3
         // IndexDB
     var request, db,
         // Saved Data
@@ -1158,12 +1179,13 @@
     exportPathIsAvailable, 
     // Android
         // Load Saved API Request State
-    updateIDs = [], requestIntervalMS = 0, 
-    savedLastRequestDate, 
-    savedAnalyzeVariableTime, savedUpdateAnalyzeAnimeTime, savedDeepUpdateTime,
+    updateIDs = [], requestIntervalMS = 0,
+    savedAnalyzeVariableTime, savedUpdateAnalyzeAnimeTime, savedDeepUpdateTime, lastSavedUpdateTime,
     deepUpdateStartTime, updateStartTime,
     isRunning = false, requestIsRunning = false, isLoading = false,
-    isDeepUpdate = false, willAutoUpdate = false, updateStateText = [], checkFiltersFocus = []
+    isDeepUpdate = false, willAutoUpdate = false, updateStateText = [], checkFiltersFocus = [],
+    // Helper
+    pageInits = true, enteredOnce = false
     
     // Create IndexDB
     window.onload = async () => {
@@ -1204,9 +1226,19 @@
             // Load Event Listeners
             return await new Promise((resolve)=>{
                 $("#username").on('keypress',async (e) =>{
-                    savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                     if(e.which===13) {
                         $("#searchBtn").click()        
+                    }
+                })
+                $(document).on('keypress',async (e) =>{
+                    if(e.which===13&&!pageInits&&e.target.id==="flex0"&&!e.target.value){
+                        if(enteredOnce) {
+                            enteredOnce = false
+                            $("#searchBtn").click()
+                        } else {
+                            enteredOnce = true
+                            setTimeout(()=>{enteredOnce = false},500)
+                        }  
                     }
                 })
                 $("#searchBtn").on('click', async ()=>{
@@ -1324,12 +1356,18 @@
                         }
                     }
                 })
-                $("#menuIcon, #menuTitle").on("click",()=>{
+                $("nav.nav, div.menu-container").on("click",()=>{
                     var menu = $(".menu-container")
-                    if(menu.css("display")=="none"){
+                    if(menu.css("display")==="none"){
                         menu.fadeIn(250)
                     } else {
                         menu.fadeOut(250)
+                    }
+                })
+                $("#pager, div.menu-container button").on('click', (e)=>{
+                    var menu = $(".menu-container")
+                    if(menu.css("display")!=="none"){
+                        e.stopPropagation()
                     }
                 })
                 $("#updateBtn").on('click', async ()=>{
@@ -1626,7 +1664,22 @@
                     })
                 })
                 $("#importBtn").on("click", ()=>{
-                    $("#importFile").click()
+                    Swal.fire({
+                        heightAuto: false,
+                        text: `Do you want to import your backup data?`,
+                        showConfirmButton: true,
+                        confirmButtonText: "Yes",
+                        showDenyButton: true,
+                        denyButtonText: "No",
+                        confirmButtonColor: '#000',
+                        denyButtonColor: '#e27d81',
+                        icon: "question",
+                        reverseButtons: true
+                    }).then(async(value)=>{
+                        if(value.isConfirmed){
+                            $("#importFile").click()
+                        }
+                    })
                 })
                 $("#importFile").on("change",(event)=>{
                     if($("#importFile")[0].value != ""){
@@ -1679,14 +1732,10 @@
                                                 reject()
                                             } else {
                                                 await $(".menu-container").fadeOut(250)
-                                                $("#dataStatusContainer").fadeOut(1000)
-                                                setTimeout(()=>{
-                                                    $("#dataStatusSpinner").show()
-                                                    $("#dataStatus")
-                                                        .empty()
-                                                        .append(`<span style="white-space:nowrap;">Importing data, please wait...`)
-                                                    $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                                                },1000)
+                                                $("#dataStatusSpinner").show()
+                                                $("#dataStatus")
+                                                    .empty()
+                                                    .append(`<span style="white-space:nowrap;">Importing data, please wait...</span>`)
                                                 resolve()
                                             }
                                         }).then(async()=>{
@@ -1851,7 +1900,11 @@
                                         }).then(async()=>{
                                             $("#importFile")[0].value = null
                                             if(!requestIsRunning){
-                                                $("#dataStatusContainer").fadeOut(1000) 
+                                                lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                                $("#dataStatusSpinner").hide()
+                                                $("#dataStatus")
+                                                    .empty()
+                                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                                             }
                                             await Swal.fire({
                                                 heightAuto: false,
@@ -2068,6 +2121,11 @@
                                     }
                                     return
                                 }).then(async()=>{
+                                    lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                    $("#dataStatusSpinner").hide()
+                                    $("#dataStatus")
+                                        .empty()
+                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                                     $("#importFile")[0].value = null
                                     await Swal.fire({
                                         heightAuto: false,
@@ -2108,14 +2166,10 @@
                             if(value.isConfirmed){
                                 await new Promise(async(resolve)=>{
                                     await $(".menu-container").fadeOut(250)
-                                    $("#dataStatusContainer").fadeOut(1000)
-                                    setTimeout(()=>{
-                                        $("#dataStatusSpinner").show()
-                                        $("#dataStatus")
-                                            .empty()
-                                            .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                        $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                                    },1000)
+                                    $("#dataStatusSpinner").show()
+                                    $("#dataStatus")
+                                        .empty()
+                                        .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                                     resolve()
                                 }).then(async()=>{
                                     var worker4 = new Worker(`./js-css/worker/export-${version}.js`)
@@ -2155,7 +2209,10 @@
                                         await exportJsonData(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                                         // Android
                                         if(!requestIsRunning){
-                                            await $("#dataStatusContainer").fadeOut(1000)
+                                            $("#dataStatusSpinner").hide()
+                                            $("#dataStatus")
+                                                .empty()
+                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                                         }
                                         await Swal.fire({
                                             heightAuto: false,
@@ -2308,14 +2365,10 @@
                                     if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
                                         await new Promise(async(resolve)=>{
                                             await $(".menu-container").fadeOut(250)
-                                            $("#dataStatusContainer").fadeOut(1000)
-                                            setTimeout(()=>{
-                                                $("#dataStatusSpinner").show()
-                                                $("#dataStatus")
-                                                    .empty()
-                                                    .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                                $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                                            },1000)
+                                            $("#dataStatusSpinner").show()
+                                            $("#dataStatus")
+                                                .empty()
+                                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                                             resolve()
                                         }).then(async()=>{
                                             var worker5 = new Worker(`./js-css/worker/export-${version}.js`)
@@ -2357,7 +2410,10 @@
                                                 exportIntervalStartDate = await new Date()
                                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                                 if(!requestIsRunning){
-                                                    await $("#dataStatusContainer").fadeOut(1000)
+                                                    $("#dataStatusSpinner").hide()
+                                                    $("#dataStatus")
+                                                        .empty()
+                                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                                                 }
                                                 await Swal.fire({
                                                     heightAuto: false,
@@ -2368,14 +2424,10 @@
                                                 // Interval
                                                 for(let i=0;i<exportIntervalTimeout.length;i++) clearInterval(exportIntervalTimeout[i])
                                                 var saveExportIntervalTimeout = setInterval(async()=>{
-                                                    $("#dataStatusContainer").fadeOut(1000)
-                                                    setTimeout(()=>{
-                                                        $("#dataStatusSpinner").show()
-                                                        $("#dataStatus")
-                                                            .empty()
-                                                            .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                                        $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                                                    },1000)
+                                                    $("#dataStatusSpinner").show()
+                                                    $("#dataStatus")
+                                                        .empty()
+                                                        .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                                                     var worker6 = new Worker(`./js-css/worker/export-${version}.js`)
                                                     const savedUsername = await retrieveJSON("savedUsername")
                                                     const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
@@ -2415,7 +2467,10 @@
                                                         exportIntervalStartDate = await new Date()
                                                         await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                                         if(!requestIsRunning){
-                                                            await $("#dataStatusContainer").fadeOut(1000)
+                                                            $("#dataStatusSpinner").hide()
+                                                            $("#dataStatus")
+                                                                .empty()
+                                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                                                         }
                                                         await Swal.fire({
                                                             heightAuto: false,
@@ -2431,14 +2486,10 @@
                                     } else {
                                         // Timeout
                                         setTimeout(async()=>{
-                                            $("#dataStatusContainer").fadeOut(1000)
-                                            setTimeout(()=>{
-                                                $("#dataStatusSpinner").show()
-                                                $("#dataStatus")
-                                                    .empty()
-                                                    .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                                $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                                            },1000)
+                                            $("#dataStatusSpinner").show()
+                                            $("#dataStatus")
+                                                .empty()
+                                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                                             var worker6 = new Worker(`./js-css/worker/export-${version}.js`)
                                             const savedUsername = await retrieveJSON("savedUsername")
                                             const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
@@ -2478,7 +2529,10 @@
                                                 exportIntervalStartDate = await new Date()
                                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                                 if(!requestIsRunning){
-                                                    await $("#dataStatusContainer").fadeOut(1000)
+                                                    $("#dataStatusSpinner").hide()
+                                                    $("#dataStatus")
+                                                        .empty()
+                                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                                                 }
                                                 await Swal.fire({
                                                     heightAuto: false,
@@ -2489,14 +2543,10 @@
                                                 // Interval
                                                 for(let i=0;i<exportIntervalTimeout.length;i++) clearInterval(exportIntervalTimeout[i])
                                                 var saveExportIntervalTimeout = setInterval(async()=>{
-                                                    $("#dataStatusContainer").fadeOut(1000)
-                                                    setTimeout(()=>{
-                                                        $("#dataStatusSpinner").show()
-                                                        $("#dataStatus")
-                                                            .empty()
-                                                            .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                                        $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                                                    },1000)
+                                                    $("#dataStatusSpinner").show()
+                                                    $("#dataStatus")
+                                                        .empty()
+                                                        .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                                                     var worker6 = new Worker(`./js-css/worker/export-${version}.js`)
                                                     const savedUsername = await retrieveJSON("savedUsername")
                                                     const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
@@ -2536,7 +2586,10 @@
                                                         exportIntervalStartDate = await new Date()
                                                         await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                                         if(!requestIsRunning){
-                                                            await $("#dataStatusContainer").fadeOut(1000)
+                                                            $("#dataStatusSpinner").hide()
+                                                            $("#dataStatus")
+                                                                .empty()
+                                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                                                         }
                                                         await Swal.fire({
                                                             heightAuto: false,
@@ -2589,9 +2642,9 @@
                     $("#warnAnimeModal").removeClass("swal2-show-custom").addClass("swal2-hide-custom")
                     setTimeout(async()=>{
                         $("#warnAnimeContainer").hide()
-                        savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
-                                                                                   "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
-                                                                                   "!tag: nudity","!tag: slavery","!tag: suicide","!tag: yuri","!tag: netorare", "!tag: rape"
+                        savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: !ecchi","!tag: !boys' love","tag: cgi","!tag: !ero guro","!tag: !female harem",
+                                                                                    "tag: full cgi","!tag: !male harem","!tag: !mixed gender harem",
+                                                                                    "!tag: !nudity","!tag: !slavery","!tag: !suicide","!tag: !yuri","!tag: !netorare", "!tag: !rape"
                                                                                  ]
                         await new Promise(async(resolve)=>{
                             // Remove Current Filters
@@ -2647,7 +2700,11 @@
                                 },300)
                                 Update(false)
                                 $(".menu-container").fadeOut(250)
-                                $("#dataStatusContainer").fadeOut(1000)
+                                lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                $("#dataStatusSpinner").hide()
+                                $("#dataStatus")
+                                    .empty()
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                             }
                         })
                         return
@@ -2830,19 +2887,49 @@
                     savedTheme = await retrieveJSON("savedTheme") || "darkMode"
                     savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                     if(savedTheme==="darkMode"){
-                        var newTheme = "lightMode"
-                        $("#themeBtn").removeClass("selected")
-                        await loadTheme(newTheme,savedTheme)
-                        savedTheme = newTheme
-                        await saveJSON(savedTheme,"savedTheme")
-                        LoadData(savedRecScheme)
+                        Swal.fire({
+                            heightAuto: false,
+                            text: `Do you want to change your theme to light mode?`,
+                            showConfirmButton: true,
+                            confirmButtonText: "Yes",
+                            showDenyButton: true,
+                            denyButtonText: "No",
+                            confirmButtonColor: '#000',
+                            denyButtonColor: '#e27d81',
+                            icon: "question",
+                            reverseButtons: true
+                        }).then(async(value)=>{
+                            if(value.isConfirmed){
+                                var newTheme = "lightMode"
+                                $("#themeBtn").removeClass("selected")
+                                await loadTheme(newTheme,savedTheme)
+                                savedTheme = newTheme
+                                await saveJSON(savedTheme,"savedTheme")
+                                LoadData(savedRecScheme)
+                            }
+                        })
                     } else {
-                        var newTheme = "darkMode"
-                        $("#themeBtn").addClass("selected")
-                        await loadTheme(newTheme,savedTheme)
-                        savedTheme = newTheme
-                        await saveJSON(savedTheme,"savedTheme")
-                        LoadData(savedRecScheme)
+                        Swal.fire({
+                            heightAuto: false,
+                            text: `Do you want to change your theme to dark mode?`,
+                            showConfirmButton: true,
+                            confirmButtonText: "Yes",
+                            showDenyButton: true,
+                            denyButtonText: "No",
+                            confirmButtonColor: '#000',
+                            denyButtonColor: '#e27d81',
+                            icon: "question",
+                            reverseButtons: true
+                        }).then(async(value)=>{
+                            if(value.isConfirmed){
+                                var newTheme = "darkMode"
+                                $("#themeBtn").addClass("selected")
+                                await loadTheme(newTheme,savedTheme)
+                                savedTheme = newTheme
+                                await saveJSON(savedTheme,"savedTheme")
+                                LoadData(savedRecScheme)
+                            }
+                        })
                     }
                 })
                 $("#hideKidsAnimeBtn").on("click", async ()=>{
@@ -2904,7 +2991,7 @@
                     if(hideUnwatchedSequels){
                         Swal.fire({
                             heightAuto: false,
-                            text: `Do you want to show all unwatched-Anime's sequels?`,
+                            text: `Do you want to show all unwatched-Animes' sequels?`,
                             showConfirmButton: true,
                             confirmButtonText: "Show",
                             showDenyButton: true,
@@ -2924,7 +3011,7 @@
                     } else {
                         Swal.fire({
                             heightAuto: false,
-                            text: `Do you want to hide all unwatched-Anime's sequels?`,
+                            text: `Do you want to hide all unwatched-Animes' sequels?`,
                             showConfirmButton: true,
                             confirmButtonText: "Hide",
                             showDenyButton: true,
@@ -3066,9 +3153,9 @@
                 savedSort = await retrieveJSON("savedSort") || [1,1]
                 savedYscroll = await retrieveJSON("savedYscroll") || 0.0
                 savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
-                savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
-                                                                           "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
-                                                                           "!tag: nudity","!tag: slavery","!tag: suicide","!tag: yuri","!tag: netorare", "!tag: rape"
+                savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: !ecchi","!tag: !boys' love","tag: cgi","!tag: !ero guro","!tag: !female harem",
+                                                                            "tag: full cgi","!tag: !male harem","!tag: !mixed gender harem",
+                                                                            "!tag: !nudity","!tag: !slavery","!tag: !suicide","!tag: !yuri","!tag: !netorare", "!tag: !rape"
                                                                          ]
                 updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
                 exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
@@ -3223,7 +3310,7 @@
                         const data = await message.data
                         savedAnimeEntries = await data.savedAnimeEntries
                         await saveJSON(savedAnimeEntries,"savedAnimeEntries")
-                        lastSavedUpdateTime = await data.lastSavedUpdateTime
+                        lastSavedUpdateTime = await data.lastSavedUpdateTime || 0
                         await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
                         if(savedUsername){
                             Update(true)
@@ -3354,6 +3441,12 @@
                     }
                 }
 
+                // Load Last Saved Update
+                $("#dataStatusSpinner").hide()
+                $("#dataStatus")
+                    .empty()
+                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+
                 // Load Table
                 if(await Object.keys(savedRecScheme).length>0){
                     await $("#updateBtn").show()
@@ -3462,14 +3555,10 @@
                     exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                     await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
-                        $("#dataStatusContainer").fadeOut(1000)
-                        setTimeout(()=>{
-                            $("#dataStatusSpinner").show()
-                            $("#dataStatus")
-                                .empty()
-                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                            $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                        },1000)
+                        $("#dataStatusSpinner").show()
+                        $("#dataStatus")
+                            .empty()
+                            .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                         var worker2 = new Worker(`./js-css/worker/export-${version}.js`)
                         const savedUsername = await retrieveJSON("savedUsername")
                         const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
@@ -3509,7 +3598,10 @@
                             exportIntervalStartDate = await new Date()
                             await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                             if(!requestIsRunning){
-                                await $("#dataStatusContainer").fadeOut(1000)
+                                $("#dataStatusSpinner").hide()
+                                $("#dataStatus")
+                                    .empty()
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                             }
                             await Swal.fire({
                                 heightAuto: false,
@@ -3520,14 +3612,10 @@
                             // Interval
                             for(let i=0;i<exportIntervalTimeout.length;i++) await clearInterval(exportIntervalTimeout[i])
                             var saveExportIntervalTimeout = await setInterval(async()=>{
-                                $("#dataStatusContainer").fadeOut(1000)
-                                setTimeout(()=>{
-                                    $("#dataStatusSpinner").show()
-                                    $("#dataStatus")
-                                        .empty()
-                                        .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                    $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                                },1000)
+                                $("#dataStatusSpinner").show()
+                                $("#dataStatus")
+                                    .empty()
+                                    .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                                 var worker3 = new Worker(`./js-css/worker/export-${version}.js`)
                                 const savedUsername = await retrieveJSON("savedUsername")
                                 const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
@@ -3567,7 +3655,10 @@
                                     exportIntervalStartDate = await new Date()
                                     await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                     if(!requestIsRunning){
-                                        await $("#dataStatusContainer").fadeOut(1000)
+                                        $("#dataStatusSpinner").hide()
+                                        $("#dataStatus")
+                                            .empty()
+                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                                     }
                                     await Swal.fire({
                                         heightAuto: false,
@@ -3586,14 +3677,10 @@
                     } else {
                         // Timeout
                         setTimeout(async()=>{
-                            $("#dataStatusContainer").fadeOut(1000)
-                            setTimeout(()=>{
-                                $("#dataStatusSpinner").show()
-                                $("#dataStatus")
-                                    .empty()
-                                    .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                            },1000)
+                            $("#dataStatusSpinner").show()
+                            $("#dataStatus")
+                                .empty()
+                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                             var worker3 = new Worker(`./js-css/worker/export-${version}.js`)
                             const savedUsername = await retrieveJSON("savedUsername")
                             const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
@@ -3633,7 +3720,10 @@
                                 exportIntervalStartDate = await new Date()
                                 await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                 if(!requestIsRunning){
-                                    await $("#dataStatusContainer").fadeOut(1000)
+                                    $("#dataStatusSpinner").hide()
+                                    $("#dataStatus")
+                                        .empty()
+                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                                 }
                                 await Swal.fire({
                                     heightAuto: false,
@@ -3644,14 +3734,10 @@
                                 // Interval
                                 for(let i=0;i<exportIntervalTimeout.length;i++) await clearInterval(exportIntervalTimeout[i])
                                 var saveExportIntervalTimeout = await setInterval(async()=>{
-                                    $("#dataStatusContainer").fadeOut(1000)
-                                    setTimeout(()=>{
-                                        $("#dataStatusSpinner").show()
-                                        $("#dataStatus")
-                                            .empty()
-                                            .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                        $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-                                    },1000)
+                                    $("#dataStatusSpinner").show()
+                                    $("#dataStatus")
+                                        .empty()
+                                        .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                                     var worker3 = new Worker(`./js-css/worker/export-${version}.js`)
                                     const savedUsername = await retrieveJSON("savedUsername")
                                     const savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
@@ -3691,7 +3777,10 @@
                                         exportIntervalStartDate = await new Date()
                                         await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                         if(!requestIsRunning){
-                                            await $("#dataStatusContainer").fadeOut(1000)
+                                            $("#dataStatusSpinner").hide()
+                                            $("#dataStatus")
+                                                .empty()
+                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                                         }
                                         await Swal.fire({
                                             heightAuto: false,
@@ -3734,7 +3823,8 @@
                 resolve()
             })
         }).then(async()=>{
-            $(".loader").fadeOut(250)
+            await $(".loader").fadeOut(250)
+            pageInits = false
         })
     }
 
@@ -3775,16 +3865,11 @@
         savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
         savedFilterAlgo = await (filterAlgo || await retrieveJSON("savedFilterAlgo") || [])
         //
-        $("#dataStatusContainer").fadeOut(1000)
         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
-        setTimeout(()=>{
-            $("#dataStatusSpinner").show()
-            $("#dataStatusContainer").css("display","flex").fadeIn(1000)
-        },1000)
         for(let i=analyzeVariableTime; i>=0; i--){
             var timeout = setTimeout(()=>{
                 $("#dataStatusSpinner").show()
-                if(i===0){
+                if(i<1){
                     $("#dataStatus")
                         .empty()
                         .append(`<span style="white-space:nowrap;">Analyzing your List... Please Wait a Moment...`)
@@ -3801,7 +3886,21 @@
         var filterName
         for(let i=0; i<savedFilterAlgo.length; i++){
             filterName = savedFilterAlgo[i].toLowerCase()
-            if(filterName.charAt(0)==="!") savedExcluded.push(filterName.slice(1))
+            if(filterName.charAt(0)==="!") {
+                filterName = filterName.slice(1)
+                filterName = typeof filterName==="string"? filterName.split(":") : ""
+                if(filterName?.length>1){
+                    filterName = [filterName.shift(),filterName.join()]
+                    var type = filterName[0]
+                    var cinfo = filterName[1].trim()
+                    if(cinfo.charAt(0)==="!"){
+                        cinfo = cinfo.slice(1)
+                        savedExcluded.push(type+":"+cinfo)
+                    } else {
+                        savedExcluded.push(type+":"+cinfo)
+                    }
+                }
+            }
             else savedIncluded.push(filterName)
         }
         if(!notAnUpdate){
@@ -4036,10 +4135,14 @@
                             } catch(ex){}
                             try {
                                 if(err==='Not Found.'){
-                                    setTimeout(()=>{
-                                        $("#dataStatusContainer").fadeOut(1000)
+                                    (async()=>{
+                                        lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                        $("#dataStatusSpinner").hide()
+                                        $("#dataStatus")
+                                            .empty()
+                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
-                                    },1500)
+                                    })();
                                     requestIsRunning = false
                                     Swal.fire({
                                         heightAuto: false,
@@ -4178,7 +4281,7 @@
                                     for(let i=60; i>=0; i--){
                                         var timeout = setTimeout(()=>{
                                             $("#dataStatusSpinner").show()
-                                            if(i===0){
+                                            if(i<1){
                                                 $("#dataStatus")
                                                     .empty()
                                                     .append(`<span style="white-space:nowrap;">Limit Request, Please Wait a Moment...`)
@@ -4196,7 +4299,7 @@
                                         for(let i=analyzeVariableTime; i>=0; i--){
                                             var timeout = setTimeout(()=>{
                                                 $("#dataStatusSpinner").show()
-                                                if(i===0){
+                                                if(i<1){
                                                     $("#dataStatus")
                                                         .empty()
                                                         .append(`<span style="white-space:nowrap;">Analyzing your List... Please Wait a Moment...`)
@@ -4213,8 +4316,14 @@
                                 }
                             } catch(ex) {
                                 requestIsRunning = false
-                                console.error(ex)
-                                $("#dataStatusContainer").fadeOut(1000)
+                                console.error(ex);
+                                (async()=>{
+                                    lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                    $("#dataStatusSpinner").hide()
+                                    $("#dataStatus")
+                                        .empty()
+                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                })();
                                 console.error("Error 101")
                                 Swal.fire({
                                     heightAuto: false,
@@ -4260,9 +4369,13 @@
                     analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
                 }
             } else {
+                lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                $("#dataStatusSpinner").hide()
+                $("#dataStatus")
+                    .empty()
+                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                 requestIsRunning = false
                 $("#filterAlgoModal #filterAlgo-validation").hide()
-                $("#dataStatusContainer").hide()
             }
         }
     }
@@ -4360,9 +4473,9 @@
                     $("#dataStatus")
                         .empty()
                         .append(`<span style="white-space:nowrap;">Getting Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${page}" max="${lastAnilistPage>page?lastAnilistPage:page+1}"></progress>⠀${(page/(lastAnilistPage>page?lastAnilistPage:page+1)*100).toFixed(2)}%</span>`);
-                    (async()=>{
-                        await saveJSON(new Date(),"savedLastRequestDate")
-                    })();
+                    if($("#dataStatusSpinner")?.css("display")!=="none") {
+                        $("#dataStatusSpinner").hide()
+                    }
                 },
                 success: (result)=>{
                     var tempAnimeEntries = result.data.Page.media
@@ -4383,7 +4496,7 @@
                             .append(`<span style="white-space:nowrap;">Getting Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="100" max="100"></progress>⠀100%</span>`);
                         (async()=>{
                             await saveJSON(animeEntries,"savedAnimeEntries")
-                            lastSavedUpdateTime = tempLastSavedUpdateTime
+                            lastSavedUpdateTime = tempLastSavedUpdateTime || 0
                             await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
                             await saveJSON(page, "lastAnilistPage")
                             if(savedUserList!==undefined){
@@ -4404,7 +4517,7 @@
                         for(let i=60; i>=0; i--){
                             var timeout = setTimeout(()=>{
                                 $("#dataStatusSpinner").hide()
-                                if(i===0){
+                                if(i<1){
                                     $("#dataStatus")
                                         .empty()
                                         .append(`<span style="white-space:nowrap;">Limit Request, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${page}" max="${lastAnilistPage>page?lastAnilistPage:page+1}"></progress>⠀${(page/(lastAnilistPage>page?lastAnilistPage:page+1)*100).toFixed(2)}%</span>`)
@@ -4433,7 +4546,13 @@
                             savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                             await LoadData(savedRecScheme)
                         })();
-                        $("#dataStatusContainer").fadeOut(1000)
+                        (async()=>{
+                            lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                            $("#dataStatusSpinner").hide()
+                            $("#dataStatus")
+                                .empty()
+                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                        })();
                         console.log("WebtoApp: Update Error")
                         if(Object.keys(savedRecScheme).length===0){
                             $("#animeRecommendationList").empty()
@@ -4548,12 +4667,9 @@
                         $("#dataStatus")
                             .empty()
                             .append(`<span style="white-space:nowrap;">Updating Anime from Anilist...⠀</span><span style="white-space:nowrap;"><progress value="${updatedAnimeEntries.length}" max="${savedAnimeEntries.length}"></progress>⠀${(updatedAnimeEntries.length/savedAnimeEntries.length*100).toFixed(2)}%</span>`);
-                        (async()=>{
-                            await saveJSON(new Date(),"savedLastRequestDate")
-                            if(page===1) {
-                                $("#dataStatusSpinner").hide()
-                            }
-                        })();
+                        if($("#dataStatusSpinner")?.css("display")!=="none") {
+                            $("#dataStatusSpinner").hide()
+                        }
                     },
                     success: (result)=>{
                         var tempUpdatedAnimeEntries = result.data.Page.media
@@ -4565,7 +4681,7 @@
                         }
                         if(tempUpdatedAnimeEntries.length>0){
                             if(tempUpdatedAnimeEntries[0].updatedAt>tempLastSavedUpdateTime){
-                                tempLastSavedUpdateTime = tempUpdatedAnimeEntries[0].updatedAt
+                                tempLastSavedUpdateTime = tempUpdatedAnimeEntries[0].updatedAt || 0
                             }
                         }
                         if(hasNextPage&&tempUpdatedAnimeEntries.at(-1).updatedAt>lastSavedUpdateTime){
@@ -4585,7 +4701,7 @@
                                 animeEntries = data.animeEntries;
                                 (async()=>{
                                     await saveJSON(animeEntries,"savedAnimeEntries")
-                                    lastSavedUpdateTime = tempLastSavedUpdateTime
+                                    lastSavedUpdateTime = tempLastSavedUpdateTime || 0
                                     await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
                                     analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, false)
                                 })();
@@ -4603,7 +4719,7 @@
                             for(let i=60; i>=0; i--){
                                 var timeout = setTimeout(()=>{
                                     $("#dataStatusSpinner").hide()
-                                    if(i===0){
+                                    if(i<1){
                                         $("#dataStatus")
                                         .empty()
                                         .append(`<span style="white-space:nowrap;">Limit Request, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress value="${updatedAnimeEntries.length}" max="${savedAnimeEntries.length}"></progress>⠀${(updatedAnimeEntries.length/savedAnimeEntries.length*100).toFixed(2)}%</span>`)
@@ -4632,7 +4748,13 @@
                                 savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                                 await LoadData(savedRecScheme)
                             })();
-                            $("#dataStatusContainer").fadeOut(1000)
+                            (async()=>{
+                                lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                $("#dataStatusSpinner").hide()
+                                $("#dataStatus")
+                                    .empty()
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                            })();
                             console.log("WebtoApp: Update Error")
                             if(Object.keys(savedRecScheme).length===0){
                                 $("#animeRecommendationList").empty()
@@ -4686,7 +4808,7 @@
             $("#dataStatusSpinner").show()
             for(let i=updateAnalyzeAnimeTime; i>=0; i--){
                 var timeout = setTimeout(()=>{
-                    if(i===0){
+                    if(i<1){
                         $("#dataStatusSpinner").show()
                         $("#dataStatus")
                             .empty()
@@ -4783,8 +4905,7 @@
                         // This Remove Current Filters in DOM so Check First
                         for(let i=0;i<checkFiltersFocus.length;i++) clearInterval(checkFiltersFocus[i])
                         checkFiltersFocus.push(setInterval(async()=>{
-                            if( !requestIsRunning
-                                &&!$("#flex0").is(":focus")
+                            if( !$("#flex0").is(":focus")
                                 &&!$("#flex1").is(":focus")
                                 &&!$("#flex2").is(":focus")
                                 &&$("#warnAnimeContainer").css("display")==="none"
@@ -4859,10 +4980,10 @@
                                 if($("#warnAnimeContainer").css("display")!=="none"){                            
                                     $("#warnAnimeContainer").css({visibility:"hidden"}).show()
                                 }
-                                savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
-                                                                                        "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
-                                                                                        "!tag: nudity","!tag: slavery","!tag: suicide","!tag: yuri","!tag: netorare", "!tag: rape"
-                                                                                        ]
+                                savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: !ecchi","!tag: !boys' love","tag: cgi","!tag: !ero guro","!tag: !female harem",
+                                                                                            "tag: full cgi","!tag: !male harem","!tag: !mixed gender harem",
+                                                                                            "!tag: !nudity","!tag: !slavery","!tag: !suicide","!tag: !yuri","!tag: !netorare", "!tag: !rape"
+                                                                                         ]
                                 await new Promise(async(resolve)=>{
                                     var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
                                     var infoName
@@ -4928,7 +5049,11 @@
                         setTimeout(()=>{
                             $("#filterAlgoModal #filterAlgo-validation").fadeOut(1000)
                         },1000)
-                        $("#dataStatusContainer").fadeOut(1000)
+                        lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                        $("#dataStatusSpinner").hide()
+                        $("#dataStatus")
+                            .empty()
+                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                         requestIsRunning = false
                         resolve()
                     } else if(alertUser){
@@ -4969,7 +5094,11 @@
                                 }
                             })();
                         }
-                        $("#dataStatusContainer").fadeOut(1000)
+                        lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                        $("#dataStatusSpinner").hide()
+                        $("#dataStatus")
+                            .empty()
+                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
                         requestIsRunning = false
                         resolve()
                     }
@@ -4991,7 +5120,21 @@
                 for(let i=0; i<filterInputs.length; i++){
                     filterName = filterInputs[i].textContent
                     filters.push(filterName)
-                    if(filterName.charAt(0)==="!") excludes.push(filterName.slice(1))
+                    if(filterName.charAt(0)==="!") {
+                        filterName = filterName.slice(1)
+                        filterName = typeof filterName==="string"? filterName.split(":") : ""
+                        if(filterName?.length>1){
+                            filterName = [filterName.shift(),filterName.join()]
+                            var type = filterName[0]
+                            var cinfo = filterName[1].trim()
+                            if(cinfo.charAt(0)==="!"){
+                                cinfo = cinfo.slice(1)
+                                excludes.push(type+":"+cinfo)
+                            } else {
+                                excludes.push(type+":"+cinfo)
+                            }
+                        }
+                    }
                     else includes.push(filterName)
                 }
                 $("#hiddenUnhiddenBtn").text("Unhidden")
@@ -5002,15 +5145,29 @@
                     }
                 }
                 await saveJSON(filters, "savedFilters")
-                savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
-                                                                           "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
-                                                                           "!tag: nudity","!tag: slavery","!tag: suicide","!tag: yuri","!tag: netorare", "!tag: rape"
+                savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: !ecchi","!tag: !boys' love","tag: cgi","!tag: !ero guro","!tag: !female harem",
+                                                                            "tag: full cgi","!tag: !male harem","!tag: !mixed gender harem",
+                                                                            "!tag: !nudity","!tag: !slavery","!tag: !suicide","!tag: !yuri","!tag: !netorare", "!tag: !rape"
                                                                          ]
                 var savedWarnR = {}
                 var savedWarnY = {}
                 for(let i=0; i<savedWarnAnime.length; i++){
                     var warnName = savedWarnAnime[i].toLowerCase()
-                    if(warnName.charAt(0)==="!") savedWarnR[warnName.slice(1)] = null
+                    if(warnName.charAt(0)==="!") {
+                        warnName = warnName.slice(1)
+                        warnName = typeof warnName==="string"? warnName.split(":") : ""
+                        if(warnName?.length>1){
+                            warnName = [warnName.shift(),warnName.join()]
+                            var type = warnName[0]
+                            var cinfo = warnName[1].trim()
+                            if(cinfo.charAt(0)==="!"){
+                                cinfo = cinfo.slice(1)
+                                savedWarnR[type+":"+cinfo] = null
+                            } else {
+                                savedWarnR[type+":"+cinfo] = null
+                            }
+                        }
+                    }
                     else savedWarnY[warnName] = null
                 }
                 savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs") || {}
