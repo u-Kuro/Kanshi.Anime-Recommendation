@@ -207,7 +207,8 @@
             }
             label{margin: 0}
             .searchData,.table-responsive{
-                margin-block: 15px;
+                margin-top: 15px;
+                margin-bottom: 15px;
             }
             .flexdatalist-multiple > .value {
                 height: fit-content;
@@ -930,7 +931,7 @@
                 user-select: none;
             }
             #dataStatusContainer{
-                margin-inline: 15px;
+                margin: 15px;
                 justify-content: center;
                 align-items: center;
             }
@@ -1022,12 +1023,6 @@
         <div class="btn-container">
             <button id="searchBtn" class="btn darkMode" type="submit">Search</button>
         </div>
-        <div id="dataStatusContainer" class="data-status-container">
-            <div id="dataStatusWrapper">
-                <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner darkMode"></div></div>
-                <h6 id="dataStatus"></h6>
-            </div>
-        </div>
     </div>
     <div class="table-responsive darkMode">
         <table id="anime-table" class="tablesorter table table-bordered table-striped darkMode">
@@ -1058,6 +1053,12 @@
             </tr>
             </tbody>
         </table>
+        <div id="dataStatusContainer" class="data-status-container">
+            <div id="dataStatusWrapper">
+                <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner darkMode"></div></div>
+                <h6 id="dataStatus"></h6>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -1141,8 +1142,8 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "3.5",
-          backUpVersion = 2.1
+    const version = "3.6",
+          backUpVersion = 2.2
         // IndexDB
     var request, db,
         // Saved Data
@@ -2567,7 +2568,7 @@
                     await $("#warnAnimeContainer").show()
                     $("#warnAnimeModal").removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
                     $(`ul.flex1`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
-                    $(`ul.flex1`)[0].scroll(0, -Number.MAX_SAFE_INTEGER)
+                    $(`ul.flex1`)[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                 })
                 $("#submitWarnAnime").on("click",async()=>{
                     var warnAnimeInputs = $("#warnAnimeModal .flexdatalist-multiple > .value").children(".text")
@@ -2621,7 +2622,7 @@
                     await $("#filterAlgoContainer").show()
                     $("#filterAlgoModal").removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
                     $(`ul.flex2`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
-                    $(`ul.flex2`)[0].scroll(0, -Number.MAX_SAFE_INTEGER)
+                    $(`ul.flex2`)[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                 })
                 $("#submitFilterAlgo").on("click",async()=>{
                     savedUserList = await retrieveJSON("savedUserList") || {}
@@ -3395,10 +3396,10 @@
                 $(`ul.flex2`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
                 // Only Works with SetTimeout >=1 in firefox idk why
                 setTimeout(()=>{
-                    $(`ul.flex0`)[0].scroll(0, $(`ul.flex0`).outerHeight())
+                    $(`ul.flex0`)[0]?.scroll(0, $(`ul.flex0`).outerHeight())
                 },1)
-                $(`ul.flex1`)[0].scroll(0, -Number.MAX_SAFE_INTEGER)
-                $(`ul.flex2`)[0].scroll(0, -Number.MAX_SAFE_INTEGER)
+                $(`ul.flex1`)[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                $(`ul.flex2`)[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                 resolve()
             })
         }).then(async()=>{
@@ -4825,7 +4826,7 @@
                                         $("#filters .flexdatalist-multiple-value > .flexdatalist-alias").val(currentInputValue)
                                     }
                                     $(`ul.flex0`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
-                                    $(`ul.flex0`)[0].scroll(0, $(`ul.flex0`).outerHeight())
+                                    $(`ul.flex0`)[0]?.scroll(0, $(`ul.flex0`).outerHeight())
                                 })
                                 // Reload Saved Algorithm Filters
                                 if($("#filterAlgoContainer").css("display")!=="none"){                            
@@ -4852,7 +4853,7 @@
                                     }
                                     await $("#filterAlgoContainer").css({visibility:"visible"}).hide()
                                     $(`ul.flex2`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
-                                    $(`ul.flex2`)[0].scroll(0, -Number.MAX_SAFE_INTEGER)
+                                    $(`ul.flex2`)[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                                 })
                                 // Reload Warn Anime Contents
                                 if($("#warnAnimeContainer").css("display")!=="none"){                            
@@ -4882,7 +4883,7 @@
                                     }
                                     await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
                                     $(`ul.flex1`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
-                                    $(`ul.flex1`)[0].scroll(0, -Number.MAX_SAFE_INTEGER)
+                                    $(`ul.flex1`)[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                                 })
                             }
                         },250))

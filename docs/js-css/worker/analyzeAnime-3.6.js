@@ -415,16 +415,16 @@ self.onmessage = (message) => {
             if(zformat.length>0){
                 animeTypeOS.push(arrayMean(zformat))
             }
+            if(isaN(anime.seasonYear)&&varScheme.yearModel!==undefined){
+                var tempLRPredict = LRpredict(varScheme.yearModel,anime.seasonYear)
+                animeTypeOS.push(tempLRPredict)
+            }
             if(isaN(anime.episodes)&&varScheme.episodesModel!==undefined){
                 var tempLRPredict = LRpredict(varScheme.episodesModel,anime.episodes)
                 animeTypeOS.push(tempLRPredict)
             }
             if(isaN(anime.duration)&&varScheme.durationModel!==undefined){
                 var tempLRPredict = LRpredict(varScheme.durationModel,anime.duration)
-                animeTypeOS.push(tempLRPredict)
-            }
-            if(isaN(anime.seasonYear)&&varScheme.yearModel!==undefined){
-                var tempLRPredict = LRpredict(varScheme.yearModel,anime.seasonYear)
                 animeTypeOS.push(tempLRPredict)
             }
                 // Average Score
@@ -516,7 +516,7 @@ self.onmessage = (message) => {
                 userStatus: userStatus, status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, staff: staff,
                 variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount,
-                popularity: popularity,
+                popularity: popularity
             }
         }
         // Add Weight to Scores

@@ -665,21 +665,20 @@ self.onmessage = (message) => {
         }
     }
     // Clean Data JSON
-    formatMeanCount = 33
     if(Object.values(formatMeanCount).length>0){
         var formatCountValues = Object.values(formatMeanCount)
         var formatCountMode = arrayMode(Object.values(formatCountValues))
         var formatCountMean = arrayMean(Object.values(formatCountValues))
-        var tempformatMeanCount = formatCountMean>=33? 33 : Math.min(formatCountMode,formatCountMean)
+        var tempformatMeanCount = formatCountMean>=33? 33 : Math.max(formatCountMode,formatCountMean)
         formatMeanCount = minSampleSize? minSampleSize : tempformatMeanCount
     } else {
-        genresMeanCount = 10
+        formatMeanCount = 10
     }
     if(Object.values(genresMeanCount).length>0){
         var genresCountValues = Object.values(genresMeanCount)
         var genresCountMode = arrayMode(Object.values(genresCountValues))
         var genresCountMean = arrayMean(Object.values(genresCountValues))
-        var tempgenresMeanCount = genresCountMean>=33? 33 : Math.min(genresCountMode,genresCountMean)
+        var tempgenresMeanCount = genresCountMean>=33? 33 : Math.max(genresCountMode,genresCountMean)
         genresMeanCount = minSampleSize? minSampleSize : tempgenresMeanCount
     } else {
         genresMeanCount = 10
@@ -688,7 +687,7 @@ self.onmessage = (message) => {
         var tagsCountValues = Object.values(tagsMeanCount)
         var tagsCountMode = arrayMode(Object.values(tagsCountValues))
         var tagsCountMean = arrayMean(Object.values(tagsCountValues))
-        var temptagsMeanCount = tagsCountMean>=33? 33 : Math.min(tagsCountMode,tagsCountMean)
+        var temptagsMeanCount = tagsCountMean>=33? 33 : Math.max(tagsCountMode,tagsCountMean)
         tagsMeanCount = minSampleSize? minSampleSize : temptagsMeanCount
     } else {
         tagsMeanCount = 10
@@ -697,7 +696,7 @@ self.onmessage = (message) => {
         var studiosCountValues = Object.values(studiosMeanCount)
         var studiosCountMode = arrayMode(Object.values(studiosCountValues))
         var studiosCountMean = arrayMean(Object.values(studiosCountValues))
-        var tempstudiosMeanCount = studiosCountMean>=33? 33 : Math.min(studiosCountMode,studiosCountMean)
+        var tempstudiosMeanCount = studiosCountMean>=33? 33 : Math.max(studiosCountMode,studiosCountMean)
         studiosMeanCount = minSampleSize? minSampleSize : tempstudiosMeanCount
     } else {
         studiosMeanCount = 10
@@ -706,7 +705,7 @@ self.onmessage = (message) => {
         var staffCountValues = Object.values(staffMeanCount)
         var staffCountMode = arrayMode(Object.values(staffCountValues))
         var staffCountMean = arrayMean(Object.values(staffCountValues))
-        var tempstaffMeanCount = staffCountMean>=33? 33 : Math.min(staffCountMode,staffCountMean)
+        var tempstaffMeanCount = staffCountMean>=33? 33 : Math.max(staffCountMode,staffCountMean)
         staffMeanCount = minSampleSize? minSampleSize : tempstaffMeanCount
     } else {
         staffMeanCount = 10
