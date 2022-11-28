@@ -1807,6 +1807,7 @@
                         })
                     } else {
                         $("#importFile").click()
+                        $(".menu-container").hide()
                     }
                 })
                 $("#importFile").on("change",(event)=>{
@@ -5330,7 +5331,7 @@
             reverseButtons: true,
             footer: `
                 <a target="_blank" rel="noopener noreferrer" href="https://anilist.co/signup">Create an Anilist Account</a>
-                <a href="javascript:;" onclick="$('#importBtn').click()">Import Backup</a>
+                <a href="javascript:;" onclick="$('#importBtn').click();">Import Backup</a>
             `,
             inputValidator: async(value) => {
                 return await new Promise(async(resolve) => {
