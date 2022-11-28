@@ -1510,7 +1510,7 @@
                             denyButtonColor: '#e27d81',
                             icon: "question",
                             reverseButtons: true
-                        }).then(async(value)=>{
+                        }).then(async(value)=>{//here
                             if(value.isConfirmed){
                                 var newUsername = await $("#username").val()
                                 savedUsername = await retrieveJSON("savedUsername") || ""
@@ -3989,6 +3989,7 @@
             var lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
             var AnalyzeVariableStartTime = new Date()
             if(lastSavedUpdateTime===0){
+                deepUpdateStartTime = new Date()
                 isDeepUpdate = true
             }
             // Check Parameters
