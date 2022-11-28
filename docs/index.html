@@ -1171,16 +1171,16 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "3.8",
+    const version = "3.9",
           backUpVersion = 2.3
         // IndexDB
     var request, db,
         // Saved Data
     savedUsername, savedRecScheme, savedUserList, savedAnimeEntries, savedHiddenAnimeIDs, savedAnimeFranchises,
     savedFilters, savedWarnAnime, savedFilterAlgo, savedBackUpVersion,
-    savedHiddenTablePage, savedUnhiddenTablePage, savedTableStatus, savedYscroll, savedSort, 
+    savedHiddenTablePage, savedUnhiddenTablePage, savedTableStatus, savedYscroll, savedSort,
     savedTheme, kidsAnimeIsHidden, hideUnwatchedSequels,
-    savedFilterOptionsJson, allFilterInfo, 
+    savedFilterOptionsJson, allFilterInfo,
     exportIntervalIsActive, updateIntervalIsActive, exportIntervalStartDate, updateIntervalStartDate,
     exportIntervalTimeout = [], updateIntervalTimeout = [],
         // Load Saved API Request State
@@ -1194,7 +1194,6 @@
         // Browser
     ,notificationGranted = false
         // Browser
-    
     // Create IndexDB
     window.onload = async () => {
         // Init Reload
@@ -1235,7 +1234,7 @@
             return await new Promise((resolve)=>{
                 $("#username").on('keypress',async (e) =>{
                     if(e.which===13&&!isLoading) {
-                        $("#searchBtn").click()        
+                        $("#searchBtn").click()
                     }
                 })
                 $("#filters").on('keypress',async (e) =>{
@@ -1510,7 +1509,7 @@
                             denyButtonColor: '#e27d81',
                             icon: "question",
                             reverseButtons: true
-                        }).then(async(value)=>{//here
+                        }).then(async(value)=>{
                             if(value.isConfirmed){
                                 var newUsername = await $("#username").val()
                                 savedUsername = await retrieveJSON("savedUsername") || ""
@@ -2271,7 +2270,7 @@
                                 })
                             }
                         }
-                        reader.readAsText(importedFile);  
+                        reader.readAsText(importedFile);
                     }
                 })
                 $("#exportBtn").on("click", async()=>{
@@ -2771,7 +2770,7 @@
                                 await warnAnimeInput.trigger(e)
                                 await warnAnimeInput.val("")
                             }
-                        })                        
+                        })
                     },300)
                 })
                 $("#warnAnimeContainer, .swal2-modal-custom").on("click",(e)=>{
@@ -2807,6 +2806,7 @@
                                 Update(false)
                                 $(".menu-container").fadeOut(250)
                                 lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                 $("#dataStatusSpinner").hide()
                                 $("#dataStatus")
                                     .empty()
@@ -2941,7 +2941,7 @@
                                                                     // Reset Custom Validation
                                                                     $("#filterAlgo-validation").html("").hide()
                                                                     resolve()
-                                                                },1000) 
+                                                                },1000)
                                                             })
                                                         })();
                                                     },
@@ -3170,8 +3170,8 @@
                 $(".filter-container, .filter-container-custom").on('DOMNodeInserted','.flexdatalist-multiple',()=>{
                     if(savedTheme==="darkMode"){
                         $(` .flexdatalist-multiple,
-                            .flexdatalist-alias, 
-                            .flexdatalist-results, 
+                            .flexdatalist-alias,
+                            .flexdatalist-results,
                             .flexdatalist-multiple li.value
                         `).addClass('darkMode')
                     }
@@ -3382,7 +3382,7 @@
                         await saveJSON([3],"savedUpdateAnalyzeAnimeTime")
                     }
                     if(typeof savedDeepUpdateTime==="number"){
-                        savedDeepUpdateTime = [savedDeepUpdateTime]    
+                        savedDeepUpdateTime = [savedDeepUpdateTime]
                         await saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
                     } else {
                         await saveJSON([320],"savedDeepUpdateTime")
@@ -3391,7 +3391,7 @@
                 } else {
                     resolve()
                 }
-            }).then(async()=>{  
+            }).then(async()=>{
                 if(savedAnimeEntries.length<1||lastSavedUpdateTime===0||savedBackUpVersion<backUpVersion){
                     var worker0 = await new Worker(`./js-css/worker/getAnimeEntries-${version}.js`)
                     await worker0.postMessage("")
@@ -3413,7 +3413,7 @@
                 } else {
                     return
                 }
-            }).then(async()=>{  
+            }).then(async()=>{
                 if(await savedFilterOptionsJson.length<1||savedBackUpVersion<backUpVersion){
                     var worker1 = await new Worker(`./js-css/worker/getOptions-${version}.js`)
                     await worker1.postMessage("")
@@ -3458,7 +3458,7 @@
                 }
             })
         }).then(async()=>{
-            // Apply Saved Data   
+            // Apply Saved Data
             return await new Promise(async(resolve) => {
                 // Reload Name
                 if(await savedUsername.length>0){
@@ -3503,7 +3503,7 @@
                     await warnAnimeInput.val("")
                 }
                 await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
-                
+
                 // Menu Filters
                 if(await kidsAnimeIsHidden){
                     await $("#hideKidsAnimeBtn").addClass("selected")
@@ -3521,7 +3521,7 @@
                     await $("#exportIntervalBtn").addClass("selected")
                 }
 
-                // Init Last List (Unhidden/Hidden) 
+                // Init Last List (Unhidden/Hidden)
                 var filters = await $("#filters .flexdatalist-multiple").children("li.value")
                 var filterName
                 for(let i=0; i<filters.length; i++) {
@@ -3943,7 +3943,7 @@
 
     async function analyzeVariables(updateID, username, notAnUpdate, filterAlgo, doHideUnwatchedSeq) {
         var savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || [90]
-        var analyzeVariableTime = arrayMean(savedAnalyzeVariableTime)
+        var analyzeVariableTime = Math.ceil(arrayMean(savedAnalyzeVariableTime))
         savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises") || []
         savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
         savedFilterAlgo = await (filterAlgo || await retrieveJSON("savedFilterAlgo") || [])
@@ -3968,14 +3968,15 @@
         var savedExcluded = []
         var filterName
         for(let i=0; i<savedFilterAlgo.length; i++){
-            filterName = savedFilterAlgo[i].toLowerCase()
+            filterName = savedFilterAlgo[i]?.trim()?.toLowerCase()
             if(filterName.charAt(0)==="!") {
                 filterName = filterName.slice(1)
                 filterName = typeof filterName==="string"? filterName.split(":") : ""
+                // Only Allow Specific (non-specified removes almost all predictors)
                 if(filterName?.length>1){
                     filterName = [filterName.shift(),filterName.join()]
                     var type = filterName[0]
-                    var cinfo = filterName[1].trim()
+                    var cinfo = filterName[1]?.trim()?.toLowerCase()
                     if(cinfo.charAt(0)==="!"){
                         cinfo = cinfo.slice(1)
                         savedExcluded.push(type+":"+cinfo)
@@ -4006,9 +4007,9 @@
                     // Initialize Anilist Graphql Data
                     var query = `
                     {
-                        MediaListCollection(userName: "${username}", 
-                        chunk:${chunk}, 
-                        perChunk:${maxAnimePerChunk}, 
+                        MediaListCollection(userName: "${username}",
+                        chunk:${chunk},
+                        perChunk:${maxAnimePerChunk},
                         forceSingleCompletedList: true,
                         type: ANIME) {
                             hasNextChunk
@@ -4221,11 +4222,11 @@
                                 if(err==='Not Found.'){
                                     (async()=>{
                                         lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                         $("#dataStatusSpinner").hide()
                                         $("#dataStatus")
                                             .empty()
                                             .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
-                                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                     })();
                                     requestIsRunning = false
                                     Swal.fire({
@@ -4378,7 +4379,7 @@
                                         updateStateText.push(timeout)
                                     }
                                     setTimeout(()=>{
-                                        var analyzeVariableTime = Math.max(analyzeVariableTime-Math.ceil(((new Date).getTime()-AnalyzeVariableStartTime.getTime())/1000),1)
+                                        var analyzeVariableTime = Math.ceil(Math.max(analyzeVariableTime-Math.ceil(((new Date).getTime()-AnalyzeVariableStartTime.getTime())/1000),1))
                                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                         for(let i=analyzeVariableTime; i>=0; i--){
                                             var timeout = setTimeout(()=>{
@@ -4403,6 +4404,7 @@
                                 console.error(ex);
                                 (async()=>{
                                     lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                    for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                     $("#dataStatusSpinner").hide()
                                     $("#dataStatus")
                                         .empty()
@@ -4434,7 +4436,6 @@
                                         </tr>
                                     `)
                                 }
-                                for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                             }
                         }
                     })
@@ -4457,6 +4458,7 @@
                 }
             } else {
                 lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                 $("#dataStatusSpinner").hide()
                 $("#dataStatus")
                     .empty()
@@ -4507,8 +4509,8 @@
                                     userPreferred
                                 }
                                 relations {
-                                    edges { 
-                                        relationType      
+                                    edges {
+                                        relationType
                                         node{
                                             id
                                             popularity
@@ -4638,6 +4640,7 @@
                         // Browser
                         (async()=>{
                             lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                            for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                             $("#dataStatusSpinner").hide()
                             $("#dataStatus")
                                 .empty()
@@ -4655,7 +4658,6 @@
                                 </tr>
                             `)
                         }
-                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                     }
                 }
             })
@@ -4704,8 +4706,8 @@
                                         userPreferred
                                     }
                                     relations {
-                                        edges { 
-                                            relationType      
+                                        edges {
+                                            relationType
                                             node{
                                                 id
                                                 popularity
@@ -4843,6 +4845,7 @@
                             // Browser
                             (async()=>{
                                 lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                 $("#dataStatusSpinner").hide()
                                 $("#dataStatus")
                                     .empty()
@@ -4860,7 +4863,6 @@
                                     </tr>
                                 `)
                             }
-                            for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                         }
                     }
                 })
@@ -4875,8 +4877,8 @@
         return await new Promise(async(resolve)=>{
             var UpdateAnalyzeAnimeStartTime = new Date()
             var savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime") || [3]
-            var updateAnalyzeAnimeTime = arrayMean(savedUpdateAnalyzeAnimeTime)
-            if(doHideUnwatchedSeq!==undefined){   
+            var updateAnalyzeAnimeTime = Math.ceil(arrayMean(savedUpdateAnalyzeAnimeTime))
+            if(doHideUnwatchedSeq!==undefined){
                 hideUnwatchedSequels = doHideUnwatchedSeq
             } else {
                 hideUnwatchedSequels = await retrieveJSON("hideUnwatchedSequels")
@@ -5071,7 +5073,7 @@
                                     $(`ul.flex2`)[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                                 })
                                 // Reload Warn Anime Contents
-                                if($("#warnAnimeContainer").css("display")!=="none"){                            
+                                if($("#warnAnimeContainer").css("display")!=="none"){
                                     $("#warnAnimeContainer").css({visibility:"hidden"}).show()
                                 }
                                 savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: !ecchi","!tag: !boys' love","tag: cgi","!tag: !ero guro","!tag: !female harem",
@@ -5144,6 +5146,7 @@
                             $("#filterAlgoModal #filterAlgo-validation").fadeOut(1000)
                         },1000)
                         lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                         $("#dataStatusSpinner").hide()
                         $("#dataStatus")
                             .empty()
@@ -5192,6 +5195,7 @@
                             })();
                         }
                         lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                         $("#dataStatusSpinner").hide()
                         $("#dataStatus")
                             .empty()
@@ -5215,7 +5219,7 @@
                 var excludes = kidsAnimeIsHidden? ["tag: kids"] : []
                 var filterName
                 for(let i=0; i<filterInputs.length; i++){
-                    filterName = filterInputs[i].textContent
+                    filterName = filterInputs[i]?.textContent?.trim()?.toLowerCase()
                     filters.push(filterName)
                     if(filterName.charAt(0)==="!") {
                         filterName = filterName.slice(1)
@@ -5223,13 +5227,15 @@
                         if(filterName?.length>1){
                             filterName = [filterName.shift(),filterName.join()]
                             var type = filterName[0]
-                            var cinfo = filterName[1].trim()
+                            var cinfo = filterName[1]?.trim()?.toLowerCase()
                             if(cinfo.charAt(0)==="!"){
                                 cinfo = cinfo.slice(1)
                                 excludes.push(type+":"+cinfo)
                             } else {
                                 excludes.push(type+":"+cinfo)
                             }
+                        } else if(filterName?.length===1){
+                            excludes.push(filterName[0])
                         }
                     }
                     else includes.push(filterName)
@@ -5249,20 +5255,22 @@
                 var savedWarnR = {}
                 var savedWarnY = {}
                 for(let i=0; i<savedWarnAnime.length; i++){
-                    var warnName = savedWarnAnime[i].trim().toLowerCase()
+                    var warnName = savedWarnAnime[i]?.trim()?.toLowerCase()
                     if(warnName.charAt(0)==="!") {
                         warnName = warnName.slice(1)
                         warnName = typeof warnName==="string"? warnName.split(":") : ""
                         if(warnName?.length>1){
                             warnName = [warnName.shift(),warnName.join()]
                             var type = warnName[0]
-                            var cinfo = warnName[1].trim()
+                            var cinfo = warnName[1].trim()?.toLowerCase()
                             if(cinfo.charAt(0)==="!"){
                                 cinfo = cinfo.slice(1)
                                 savedWarnR[type+": "+cinfo] = null
                             } else {
                                 savedWarnR[type+": "+cinfo] = null
                             }
+                        } else if(warnName?.length===1){
+                            savedWarnR[warnName] = null
                         }
                     }
                     else savedWarnY[warnName] = null
@@ -5331,7 +5339,7 @@
             reverseButtons: true,
             footer: `
                 <a target="_blank" rel="noopener noreferrer" href="https://anilist.co/signup">Create an Anilist Account</a>
-                <a href="javascript:;" onclick="$('#importBtn').click();">Import Backup</a>
+                <a href="javascript:;" onclick="$('#importBtn').click()">Import Backup</a>
             `,
             inputValidator: async(value) => {
                 return await new Promise(async(resolve) => {

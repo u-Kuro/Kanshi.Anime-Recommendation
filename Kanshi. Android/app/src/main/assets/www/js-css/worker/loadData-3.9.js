@@ -12,8 +12,26 @@ self.onmessage = (message) => {
     var isHiddenTable = false
     var tempRecScheme = []
     for(let i=0; i<includes.length; i++){
+        var included = includes[i].trim().toLowerCase()
+        var noType = !included.includes(":")
         for(let j=0; j<recList.length; j++){
-            var included = includes[i].trim().toLowerCase()
+            if(noType){
+                if(
+                    findWord(recList[j].format,included)
+                    ||findWord(recList[j].year,included)
+                    ||findWord(recList[j].season,included)
+                    ||findWord(recList[j].userStatus,included)
+                    ||findWord(recList[j].status,included)
+                    ||findWord(recList[j].title,included)
+                    ||findWord(Object.keys(recList[j].studios),included)
+                    ||findWord(Object.keys(recList[j].staff),included)
+                    ||recList[j].genres.length?findWord(recList[j].genres.split(", "),included):false
+                    ||recList[j].tags.length?findWord(recList[j].tags.split(", "),included):false
+                ){
+                    tempRecScheme.push(recList[j])
+                    continue
+                }
+            }
             if(included.includes("format:")){
                 if(findWord(recList[j].format,included.split("format:")[1])){
                     tempRecScheme.push(recList[j])
@@ -154,8 +172,25 @@ self.onmessage = (message) => {
     }
     // Exclude
     for(let i=0; i<excludes.length; i++){
+        var excluded = excludes[i].trim().toLowerCase()
+        var noType = !excluded.includes(":")
         for(let j=0; j<recList.length; j++){
-            var excluded = excludes[i].trim().toLowerCase()
+            if(noType){
+                if(
+                    findWord(recList[j].format,excluded)
+                    ||findWord(recList[j].year,excluded)
+                    ||findWord(recList[j].season,excluded)
+                    ||findWord(recList[j].userStatus,excluded)
+                    ||findWord(recList[j].status,excluded)
+                    ||findWord(recList[j].title,excluded)
+                    ||findWord(Object.keys(recList[j].studios),excluded)
+                    ||findWord(Object.keys(recList[j].staff),excluded)
+                    ||recList[j].genres.length?findWord(recList[j].genres.split(", "),excluded):false
+                    ||recList[j].tags.length?findWord(recList[j].tags.split(", "),excluded):false
+                ){
+                    continue
+                }
+            }
             if(excluded.includes("format:")){
                 if(findWord(recList[j].format,excluded.split("format:")[1])){
                     continue
@@ -243,64 +278,71 @@ self.onmessage = (message) => {
                 similarities.push(v)
             }
         })
-        var fullTitle = "title: "+(value.title||"").trim().toLowerCase()
-        if(savedWarnR[fullTitle]!==undefined) {
+        var valTitle = (value.title||"").trim().toLowerCase()
+        var fullTitle = "title: "+valTitle
+        if(savedWarnR[fullTitle]!==undefined||savedWarnR[valTitle]!==undefined) {
             warns.push(value.title)
             hasWarnR = true
-        } else if(savedWarnY[fullTitle]!==undefined&&hasWarnR!==true){
+        } else if((savedWarnY[fullTitle]!==undefined||savedWarnY[valTitle]!==undefined)&&!hasWarnR){
             warns.push(value.title)
             hasWarnY = true
         }
-        var fullStatus = "status: "+(value.status||"").trim().toLowerCase()
-        if(savedWarnR[fullStatus]!==undefined) {
+        var valStatus = (value.status||"").trim().toLowerCase()
+        var fullStatus = "status: "+valStatus
+        if(savedWarnR[fullStatus]!==undefined||savedWarnR[valStatus]!==undefined) {
             warns.push(value.status)
             hasWarnR = true
-        } else if(savedWarnY[fullStatus]!==undefined&&hasWarnR!==true) {
+        } else if((savedWarnY[fullStatus]!==undefined||savedWarnY[valStatus]!==undefined)&&!hasWarnR){
             warns.push(value.status)
             hasWarnY = true
         }
-        var fullFormat = "format: "+(value.format||"").trim().toLowerCase()
-        if(savedWarnR[fullFormat]!==undefined){
+        var valFormat = (value.format||"").trim().toLowerCase()
+        var fullFormat = "format: "+valFormat
+        if(savedWarnR[fullFormat]!==undefined||savedWarnR[valFormat]!==undefined){
             warns.push(value.format)
             hasWarnR = true
-        } else if(savedWarnY[fullFormat]!==undefined&&hasWarnR!==true) {
+        } else if((savedWarnY[fullFormat]!==undefined||savedWarnY[valFormat]!==undefined)&&!hasWarnR){
             warns.push(value.format)
             hasWarnY = true
         }
-        var fullYear = "year: "+`${(value.year||"")}`.trim().toLowerCase()
-        if(savedWarnR[fullYear]!==undefined){
+        var valYear = `${(value.year||"")}`.trim().toLowerCase()
+        var fullYear = "year: "+valYear
+        if(savedWarnR[fullYear]!==undefined||savedWarnR[valYear]!==undefined){
             warns.push(value.year)
             hasWarnR = true
-        } else if(savedWarnY[fullYear]!==undefined&&hasWarnR!==true) {
+        } else if((savedWarnY[fullYear]!==undefined||savedWarnY[valYear]!==undefined)&&!hasWarnR){
             warns.push(value.year)
             hasWarnY = true
         }
-        var fullSeason = "season: "+(value.season||"").trim().toLowerCase()
-        if(savedWarnR[fullSeason]!==undefined){
+        var valSeason = (value.season||"").trim().toLowerCase()
+        var fullSeason = "season: "+valSeason
+        if(savedWarnR[fullSeason]!==undefined||savedWarnR[valSeason]!==undefined){
             warns.push(value.season)
             hasWarnR = true
-        } else if(savedWarnY[fullSeason]!==undefined&&hasWarnR!==true){
+        } else if((savedWarnY[fullSeason]!==undefined||savedWarnY[valSeason]!==undefined)&&!hasWarnR){
             warns.push(value.season)
             hasWarnY = true
         }
         var genres = value.genres.length? value.genres.split(", ") : []
         genres.forEach((name)=>{
-            var fullGenre = "genre: "+name.trim().toLowerCase()
-            if(savedWarnR[fullGenre]!==undefined) {
+            var valGenre = name.trim().toLowerCase()
+            var fullGenre = "genre: "+valGenre
+            if(savedWarnR[fullGenre]!==undefined||savedWarnR[valGenre]!==undefined) {
                 warns.push(name)
                 hasWarnR = true
-            }else if(savedWarnY[fullGenre]!==undefined&&hasWarnR!==true){
+            } else if((savedWarnY[fullGenre]!==undefined||savedWarnY[valGenre]!==undefined)&&!hasWarnR){
                 warns.push(name)
                 hasWarnY = true
             }
         })
         var tags = value.tags.length? value.tags.split(", ") : []
         tags.forEach((name)=>{
-            var fullTag = "tag: "+name.trim().toLowerCase()
-            if(savedWarnR[fullTag]!==undefined) {
+            var valTag = name.trim().toLowerCase()
+            var fullTag = "tag: "+valTag
+            if(savedWarnR[fullTag]!==undefined||savedWarnR[valTag]!==undefined) {
                 warns.push(name)
                 hasWarnR = true
-            }else if(savedWarnY[fullTag]!==undefined&&hasWarnR!==true){
+            } else if((savedWarnY[fullTag]!==undefined||savedWarnY[valTag]!==undefined)&&!hasWarnR){
                 warns.push(name)
                 hasWarnY = true
             }
@@ -308,11 +350,12 @@ self.onmessage = (message) => {
         var studios = []
         Object.entries(value.studios).forEach(([name,url])=>{
             studios.push(`<a class="${savedTheme}" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"}>${name}</a>`)
-            var fullStudio = "studio: "+name.toLowerCase()
-            if(savedWarnR[fullStudio]!==undefined) {
+            var valStudio = name.toLowerCase()
+            var fullStudio = "studio: "+valStudio
+            if(savedWarnR[fullStudio]!==undefined||savedWarnR[valStudio]!==undefined){
                 warns.push(name)
                 hasWarnR = true
-            }else if(savedWarnY[fullStudio]!==undefined&&hasWarnR!==true){
+            } else if((savedWarnY[fullStudio]!==undefined||savedWarnY[valStudio]!==undefined)&&!hasWarnR){
                 warns.push(name)
                 hasWarnY = true
             }
@@ -320,11 +363,12 @@ self.onmessage = (message) => {
         var staff = []
         Object.entries(value.staff).forEach(([name,url])=>{
             staff.push(`<a class="${savedTheme}" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"}>${name}</a>`)
-            var fullStaff = "staff: "+name.toLowerCase()
-            if(savedWarnR[fullStaff]!==undefined) {
+            var valStaff = name.toLowerCase()
+            var fullStaff = "staff: "+valStaff
+            if(savedWarnR[fullStaff]!==undefined||savedWarnR[valStaff]!==undefined){
                 warns.push(name)
                 hasWarnR = true
-            }else if(savedWarnY[fullStaff]!==undefined&&hasWarnR!==true){
+            } else if((savedWarnY[fullStaff]!==undefined||savedWarnY[valStaff]!==undefined)&&!hasWarnR){
                 warns.push(name)
                 hasWarnY = true
             }
@@ -428,6 +472,8 @@ self.onmessage = (message) => {
             return data.toLowerCase().includes(word.trim().toLowerCase())
         } else if(Array.isArray(data)){
             return data.some((e)=>e.trim().toLowerCase().includes(word.trim().toLowerCase()))
+        } else {
+            return false
         }
     }
     function equalsNCS(str1, str2) {

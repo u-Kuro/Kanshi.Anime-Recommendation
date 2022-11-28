@@ -1043,15 +1043,15 @@
         </div>
         <div id="filters" class="filter-container">
             <input type="text"
-                   placeholder="Filter Table/List Contents (Include: Content / Exclude: !Content / WScore>=N / etc.)"
-                   class="flexdatalist"
-                   data-search-in="info"
-                   multiple="multiple"
-                   data-min-length="1"
-                   data-search-by-word="true"
-                   data-search-contain="true"
-                   data-max-shown-results="7"
-                   name="filter">
+                placeholder="Filter Table/List Contents (Include: Content / Exclude: !Content / WScore>=N / etc.)"
+                class="flexdatalist"
+                data-search-in="info"
+                multiple="multiple"
+                data-min-length="1"
+                data-search-by-word="true"
+                data-search-contain="true"
+                data-max-shown-results="7"
+                name="filter">
         </div>
         <div class="btn-container">
             <button id="searchBtn" class="btn darkMode" type="submit">Search</button>
@@ -1118,15 +1118,15 @@
         <div class="swal2-html-container-custom" style="display: block;">
             <div class="filter-container-custom">
                 <input type="text"
-                       placeholder="Yellow-Warning (Content) or Red-Warning (!Content)"
-                       class="flexdatalistWarnAnime"
-                       data-search-in="info"
-                       multiple="multiple"
-                       data-min-length="1"
-                       data-search-by-word="true"
-                       data-search-contain="true"
-                       data-max-shown-results="7"
-                       name="filter">
+                    placeholder="Yellow-Warning (Content) or Red-Warning (!Content)"
+                    class="flexdatalistWarnAnime"
+                    data-search-in="info"
+                    multiple="multiple"
+                    data-min-length="1"
+                    data-search-by-word="true"
+                    data-search-contain="true"
+                    data-max-shown-results="7"
+                    name="filter">
             </div>
         </div>
         <div class="swal2-actions-custom" style="display: flex;">
@@ -1145,15 +1145,15 @@
         <div class="swal2-html-container-custom" style="display: block;">
             <div class="filter-container-custom">
                 <input type="text"
-                       placeholder="Filter Algorithm Contents (Include: Content / Exclude: !Content / WScore>=N / etc.)"
-                       class="flexdatalistFilterAlgo"
-                       data-search-in="info"
-                       multiple="multiple"
-                       data-min-length="1"
-                       data-search-by-word="true"
-                       data-search-contain="true"
-                       data-max-shown-results="7"
-                       name="filter">
+                    placeholder="Filter Algorithm Contents (Include: Content / Exclude: !Content / WScore>=N / etc.)"
+                    class="flexdatalistFilterAlgo"
+                    data-search-in="info"
+                    multiple="multiple"
+                    data-min-length="1"
+                    data-search-by-word="true"
+                    data-search-contain="true"
+                    data-max-shown-results="7"
+                    name="filter">
             </div>
         </div>
         <div class="darkMode swal2-validation-message" id="filterAlgo-validation" style="display: none;">
@@ -1177,7 +1177,7 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "3.8",
+    const version = "3.9",
           backUpVersion = 2.3
         // IndexDB
     var request, db,
@@ -1200,7 +1200,6 @@
     isDeepUpdate = false, willAutoUpdate = false, updateStateText = [], checkFiltersFocus = [],
     // Helper
     pageInits = true, enteredOnce = false
-
     // Create IndexDB
     window.onload = async () => {
         // Init Reload
@@ -2836,6 +2835,7 @@
                                 Update(false)
                                 $(".menu-container").fadeOut(250)
                                 lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                 $("#dataStatusSpinner").hide()
                                 $("#dataStatus")
                                     .empty()
@@ -3995,7 +3995,7 @@
 
     async function analyzeVariables(updateID, username, notAnUpdate, filterAlgo, doHideUnwatchedSeq) {
         var savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || [90]
-        var analyzeVariableTime = arrayMean(savedAnalyzeVariableTime)
+        var analyzeVariableTime = Math.ceil(arrayMean(savedAnalyzeVariableTime))
         savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises") || []
         savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
         savedFilterAlgo = await (filterAlgo || await retrieveJSON("savedFilterAlgo") || [])
@@ -4020,14 +4020,15 @@
         var savedExcluded = []
         var filterName
         for(let i=0; i<savedFilterAlgo.length; i++){
-            filterName = savedFilterAlgo[i].toLowerCase()
+            filterName = savedFilterAlgo[i]?.trim()?.toLowerCase()
             if(filterName.charAt(0)==="!") {
                 filterName = filterName.slice(1)
                 filterName = typeof filterName==="string"? filterName.split(":") : ""
+                // Only Allow Specific (non-specified removes almost all predictors)
                 if(filterName?.length>1){
                     filterName = [filterName.shift(),filterName.join()]
                     var type = filterName[0]
-                    var cinfo = filterName[1].trim()
+                    var cinfo = filterName[1]?.trim()?.toLowerCase()
                     if(cinfo.charAt(0)==="!"){
                         cinfo = cinfo.slice(1)
                         savedExcluded.push(type+":"+cinfo)
@@ -4273,11 +4274,11 @@
                                 if(err==='Not Found.'){
                                     (async()=>{
                                         lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                         $("#dataStatusSpinner").hide()
                                         $("#dataStatus")
                                             .empty()
                                             .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
-                                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                     })();
                                     requestIsRunning = false
                                     Swal.fire({
@@ -4430,7 +4431,7 @@
                                         updateStateText.push(timeout)
                                     }
                                     setTimeout(()=>{
-                                        var analyzeVariableTime = Math.max(analyzeVariableTime-Math.ceil(((new Date).getTime()-AnalyzeVariableStartTime.getTime())/1000),1)
+                                        var analyzeVariableTime = Math.ceil(Math.max(analyzeVariableTime-Math.ceil(((new Date).getTime()-AnalyzeVariableStartTime.getTime())/1000),1))
                                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                         for(let i=analyzeVariableTime; i>=0; i--){
                                             var timeout = setTimeout(()=>{
@@ -4455,6 +4456,7 @@
                                 console.error(ex);
                                 (async()=>{
                                     lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                    for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                     $("#dataStatusSpinner").hide()
                                     $("#dataStatus")
                                         .empty()
@@ -4483,7 +4485,6 @@
                                         </tr>
                                     `)
                                 }
-                                for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                             }
                         }
                     })
@@ -4506,6 +4507,7 @@
                 }
             } else {
                 lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                 $("#dataStatusSpinner").hide()
                 $("#dataStatus")
                     .empty()
@@ -4684,6 +4686,7 @@
                         })();
                         (async()=>{
                             lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                            for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                             $("#dataStatusSpinner").hide()
                             $("#dataStatus")
                                 .empty()
@@ -4701,7 +4704,6 @@
                                 </tr>
                             `)
                         }
-                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                     }
                 }
             })
@@ -4886,6 +4888,7 @@
                             })();
                             (async()=>{
                                 lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                                for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                 $("#dataStatusSpinner").hide()
                                 $("#dataStatus")
                                     .empty()
@@ -4903,7 +4906,6 @@
                                     </tr>
                                 `)
                             }
-                            for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                         }
                     }
                 })
@@ -4918,7 +4920,7 @@
         return await new Promise(async(resolve)=>{
             var UpdateAnalyzeAnimeStartTime = new Date()
             var savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime") || [3]
-            var updateAnalyzeAnimeTime = arrayMean(savedUpdateAnalyzeAnimeTime)
+            var updateAnalyzeAnimeTime = Math.ceil(arrayMean(savedUpdateAnalyzeAnimeTime))
             if(doHideUnwatchedSeq!==undefined){
                 hideUnwatchedSequels = doHideUnwatchedSeq
             } else {
@@ -5187,6 +5189,7 @@
                             $("#filterAlgoModal #filterAlgo-validation").fadeOut(1000)
                         },1000)
                         lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                         $("#dataStatusSpinner").hide()
                         $("#dataStatus")
                             .empty()
@@ -5232,6 +5235,7 @@
                             })();
                         }
                         lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                         $("#dataStatusSpinner").hide()
                         $("#dataStatus")
                             .empty()
@@ -5255,7 +5259,7 @@
                 var excludes = kidsAnimeIsHidden? ["tag: kids"] : []
                 var filterName
                 for(let i=0; i<filterInputs.length; i++){
-                    filterName = filterInputs[i].textContent
+                    filterName = filterInputs[i]?.textContent?.trim()?.toLowerCase()
                     filters.push(filterName)
                     if(filterName.charAt(0)==="!") {
                         filterName = filterName.slice(1)
@@ -5263,13 +5267,15 @@
                         if(filterName?.length>1){
                             filterName = [filterName.shift(),filterName.join()]
                             var type = filterName[0]
-                            var cinfo = filterName[1].trim()
+                            var cinfo = filterName[1]?.trim()?.toLowerCase()
                             if(cinfo.charAt(0)==="!"){
                                 cinfo = cinfo.slice(1)
                                 excludes.push(type+":"+cinfo)
                             } else {
                                 excludes.push(type+":"+cinfo)
                             }
+                        } else if(filterName?.length===1){
+                            excludes.push(filterName[0])
                         }
                     }
                     else includes.push(filterName)
@@ -5289,20 +5295,22 @@
                 var savedWarnR = {}
                 var savedWarnY = {}
                 for(let i=0; i<savedWarnAnime.length; i++){
-                    var warnName = savedWarnAnime[i].trim().toLowerCase()
+                    var warnName = savedWarnAnime[i]?.trim()?.toLowerCase()
                     if(warnName.charAt(0)==="!") {
                         warnName = warnName.slice(1)
                         warnName = typeof warnName==="string"? warnName.split(":") : ""
                         if(warnName?.length>1){
                             warnName = [warnName.shift(),warnName.join()]
                             var type = warnName[0]
-                            var cinfo = warnName[1].trim()
+                            var cinfo = warnName[1].trim()?.toLowerCase()
                             if(cinfo.charAt(0)==="!"){
                                 cinfo = cinfo.slice(1)
                                 savedWarnR[type+": "+cinfo] = null
                             } else {
                                 savedWarnR[type+": "+cinfo] = null
                             }
+                        } else if(warnName?.length===1){
+                            savedWarnR[warnName] = null
                         }
                     }
                     else savedWarnY[warnName] = null
