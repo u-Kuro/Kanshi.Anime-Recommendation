@@ -23,13 +23,21 @@ self.onmessage = (message) => {
                     ||findWord(recList[j].userStatus,included)
                     ||findWord(recList[j].status,included)
                     ||findWord(recList[j].title,included)
-                    ||findWord(Object.keys(recList[j].studios),included)
-                    ||findWord(Object.keys(recList[j].staff),included)
-                    ||recList[j].genres.length?findWord(recList[j].genres.split(", "),included):false
-                    ||recList[j].tags.length?findWord(recList[j].tags.split(", "),included):false
+                    ||findWord(Object.keys(recList[j]?.studios||{}),included)
+                    ||findWord(Object.keys(recList[j]?.staff||{}),included)
                 ){
                     tempRecScheme.push(recList[j])
                     continue
+                } else if(typeof recList[j]?.genres==="string"){
+                    if(findWord(recList[j]?.genres?.split(", "),included)){
+                        tempRecScheme.push(recList[j])
+                        continue
+                    }
+                } else if(typeof recList[j]?.tags==="string"){
+                    if(findWord(recList[j]?.tags?.split(", "),included)){
+                        tempRecScheme.push(recList[j])
+                        continue
+                    }
                 }
             }
             if(included.includes("format:")){
@@ -151,7 +159,7 @@ self.onmessage = (message) => {
                 }
             }
             if(included.includes("genre:")){
-                if(recList[j].genres.length){
+                if(typeof recList[j]?.genres==="string"){
                     if(findWord(recList[j].genres.split(", "),included.split("genre:")[1])){
                         tempRecScheme.push(recList[j])
                         continue
@@ -159,7 +167,7 @@ self.onmessage = (message) => {
                 }
             }
             if(included.includes("tag:")){
-                if(recList[j].tags.length){
+                if(typeof recList[j]?.tags==="string"){
                     if(findWord(recList[j].tags.split(", "),included.split("tag:")[1])){
                         tempRecScheme.push(recList[j])
                         continue
@@ -183,12 +191,18 @@ self.onmessage = (message) => {
                     ||findWord(recList[j].userStatus,excluded)
                     ||findWord(recList[j].status,excluded)
                     ||findWord(recList[j].title,excluded)
-                    ||findWord(Object.keys(recList[j].studios),excluded)
-                    ||findWord(Object.keys(recList[j].staff),excluded)
-                    ||recList[j].genres.length?findWord(recList[j].genres.split(", "),excluded):false
-                    ||recList[j].tags.length?findWord(recList[j].tags.split(", "),excluded):false
+                    ||findWord(Object.keys(recList[j]?.studios||{}),excluded)
+                    ||findWord(Object.keys(recList[j]?.staff||{}),excluded)
                 ){
                     continue
+                } else if(typeof recList[j]?.genres==="string"){
+                    if(findWord(recList[j]?.genres?.split(", "),excluded)){
+                        continue
+                    }
+                } else if(typeof recList[j]?.tags==="string"){
+                    if(findWord(recList[j]?.tags?.split(", "),excluded)){
+                        continue
+                    }
                 }
             }
             if(excluded.includes("format:")){
@@ -233,14 +247,14 @@ self.onmessage = (message) => {
                 }
             }
             if(excluded.includes("genre:")){
-                if(recList[j].genres.length){
+                if(typeof recList[j]?.genres==="string"){
                     if(findWord(recList[j].genres.split(", "),excluded.split("genre:")[1])){
                         continue
                     }
                 }
             }
             if(excluded.includes("tag:")){
-                if(recList[j].tags.length){
+                if(typeof recList[j]?.tags==="string"){
                     if(findWord(recList[j].tags.split(", "),excluded.split("tag:")[1])){
                         continue
                     }

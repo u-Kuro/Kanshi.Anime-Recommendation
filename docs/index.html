@@ -1171,7 +1171,7 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "3.9",
+    const version = "4.0",
           backUpVersion = 2.3
         // IndexDB
     var request, db,
@@ -4369,11 +4369,11 @@
                                             if(i<1){
                                                 $("#dataStatus")
                                                     .empty()
-                                                    .append(`<span style="white-space:nowrap;">Limit Request, Please Wait a Moment...`)
+                                                    .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment...`)
                                             } else {
                                                 $("#dataStatus")
                                                     .empty()
-                                                    .append(`<span style="white-space:nowrap;">Limit Request, Continuing in ${msToTime(i*1000)}`)
+                                                    .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}`)
                                             }
                                         },(60-i)*1000)
                                         updateStateText.push(timeout)
@@ -4609,11 +4609,11 @@
                                 if(i<1){
                                     $("#dataStatus")
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">Limit Request, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${page}" max="${lastAnilistPage>page?lastAnilistPage:page+1}"></progress>⠀${(page/(lastAnilistPage>page?lastAnilistPage:page+1)*100).toFixed(2)}%</span>`)
+                                        .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${page}" max="${lastAnilistPage>page?lastAnilistPage:page+1}"></progress>⠀${(page/(lastAnilistPage>page?lastAnilistPage:page+1)*100).toFixed(2)}%</span>`)
                                 } else {
                                     $("#dataStatus")
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">Limit Request, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${page}" max="${lastAnilistPage>page?lastAnilistPage:page+1}"></progress>⠀${(page/(lastAnilistPage>page?lastAnilistPage:page+1)*100).toFixed(2)}%</span>`)
+                                        .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${page}" max="${lastAnilistPage>page?lastAnilistPage:page+1}"></progress>⠀${(page/(lastAnilistPage>page?lastAnilistPage:page+1)*100).toFixed(2)}%</span>`)
                                 }
                             },(60-i)*1000)
                             updateStateText.push(timeout)
@@ -4758,7 +4758,7 @@
                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                         $("#dataStatus")
                             .empty()
-                            .append(`<span style="white-space:nowrap;">Updating Anime from Anilist...⠀</span><span style="white-space:nowrap;"><progress value="${updatedAnimeEntries.length}" max="${savedAnimeEntries.length}"></progress>⠀${(updatedAnimeEntries.length/savedAnimeEntries.length*100).toFixed(2)}%</span>`);
+                            .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="${updatedAnimeEntries.length}" max="${savedAnimeEntries.length}"></progress>⠀${(updatedAnimeEntries.length/savedAnimeEntries.length*100).toFixed(2)}%</span>`);
                         if($("#dataStatusSpinner")?.css("display")!=="none") {
                             $("#dataStatusSpinner").hide()
                         }
@@ -4788,7 +4788,7 @@
                                 worker8.terminate()
                                 $("#dataStatus")
                                     .empty()
-                                    .append(`<span style="white-space:nowrap;">Updating Anime from Anilist...⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
+                                    .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
                                 const data = message.data
                                 animeEntries = data.animeEntries;
                                 (async()=>{
@@ -4814,11 +4814,11 @@
                                     if(i<1){
                                         $("#dataStatus")
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">Limit Request, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress value="${updatedAnimeEntries.length}" max="${savedAnimeEntries.length}"></progress>⠀${(updatedAnimeEntries.length/savedAnimeEntries.length*100).toFixed(2)}%</span>`)
+                                        .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress value="${updatedAnimeEntries.length}" max="${savedAnimeEntries.length}"></progress>⠀${(updatedAnimeEntries.length/savedAnimeEntries.length*100).toFixed(2)}%</span>`)
                                     } else {
                                         $("#dataStatus")
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">Limit Request, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress value="${updatedAnimeEntries.length}" max="${savedAnimeEntries.length}"></progress>⠀${(updatedAnimeEntries.length/savedAnimeEntries.length*100).toFixed(2)}%</span>`)
+                                        .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress value="${updatedAnimeEntries.length}" max="${savedAnimeEntries.length}"></progress>⠀${(updatedAnimeEntries.length/savedAnimeEntries.length*100).toFixed(2)}%</span>`)
                                     }
                                 },(60-i)*1000)
                                 updateStateText.push(timeout)
@@ -4907,11 +4907,11 @@
                         $("#dataStatusSpinner").show()
                         $("#dataStatus")
                             .empty()
-                            .append(`<span style="white-space:nowrap;">Updating Recommendations List... Please Wait a Moment...`)
+                            .append(`<span style="white-space:nowrap;">Updating Recommendations List, Please Wait a Moment...`)
                     } else {
                         $("#dataStatus")
                             .empty()
-                            .append(`<span style="white-space:nowrap;">Updating Recommendations List...⠀</span><span style="white-space:nowrap;">Estimated Time: ${msToTime(i*1000)}</span>`)
+                            .append(`<span style="white-space:nowrap;">Updating Recommendations List,⠀</span><span style="white-space:nowrap;">Estimated Time: ${msToTime(i*1000)}</span>`)
                     }
                 },(updateAnalyzeAnimeTime-i)*1000)
                 updateStateText.push(timeout)
