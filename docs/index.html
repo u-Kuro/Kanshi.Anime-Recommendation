@@ -984,6 +984,11 @@
             }
             #dataStatus>span{
                 padding-block: 0.5ch;
+                user-select: none;
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                gap: 0.75ch;
             }
             .flexdatalist-alias{
                 height: 41px !important;
@@ -1049,7 +1054,7 @@
         <div id="dataStatusContainer" class="data-status-container">
             <div id="dataStatusWrapper">
                 <div style="display: inline-table;"><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner darkMode"></div></div>
-                <h6 id="dataStatus">Latest Anilist Update: N/A</h6>
+                <h6 id="dataStatus"><bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A</h6>
             </div>
         </div>
     </div>
@@ -1228,19 +1233,19 @@
             // Load Event Listeners
             return await new Promise((resolve)=>{
                 $("#username").on('keypress',async (e) =>{
-                    if(e.which===13) {
+                    if(e.which===13&&!isLoading) {
                         $("#searchBtn").click()        
                     }
                 })
-                $(document).on('keypress',async (e) =>{
-                    if(e.which===13&&!pageInits&&e.target.id==="flex0"&&!e.target.value){
-                        if(enteredOnce) {
-                            enteredOnce = false
-                            $("#searchBtn").click()
-                        } else {
-                            enteredOnce = true
-                            setTimeout(()=>{enteredOnce = false},500)
-                        }  
+                $("#filters").on('keypress',async (e) =>{
+                    if( e.which===13
+                        &&!pageInits
+                        &&!isLoading
+                        &&e.target.id==="flex0"
+                        &&!e.target.value
+                        &&$("#username").val()
+                    ){
+                        $("#searchBtn").click()
                     }
                 })
                 $("#searchBtn").on('click', async ()=>{
@@ -1370,6 +1375,121 @@
                     var menu = $(".menu-container")
                     if(menu.css("display")!=="none"){
                         e.stopPropagation()
+                    }
+                })
+                $("#dataStatus").on('click',async (e) =>{
+                    var element = e.target
+                    var elValue = element.textContent || element.innerText
+                    if(elValue.includes("Latest Anilist Update: ")){
+                        var savedUpdateTime1 = await retrieveJSON("savedAnalyzeVariableTime") || [90],
+                        savedUpdateTime2 = await retrieveJSON("savedUpdateAnalyzeAnimeTime") || [3]
+                        var updateTime = arrayMean(savedUpdateTime1) + arrayMean(savedUpdateTime2)
+                        if(requestIsRunning){
+                            Swal.fire({
+                                heightAuto: false,
+                                text: `List is already updating! Do you want to restart the update?
+                                The estimated time to finish is ${msToTime((updateTime+60)*1000)}`,
+                                showConfirmButton: true,
+                                confirmButtonText: "Yes",
+                                showDenyButton: true,
+                                denyButtonText: "No",
+                                confirmButtonColor: '#000',
+                                denyButtonColor: '#e27d81',
+                                icon: "question",
+                                reverseButtons: true
+                            }).then(async(value)=>{
+                                if(value.isConfirmed){
+                                    var newUsername = await $("#username").val()
+                                    savedUsername = await retrieveJSON("savedUsername") || ""
+                                    if(!newUsername){
+                                        $(".menu-container").fadeOut(250)
+                                        $("#username")[0].setCustomValidity("Anilist Username is Required!")
+                                        $("#username")[0].reportValidity()
+                                    } else {
+                                        if(newUsername!==savedUsername){
+                                            Swal.fire({
+                                                heightAuto: false,
+                                                text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
+                                                showConfirmButton: true,
+                                                confirmButtonText: "Yes",
+                                                showDenyButton: true,
+                                                denyButtonText: "No",
+                                                confirmButtonColor: '#000',
+                                                denyButtonColor: '#e27d81',
+                                                icon: "question",
+                                                reverseButtons: true
+                                            }).then(async(value)=>{
+                                                $(".menu-container").fadeOut(250)
+                                                if(value.isConfirmed){
+                                                    // Reset User List
+                                                    savedUserList = {}
+                                                    await saveJSON(savedUserList,"savedUserList")
+                                                    Update(false)
+                                                } else {
+                                                    $("#username").focus()
+                                                }
+                                            })
+                                        } else {
+                                            Update(false)
+                                            $(".menu-container").fadeOut(250)
+                                        }
+                                    }
+                                }
+                            })
+                        } else {
+                            Swal.fire({
+                                heightAuto: false,
+                                text: `Do you want to continue and update your recommendations list?
+                                This may take ${msToTime(updateTime*1000)} to finish.`,
+                                showConfirmButton: true,
+                                confirmButtonText: "Yes",
+                                showDenyButton: true,
+                                denyButtonText: "No",
+                                confirmButtonColor: '#000',
+                                denyButtonColor: '#e27d81',
+                                icon: "question",
+                                reverseButtons: true
+                            })
+                            .then(async(value) => {
+                                if(value.isConfirmed){
+                                    var newUsername = await $("#username").val()
+                                    savedUsername = await retrieveJSON("savedUsername") || ""
+                                    if(!newUsername){
+                                        $(".menu-container").fadeOut(250)
+                                        $("#username")[0].setCustomValidity("Anilist Username is Required!")
+                                        $("#username")[0].reportValidity()
+                                    } else {
+                                        if(newUsername!==savedUsername){
+                                            Swal.fire({
+                                                heightAuto: false,
+                                                text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
+                                                showConfirmButton: true,
+                                                confirmButtonText: "Yes",
+                                                showDenyButton: true,
+                                                denyButtonText: "No",
+                                                confirmButtonColor: '#000',
+                                                denyButtonColor: '#e27d81',
+                                                icon: "question",
+                                                reverseButtons: true
+                                            }).then(async(value)=>{
+                                                $(".menu-container").fadeOut(250)
+                                                if(value.isConfirmed){
+                                                    // Reset User List
+                                                    savedUserList = {}
+                                                    await saveJSON(savedUserList,"savedUserList")
+                                                    Update(false)
+                                                } else {
+                                                    $("#username").focus()
+                                                }
+                                            })
+                                        } else {
+                                            Update(false)
+                                            $(".menu-container").fadeOut(250)
+                                        }
+                                    }
+                                }
+                            })
+                        }
                     }
                 })
                 $("#updateBtn").on('click', async ()=>{
@@ -1911,7 +2031,7 @@
                                                 $("#dataStatusSpinner").hide()
                                                 $("#dataStatus")
                                                     .empty()
-                                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                                             }
                                             await Swal.fire({
                                                 heightAuto: false,
@@ -2132,7 +2252,7 @@
                                     $("#dataStatusSpinner").hide()
                                     $("#dataStatus")
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                                     $("#importFile")[0].value = null
                                     await Swal.fire({
                                         heightAuto: false,
@@ -2215,7 +2335,7 @@
                                             $("#dataStatusSpinner").hide()
                                             $("#dataStatus")
                                                 .empty()
-                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                                         }
                                         await Swal.fire({
                                             heightAuto: false,
@@ -2407,7 +2527,7 @@
                                                     $("#dataStatusSpinner").hide()
                                                     $("#dataStatus")
                                                         .empty()
-                                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                                                 }
                                                 await Swal.fire({
                                                     heightAuto: false,
@@ -2464,7 +2584,7 @@
                                                             $("#dataStatusSpinner").hide()
                                                             $("#dataStatus")
                                                                 .empty()
-                                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                                                         }
                                                         await Swal.fire({
                                                             heightAuto: false,
@@ -2526,7 +2646,7 @@
                                                     $("#dataStatusSpinner").hide()
                                                     $("#dataStatus")
                                                         .empty()
-                                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                                                 }
                                                 await Swal.fire({
                                                     heightAuto: false,
@@ -2583,7 +2703,7 @@
                                                             $("#dataStatusSpinner").hide()
                                                             $("#dataStatus")
                                                                 .empty()
-                                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                                                         }
                                                         await Swal.fire({
                                                             heightAuto: false,
@@ -2688,7 +2808,7 @@
                                 $("#dataStatusSpinner").hide()
                                 $("#dataStatus")
                                     .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                             }
                         })
                         return
@@ -3413,7 +3533,7 @@
                 $("#dataStatusSpinner").hide()
                 $("#dataStatus")
                     .empty()
-                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
 
                 // Load Table
                 if(await Object.keys(savedRecScheme).length>0){
@@ -3562,7 +3682,7 @@
                                 $("#dataStatusSpinner").hide()
                                 $("#dataStatus")
                                     .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                             }
                             await Swal.fire({
                                 heightAuto: false,
@@ -3619,7 +3739,7 @@
                                         $("#dataStatusSpinner").hide()
                                         $("#dataStatus")
                                             .empty()
-                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                                     }
                                     await Swal.fire({
                                         heightAuto: false,
@@ -3684,7 +3804,7 @@
                                     $("#dataStatusSpinner").hide()
                                     $("#dataStatus")
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                                 }
                                 await Swal.fire({
                                     heightAuto: false,
@@ -3741,7 +3861,7 @@
                                             $("#dataStatusSpinner").hide()
                                             $("#dataStatus")
                                                 .empty()
-                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                                         }
                                         await Swal.fire({
                                             heightAuto: false,
@@ -4101,7 +4221,7 @@
                                         $("#dataStatusSpinner").hide()
                                         $("#dataStatus")
                                             .empty()
-                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                     })();
                                     requestIsRunning = false
@@ -4283,7 +4403,7 @@
                                     $("#dataStatusSpinner").hide()
                                     $("#dataStatus")
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                                 })();
                                 console.error("Error 101")
                                 Swal.fire({
@@ -4337,7 +4457,7 @@
                 $("#dataStatusSpinner").hide()
                 $("#dataStatus")
                     .empty()
-                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                 requestIsRunning = false
                 $("#filterAlgoModal #filterAlgo-validation").hide()
             }
@@ -4518,7 +4638,7 @@
                             $("#dataStatusSpinner").hide()
                             $("#dataStatus")
                                 .empty()
-                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                         })();
                         console.log("WebtoApp: Update Error")
                         if(Object.keys(savedRecScheme).length===0){
@@ -4723,7 +4843,7 @@
                                 $("#dataStatusSpinner").hide()
                                 $("#dataStatus")
                                     .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                             })();
                             console.log("WebtoApp: Update Error")
                             if(Object.keys(savedRecScheme).length===0){
@@ -4875,7 +4995,8 @@
                         // This Remove Current Filters in DOM so Check First
                         for(let i=0;i<checkFiltersFocus.length;i++) clearInterval(checkFiltersFocus[i])
                         checkFiltersFocus.push(setInterval(async()=>{
-                            if( !$("#flex0").is(":focus")
+                            if( !requestIsRunning
+                                &&!$("#flex0").is(":focus")
                                 &&!$("#flex1").is(":focus")
                                 &&!$("#flex2").is(":focus")
                                 &&$("#warnAnimeContainer").css("display")==="none"
@@ -5023,7 +5144,7 @@
                         $("#dataStatusSpinner").hide()
                         $("#dataStatus")
                             .empty()
-                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                         requestIsRunning = false
                         resolve()
                     } else if(alertUser){
@@ -5071,7 +5192,7 @@
                         $("#dataStatusSpinner").hide()
                         $("#dataStatus")
                             .empty()
-                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'Latest Anilist Update: N/A'}</span>`)
+                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<bold style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</bold> Latest Anilist Update: N/A'}</span>`)
                         requestIsRunning = false
                         resolve()
                     }
