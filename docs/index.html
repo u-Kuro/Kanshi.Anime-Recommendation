@@ -236,11 +236,19 @@
             .userInputContainer>:not(label),.filter-container>:not(label),.btn-container>:not(label){
                 flex-grow: 1;
             }
-            .flexdatalist-multiple{
+            .flex0.flexdatalist-multiple{
                 display: flex;
                 max-height: 100px;
                 min-height: 100px;
                 height: 100px;
+                overflow-y: scroll;
+            }
+            .flex1.flexdatalist-multiple,
+            .flex2.flexdatalist-multiple{
+                display: flex;
+                max-height: 175px;
+                min-height: 175px;
+                height: 175px;
                 overflow-y: scroll;
             }
             .flex0.flexdatalist-multiple{
@@ -1157,7 +1165,7 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "3.7",
+    const version = "3.8",
           backUpVersion = 2.3
         // IndexDB
     var request, db,
@@ -1657,23 +1665,28 @@
                         }
                     })
                 })
-                $("#importBtn").on("click", ()=>{
-                    Swal.fire({
-                        heightAuto: false,
-                        text: `Do you want to import your backup data?`,
-                        showConfirmButton: true,
-                        confirmButtonText: "Yes",
-                        showDenyButton: true,
-                        denyButtonText: "No",
-                        confirmButtonColor: '#000',
-                        denyButtonColor: '#e27d81',
-                        icon: "question",
-                        reverseButtons: true
-                    }).then(async(value)=>{
-                        if(value.isConfirmed){
-                            $("#importFile").click()
-                        }
-                    })
+                $("#importBtn").on("click", async()=>{
+                    savedUsername = await retrieveJSON("savedUsername") || ""
+                    if(savedUsername){
+                        Swal.fire({
+                            heightAuto: false,
+                            text: `Do you want to import your backup data?`,
+                            showConfirmButton: true,
+                            confirmButtonText: "Yes",
+                            showDenyButton: true,
+                            denyButtonText: "No",
+                            confirmButtonColor: '#000',
+                            denyButtonColor: '#e27d81',
+                            icon: "question",
+                            reverseButtons: true
+                        }).then(async(value)=>{
+                            if(value.isConfirmed){
+                                $("#importFile").click()
+                            }
+                        })
+                    } else {
+                        $("#importFile").click()
+                    }
                 })
                 $("#importFile").on("change",(event)=>{
                     if($("#importFile")[0].value != ""){
@@ -5112,7 +5125,7 @@
                 var savedWarnR = {}
                 var savedWarnY = {}
                 for(let i=0; i<savedWarnAnime.length; i++){
-                    var warnName = savedWarnAnime[i].toLowerCase()
+                    var warnName = savedWarnAnime[i].trim().toLowerCase()
                     if(warnName.charAt(0)==="!") {
                         warnName = warnName.slice(1)
                         warnName = typeof warnName==="string"? warnName.split(":") : ""
@@ -5122,9 +5135,9 @@
                             var cinfo = warnName[1].trim()
                             if(cinfo.charAt(0)==="!"){
                                 cinfo = cinfo.slice(1)
-                                savedWarnR[type+":"+cinfo] = null
+                                savedWarnR[type+": "+cinfo] = null
                             } else {
-                                savedWarnR[type+":"+cinfo] = null
+                                savedWarnR[type+": "+cinfo] = null
                             }
                         }
                     }

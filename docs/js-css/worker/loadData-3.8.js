@@ -243,7 +243,7 @@ self.onmessage = (message) => {
                 similarities.push(v)
             }
         })
-        var fullTitle = "title: "+(value.title||"").toLowerCase()
+        var fullTitle = "title: "+(value.title||"").trim().toLowerCase()
         if(savedWarnR[fullTitle]!==undefined) {
             warns.push(value.title)
             hasWarnR = true
@@ -251,7 +251,7 @@ self.onmessage = (message) => {
             warns.push(value.title)
             hasWarnY = true
         }
-        var fullStatus = "status: "+(value.status||"").toLowerCase()
+        var fullStatus = "status: "+(value.status||"").trim().toLowerCase()
         if(savedWarnR[fullStatus]!==undefined) {
             warns.push(value.status)
             hasWarnR = true
@@ -259,7 +259,7 @@ self.onmessage = (message) => {
             warns.push(value.status)
             hasWarnY = true
         }
-        var fullFormat = "format: "+(value.format||"").toLowerCase()
+        var fullFormat = "format: "+(value.format||"").trim().toLowerCase()
         if(savedWarnR[fullFormat]!==undefined){
             warns.push(value.format)
             hasWarnR = true
@@ -267,7 +267,7 @@ self.onmessage = (message) => {
             warns.push(value.format)
             hasWarnY = true
         }
-        var fullYear = "year: "+`${(value.year||"")}`.toLowerCase()
+        var fullYear = "year: "+`${(value.year||"")}`.trim().toLowerCase()
         if(savedWarnR[fullYear]!==undefined){
             warns.push(value.year)
             hasWarnR = true
@@ -275,7 +275,7 @@ self.onmessage = (message) => {
             warns.push(value.year)
             hasWarnY = true
         }
-        var fullSeason = "season: "+(value.season||"").toLowerCase()
+        var fullSeason = "season: "+(value.season||"").trim().toLowerCase()
         if(savedWarnR[fullSeason]!==undefined){
             warns.push(value.season)
             hasWarnR = true
@@ -285,7 +285,7 @@ self.onmessage = (message) => {
         }
         var genres = value.genres.length? value.genres.split(", ") : []
         genres.forEach((name)=>{
-            var fullGenre = "genre: "+name.toLowerCase()
+            var fullGenre = "genre: "+name.trim().toLowerCase()
             if(savedWarnR[fullGenre]!==undefined) {
                 warns.push(name)
                 hasWarnR = true
@@ -296,7 +296,7 @@ self.onmessage = (message) => {
         })
         var tags = value.tags.length? value.tags.split(", ") : []
         tags.forEach((name)=>{
-            var fullTag = "tag: "+name.toLowerCase()
+            var fullTag = "tag: "+name.trim().toLowerCase()
             if(savedWarnR[fullTag]!==undefined) {
                 warns.push(name)
                 hasWarnR = true
