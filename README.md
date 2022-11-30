@@ -31,7 +31,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) In order to exclude all the staff or staff roles in the algorithm, type [!staff: all] or [!staff role: all].  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) In order to only include directors or original creators in staff, type [staff role: director] or [staff role: original creator].  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) To change the minimum sample size for the algorithm, type [sample size: N], the default is adaptive (each has its own sample size=meancount).  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e) Algorithm Filter Indicators are as follows are [sample size: ], [format: ], [genre: ], [tag: ], [tag category: ], [studio: ], [staff: ], [staff role: ], and add ! as the first character to exclude.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e) Algorithm Filter Indicators are as follows are [sample size: ], [measure: ], [format: ], [genre: ], [tag: ], [tag category: ], [studio: ], [staff: ], [staff role: ], and add ! as the first character to exclude.  
 
 ## Kanshi.VI (Recommended)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Format, Studios, and Staffs by Role as Categorical. Each variables or variable component are averaged. Numeric variables including Anilist Average-Score, Popularity, Year, Favourites, Episodes, Trending, Duration have their own Linear Regression Model to be predicted and accepted at 0.1 r-squared. Finally, all anime in Anilist are then analyzed based on the Variable Importance Schema from ones' rating.
