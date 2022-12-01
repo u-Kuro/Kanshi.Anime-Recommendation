@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity  {
     private boolean isVisible = true;
 
     // Activity Results
-    ActivityResultLauncher<Intent> chooseImportFile =
+    final ActivityResultLauncher<Intent> chooseImportFile =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
                     new ActivityResultCallback<ActivityResult>() {
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity  {
                         }
                     }
             );
-    ActivityResultLauncher<Intent> chooseExportFile =
+    final ActivityResultLauncher<Intent> chooseExportFile =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
                     new ActivityResultCallback<ActivityResult>() {
@@ -182,7 +182,6 @@ public class MainActivity extends AppCompatActivity  {
         webSettings.setAllowFileAccessFromFileURLs(true);
         webSettings.setBlockNetworkLoads(false);
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        webSettings.setAppCacheEnabled(true);
         webSettings.setAllowUniversalAccessFromFileURLs(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("My Notification","My Notification", NotificationManager.IMPORTANCE_DEFAULT);
@@ -427,20 +426,4 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 }
-
-//    public void exitApp(){
-//        new AlertDialog.Builder(this)
-//                .setTitle("Hey hey...")
-//                .setMessage("Do you really want to Exit now?")
-//                .setIcon(android.R.drawable.ic_dialog_alert)
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        finish();
-//                        overridePendingTransition(com.google.android.material.R.anim.abc_fade_in, com.google.android.material.R.anim.abc_fade_out);
-//                    }
-//                })
-//                .setNegativeButton("Later", null).show();
-//    }
-
 

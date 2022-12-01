@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kanshi"
         android:requestLegacyExternalStorage="true"
-        tools:targetApi="31">
+        tools:targetApi="33">
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"

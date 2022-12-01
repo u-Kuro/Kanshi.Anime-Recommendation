@@ -2476,7 +2476,7 @@
                     await $("#warnAnimeContainer").show()
                     $("#warnAnimeModal").removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
                     $(`ul.flex1`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
-                    $(`ul.flex1`)[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                    $(`ul.flex1`)?.[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                 })
                 $("#submitWarnAnime").on("click",async()=>{
                     var warnAnimeInputs = $("#warnAnimeModal .flexdatalist-multiple > .value").children(".text")
@@ -2530,7 +2530,7 @@
                     await $("#filterAlgoContainer").show()
                     $("#filterAlgoModal").removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
                     $(`ul.flex2`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
-                    $(`ul.flex2`)[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                    $(`ul.flex2`)?.[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                 })
                 $("#submitFilterAlgo").on("click",async()=>{
                     savedUserList = await retrieveJSON("savedUserList") || {}
