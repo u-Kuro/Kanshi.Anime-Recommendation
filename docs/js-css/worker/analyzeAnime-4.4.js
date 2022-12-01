@@ -107,8 +107,8 @@ self.onmessage = (message) => {
             animeRelations.forEach((e)=>{
                 var animeRelationType = e?.relationType
                 var relationID =  e?.node?.id
-                if(typeof animeRelationType==="string"&&typeof relationID==="number"){
-                    if(mediaRelationTypes.includes(animeRelationType.toLowerCase())){
+                if(typeof animeRelationType==="string"&&typeof relationID==="number"&&animeRelationType){
+                    if(mediaRelationTypes.includes(animeRelationType.trim().toLowerCase())){
                         if(animeFranchises[afIdx] instanceof Array){
                             if(!animeFranchises[afIdx].includes(relationID)){
                                 animeFranchises[afIdx].push(relationID)
@@ -126,7 +126,7 @@ self.onmessage = (message) => {
                 !(animeRelations.some((e)=>{
                     var animeRelationType = e?.relationType
                     if(typeof animeRelationType==="string"){
-                        if(animeRelationType.toLowerCase()==="prequel"){
+                        if(animeRelationType.trim().toLowerCase()==="prequel"){
                             return true
                         }
                     }
@@ -140,11 +140,11 @@ self.onmessage = (message) => {
                     if(typeof animeRelationType==="string"
                      &&typeof animeRelationID==="number"
                      &&typeof animeRelationPopularity==="number"){
-                        if(animeRelationType.toLowerCase()==="prequel"){
+                        if(animeRelationType.trim().toLowerCase()==="prequel"){
                             // ...Prequel is Watched
                             if(typeof userListStatus[animeRelationID]==="string"){
-                                if((userListStatus[animeRelationID].toLowerCase()==="completed"
-                                  ||userListStatus[animeRelationID].toLowerCase()==="repeating")){
+                                if((userListStatus[animeRelationID].trim().toLowerCase()==="completed"
+                                  ||userListStatus[animeRelationID].trim().toLowerCase()==="repeating")){
                                     return true
                                 }
                             // ...Prequel is a Small/Unpopular Anime
@@ -243,7 +243,7 @@ self.onmessage = (message) => {
             }
             // Arrange
             if(typeof format==="string"){
-                if(alteredVariables.format_in["format: "+format.toLowerCase()]||recSchemeIsNew) animeShallUpdate=true
+                if(alteredVariables.format_in["format: "+format.trim().toLowerCase()]||recSchemeIsNew) animeShallUpdate=true
             }
             if(!animeShallUpdate){
                 for(let j=0; j<genres.length; j++){
@@ -273,7 +273,6 @@ self.onmessage = (message) => {
                 for(let j=0; j<studios.length; j++){
                     var studio = studios[j]?.name
                     if(typeof studio!=="string") continue
-                    if(!(studios[j]?.isAnimationStudio||true)) continue
                     studio = studio.trim().toLowerCase()
                     if((alteredVariables.studios_in["studio: "+studio]
                         &&!animeShallUpdate)
@@ -305,8 +304,8 @@ self.onmessage = (message) => {
             // Analyze
             var zformat = []
             if(typeof format==="string"){
-                format = format.trim().toLowerCase()
-                var fullFormat = "format: "+format
+                var tmpformat = format.trim().toLowerCase()
+                var fullFormat = "format: "+tmpformat
                 if(typeof varScheme.format[fullFormat]==="number") {
                     zformat.push(varScheme.format[fullFormat])
                 } else if(typeof varScheme.meanFormat==="number"){
@@ -314,9 +313,9 @@ self.onmessage = (message) => {
                 }
                 // Filters
                 if(!allFilterInfo[fullFormat]
-                 &&!allFilterInfo["!format: !"+format]){
+                 &&!allFilterInfo["!format: !"+tmpformat]){
                     allFilterInfo[fullFormat] = true
-                    allFilterInfo["!format: !"+format] = true
+                    allFilterInfo["!format: !"+tmpformat] = true
                 }
             }
             var zgenres = []
@@ -363,7 +362,8 @@ self.onmessage = (message) => {
                 if(!jsonIsEmpty(varScheme.includeCategories)){
                     if(varScheme.includeCategories[fullTagCategory]){
                         if(typeof varScheme.tags[fullTag]==="number"
-                         &&typeof tagRank==="number"){
+                         &&(typeof tagRank==="number"
+                          ||typeof varScheme.meanTags==="number")){
                             if(tagRank>=50){
                                 ztags.push(varScheme.tags[fullTag])
                             } else if(typeof varScheme.meanTags==="number"){
@@ -374,7 +374,8 @@ self.onmessage = (message) => {
                                 }
                             }
                             // Top Similarities
-                            if(typeof varScheme.meanTags==="number"){
+                            if(typeof varScheme.meanTags==="number"
+                             &&typeof tagRank==="number"){
                                 if(tagRank>=50 
                                  &&varScheme.tags[fullTag]>=varScheme.meanTags
                                  &&!tagsIncluded[fullTag]){
@@ -390,7 +391,8 @@ self.onmessage = (message) => {
                 } else {
                     if(!varScheme.excludeCategories[fullTagCategory]){
                         if(typeof varScheme.tags[fullTag]==="number"
-                         &&typeof tagRank==="number"){
+                         &&(typeof tagRank==="number"
+                          ||typeof varScheme.meanTags==="number")){
                             if(tagRank>=50){
                                 ztags.push(varScheme.tags[fullTag])
                             } else if(typeof varScheme.meanTags==="number"){
@@ -401,9 +403,11 @@ self.onmessage = (message) => {
                                 }
                             }
                             // Top Similarities
-                            if(typeof varScheme.meanTags==="number"){
-                                if(tagRank>=50 && varScheme.tags[fullTag]>=varScheme.meanTags
-                                    &&!tagsIncluded[fullTag]){
+                            if(typeof varScheme.meanTags==="number"
+                             &&typeof tagRank==="number"){
+                                if(tagRank>=50
+                                 &&varScheme.tags[fullTag]>=varScheme.meanTags
+                                 &&!tagsIncluded[fullTag]){
                                     var tmpscore = varScheme.tags[fullTag]
                                     tagsIncluded[fullTag] = [
                                         tag+" ("+tmpscore.toFixed(2)+")",
@@ -531,9 +535,14 @@ self.onmessage = (message) => {
                 }
                 // filters
                 if(!allFilterInfo[fullStaffRole]
-                 &&!allFilterInfo["!staff role: !"+staff]){
+                 &&!allFilterInfo["!staff role: !"+staffRole]){
                     allFilterInfo[fullStaffRole] = true  
-                    allFilterInfo["!staff role: !"+staff] = true
+                    allFilterInfo["!staff role: !"+staffRole] = true
+                }
+                if(!allFilterInfo[fullStaff]
+                 &&!allFilterInfo["!staff: !"+staff]){
+                    allFilterInfo[fullStaff] = true  
+                    allFilterInfo["!staff: !"+staff] = true
                 }
             }
             // Anime Type
@@ -580,15 +589,24 @@ self.onmessage = (message) => {
             var trending = anime?.trending
             var trendingModel = varScheme.trendingModel
             if(isaN(trending)&&!jsonIsEmpty(trendingModel)){
+                if(typeof trending==="string"){
+                    trending = parseFloat(trending)
+                }
                 animeType.push(LRpredict(trendingModel,trending))
             }
             var popularityModel = varScheme.popularityModel
             if(isaN(popularity)&&!jsonIsEmpty(popularityModel)){
+                if(typeof popularity==="string"){
+                    popularity = parseFloat(popularity)
+                }
                 animeType.push(LRpredict(popularityModel,popularity))
             }
             var favourites = anime?.favourites
             var favouritesModel = varScheme.favouritesModel
             if(isaN(favourites)&&!jsonIsEmpty(favouritesModel)){
+                if(typeof favourites==="string"){
+                    favourites = parseFloat(favourites)
+                }
                 animeType.push(LRpredict(favouritesModel,favourites))
             }
             // Anime Type
@@ -644,8 +662,8 @@ self.onmessage = (message) => {
                 }
             }
             // Other Anime Recommendation Info
-            genres = genres.length?genres.join(", "):[]
-            tags = tags.length?tags.map((e)=>e?.name||"").join(", "):[]
+            genres = genres.length?genres:[]
+            tags = tags.length?tags.map((e)=>e?.name||""):[]
             studios = studios.reduce((result,e)=>Object.assign(result,{[e?.name]:e?.siteUrl}),{})
             staffs = staffs.reduce((result,e)=>Object.assign(result,{[e?.node?.name?.userPreferred]:e?.node?.siteUrl}),{})
             // Sort all Top Similarities
@@ -659,8 +677,7 @@ self.onmessage = (message) => {
                 id: anilistId, title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
                 userStatus: userStatus, status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, staffs: staffs,
-                variablesIncluded: variablesIncluded, analyzedVariableCount: analyzedVariableCount,
-                popularity: popularity
+                variablesIncluded: variablesIncluded, popularity: popularity
             }
         }
         // Add Weight to Scores
@@ -674,7 +691,7 @@ self.onmessage = (message) => {
              &&typeof popularitySum==="number"
              &&popularitySum
              &&typeof weightedScore==="number"
-             &&typeof savedRecScheme[savedRecSchemeEntries[i]].weightedScore==="number"){
+             &&weightedScore){
                 if(popularity<popularityMode) {
                     savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
                         popularity? (anime.popularity/popularitySum)*weightedScore
@@ -847,19 +864,11 @@ self.onmessage = (message) => {
                 if(typeof staffRole!=="string") continue
                 staffRole = staffRole.split("(")[0].trim().toLowerCase()
                 var fullStaffRole = "staff role: "+staffRole
-                if(!allFilterInfo[staffRole]
+                if(!allFilterInfo[fullStaffRole]
                  &&!allFilterInfo["!staff role: !"+staffRole]){
-                    allFilterInfo[staffRole] = true
+                    allFilterInfo[fullStaffRole] = true
                     allFilterInfo["!staff role: !"+staffRole] = true
                 }
-            }
-            var analyzedVariableCount = {
-                all: 0,
-                format: 0,
-                genres: 0,
-                tags: 0,
-                studios: 0,
-                staff: 0
             }
             var score = weightedScore = 0
             var averageScore = anime?.averageScore
@@ -889,7 +898,7 @@ self.onmessage = (message) => {
                     favPopRatio = anime.favourites/anime.popularity
                 }
                 var ASmult = averageScore*0.01
-                score = weightedScore = (favPopRatio)*(ASmult>=1?1:ASmult)
+                score = weightedScore = ((favPopRatio)*(ASmult>=1?1:ASmult))-minNumber
             }
             // Other Anime Recommendation Info
             genres = genres.length?genres:[]
@@ -900,8 +909,7 @@ self.onmessage = (message) => {
                 id: anilistId, title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
                 userStatus: userStatus, status: status, genres: genres, tags: tags, year: year, 
                 season: season, format: format, studios: studios, staffs: staffs,
-                variablesIncluded: [], analyzedVariableCount: analyzedVariableCount,
-                popularity: anime.popularity
+                variablesIncluded: [], popularity: anime.popularity
             }
         }
         // Add Weight to Scores
@@ -915,7 +923,7 @@ self.onmessage = (message) => {
              &&typeof popularitySum==="number"
              &&popularitySum
              &&typeof weightedScore==="number"
-             &&typeof savedRecScheme[savedRecSchemeEntries[i]].weightedScore==="string"){
+             &&weightedScore){
                 if(popularity<popularityMode) {
                     savedRecScheme[savedRecSchemeEntries[i]].weightedScore = (
                         popularity? (anime.popularity/popularitySum)*weightedScore

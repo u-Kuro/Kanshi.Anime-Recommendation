@@ -1174,8 +1174,8 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "4.3",
-          backUpVersion = 2.6
+    const version = "4.4",
+          backUpVersion = 2.7
         // IndexDB
     var request, db,
         // Saved Data
@@ -1244,18 +1244,18 @@
                     if( e.which===13
                         &&!pageInits
                         &&!isLoading
-                        &&e.target.id==="flex0"
-                        &&!e.target.value
-                        &&$("#username").val()
+                        &&e.target?.id==="flex0"
+                        &&!e.target?.value
+                        &&$("#username")?.val()
                     ){
-                        $("#searchBtn").click()
+                        $("#searchBtn")?.click()
                     }
                 })
                 $("#searchBtn").on('click', async ()=>{
                     savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || [320]
                     deepUpdateTime = arrayMean(savedDeepUpdateTime)
                     savedRecScheme = await retrieveJSON("savedRecScheme") || {}
-                    if(Object.keys(savedRecScheme).length>0) {
+                    if(Object.keys(savedRecScheme)?.length>0) {
                         savedUsername = await retrieveJSON("savedUsername")
                         var newUsername = $("#username").val()
                         if(!newUsername){
@@ -1382,7 +1382,7 @@
                 })
                 $("#dataStatus").on('click',async (e) =>{
                     var element = e.target
-                    var elValue = element.textContent || element.innerText
+                    var elValue = element?.textContent || element?.innerText
                     if(elValue.includes("Latest Anilist Update: ")){
                         var savedUpdateTime1 = await retrieveJSON("savedAnalyzeVariableTime") || [90],
                         savedUpdateTime2 = await retrieveJSON("savedUpdateAnalyzeAnimeTime") || [3]
@@ -1659,7 +1659,7 @@
                         isRunning = true
                         savedUsername = await retrieveJSON("savedUsername") || ""
                         savedRecScheme = await retrieveJSON("savedRecScheme") || {}
-                        if(savedUsername.length>0&&Object.keys(savedRecScheme).length>0){
+                        if(savedUsername?.length>0&&Object.keys(savedRecScheme)?.length>0){
                             var state = await $("#hiddenUnhiddenBtn").text()
                             if(!equalsNCS($("#username").val(),savedUsername)){
                                 await $("#username").val(savedUsername)
@@ -1687,17 +1687,18 @@
                                 `)
                                 await LoadData(savedRecScheme)
                                 if($('#anime-table')?.[0]?.config){
-                                    $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
+                                    $("#pageNumberOptions")?.find("option:selected")?.text(`${$("#pageNumberOptions")?.val()} of ${$('#anime-table')?.[0]?.config?.pager?.totalPages||1}`)?.prop('selected', true)
                                 }
                                 isRunning = false
                             } else {
                                 if($("#filters .flexdatalist-multiple-value").length){
-                                    var filters = await $("#filters .flexdatalist-multiple").children("li.value")
+                                    var filters = await $("#filters .flexdatalist-multiple")?.children("li.value") || []
                                     var filterName
                                     for(let i=0; i<filters.length; i++) {
-                                        filterName = await filters.eq(i).children(".text")[0].innerText
-                                        if(filterName.toLowerCase()==="hidden"){
-                                            await filters.eq(i).children(".fdl-remove").trigger("click")
+                                        filterName = await filters?.eq(i)?.children(".text")?.[0]?.innerText
+                                        if(typeof filterName!=="string") continue
+                                        if(filterName.trim().toLowerCase()==="hidden"){
+                                            await filters?.eq(i)?.children(".fdl-remove")?.trigger("click")
                                             await $("#filters .flexdatalist-alias").blur()
                                         }
                                     }
@@ -1717,7 +1718,7 @@
                                 `)
                                 await LoadData(savedRecScheme)
                                 if($('#anime-table')?.[0]?.config){
-                                    $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
+                                    $("#pageNumberOptions")?.find("option:selected")?.text(`${$("#pageNumberOptions")?.val()} of ${$('#anime-table')?.[0]?.config?.pager?.totalPages||1}`)?.prop('selected', true)
                                 }
                                 isRunning = false
                             }
@@ -1745,12 +1746,13 @@
                             }
                             await saveJSON({}, "savedHiddenAnimeIDs")
                             if(await $("#filters .flexdatalist-multiple-value").length){
-                                var filters = await $("#filters .flexdatalist-multiple").children("li.value")
+                                var filters = await $("#filters .flexdatalist-multiple")?.children("li.value") || []
                                 var filterName
                                 for(let i=0; i<filters.length; i++) {
-                                    filterName = await filters.eq(i).children(".text")[0].innerText
-                                    if(filterName.toLowerCase()==="hidden"){
-                                        await filters.eq(i).children(".fdl-remove").trigger("click")
+                                    filterName = await filters?.eq(i)?.children(".text")?.[0]?.innerText
+                                    if(typeof filterName!=="string") continue
+                                    if(filterName.trim().toLowerCase()==="hidden"){
+                                        await filters?.eq(i)?.children(".fdl-remove")?.trigger("click")
                                         await $("#filters .flexdatalist-alias").blur()
                                     }
                                 }
@@ -1774,7 +1776,7 @@
                             savedUnhiddenTablePage = await retrieveJSON("savedUnhiddenTablePage") || 0
                             await $('#anime-table').trigger("pageSet",savedUnhiddenTablePage)
                             if($('#anime-table')?.[0]?.config){
-                                $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
+                                $("#pageNumberOptions")?.find("option:selected")?.text(`${$("#pageNumberOptions")?.val()} of ${$('#anime-table')?.[0]?.config?.pager?.totalPages||1}`)?.prop('selected', true)
                             }
                             await saveJSON("Unhidden","savedTableStatus")
                             $("#showAllAnime").hide()
@@ -1818,10 +1820,10 @@
                         const reader = new FileReader()
                         reader.onload = async() => {
                             const fullPath = $("#importFile")[0].value
-                            const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-                            var filename = fullPath.substring(startIndex);
-                            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                                filename = filename.substring(1);
+                            const startIndex = (fullPath?.indexOf('\\') >= 0 ? fullPath?.lastIndexOf('\\') : fullPath?.lastIndexOf('/'));
+                            var filename = fullPath?.substring(startIndex);
+                            if (filename?.indexOf('\\') === 0 || filename?.indexOf('/') === 0) {
+                                filename = filename?.substring(1);
                             }
                             if(savedUsername){
                                 Swal.fire({
@@ -1961,11 +1963,11 @@
                                             await new Promise(async(resolve)=>{
                                                 await $("#warnAnimeContainer").css({visibility:"hidden"}).show()
                                                 // Remove Current Filters
-                                                var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
+                                                var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value") || []
                                                 var infoName
                                                 for(let i=0; i<warnInfo.length; i++) {
-                                                    infoName = await warnInfo.eq(i).children(".text")[0].innerText
-                                                    await warnInfo.eq(i).children(".fdl-remove").trigger("click")
+                                                    infoName = await warnInfo.eq(i).children(".text")?.[0]?.innerText
+                                                    await warnInfo?.eq(i)?.children(".fdl-remove")?.trigger("click")
                                                     await $("#warnAnimeModal .flexdatalist-alias").blur()
                                                 }
                                                 resolve()
@@ -1974,10 +1976,10 @@
                                                 var warnAnimeInput
                                                 for(let i=0; i<savedWarnAnime.length; i++) {
                                                     warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
-                                                    await warnAnimeInput.val(savedWarnAnime[i])
+                                                    await warnAnimeInput?.val(savedWarnAnime[i])
                                                     var e = await $.Event("keyup",{keyCode:13})
-                                                    await warnAnimeInput.trigger(e)
-                                                    await warnAnimeInput.val("")
+                                                    await warnAnimeInput?.trigger(e)
+                                                    await warnAnimeInput?.val("")
                                                 }
                                                 await $("#warnAnimeContainer").css({visibility:"visible"}).hide()
                                                 return
@@ -1986,11 +1988,11 @@
                                             return await new Promise(async(resolve)=>{
                                                 await $("#filterAlgoContainer").css({visibility:"hidden"}).show()
                                                 // Remove Current Filters
-                                                var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
+                                                var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value") || []
                                                 var infoName
                                                 for(let i=0; i<filterInfo.length; i++) {
-                                                    infoName = await filterInfo.eq(i).children(".text")[0].innerText
-                                                    await filterInfo.eq(i).children(".fdl-remove").trigger("click")
+                                                    infoName = await filterInfo?.eq(i)?.children(".text")?.[0]?.innerText
+                                                    await filterInfo?.eq(i)?.children(".fdl-remove")?.trigger("click")
                                                     await $("#filterAlgoModal .flexdatalist-alias").blur()
                                                 }
                                                 resolve()
@@ -2008,7 +2010,7 @@
                                                 return
                                             })
                                         }).then(async()=>{
-                                            if(Object.keys(savedRecScheme).length) {
+                                            if(Object.keys(savedRecScheme)?.length) {
                                                 await $("#updateBtn").show()
                                                 await $("#updateIntervalBtn").show()
                                                 await LoadData(savedRecScheme)
@@ -2184,11 +2186,11 @@
                                     return await new Promise(async(resolve)=>{
                                         await $("#warnAnimeContainer").css({visibility:"hidden"}).show()
                                         // Remove Current Filters
-                                        var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
+                                        var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value") || []
                                         var infoName
                                         for(let i=0; i<warnInfo.length; i++) {
-                                            infoName = await warnInfo.eq(i).children(".text")[0].innerText
-                                            await warnInfo.eq(i).children(".fdl-remove").trigger("click")
+                                            infoName = await warnInfo?.eq(i)?.children(".text")?.[0]?.innerText
+                                            await warnInfo?.eq(i)?.children(".fdl-remove")?.trigger("click")
                                             await $("#warnAnimeModal .flexdatalist-alias").blur()
                                         }
                                         resolve()
@@ -2209,11 +2211,11 @@
                                     return await new Promise(async(resolve)=>{
                                         await $("#filterAlgoContainer").css({visibility:"hidden"}).show()
                                         // Remove Current Filters
-                                        var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
+                                        var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value") || []
                                         var infoName
                                         for(let i=0; i<filterInfo.length; i++) {
-                                            infoName = await filterInfo.eq(i).children(".text")[0].innerText
-                                            await filterInfo.eq(i).children(".fdl-remove").trigger("click")
+                                            infoName = await filterInfo?.eq(i)?.children(".text")?.[0]?.innerText
+                                            await filterInfo?.eq(i)?.children(".fdl-remove")?.trigger("click")
                                             await $("#filterAlgoModal .flexdatalist-alias").blur()
                                         }
                                         resolve()
@@ -2231,7 +2233,7 @@
                                         return
                                     })
                                 }).then(async()=>{
-                                    if(Object.keys(savedRecScheme).length) {
+                                    if(Object.keys(savedRecScheme)?.length) {
                                         await $("#updateBtn").show()
                                         await $("#updateIntervalBtn").show()
                                         await LoadData(savedRecScheme)
@@ -2356,7 +2358,7 @@
                                 await saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
                                 updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
                                 await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                                if((new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hrs
+                                if((new Date).getTime()-(updateIntervalStartDate?.getTime())>3600000){// 1hrs
                                     if(!requestIsRunning){
                                         savedUsername = await retrieveJSON("savedUsername") || ""
                                         if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
@@ -2394,7 +2396,7 @@
                                             }
                                         },3600000)
                                         updateIntervalTimeout.push(saveUpdateIntervalTimeout)
-                                    },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
+                                    },3600000-((new Date).getTime()-(updateIntervalStartDate?.getTime())))
                                 }
                             }
                         })
@@ -2446,7 +2448,7 @@
                                     await saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
                                     exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                                     await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                                    if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
+                                    if((new Date).getTime()-(exportIntervalStartDate?.getTime())>3600000){// 1hrs
                                         await new Promise(async(resolve)=>{
                                             await $(".menu-container").fadeOut(250)
                                             $("#dataStatusSpinner").show()
@@ -2485,7 +2487,7 @@
                                                 await backUpData()
                                             },3600000)
                                             exportIntervalTimeout.push(saveExportIntervalTimeout)
-                                        },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
+                                        },3600000-((new Date).getTime()-(exportIntervalStartDate?.getTime())))
                                     }
                                 }
                             })
@@ -2505,10 +2507,10 @@
                     await $("#warnAnimeContainer").show()
                     $("#warnAnimeModal").removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
                     $(`ul.flex1`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
-                    $(`ul.flex1`)[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                    $(`ul.flex1`)?.[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                 })
                 $("#submitWarnAnime").on("click",async()=>{
-                    var warnAnimeInputs = $("#warnAnimeModal .flexdatalist-multiple > .value").children(".text")
+                    var warnAnimeInputs = $("#warnAnimeModal .flexdatalist-multiple > .value").children(".text") || []
                     var warnAnime = []
                     for(let i=0; i<warnAnimeInputs.length; i++){
                         var warnName = warnAnimeInputs[i].textContent
@@ -2532,10 +2534,10 @@
                                                                                  ]
                         await new Promise(async(resolve)=>{
                             // Remove Current Filters
-                            var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
+                            var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value") || []
                             var infoName
                             for(let i=0; i<warnInfo.length; i++) {
-                                infoName = await warnInfo.eq(i).children(".text")[0].innerText
+                                infoName = await warnInfo.eq(i).children(".text")?.[0]?.innerText
                                 await warnInfo.eq(i).children(".fdl-remove").trigger("click")
                                 await $("#warnAnimeModal .flexdatalist-alias").blur()
                             }
@@ -2559,7 +2561,7 @@
                     await $("#filterAlgoContainer").show()
                     $("#filterAlgoModal").removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
                     $(`ul.flex2`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
-                    $(`ul.flex2`)[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                    $(`ul.flex2`)?.[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                 })
                 $("#submitFilterAlgo").on("click",async()=>{
                     savedUserList = await retrieveJSON("savedUserList") || {}
@@ -2594,7 +2596,7 @@
                         })
                         return
                     } else {
-                        var filterAlgoInputs = $("#filterAlgoModal .flexdatalist-multiple > .value").children(".text")
+                        var filterAlgoInputs = $("#filterAlgoModal .flexdatalist-multiple > .value").children(".text") || []
                         var filterAlgo = []
                         var filterName
                         for(let i=0; i<filterAlgoInputs.length; i++){
@@ -2621,10 +2623,10 @@
                         // Remove Current Filters
                         savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
                         await new Promise(async(resolve)=>{
-                            var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
+                            var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value") || []
                             var infoName
                             for(let i=0; i<filterInfo.length; i++) {
-                                infoName = await filterInfo.eq(i).children(".text")[0].innerText
+                                infoName = await filterInfo.eq(i).children(".text")?.[0]?.innerText
                                 await filterInfo.eq(i).children(".fdl-remove").trigger("click")
                                 await $("#filterAlgoModal .flexdatalist-alias").blur()
                             }
@@ -3321,8 +3323,9 @@
                 var filters = await $("#filters .flexdatalist-multiple").children("li.value")
                 var filterName
                 for(let i=0; i<filters.length; i++) {
-                    filterName = await filters.eq(i).children(".text")[0].innerText
-                    if(await filterName.toLowerCase()==="hidden"){
+                    filterName = await filters?.eq(i)?.children(".text")?.[0]?.innerText
+                    if(typeof filtername!=="string") continue
+                    if(await filterName.trim().toLowerCase()==="hidden"){
                         await $("#hiddenUnhiddenBtn").text("Hidden")
                     }
                 }
@@ -3572,6 +3575,8 @@
         var savedExcluded = []
         var filterName
         for(let i=0; i<savedFilterAlgo.length; i++){
+            filterName = savedFilterAlgo[i]
+            if(typeof filterName!=="string") continue
             filterName = savedFilterAlgo[i]?.trim()?.toLowerCase()
             if(filterName.charAt(0)==="!") {
                 filterName = filterName.slice(1)
@@ -3581,7 +3586,7 @@
                     filterName = [filterName.shift(),filterName.join()]
                     var type = filterName[0]
                     var cinfo = filterName[1]?.trim()?.toLowerCase()
-                    if(cinfo.charAt(0)==="!"){
+                    if(cinfo?.charAt(0)==="!"){
                         cinfo = cinfo.slice(1)
                         savedExcluded.push(type+":"+cinfo)
                     } else {
@@ -4627,8 +4632,9 @@
                                     filters = await $("#filters .flexdatalist-multiple").children("li.value")
                                     var filterName
                                     for(let i=0; i<filters.length; i++) {
-                                        filterName = await filters.eq(i).children(".text")[0].innerText
-                                        if(filterName.toLowerCase()==="hidden"){
+                                        filterName = await filters?.eq(i)?.children(".text")?.[0]?.innerText
+                                        if(typeof filterName!=="string") continue
+                                        if(filterName.trim().toLowerCase()==="hidden"){
                                             await filters.eq(i).children(".fdl-remove").trigger("click")
                                             await $("#filters .flexdatalist-alias").blur()
                                         }
@@ -4826,7 +4832,9 @@
                 var excludes = kidsAnimeIsHidden? ["tag: kids"] : []
                 var filterName
                 for(let i=0; i<filterInputs.length; i++){
-                    filterName = filterInputs[i]?.textContent?.trim()?.toLowerCase()
+                    filterName = filterInputs[i]?.textContent
+                    if(typeof filterName!=="string") continue
+                    filterName = filterName.trim().toLowerCase()
                     filters.push(filterName)
                     if(filterName.charAt(0)==="!") {
                         filterName = filterName.slice(1)
@@ -4835,7 +4843,7 @@
                             filterName = [filterName.shift(),filterName.join()]
                             var type = filterName[0]
                             var cinfo = filterName[1]?.trim()?.toLowerCase()
-                            if(cinfo.charAt(0)==="!"){
+                            if(cinfo?.charAt(0)==="!"){
                                 cinfo = cinfo.slice(1)
                                 excludes.push(type+":"+cinfo)
                             } else {
@@ -4862,15 +4870,17 @@
                 var savedWarnR = {}
                 var savedWarnY = {}
                 for(let i=0; i<savedWarnAnime.length; i++){
-                    var warnName = savedWarnAnime[i]?.trim()?.toLowerCase()
+                    var warnName = savedWarnAnime[i]
+                    if(typeof warnName!=="string") continue
+                    warnName = warnName.trim().toLowerCase()
                     if(warnName.charAt(0)==="!") {
                         warnName = warnName.slice(1)
                         warnName = typeof warnName==="string"? warnName.split(":") : ""
                         if(warnName?.length>1){
                             warnName = [warnName.shift(),warnName.join()]
                             var type = warnName[0]
-                            var cinfo = warnName[1].trim()?.toLowerCase()
-                            if(cinfo.charAt(0)==="!"){
+                            var cinfo = warnName[1]?.trim()?.toLowerCase()
+                            if(cinfo?.charAt(0)==="!"){
                                 cinfo = cinfo.slice(1)
                                 savedWarnR[type+": "+cinfo] = true
                             } else {
@@ -4965,7 +4975,7 @@
             exportWorker.onmessage = async(message) => {
                 exportWorker.terminate()
                 // Android
-                await exportJsonData(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                await exportJsonData(message.data.backupStr, `Kanshi.${savedUsername?.trim()?.toLowerCase()||"Backup"}.json`)
                 // Android
                 if(!requestIsRunning){
                     $("#dataStatusSpinner").hide()

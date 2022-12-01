@@ -365,8 +365,9 @@ self.onmessage = (message) => {
         })
         var studios = []
         Object.entries(value?.studios||{}).forEach(([name,url])=>{
+            if(typeof name!=="string") return
             studios.push(`<a class="${savedTheme}" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"}>${name}</a>`)
-            var valStudio = name.toLowerCase()
+            var valStudio = name.trim().toLowerCase()
             var fullStudio = "studio: "+valStudio
             if(savedWarnR[fullStudio]||savedWarnR[valStudio]){
                 warns.push(name)
@@ -378,8 +379,9 @@ self.onmessage = (message) => {
         })
         var staff = []
         Object.entries(value?.staffs||{}).forEach(([name,url])=>{
+            if(typeof name!=="string") return
             staff.push(`<a class="${savedTheme}" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"}>${name}</a>`)
-            var valStaff = name.toLowerCase()
+            var valStaff = name.trim().toLowerCase()
             var fullStaff = "staff: "+valStaff
             if(savedWarnR[fullStaff]||savedWarnR[valStaff]){
                 warns.push(name)
@@ -497,8 +499,8 @@ self.onmessage = (message) => {
         var s2 = str2 || ""
         if(typeof s1==="number") s1 = s1.toString()
         if(typeof s2==="number") s2 = s2.toString()
-        if(typeof s1==="string") s1 = s1.toLowerCase()
-        if(typeof s2==="string") s2 = s2.toLowerCase()
+        if(typeof s1==="string") s1 = s1.trim().toLowerCase()
+        if(typeof s2==="string") s2 = s2.trim().toLowerCase()
         return s1 === s2
     }
     function isJson(data) { 

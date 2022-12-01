@@ -298,9 +298,9 @@ self.onmessage = (message) => {
                 for(let j=0;j<animeRelations.length;j++){
                     var animeRelationNode = animeRelations?.[j]?.node
                     var animeRelationType = animeRelations?.[j]?.relationType
-                    if(animeRelationNode&&animeRelationType){
+                    if(animeRelationNode&&animeRelationType&&typeof animeRelationType==="string"){
                         // Other characters may cast at a completely different anime
-                        if(typeof animeRelationNode?.id==="number"&&mediaRelationTypes.includes(animeRelationType?.toLowerCase())){
+                        if(typeof animeRelationNode?.id==="number"&&mediaRelationTypes.includes(animeRelationType.trim().toLowerCase())){
                             includedAnimeRelations[animeRelationNode.id] = true
                         }
                     }
