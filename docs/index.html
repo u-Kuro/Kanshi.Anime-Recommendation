@@ -319,9 +319,9 @@
             #animeRecommendationList{
                 content-visibility: auto;
             }
-            #animeRecommendationList > tr > *{
+            /* #animeRecommendationList > tr > *{
                 white-space: nowrap;
-            }
+            } */
             #updateIntervalBtn,
             #updateBtn,
             #showAllAnime{
@@ -1067,20 +1067,16 @@
                 <th class="darkMode">Title</th>
                 <th class="darkMode">Top Similarities</th>
                 <th class="darkMode">Score</th>
+                <th class="darkMode">User Score</th>
+                <th class="darkMode">Average Score</th>
+                <th class="darkMode">Popularity</th>
                 <th class="darkMode">User Status</th>
                 <th class="darkMode">Status</th>
-                <th class="darkMode">Genres</th>
-                <th class="darkMode">Tags</th>
-                <th class="darkMode">Format</th>
-                <th class="darkMode">Year</th>
-                <th class="darkMode">Season</th>
-                <th class="darkMode">Studios</th>
-                <th class="darkMode">Staff</th>
             </tr>
             </thead>
             <tbody id="animeRecommendationList" class="darkMode">
             <tr class="item darkMode" role="row">
-                <td class="darkMode" style="padding: 1.5em !important;" colspan="14">
+                <td class="darkMode" style="padding: 1.5em !important;" colspan="10">
                     <i class="fa fa-solid fa-file fa-xl darkMode" style="padding-right: 1ch;"></i>
                     No Data
                 </td>
@@ -1168,8 +1164,8 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "4.4",
-          backUpVersion = 2.7
+    const version = "4.5",
+          backUpVersion = 2.8
         // IndexDB
     var request, db,
         // Saved Data
@@ -1260,7 +1256,7 @@
                                 await $("#animeRecommendationList").empty()
                                 await $("#animeRecommendationList").append(`
                                     <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
                                             <div style="display:flex; align-items:center;">
                                                 <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner ${savedTheme}"></div></div>
                                                 <div>Loading...</div>
@@ -1671,7 +1667,7 @@
                                 await $("#animeRecommendationList").empty()
                                 await $("#animeRecommendationList").append(`
                                     <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
                                             <div style="display:flex; align-items:center;">
                                                 <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner ${savedTheme}"></div></div>
                                                 <div>Loading...</div>
@@ -1701,7 +1697,7 @@
                                 await $("#animeRecommendationList").empty()
                                 await $("#animeRecommendationList").append(`
                                     <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
                                             <div style="display:flex; align-items:center;">
                                                 <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner ${savedTheme}"></div></div>
                                                 <div>Loading...</div>
@@ -1753,7 +1749,7 @@
                                 await $("#animeRecommendationList").empty()
                                 await $("#animeRecommendationList").append(`
                                     <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
                                             <div style="display:flex; align-items:center;">
                                                 <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner ${savedTheme}"></div></div>
                                                 <div>Loading...</div>
@@ -2011,7 +2007,7 @@
                                                 await $("#updateIntervalBtn").hide()
                                                 animeData = `
                                                     <tr class="item ${savedTheme}" role="row">
-                                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
+                                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
                                                             <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                                             No Data
                                                         </td>
@@ -2037,6 +2033,15 @@
                                                 icon: "success",
                                                 confirmButtonColor: "#000"
                                             })
+                                            return
+                                        }).then(async()=>{
+                                            // If version is lower, Update
+                                            var importedBackUpVersion = await fileContent.backUpVersion
+                                            if(importedBackUpVersion<backUpVersion){
+                                                versionUpdate = true
+                                                saveJSON(versionUpdate,"versionUpdate")
+                                                Update(true)
+                                            }
                                             return
                                         })
                                         .catch(()=>{
@@ -2234,7 +2239,7 @@
                                         await $("#updateIntervalBtn").hide()
                                         animeData = `
                                             <tr class="item ${savedTheme}" role="row">
-                                                <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
+                                                <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
                                                     <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                                     No Data
                                                 </td>
@@ -2260,6 +2265,15 @@
                                     })
                                     // Reset Custom Validation
                                     $("#filterAlgo-validation").html("").hide()
+                                    return
+                                }).then(async()=>{
+                                    // If version is lower, Update
+                                    var importedBackUpVersion = await fileContent.backUpVersion
+                                    if(importedBackUpVersion<backUpVersion){
+                                        versionUpdate = true
+                                        saveJSON(versionUpdate,"versionUpdate")
+                                        Update(true)
+                                    }
                                     return
                                 })
                                 .catch(()=>{
@@ -3055,7 +3069,7 @@
                             await $("#animeRecommendationList").empty()
                             await $("#animeRecommendationList").append(`
                                 <tr class="item ${savedTheme}" role="row">
-                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
+                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                         No Data
                                     </td>
@@ -3084,7 +3098,7 @@
                             await $("#animeRecommendationList").empty()
                             await $("#animeRecommendationList").append(`
                                 <tr class="item ${savedTheme}" role="row">
-                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
+                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                         No Data
                                     </td>
@@ -3300,7 +3314,7 @@
                 } else {
                     animeData = `
                         <tr class="item ${savedTheme}" role="row">
-                            <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
+                            <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
                                 <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                 No Data
                             </td>
@@ -3981,7 +3995,7 @@
                                     $("#animeRecommendationList").empty()
                                     $("#animeRecommendationList").append(`
                                         <tr class="item ${savedTheme}" role="row">
-                                            <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
+                                            <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
                                                 <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                                 No Data
                                             </td>
@@ -4206,7 +4220,7 @@
                             $("#animeRecommendationList").empty()
                             $("#animeRecommendationList").append(`
                                 <tr class="item ${savedTheme}" role="row">
-                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
+                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                         No Data
                                     </td>
@@ -4414,7 +4428,7 @@
                                 $("#animeRecommendationList").empty()
                                 $("#animeRecommendationList").append(`
                                     <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="14">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
                                             <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                             No Data
                                         </td>
@@ -4500,7 +4514,7 @@
                 worker4.terminate()
                 const data = message.data
                 savedRecScheme = data.savedRecScheme
-                if(!notAnUpdate){
+                if(!notAnUpdate||versionUpdate){
                     // Save New Filter Options
                     allFilterInfo = data.allFilterInfo
                     await saveJSON(allFilterInfo,"allFilterInfo")
@@ -4545,7 +4559,7 @@
                     worker5.terminate()
                     const data = message.data
                     var filtersHasFocus = false
-                    if(!notAnUpdate){
+                    if(!notAnUpdate||versionUpdate){
                         // Save and Reload Filters
                         savedFilterOptionsJson = data.savedFilterOptionsJson
                         await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")

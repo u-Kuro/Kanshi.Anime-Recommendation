@@ -6,8 +6,13 @@ self.onmessage = (message) => {
     const savedAnimeFranchises = data?.savedAnimeFranchises || []
     var savedUserList = data?.savedUserList || {}
     var tempUserList = {}
-    var minSampleSize
+    // Filter Algorithm
     var measure = "mean"
+    var includeUnknownVar = true
+    var minSampleSize
+    var minPopularity
+    var minAverageScore
+    // Filter Algorithm
     var userEntries
     var include = {
         formats: {}, genres: {}, tags: {}, categories: {}, studios: {}, staffs: {}, roles: {}
@@ -47,16 +52,40 @@ self.onmessage = (message) => {
             include.staffs["staff: "+savedIncludes.split("staff:")[1].trim()] = true
             continue
         }
-        if(savedIncludes?.includes("sample size:")){
-            var tempNum = savedIncludes.split("sample size:")[1].trim()
-            if(isNaN(tempNum)) continue
-            minSampleSize = parseFloat(tempNum)
-            continue
-        }
         if(savedIncludes?.includes("measure:")){
             var tempMeasure = savedIncludes.split("measure:")[1].trim().toLowerCase()
             if(tempMeasure==="mode"){
                 measure = "mode"
+            }
+            continue
+        }
+        if(savedIncludes?.includes("include unknown variables:")){
+            var tempIncUnkVar = savedIncludes.split("include unknown variables:")[1].trim().toLowerCase()
+            if(tempIncUnkVar==="false"){
+                includeUnknownVar = false
+            } else if(tempIncUnkVar==="true"){
+                includeUnknownVar = true
+            }
+            continue
+        }
+        if(savedIncludes?.includes("sample size:")){
+            var tempSamSiz = savedIncludes.split("sample size:")[1].trim()
+            if(isaN(tempSamSiz)){
+                minSampleSize = parseFloat(tempSamSiz)
+            }
+            continue
+        }
+        if(savedIncludes?.includes("minimum popularity:")){
+            var tempMinPop = savedIncludes.split("minimum popularity:")[1].trim().toLowerCase()
+            if(isaN(tempMinPop)){
+                minPopularity = parseFloat(tempMinPop)
+            }
+            continue
+        }
+        if(savedIncludes?.includes("minimum averagescore:")){
+            var tempAvgSco = savedIncludes.split("minimum averagescore:")[1].trim().toLowerCase()
+            if(isaN(tempAvgSco)){
+                minAverageScore = parseFloat(tempAvgSco)
             }
             continue
         }
@@ -137,7 +166,10 @@ self.onmessage = (message) => {
         staff: {}
     }
     // Check Watched
-    var userListStatus = {}
+    var userListStatus = {
+        userScore: {},
+        userStatus: {}
+    }
     // For Linear Regression Models
     var episodes = []
     var duration = []
@@ -165,9 +197,15 @@ self.onmessage = (message) => {
         var anime = userEntries[i]?.media
         var status = userEntries[i]?.status        
         var anilistId = anime?.id
+        var userScore = userEntries?.[i]?.score
         // Save every anime status in userlist
-        if(status&&anilistId){
-            userListStatus[anilistId] = status
+        if(anilistId){
+            if(status){
+                userListStatus.userStatus[anilistId] = status
+            }
+            if(userScore){
+                userListStatus.userScore[anilistId] = userScore
+            }
         }
         var editedEntry = parseJson(JSON.stringify(userEntries[i])) || {}
         if(editedEntry.media){
@@ -208,7 +246,6 @@ self.onmessage = (message) => {
         var tags = anime?.tags || []
         var studios = anime?.studios?.nodes || []
         var staffs = anime?.staff?.edges || []
-        var userScore = userEntries?.[i]?.score
         // Altered Variables
           // Altered Formats
         if(typeof format==="string"){
@@ -711,10 +748,14 @@ self.onmessage = (message) => {
     } else {
         staffMeanCount = 10
     }
-
+    
     // If User List Scores is Empty
     if(userListCount<1){
         varScheme={}
+    } else {
+        varScheme.includeUnknownVar = includeUnknownVar
+        varScheme.minPopularity = minPopularity
+        varScheme.minAverageScore = minAverageScore
     }
     if(!jsonIsEmpty(varScheme)){
         var formatKey = Object.keys(varScheme.format)
@@ -785,7 +826,7 @@ self.onmessage = (message) => {
             if(measure==="mode"){
                 tempScore = arrayMode(varScheme.tags[tagsKey[i]].userScore)
             } else {
-                tagsMean = arrayMean(varScheme.tags[tagsKey[i]].userScore)
+                tempScore = arrayMean(varScheme.tags[tagsKey[i]].userScore)
             }
             // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
             var count = varScheme.tags[tagsKey[i]].count
@@ -958,10 +999,10 @@ self.onmessage = (message) => {
     })
     // Used Function
     function isaN(num){
-        if(num===null){return false
-        }else if(typeof num==='string'){if(num.split(' ').join('').length===0){return false}
-        }else if(typeof num==='boolean'){return false}
-        else return !isNaN(num)
+        if(!num&&num!==0){return false}
+        else if(typeof num==='string'){return num.split(' ').join('').length}
+        else if(typeof num==='boolean'){return false}
+        return !isNaN(num)
     }
     function isJson(j){
         if(j instanceof Array||typeof j==="string") return false

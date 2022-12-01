@@ -7,28 +7,24 @@ self.onmessage = (message) => {
     var recSchemeIsNew = jsonIsEmpty(savedRecScheme)
     var userListStatus = data.userListStatus
     var varScheme = data.varScheme
-    const measure = varScheme.measure || "mean"
+    // Algorithm Configs
+    const measure = varScheme?.measure || "mean"
+    const includeUnknownVar = varScheme?.includeUnknownVar || true
+    const popularityArray = animeEntries.map((anime)=>{
+                                    var popularity = anime?.popularity
+                                    if(typeof popularity==="number"){
+                                        return popularity
+                                    }
+                                })
+    const popularitySum = popularityArray.length? arraySum(popularityArray) : 3000000
+    const popularityMode = varScheme?.minPopularity || popularityArray.length? 3300 : 0.33*Math.min(arrayMean(popularityArray),arrayMode(popularityArray))
+    const averageScoreMode = varScheme?.minAverageScore || 50-0.33
+    // Algorithm Configs
     var allFilterInfo = data.allFilterInfo || {}
     var alteredVariables = data.alteredVariables
     var animeFranchises = []
     const hideUnwatchedSequels = data.hideUnwatchedSequels
-    // Add Popularity Weight
-    var popularityMode = []
-    var averageScoreMode = []
-    for(let i=0; i<animeEntries.length; i++){
-        var anime = animeEntries[i]
-        var popularity = anime?.popularity
-        if(typeof popularity==="number"){
-            popularityMode.push(popularity)
-        }
-        var score = anime?.averageScore
-        if(typeof score==="number"){
-            averageScoreMode.push(score)
-        }
-    }
-    var popularitySum = popularityMode.length?arraySum(popularityMode):1000
-    popularityMode = popularityMode.length?Math.min(arrayMean(popularityMode),arrayMode(popularityMode)):1000
-    averageScoreMode = averageScoreMode.length?Math.min(arrayMean(averageScoreMode),arrayMode(averageScoreMode)):50
+    //
     if(!jsonIsEmpty(varScheme)){
         for(let i=0; i<animeEntries.length; i++){
             var animeShallUpdate = false
@@ -53,8 +49,8 @@ self.onmessage = (message) => {
                 allFilterInfo["user status: "+userStatus.toLowerCase()] = true
                 allFilterInfo["!user status: !"+userStatus.toLowerCase()] = true
             }
-            if(typeof userListStatus[anilistId]==="string"){
-                userStatus = userListStatus[anilistId]
+            if(typeof userListStatus?.userStatus?.[anilistId]==="string"){
+                userStatus = userListStatus?.userStatus?.[anilistId]
                 var tmpUserStatus = userStatus.trim().toLowerCase()
                 if(!allFilterInfo["user status: "+tmpUserStatus]
                  &&!allFilterInfo["!user status: !"+tmpUserStatus]){
@@ -142,13 +138,13 @@ self.onmessage = (message) => {
                      &&typeof animeRelationPopularity==="number"){
                         if(animeRelationType.trim().toLowerCase()==="prequel"){
                             // ...Prequel is Watched
-                            if(typeof userListStatus[animeRelationID]==="string"){
-                                if((userListStatus[animeRelationID].trim().toLowerCase()==="completed"
-                                  ||userListStatus[animeRelationID].trim().toLowerCase()==="repeating")){
+                            if(typeof userListStatus?.userStatus?.[animeRelationID]==="string"){
+                                if((userListStatus?.userStatus?.[animeRelationID].trim().toLowerCase()==="completed"
+                                  ||userListStatus?.userStatus?.[animeRelationID].trim().toLowerCase()==="repeating")){
                                     return true
                                 }
                             // ...Prequel is a Small/Unpopular Anime
-                            } else if(!userListStatus[animeRelationID]&&typeof popularity==="number"){
+                            } else if(!userListStatus?.userStatus?.[animeRelationID]&&typeof popularity==="number"){
                                 if(animeRelationPopularity<=popularity){
                                     return true
                                 }
@@ -162,10 +158,70 @@ self.onmessage = (message) => {
                     continue
                 }
             }
+            //
+            if(!allFilterInfo["wscore>="]
+             &&!allFilterInfo["wscore>"]
+             &&!allFilterInfo["wscore<"]
+             &&!allFilterInfo["wscore<="]){
+                allFilterInfo["wscore>="] = true
+                allFilterInfo["wscore>"] = true
+                allFilterInfo["wscore<"] = true
+                allFilterInfo["wscore<="] = true
+            }
+            if(!allFilterInfo["score>="]
+             &&!allFilterInfo["score>"]
+             &&!allFilterInfo["score<"]
+             &&!allFilterInfo["score<="]){
+                allFilterInfo["score>="] = true
+                allFilterInfo["score>"] = true
+                allFilterInfo["score<"] = true
+                allFilterInfo["score<="] = true
+            }
+            if(!allFilterInfo["userScore>="]
+             &&!allFilterInfo["userScore>"]
+             &&!allFilterInfo["userScore<"]
+             &&!allFilterInfo["userScore<="]){
+                allFilterInfo["userScore>="] = true
+                allFilterInfo["userScore>"] = true
+                allFilterInfo["userScore<"] = true
+                allFilterInfo["userScore<="] = true
+            }
+            if(!allFilterInfo["averageScore>="]
+             &&!allFilterInfo["averageScore>"]
+             &&!allFilterInfo["averageScore<"]
+             &&!allFilterInfo["averageScore<="]){
+                allFilterInfo["averageScore>="] = true
+                allFilterInfo["averageScore>"] = true
+                allFilterInfo["averageScore<"] = true
+                allFilterInfo["averageScore<="] = true
+            }
+            if(!allFilterInfo["popularity>="]
+             &&!allFilterInfo["popularity>"]
+             &&!allFilterInfo["popularity<"]
+             &&!allFilterInfo["popularity<="]){
+                allFilterInfo["popularity>="] = true
+                allFilterInfo["popularity>"] = true
+                allFilterInfo["popularity<"] = true
+                allFilterInfo["popularity<="] = true
+            }
+            if(!allFilterInfo["minimum popularity: "]){
+                allFilterInfo["minimum popularity: "] = true
+            }
+            if(!allFilterInfo["minimum averagescore: "]){
+                allFilterInfo["minimum averagescore: "] = true
+            }
+            if(!allFilterInfo["limit top similarities: "]){
+                allFilterInfo["limit top similarities: "] = true
+            }
             if(!allFilterInfo["measure: mode"]
              &&!allFilterInfo["measure: mean"]){
                 allFilterInfo["measure: mode"] = true
                 allFilterInfo["measure: mean"] = true
+            }
+            if(!allFilterInfo["include unknown variables: true"]
+             &&!allFilterInfo["include unknown variables: false"]){
+                allFilterInfo["include unknown variables: true"] = true
+                allFilterInfo["include unknown variables: false"] = true
             }
             if(!allFilterInfo["staff: "]
              &&!allFilterInfo["!staff: !"]){
@@ -308,7 +364,7 @@ self.onmessage = (message) => {
                 var fullFormat = "format: "+tmpformat
                 if(typeof varScheme.format[fullFormat]==="number") {
                     zformat.push(varScheme.format[fullFormat])
-                } else if(typeof varScheme.meanFormat==="number"){
+                } else if(typeof varScheme.meanFormat==="number"&&includeUnknownVar){
                     zformat.push(varScheme.meanFormat-minNumber)
                 }
                 // Filters
@@ -337,7 +393,7 @@ self.onmessage = (message) => {
                             ]
                         }
                     }
-                } else if(typeof varScheme.meanGenres==="number"){
+                } else if(typeof varScheme.meanGenres==="number"&&includeUnknownVar){
                     zgenres.push(varScheme.meanGenres-minNumber)
                 }
                 // Filters
@@ -369,7 +425,7 @@ self.onmessage = (message) => {
                             } else if(typeof varScheme.meanTags==="number"){
                                 if(varScheme.tags[fullTag]<varScheme.meanTags){
                                     ztags.push(varScheme.tags[fullTag])
-                                } else {
+                                } else if(includeUnknownVar){
                                     ztags.push(varScheme.meanTags-minNumber)
                                 }
                             }
@@ -398,7 +454,7 @@ self.onmessage = (message) => {
                             } else if(typeof varScheme.meanTags==="number"){
                                 if(varScheme.tags[fullTag]<varScheme.meanTags){
                                     ztags.push(varScheme.tags[fullTag])
-                                } else {
+                                } else if(includeUnknownVar){
                                     ztags.push(varScheme.meanTags-minNumber)
                                 }
                             }
@@ -452,7 +508,7 @@ self.onmessage = (message) => {
                             ]
                         }
                     }
-                } else if(typeof varScheme.meanStudios==="number"){
+                } else if(typeof varScheme.meanStudios==="number"&&includeUnknownVar){
                     zstudios.push(varScheme.meanStudios-minNumber)
                 }
                 // Filters
@@ -495,7 +551,7 @@ self.onmessage = (message) => {
                                     ]
                                 }
                             }
-                        } else if(typeof varScheme.meanStaff==="number"){
+                        } else if(typeof varScheme.meanStaff==="number"&&includeUnknownVar){
                             if(!zstaff[fullStaffRole]){
                                 zstaff[fullStaffRole] = [varScheme.meanStaff-minNumber]
                             } else {
@@ -524,7 +580,7 @@ self.onmessage = (message) => {
                                     ]
                                 }
                             }
-                        } else if(typeof varScheme.meanStaff==="number"){
+                        } else if(typeof varScheme.meanStaff==="number"&&includeUnknownVar){
                             if(!zstaff[fullStaffRole]){
                                 zstaff[fullStaffRole] = [varScheme.meanStaff-minNumber]
                             } else {
@@ -674,10 +730,16 @@ self.onmessage = (message) => {
                 .sort((a,b)=>{return b?.[1]-a?.[1]}).map((e)=>{return e?.[0]||""})
             variablesIncluded = variablesIncluded.length?variablesIncluded:[]
             savedRecScheme[anilistId] = {
-                id: anilistId, title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
-                userStatus: userStatus, status: status, genres: genres, tags: tags, year: year, 
-                season: season, format: format, studios: studios, staffs: staffs,
-                variablesIncluded: variablesIncluded, popularity: popularity
+                id: anilistId, title: title, animeUrl: animeUrl, 
+                userScore: userListStatus?.userScore?.[anilistId], 
+                averageScore: averageScore,
+                popularity: popularity,
+                score: score, weightedScore: weightedScore, 
+                variablesIncluded: variablesIncluded,
+                userStatus: userStatus, status: status,
+                // Others
+                genres: genres, tags: tags, year: year, 
+                season: season, format: format, studios: studios, staffs: staffs
             }
         }
         // Add Weight to Scores
@@ -722,6 +784,70 @@ self.onmessage = (message) => {
             var status = anime?.status
             var popularity = anime?.popularity
             //
+            if(!allFilterInfo["wscore>="]
+             &&!allFilterInfo["wscore>"]
+             &&!allFilterInfo["wscore<"]
+             &&!allFilterInfo["wscore<="]){
+                allFilterInfo["wscore>="] = true
+                allFilterInfo["wscore>"] = true
+                allFilterInfo["wscore<"] = true
+                allFilterInfo["wscore<="] = true
+            }
+            if(!allFilterInfo["score>="]
+             &&!allFilterInfo["score>"]
+             &&!allFilterInfo["score<"]
+             &&!allFilterInfo["score<="]){
+                allFilterInfo["score>="] = true
+                allFilterInfo["score>"] = true
+                allFilterInfo["score<"] = true
+                allFilterInfo["score<="] = true
+            }
+            if(!allFilterInfo["userScore>="]
+             &&!allFilterInfo["userScore>"]
+             &&!allFilterInfo["userScore<"]
+             &&!allFilterInfo["userScore<="]){
+                allFilterInfo["userScore>="] = true
+                allFilterInfo["userScore>"] = true
+                allFilterInfo["userScore<"] = true
+                allFilterInfo["userScore<="] = true
+            }
+            if(!allFilterInfo["averageScore>="]
+             &&!allFilterInfo["averageScore>"]
+             &&!allFilterInfo["averageScore<"]
+             &&!allFilterInfo["averageScore<="]){
+                allFilterInfo["averageScore>="] = true
+                allFilterInfo["averageScore>"] = true
+                allFilterInfo["averageScore<"] = true
+                allFilterInfo["averageScore<="] = true
+            }
+            if(!allFilterInfo["popularity>="]
+             &&!allFilterInfo["popularity>"]
+             &&!allFilterInfo["popularity<"]
+             &&!allFilterInfo["popularity<="]){
+                allFilterInfo["popularity>="] = true
+                allFilterInfo["popularity>"] = true
+                allFilterInfo["popularity<"] = true
+                allFilterInfo["popularity<="] = true
+            }
+            if(!allFilterInfo["minimum popularity: "]){
+                allFilterInfo["minimum popularity: "] = true
+            }
+            if(!allFilterInfo["minimum averagescore: "]){
+                allFilterInfo["minimum averagescore: "] = true
+            }
+            if(!allFilterInfo["limit top similarities: "]){
+                allFilterInfo["limit top similarities: "] = true
+            }
+            if(!allFilterInfo["measure: mode"]
+             &&!allFilterInfo["measure: mean"]){
+                allFilterInfo["measure: mode"] = true
+                allFilterInfo["measure: mean"] = true
+            }
+            if(!allFilterInfo["include unknown variables: true"]
+             &&!allFilterInfo["include unknown variables: false"]){
+                allFilterInfo["include unknown variables: true"] = true
+                allFilterInfo["include unknown variables: false"] = true
+            }
             if(!allFilterInfo["staff: "]
              &&!allFilterInfo["!staff: !"]){
                 allFilterInfo["staff: "] = true
@@ -906,10 +1032,16 @@ self.onmessage = (message) => {
             studios = studios.reduce((result,e)=>Object.assign(result,{[e?.name]:e?.siteUrl}),{})
             staffs = staffs.reduce((result,e)=>Object.assign(result,{[e?.node?.name?.userPreferred]:e?.node?.siteUrl}),{})
             savedRecScheme[anilistId] = {
-                id: anilistId, title: title, animeUrl: animeUrl, score: score, weightedScore: weightedScore, 
-                userStatus: userStatus, status: status, genres: genres, tags: tags, year: year, 
-                season: season, format: format, studios: studios, staffs: staffs,
-                variablesIncluded: [], popularity: anime.popularity
+                id: anilistId, title: title, animeUrl: animeUrl, 
+                userScore: userListStatus?.userScore?.[anilistId], 
+                averageScore: averageScore,
+                popularity: popularity,
+                score: score, weightedScore: weightedScore, 
+                variablesIncluded: [],
+                userStatus: userStatus, status: status,
+                // Others
+                genres: genres, tags: tags, year: year, 
+                season: season, format: format, studios: studios, staffs: staffs
             }
         }
         // Add Weight to Scores
@@ -949,7 +1081,7 @@ self.onmessage = (message) => {
         if(!num&&num!==0){return false}
         else if(typeof num==='string'){return num.split(' ').join('').length}
         else if(typeof num==='boolean'){return false}
-        else return !isNaN(num)
+        return !isNaN(num)
     }
     function isJson(j){
         if(j instanceof Array||typeof j==="string") return false
