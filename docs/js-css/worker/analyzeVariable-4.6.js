@@ -901,7 +901,7 @@ self.onmessage = (message) => {
         varScheme.measure = measure
         // Create Model for Numbers| y is predicted so userscore
         // Average Score Model
-        const r2Thresh = 0.1 // Lower than 0.3 Since Media is Subjective
+        // const r2Thresh = 0.1 // Lower than 0.3 Since Media is Subjective
         // For Anime Date Model
         var animeDateModel = []
         var yearXY = []
@@ -927,9 +927,7 @@ self.onmessage = (message) => {
         }
         if(episodesXY.length>=(minSampleSize||33)){
             var tempLinearReg = linearRegression(episodesXY)
-            if(tempLinearReg.r2>r2Thresh){
-                animeLengthModels.push([tempLinearReg,"episodesModel"])
-            }
+            animeLengthModels.push([tempLinearReg,"episodesModel"])
         }
         var durationXY = []
         for(let i=0; i<duration.length;i++){
@@ -937,9 +935,7 @@ self.onmessage = (message) => {
         }
         if(durationXY.length>=(minSampleSize||33)){
             var tempLinearReg = linearRegression(durationXY)
-            if(tempLinearReg.r2>r2Thresh){
-                animeLengthModels.push([tempLinearReg,"durationModel"])
-            }
+            animeLengthModels.push([tempLinearReg,"durationModel"])
         }
         var sortedAnimeLengthModels = animeLengthModels.sort(function(a, b) {
             return b[0].r2 - a[0].r2;

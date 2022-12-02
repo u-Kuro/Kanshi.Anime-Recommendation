@@ -9,7 +9,7 @@ self.onmessage = (message) => {
     var varScheme = data.varScheme
     // Algorithm Configs
     const measure = varScheme?.measure || "mean"
-    const includeUnknownVar = varScheme?.includeUnknownVar || true
+    const includeUnknownVar = varScheme?.includeUnknownVar!==undefined?varScheme.includeUnknownVar:true
     const popularityArray = animeEntries.map((anime)=>{
                                     var popularity = anime?.popularity
                                     if(typeof popularity==="number"){
@@ -17,7 +17,7 @@ self.onmessage = (message) => {
                                     }
                                 })
     const popularitySum = popularityArray.length? arraySum(popularityArray) : 3000000
-    const popularityMode = varScheme?.minPopularity || popularityArray.length? 3300 : 0.33*Math.min(arrayMean(popularityArray),arrayMode(popularityArray))
+    const popularityMode = varScheme?.minPopularity? varScheme.minPopularity : 0.33*Math.min(arrayMean(popularityArray),arrayMode(popularityArray))
     const averageScoreMode = varScheme?.minAverageScore || 50-0.33
     // Algorithm Configs
     var allFilterInfo = data.allFilterInfo || {}
@@ -601,38 +601,18 @@ self.onmessage = (message) => {
                     allFilterInfo["!staff: !"+staff] = true
                 }
             }
+            
             // Anime Type
             var animeType = []
-            if(zformat.length){
-                if(measure==="mode"){
-                    animeType.push(arrayMode(zformat))
-                } else {
-                    animeType.push(arrayMean(zformat))
-                }
-            }
             var seasonYear = anime?.seasonYear
             var yearModel = varScheme.yearModel
             if(isaN(seasonYear)&&!jsonIsEmpty(yearModel)){
                 if(typeof seasonYear==="string"){
                     seasonYear = parseFloat(seasonYear)
                 }
-                animeType.push(LRpredict(yearModel,seasonYear))
-            }
-            var episodes = anime?.episodes
-            var episodesModel = varScheme.episodesModel
-            if(isaN(episodes)&&!jsonIsEmpty(episodesModel)){
-                if(typeof episodes==="string"){
-                    episodes = parseFloat(episodes)
-                }
-                animeType.push(LRpredict(episodesModel,episodes))
-            }
-            var duration = anime?.duration
-            var durationModel = varScheme.durationModel
-            if(isaN(duration)&&!jsonIsEmpty(durationModel)){
-                if(typeof duration==="string"){
-                    duration = parseFloat(duration)
-                }
-                animeType.push(LRpredict(durationModel,duration))
+                animeType.push(Math.max(0,LRpredict(yearModel,seasonYear)))
+            } else {
+                animeType.push(1)
             }
             var averageScore = anime?.averageScore
             var averageScoreModel = varScheme.averageScoreModel
@@ -640,32 +620,12 @@ self.onmessage = (message) => {
                 if(typeof averageScore==="string"){
                     averageScore = parseFloat(averageScore)
                 }
-                animeType.push(LRpredict(averageScoreModel,averageScore))
+                animeType.push(Math.max(0,LRpredict(averageScoreModel,averageScore)))
+            } else {
+                animeType.push(1)
             }
-            var trending = anime?.trending
-            var trendingModel = varScheme.trendingModel
-            if(isaN(trending)&&!jsonIsEmpty(trendingModel)){
-                if(typeof trending==="string"){
-                    trending = parseFloat(trending)
-                }
-                animeType.push(LRpredict(trendingModel,trending))
-            }
-            var popularityModel = varScheme.popularityModel
-            if(isaN(popularity)&&!jsonIsEmpty(popularityModel)){
-                if(typeof popularity==="string"){
-                    popularity = parseFloat(popularity)
-                }
-                animeType.push(LRpredict(popularityModel,popularity))
-            }
-            var favourites = anime?.favourites
-            var favouritesModel = varScheme.favouritesModel
-            if(isaN(favourites)&&!jsonIsEmpty(favouritesModel)){
-                if(typeof favourites==="string"){
-                    favourites = parseFloat(favourites)
-                }
-                animeType.push(LRpredict(favouritesModel,favourites))
-            }
-            // Anime Type
+
+            // Anime Content
             var animeContent = []
             if(zgenres.length){
                 if(measure==="mode"){
@@ -673,6 +633,8 @@ self.onmessage = (message) => {
                 } else {
                     animeContent.push(arrayMean(zgenres))
                 }
+            } else {
+                animeContent.push(1)
             }
             if(ztags.length){
                 if(measure==="mode"){
@@ -680,16 +642,12 @@ self.onmessage = (message) => {
                 } else {
                     animeContent.push(arrayMean(ztags))
                 }
+            } else {
+                animeContent.push(1)
             }
+
             // Anime Production
             var animeProduction = []
-            if(zstudios.length){
-                if(measure==="mode"){
-                    animeProduction.push(arrayMode(zstudios))
-                } else {
-                    animeProduction.push(arrayMean(zstudios))
-                }
-            }
             var zstaffRolesArray = Object.values(zstaff).map((e)=>{
                 if(measure==="mode"){
                     return arrayMode(e)
@@ -697,26 +655,31 @@ self.onmessage = (message) => {
                     return arrayMean(e)
                 }
             }) || []
-            if(zstaffRolesArray.length){
+            
+            if(zstaffRolesArray.length&&zstudios.length){
+                if(measure==="mode"){
+                    animeProduction.push(arrayMean(zstaffRolesArray.concat(arrayMode(zstudios))))
+                } else {
+                    animeProduction.push(arrayMean(zstaffRolesArray.concat(arrayMean(zstudios))))
+                }
+            } else if(zstaffRolesArray.length){
                 animeProduction.push(arrayMean(zstaffRolesArray))
+            } else if(zstudios.length){
+                if(measure==="mode"){
+                    animeProduction.push(arrayMode(zstudios))
+                } else {
+                    animeProduction.push(arrayMean(zstudios))
+                }
+            } else {
+                animeProduction.push(1)
             }
             // Scores
-            var score = arrayMean([
-                arrayMean(animeType),
-                arrayMean(animeContent),
-                arrayMean(animeProduction)
+            var score = arrayProbability([
+                arrayProbability(animeType),
+                arrayProbability(animeContent),
+                arrayProbability(animeProduction)
             ])
             var weightedScore = score
-            // Low Average
-            if(isaN(averageScore)){
-                if(typeof averageScore==="string"){
-                    averageScore = parseFloat(averageScore)
-                }
-                if(averageScore<averageScoreMode){
-                    var ASmult = averageScore*0.01
-                    weightedScore = weightedScore*(ASmult>=1?1:ASmult)
-                }
-            }
             // Other Anime Recommendation Info
             genres = genres.length?genres:[]
             tags = tags.length?tags.map((e)=>e?.name||""):[]
@@ -748,6 +711,19 @@ self.onmessage = (message) => {
             var anime = savedRecScheme[savedRecSchemeEntries[i]]
             var popularity = anime.popularity
             var weightedScore = anime.weightedScore
+            var averageScore = anime.averageScore
+            // Low Average Scores
+            // Low Average
+            if(isaN(averageScore)){
+                if(typeof averageScore==="string"){
+                    averageScore = parseFloat(averageScore)
+                }
+                if(averageScore<averageScoreMode){
+                    var ASmult = averageScore*0.01
+                    savedRecScheme[savedRecSchemeEntries[i]].weightedScore = weightedScore*(ASmult>=1?1:ASmult)
+                }
+            }
+            // Low Popularity
             if(typeof popularity==="number"
              &&typeof popularityMode==="number"
              &&typeof popularitySum==="number"
@@ -1093,6 +1069,10 @@ self.onmessage = (message) => {
             for(var i in obj) return false
         }
         return true
+    }
+    function arrayProbability(obj){
+        if(!obj?.length) return 0
+        return obj.reduce((a, b) => a * b, 1)
     }
     function arraySum(obj) {
         return obj.reduce((a, b) => a + b, 0)

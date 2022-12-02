@@ -437,6 +437,7 @@ self.onmessage = (message) => {
                 <td class="anime-score ${savedTheme}" title="${popularity||0}">${popularity||0}</td>
                 <td class="${savedTheme}">${value?.userStatus||'User Status: N/A'}</td>
                 <td class="${savedTheme}">${value?.status||'Status: N/A'}</td>
+                <td class="${savedTheme}">${value?.format||'Format: N/A'}</td>
             </tr>`
         } else {
             animeData.push(`
@@ -466,13 +467,14 @@ self.onmessage = (message) => {
                 <td class="anime-score ${savedTheme}" title="${popularity||0}">${popularity||0}</td>
                 <td class="${savedTheme}">${value?.userStatus||'User Status: N/A'}</td>
                 <td class="${savedTheme}">${value?.status||'Status: N/A'}</td>
+                <td class="${savedTheme}">${value?.format||'Format: N/A'}</td>
             </tr>`)
         }
     })
     if(!animeData.length){
         animeData = `
             <tr class="${savedTheme} item" role="row">
-                <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
+                <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                     <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                     No Data
                 </td>

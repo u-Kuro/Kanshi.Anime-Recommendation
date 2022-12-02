@@ -1078,11 +1078,12 @@
                 <th class="darkMode">Popularity</th>
                 <th class="darkMode">User Status</th>
                 <th class="darkMode">Status</th>
+                <th class="darkMode">Format</th>
             </tr>
             </thead>
             <tbody id="animeRecommendationList" class="darkMode">
             <tr class="item darkMode" role="row">
-                <td class="darkMode" style="padding: 1.5em !important;" colspan="10">
+                <td class="darkMode" style="padding: 1.5em !important;" colspan="11">
                     <i class="fa fa-solid fa-file fa-xl darkMode" style="padding-right: 1ch;"></i>
                     No Data
                 </td>
@@ -1170,8 +1171,8 @@
 <script defer>
     // Initialize Global Variables
         // Production Version
-    const version = "4.5",
-          backUpVersion = 2.8
+    const version = "4.6",
+          backUpVersion = 2.9
         // IndexDB
     var request, db,
         // Saved Data
@@ -1187,12 +1188,12 @@
     // Android
         // Load Saved API Request State
     updateIDs = [], requestIntervalMS = 0,
-    savedAnalyzeVariableTime, savedUpdateAnalyzeAnimeTime, savedDeepUpdateTime, lastSavedUpdateTime,
+    savedAnalyzeVariableTime, savedUpdateAnalyzeAnimeTime, savedDeepUpdateTime, lastSavedUpdateTime, lastAnilistPage,
     deepUpdateStartTime, updateStartTime,
     isRunning = false, requestIsRunning = false, isLoading = false,
     isDeepUpdate = false, willAutoUpdate = false, updateStateText = [], checkFiltersFocus = [],
     // Helper
-    pageInits = true, enteredOnce = false, versionUpdate = false, exportWorker
+    pageInits = true, enteredOnce = false, versionUpdate = false, exportWorker, initStartTime
     // Create IndexDB
     window.onload = async () => {
         // Init Reload
@@ -1248,21 +1249,18 @@
                     }
                 })
                 $("#searchBtn").on('click', async ()=>{
-                    savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || [320]
                     deepUpdateTime = arrayMean(savedDeepUpdateTime)
-                    savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                     if(Object.keys(savedRecScheme).length>0) {
-                        savedUsername = await retrieveJSON("savedUsername")
                         var newUsername = $("#username").val()
                         if(!newUsername){
-                            $("#username")[0].setCustomValidity("Anilist Username is Required!")
-                            $("#username")[0].reportValidity()
+                            $("#username")?.[0].setCustomValidity("Anilist Username is Required!")
+                            $("#username")?.[0].reportValidity()
                         } else {
                             if(equalsNCS(newUsername,savedUsername)){
                                 await $("#animeRecommendationList").empty()
                                 await $("#animeRecommendationList").append(`
                                     <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                             <div style="display:flex; align-items:center;">
                                                 <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner ${savedTheme}"></div></div>
                                                 <div>Loading...</div>
@@ -1300,14 +1298,14 @@
                                             }).then(async(value)=>{
                                                 if(value.isConfirmed){
                                                     // Reset User List
-                                                    savedUserList = {}
+                                                    savedUserList = await {}
                                                     await saveJSON(savedUserList,"savedUserList")
                                                     Update(false)
                                                 }
                                             })
                                         } else {
                                             // Reset User List
-                                            savedUserList = {}
+                                            savedUserList = await {}
                                             await saveJSON(savedUserList,"savedUserList")
                                             Update(false)
                                         }
@@ -1371,18 +1369,13 @@
                     }
                 })
                 $("#pager, div.menu-container button").on('click', (e)=>{
-                    var menu = $(".menu-container")
-                    if(menu.css("display")!=="none"){
-                        e.stopPropagation()
-                    }
+                    e.stopPropagation()
                 })
                 $("#dataStatus").on('click',async (e) =>{
                     var element = e.target
                     var elValue = element.textContent || element.innerText
                     if(elValue.includes("Latest Anilist Update: ")){
-                        var savedUpdateTime1 = await retrieveJSON("savedAnalyzeVariableTime") || [90],
-                        savedUpdateTime2 = await retrieveJSON("savedUpdateAnalyzeAnimeTime") || [3]
-                        var updateTime = arrayMean(savedUpdateTime1) + arrayMean(savedUpdateTime2)
+                        var updateTime = arrayMean(savedAnalyzeVariableTime) + arrayMean(savedUpdateAnalyzeAnimeTime)
                         if(requestIsRunning){
                             Swal.fire({
                                 heightAuto: false,
@@ -1399,11 +1392,10 @@
                             }).then(async(value)=>{
                                 if(value.isConfirmed){
                                     var newUsername = await $("#username").val()
-                                    savedUsername = await retrieveJSON("savedUsername") || ""
                                     if(!newUsername){
                                         $(".menu-container").fadeOut(250)
-                                        $("#username")[0].setCustomValidity("Anilist Username is Required!")
-                                        $("#username")[0].reportValidity()
+                                        $("#username")?.[0]?.setCustomValidity("Anilist Username is Required!")
+                                        $("#username")?.[0]?.reportValidity()
                                     } else {
                                         if(newUsername!==savedUsername){
                                             Swal.fire({
@@ -1421,7 +1413,7 @@
                                                 $(".menu-container").fadeOut(250)
                                                 if(value.isConfirmed){
                                                     // Reset User List
-                                                    savedUserList = {}
+                                                    savedUserList = await {}
                                                     await saveJSON(savedUserList,"savedUserList")
                                                     Update(false)
                                                 } else {
@@ -1452,11 +1444,10 @@
                             .then(async(value) => {
                                 if(value.isConfirmed){
                                     var newUsername = await $("#username").val()
-                                    savedUsername = await retrieveJSON("savedUsername") || ""
                                     if(!newUsername){
                                         $(".menu-container").fadeOut(250)
-                                        $("#username")[0].setCustomValidity("Anilist Username is Required!")
-                                        $("#username")[0].reportValidity()
+                                        $("#username")?.[0]?.setCustomValidity("Anilist Username is Required!")
+                                        $("#username")?.[0]?.reportValidity()
                                     } else {
                                         if(newUsername!==savedUsername){
                                             Swal.fire({
@@ -1474,7 +1465,7 @@
                                                 $(".menu-container").fadeOut(250)
                                                 if(value.isConfirmed){
                                                     // Reset User List
-                                                    savedUserList = {}
+                                                    savedUserList = await {}
                                                     await saveJSON(savedUserList,"savedUserList")
                                                     Update(false)
                                                 } else {
@@ -1492,9 +1483,7 @@
                     }
                 })
                 $("#updateBtn").on('click', async ()=>{
-                    var savedUpdateTime1 = await retrieveJSON("savedAnalyzeVariableTime") || [90],
-                        savedUpdateTime2 = await retrieveJSON("savedUpdateAnalyzeAnimeTime") || [3]
-                    var updateTime = arrayMean(savedUpdateTime1) + arrayMean(savedUpdateTime2)
+                    var updateTime = arrayMean(savedAnalyzeVariableTime) + arrayMean(savedUpdateAnalyzeAnimeTime)
                     if(requestIsRunning){
                         Swal.fire({
                             heightAuto: false,
@@ -1511,11 +1500,10 @@
                         }).then(async(value)=>{
                             if(value.isConfirmed){
                                 var newUsername = await $("#username").val()
-                                savedUsername = await retrieveJSON("savedUsername") || ""
                                 if(!newUsername){
                                     $(".menu-container").fadeOut(250)
-                                    $("#username")[0].setCustomValidity("Anilist Username is Required!")
-                                    $("#username")[0].reportValidity()
+                                    $("#username")?.[0]?.setCustomValidity("Anilist Username is Required!")
+                                    $("#username")?.[0]?.reportValidity()
                                 } else {
                                     if(newUsername!==savedUsername){
                                         Swal.fire({
@@ -1533,7 +1521,7 @@
                                             $(".menu-container").fadeOut(250)
                                             if(value.isConfirmed){
                                                 // Reset User List
-                                                savedUserList = {}
+                                                savedUserList = await {}
                                                 await saveJSON(savedUserList,"savedUserList")
                                                 Update(false)
                                             } else {
@@ -1564,11 +1552,10 @@
                         .then(async(value) => {
                             if(value.isConfirmed){
                                 var newUsername = await $("#username").val()
-                                savedUsername = await retrieveJSON("savedUsername") || ""
                                 if(!newUsername){
                                     $(".menu-container").fadeOut(250)
-                                    $("#username")[0].setCustomValidity("Anilist Username is Required!")
-                                    $("#username")[0].reportValidity()
+                                    $("#username")?.[0]?.setCustomValidity("Anilist Username is Required!")
+                                    $("#username")?.[0]?.reportValidity()
                                 } else {
                                     if(newUsername!==savedUsername){
                                         Swal.fire({
@@ -1586,7 +1573,7 @@
                                             $(".menu-container").fadeOut(250)
                                             if(value.isConfirmed){
                                                 // Reset User List
-                                                savedUserList = {}
+                                                savedUserList = await {}
                                                 await saveJSON(savedUserList,"savedUserList")
                                                 Update(false)
                                             } else {
@@ -1603,7 +1590,6 @@
                     }
                 })
                 $("#deepUpdateBtn").on("click", async ()=>{
-                    savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || [320]
                     deepUpdateTime = arrayMean(savedDeepUpdateTime)
                     if(requestIsRunning){
                         Swal.fire({
@@ -1622,7 +1608,7 @@
                             if(value.isConfirmed){
                                 deepUpdateStartTime = new Date()
                                 isDeepUpdate = true
-                                await Update(false)
+                                Update(false)
                                 $(".menu-container").fadeOut(250)
                             }
                         })
@@ -1644,7 +1630,7 @@
                             if(value.isConfirmed){
                                 deepUpdateStartTime = new Date()
                                 isDeepUpdate = true
-                                await Update(false)
+                                Update(false)
                                 $(".menu-container").fadeOut(250)
                             }
                         })
@@ -1653,8 +1639,6 @@
                 $("#hiddenUnhiddenBtn").on('click', async()=>{
                     if(!isRunning){
                         isRunning = true
-                        savedUsername = await retrieveJSON("savedUsername") || ""
-                        savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                         if(savedUsername.length>0&&Object.keys(savedRecScheme).length>0){
                             var state = await $("#hiddenUnhiddenBtn").text()
                             if(!equalsNCS($("#username").val(),savedUsername)){
@@ -1669,11 +1653,12 @@
                                     await filterInput.val("")
                                 }
                                 await $("#hiddenUnhiddenBtn").text("Hidden")
-                                await saveJSON("Hidden","savedTableStatus")
+                                savedTableStatus = await "Hidden"
+                                await saveJSON(savedTableStatus,"savedTableStatus")
                                 await $("#animeRecommendationList").empty()
                                 await $("#animeRecommendationList").append(`
                                     <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                             <div style="display:flex; align-items:center;">
                                                 <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner ${savedTheme}"></div></div>
                                                 <div>Loading...</div>
@@ -1682,16 +1667,14 @@
                                     </tr>
                                 `)
                                 await LoadData(savedRecScheme)
-                                if($('#anime-table')?.[0]?.config){
-                                    $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
-                                }
+                                $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')?.[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                                 isRunning = false
                             } else {
                                 if($("#filters .flexdatalist-multiple-value").length){
                                     var filters = await $("#filters .flexdatalist-multiple").children("li.value")
                                     var filterName
                                     for(let i=0; i<filters.length; i++) {
-                                        filterName = await filters.eq(i).children(".text")[0].innerText
+                                        filterName = await filters.eq(i).children(".text")?.[0]?.innerText
                                         if(filterName.toLowerCase()==="hidden"){
                                             await filters.eq(i).children(".fdl-remove").trigger("click")
                                             await $("#filters .flexdatalist-alias").blur()
@@ -1699,11 +1682,12 @@
                                     }
                                 }
                                 await $("#hiddenUnhiddenBtn").text("Unhidden")
-                                await saveJSON("Unhidden","savedTableStatus")
+                                savedTableStatus = await "Unhidden"
+                                await saveJSON(savedTableStatus,"savedTableStatus")
                                 await $("#animeRecommendationList").empty()
                                 await $("#animeRecommendationList").append(`
                                     <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                             <div style="display:flex; align-items:center;">
                                                 <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner ${savedTheme}"></div></div>
                                                 <div>Loading...</div>
@@ -1712,9 +1696,7 @@
                                     </tr>
                                 `)
                                 await LoadData(savedRecScheme)
-                                if($('#anime-table')?.[0]?.config){
-                                    $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
-                                }
+                                $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')?.[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                                 isRunning = false
                             }
                         } else isRunning = false
@@ -1735,11 +1717,11 @@
                     })
                     .then(async(value) => {
                         if(value.isConfirmed){
-                            savedUsername = await retrieveJSON("savedUsername") || ""
                             if(!equalsNCS($("#username").val(),savedUsername)){
                                 $("#username").val(savedUsername)
                             }
-                            await saveJSON({}, "savedHiddenAnimeIDs")
+                            savedHiddenAnimeIDs = await {}
+                            await saveJSON(savedHiddenAnimeIDs, "savedHiddenAnimeIDs")
                             if(await $("#filters .flexdatalist-multiple-value").length){
                                 var filters = await $("#filters .flexdatalist-multiple").children("li.value")
                                 var filterName
@@ -1755,7 +1737,7 @@
                                 await $("#animeRecommendationList").empty()
                                 await $("#animeRecommendationList").append(`
                                     <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                             <div style="display:flex; align-items:center;">
                                                 <div><div id="dataStatusSpinner" style="margin-right:0.5ch;" class="spinner ${savedTheme}"></div></div>
                                                 <div>Loading...</div>
@@ -1764,15 +1746,12 @@
                                     </tr>
                                 `)
                             }
-                            savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                             await LoadData(savedRecScheme)
                             $("#hiddenUnhiddenBtn").text("Unhidden")
-                            savedUnhiddenTablePage = await retrieveJSON("savedUnhiddenTablePage") || 0
                             await $('#anime-table').trigger("pageSet",savedUnhiddenTablePage)
-                            if($('#anime-table')?.[0]?.config){
-                                $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
-                            }
-                            await saveJSON("Unhidden","savedTableStatus")
+                            $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')?.[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
+                            savedTableStatus = await "Unhidden"
+                            await saveJSON(savedTableStatus,"savedTableStatus")
                             $("#showAllAnime").hide()
                             $(".menu-container").fadeOut(250)
                             Swal.fire({
@@ -1785,7 +1764,6 @@
                     })
                 })
                 $("#importBtn").on("click", async()=>{
-                    savedUsername = await retrieveJSON("savedUsername") || ""
                     if(savedUsername){
                         Swal.fire({
                             heightAuto: false,
@@ -2013,7 +1991,7 @@
                                                 await $("#updateIntervalBtn").hide()
                                                 animeData = `
                                                     <tr class="item ${savedTheme}" role="row">
-                                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
+                                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                                             <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                                             No Data
                                                         </td>
@@ -2027,7 +2005,6 @@
                                         }).then(async()=>{
                                             $("#importFile")[0].value = null
                                             if(!requestIsRunning){
-                                                lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
                                                 $("#dataStatusSpinner").hide()
                                                 $("#dataStatus")
                                                     .empty()
@@ -2044,9 +2021,11 @@
                                             // If version is lower, Update
                                             var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion<backUpVersion){
-                                                versionUpdate = true
-                                                saveJSON(versionUpdate,"versionUpdate")
-                                                Update(true)
+                                                versionUpdate = await true
+                                                await saveJSON(versionUpdate,"versionUpdate")
+                                                if($("#username").val()){
+                                                    Update(true)
+                                                }
                                             }
                                             return
                                         })
@@ -2139,7 +2118,7 @@
                                     var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
                                         savedAnimeFranchises = await fileContent.savedAnimeFranchises || []
-                                        await saveJSON(savedAnimeFranchises,"savedAnimeFranchises") || []
+                                        await saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
                                     }
                                     return
                                 }).then(async()=>{
@@ -2245,7 +2224,7 @@
                                         await $("#updateIntervalBtn").hide()
                                         animeData = `
                                             <tr class="item ${savedTheme}" role="row">
-                                                <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
+                                                <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                                     <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                                     No Data
                                                 </td>
@@ -2257,7 +2236,6 @@
                                     }
                                     return
                                 }).then(async()=>{
-                                    lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
                                     $("#dataStatusSpinner").hide()
                                     $("#dataStatus")
                                         .empty()
@@ -2276,9 +2254,11 @@
                                     // If version is lower, Update
                                     var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion<backUpVersion){
-                                        versionUpdate = true
-                                        saveJSON(versionUpdate,"versionUpdate")
-                                        Update(true)
+                                        versionUpdate = await true
+                                        await saveJSON(versionUpdate,"versionUpdate")
+                                        if($("#username").val()){
+                                            Update(true)
+                                        }
                                     }
                                     return
                                 })
@@ -2329,7 +2309,6 @@
                     // Android
                 })
                 $("#updateIntervalBtn").on("click",async()=>{
-                    updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
                     if(updateIntervalIsActive){
                         Swal.fire({
                             heightAuto: false,
@@ -2346,7 +2325,7 @@
                         .then(async(value) => {
                             if(value.isConfirmed){
                                 $("#updateIntervalBtn").removeClass("selected")
-                                updateIntervalIsActive = false
+                                updateIntervalIsActive = await false
                                 await saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
                             }
                         })
@@ -2366,13 +2345,12 @@
                         .then(async(value) => {
                             if(value.isConfirmed){
                                 $("#updateIntervalBtn").addClass("selected")
-                                updateIntervalIsActive = true
+                                updateIntervalIsActive = await true
                                 await saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
-                                updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
+                                updateIntervalStartDate = await updateIntervalStartDate || new Date()
                                 await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                                 if((new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hrs
                                     if(!requestIsRunning){
-                                        savedUsername = await retrieveJSON("savedUsername") || ""
                                         if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                                         willAutoUpdate = true
                                         Update(false)
@@ -2381,7 +2359,6 @@
                                     for(let i=0;i<updateIntervalTimeout.length;i++) clearInterval(updateIntervalTimeout[i])
                                     var saveUpdateIntervalTimeout = setInterval(async()=>{
                                         if(!requestIsRunning){
-                                            savedUsername = await retrieveJSON("savedUsername") || ""
                                             if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                                             willAutoUpdate = true
                                             Update(false)
@@ -2392,7 +2369,6 @@
                                     // Timeout
                                     setTimeout(async()=>{
                                         if(!requestIsRunning){
-                                            savedUsername = await retrieveJSON("savedUsername") || ""
                                             if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                                             willAutoUpdate = true
                                             Update(false)
@@ -2401,7 +2377,6 @@
                                         for(let i=0;i<updateIntervalTimeout.length;i++) clearInterval(updateIntervalTimeout[i])
                                         var saveUpdateIntervalTimeout = setInterval(async()=>{
                                             if(!requestIsRunning){
-                                                savedUsername = await retrieveJSON("savedUsername") || ""
                                                 if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                                                 willAutoUpdate = true
                                                 Update(false)
@@ -2436,7 +2411,7 @@
                             .then(async(value) => {
                                 if(value.isConfirmed){
                                     $("#exportIntervalBtn").removeClass("selected")
-                                    exportIntervalIsActive = false
+                                    exportIntervalIsActive = await false
                                     await saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
                                 }
                             })
@@ -2456,9 +2431,9 @@
                             .then(async(value) => {
                                 if(value.isConfirmed){
                                     $("#exportIntervalBtn").addClass("selected")
-                                    exportIntervalIsActive = true
+                                    exportIntervalIsActive = await true
                                     await saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
-                                    exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
+                                    exportIntervalStartDate = await exportIntervalStartDate || new Date()
                                     await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                     if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
                                         await new Promise(async(resolve)=>{
@@ -2528,8 +2503,8 @@
                         var warnName = warnAnimeInputs[i].textContent
                         warnAnime.push(warnName)
                     }
-                    await saveJSON(warnAnime,"savedWarnAnime")
-                    savedRecScheme = await retrieveJSON("savedRecScheme")
+                    savedWarnAnime = await warnAnime || []
+                    await saveJSON(savedWarnAnime,"savedWarnAnime")
                     await $("#warnAnimeModal").removeClass("swal2-show-custom").addClass("swal2-hide-custom")
                     setTimeout(()=>{
                         $("#warnAnimeContainer").hide()
@@ -2540,10 +2515,6 @@
                     $("#warnAnimeModal").removeClass("swal2-show-custom").addClass("swal2-hide-custom")
                     setTimeout(async()=>{
                         $("#warnAnimeContainer").hide()
-                        savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: !ecchi","!tag: !boys' love","tag: cgi","!tag: !ero guro","!tag: !female harem",
-                                                                                    "tag: full cgi","!tag: !male harem","!tag: !mixed gender harem",
-                                                                                    "!tag: !nudity","!tag: !slavery","!tag: !suicide","!tag: !yuri","!tag: !netorare", "!tag: !rape"
-                                                                                 ]
                         await new Promise(async(resolve)=>{
                             // Remove Current Filters
                             var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
@@ -2576,7 +2547,6 @@
                     $(`ul.flex2`)?.[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                 })
                 $("#submitFilterAlgo").on("click",async()=>{
-                    savedUserList = await retrieveJSON("savedUserList") || {}
                     var savedUserListValues = Object.values(savedUserList)
                     if(!isJson(savedUserList)||!isJson(savedUserListValues[0])||jsonIsEmpty(savedUserList)){
                         Swal.fire({
@@ -2598,7 +2568,6 @@
                                 },300)
                                 Update(false)
                                 $(".menu-container").fadeOut(250)
-                                lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
                                 for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                 $("#dataStatusSpinner").hide()
                                 $("#dataStatus")
@@ -2633,7 +2602,6 @@
                     setTimeout(async()=>{
                         $("#filterAlgoContainer").hide()
                         // Remove Current Filters
-                        savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
                         await new Promise(async(resolve)=>{
                             var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
                             var infoName
@@ -2674,7 +2642,6 @@
                         if(value.isConfirmed){
                             await window.open('https://anilist.co/signup', '_blank')
                             if(!requestIsRunning){
-                                var initStartTime = await retrieveJSON("initStartTime") || undefined
                                 const { value: username} = await Swal.fire({
                                     heightAuto: false,
                                     text: "Done signing-up your new account with Anilist? Update with your new username to load your own data.",
@@ -2721,8 +2688,8 @@
                                                             )
                                                     },
                                                     success: (data) => {
-                                                        initStartTime = undefined;
                                                         (async()=>{
+                                                            initStartTime = await undefined
                                                             await saveJSON(initStartTime,"initStartTime")
                                                             $("#UsernameValidation").fadeOut(1000,()=>{
                                                                 $("#UsernameValidation").remove()
@@ -2741,8 +2708,8 @@
                                                     error: (xhr) =>{
                                                         try{
                                                             if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
-                                                                initStartTime = undefined;
                                                                 (async()=>{
+                                                                    initStartTime = await undefined
                                                                     await saveJSON(initStartTime,"initStartTime")
                                                                     $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
                                                                     resolve("Username not Found, Please Try Again")
@@ -2751,8 +2718,8 @@
                                                         } catch(ex){}
                                                         try{
                                                             if(!xhr?.responseJSON?.data?.User){
-                                                                initStartTime = undefined;
                                                                 (async()=>{
+                                                                    initStartTime = await undefined
                                                                     await saveJSON(initStartTime,"initStartTime")
                                                                     $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
                                                                     resolve("Username not Found, Please Try Again")
@@ -2760,8 +2727,8 @@
                                                             }
                                                         } catch(ex){
                                                             if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                                                initStartTime = new Date();
                                                                 (async()=>{
+                                                                    initStartTime = await new Date()
                                                                     await saveJSON(initStartTime,"initStartTime")
                                                                 })();
                                                             }
@@ -2783,8 +2750,6 @@
                     })
                 })
                 $("#themeBtn").on("click", async ()=>{
-                    savedTheme = await retrieveJSON("savedTheme") || "darkMode"
-                    savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                     if(savedTheme==="darkMode"){
                         Swal.fire({
                             heightAuto: false,
@@ -2802,7 +2767,7 @@
                                 var newTheme = "lightMode"
                                 $("#themeBtn").removeClass("selected")
                                 await loadTheme(newTheme,savedTheme)
-                                savedTheme = newTheme
+                                savedTheme = await newTheme
                                 await saveJSON(savedTheme,"savedTheme")
                                 LoadData(savedRecScheme)
                             }
@@ -2824,7 +2789,7 @@
                                 var newTheme = "darkMode"
                                 $("#themeBtn").addClass("selected")
                                 await loadTheme(newTheme,savedTheme)
-                                savedTheme = newTheme
+                                savedTheme = await newTheme
                                 await saveJSON(savedTheme,"savedTheme")
                                 LoadData(savedRecScheme)
                             }
@@ -2832,10 +2797,6 @@
                     }
                 })
                 $("#hideKidsAnimeBtn").on("click", async ()=>{
-                    kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden")
-                    if(kidsAnimeIsHidden===undefined){
-                        kidsAnimeIsHidden = true
-                    }
                     if(kidsAnimeIsHidden){
                         Swal.fire({
                             heightAuto: false,
@@ -2851,10 +2812,9 @@
                         })
                         .then(async(value)=>{
                             if(value.isConfirmed){
-                                kidsAnimeIsHidden = false
+                                kidsAnimeIsHidden = await false
                                 await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
                                 $("#hideKidsAnimeBtn").removeClass("selected")
-                                savedRecScheme = await retrieveJSON("savedRecScheme")
                                 LoadData(savedRecScheme)
                             }
                         })
@@ -2873,20 +2833,15 @@
                         })
                         .then(async(value)=>{
                             if(value.isConfirmed){
-                                kidsAnimeIsHidden = true
+                                kidsAnimeIsHidden = await true
                                 await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
                                 $("#hideKidsAnimeBtn").addClass("selected")
-                                savedRecScheme = await retrieveJSON("savedRecScheme")
                                 LoadData(savedRecScheme)
                             }
                         })
                     }
                 })
                 $("#hideUnwatchedSequelsBtn").on("click", async ()=>{
-                    hideUnwatchedSequels = await retrieveJSON("hideUnwatchedSequels")
-                    if(hideUnwatchedSequels===undefined){
-                        hideUnwatchedSequels = true
-                    }
                     if(hideUnwatchedSequels){
                         Swal.fire({
                             heightAuto: false,
@@ -2965,20 +2920,16 @@
                 })
                 // Android
                 $(".anime-table-headers").on('click', ()=>{
-                    if($('#anime-table')?.[0]?.config){
-                        saveJSON($('#anime-table')[0].config.sortList[0],"savedSort")
+                    if($('#anime-table')?.[0]?.config?.sortList?.[0]){
+                        saveJSON($('#anime-table')[0]?.config?.sortList?.[0],"savedSort")
                     }
                     setTimeout(()=>{
-                        if($('#anime-table')?.[0]?.config){
-                            $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
-                        }
+                        $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')?.[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                     },1)
                 })
                 $("#pageNumberOptions").on('change',()=>{
                     setTimeout(()=>{
-                        if($('#anime-table')?.[0]?.config){
-                            $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
-                        }
+                        $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')?.[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                     },1)
                 })
                 $(".filter-container, .filter-container-custom").on('DOMNodeInserted','.flexdatalist-multiple',()=>{
@@ -3020,7 +2971,7 @@
                 })
                 $("body").on('scroll', function () {
                     setTimeout(async()=>{
-                        await saveJSON($("body").scrollTop(),"savedYscroll")
+                        await saveJSON($("body")?.scrollTop()||0,"savedYscroll")
                     },1)
                 })
                 resolve()
@@ -3029,7 +2980,9 @@
             // Init Global Saved Data
             return await new Promise(async(resolve)=>{
                 savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
+                savedUserList = await retrieveJSON("savedUserList") || {}
                 lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
+                lastAnilistPage = await retrieveJSON("lastAnilistPage") || 284
                 savedTheme = await retrieveJSON("savedTheme") || "darkMode"
                 savedUnhiddenTablePage = await retrieveJSON("savedUnhiddenTablePage") || 0
                 savedHiddenTablePage = await retrieveJSON("savedHiddenTablePage") || 0
@@ -3037,6 +2990,7 @@
                 savedUsername = await retrieveJSON("savedUsername") || ""
                 savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson") || []
                 allFilterInfo = await retrieveJSON("allFilterInfo") || {}
+                savedFilters = await retrieveJSON("savedFilters") || []
                 savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises") || []
                 savedBackUpVersion = await retrieveJSON(`backUpVersion`) || 0
                 kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden")
@@ -3047,6 +3001,7 @@
                 if(hideUnwatchedSequels===undefined){
                     hideUnwatchedSequels = true
                 }
+                initStartTime = await retrieveJSON("initStartTime")
                 savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                 savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs") || {}
                 savedSort = await retrieveJSON("savedSort") || [1,1]
@@ -3057,7 +3012,9 @@
                                                                             "!tag: !nudity","!tag: !slavery","!tag: !suicide","!tag: !yuri","!tag: !netorare", "!tag: !rape"
                                                                          ]
                 updateIntervalIsActive = await retrieveJSON("updateIntervalIsActive") || false
+                updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
                 exportIntervalIsActive = await retrieveJSON("exportIntervalIsActive") || false
+                exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
                 savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || [90]
                 savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime") || [3]
                 savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || [320]
@@ -3105,16 +3062,15 @@
                     .delegate('button.hide-anime', 'click' , async(e) => {
                         var hiddenRow = await $(e.currentTarget).closest('tr') || $(e.target).closest('tr')
                         var hiddenAnimeID = hiddenRow.children("td.animeTitle").children("a").attr("data-value")
-                        savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs") || {}
                         savedHiddenAnimeIDs[hiddenAnimeID] = await true
                         await saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
                         hiddenRow.addClass("remove-me")
                         $("#anime-table").trigger("pagerUpdate")
-                        if($("#anime-table")[0].config.rowsCopy.length===0){
+                        if($("#anime-table")?.[0]?.config?.rowsCopy?.length===0){
                             await $("#animeRecommendationList").empty()
                             await $("#animeRecommendationList").append(`
                                 <tr class="item ${savedTheme}" role="row">
-                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
+                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                         No Data
                                     </td>
@@ -3125,25 +3081,22 @@
                         if(await !jsonIsEmpty(savedHiddenAnimeIDs)){
                             await $("#showAllAnime").show()
                         }
-                        if($('#anime-table')?.[0]?.config){
-                            await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
-                        }
+                        await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')?.[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                         return false
                     })
                     .delegate('button.show-anime', 'click' , async(e) => {
                         var hiddenRow = await $(e.currentTarget).closest('tr') || $(e.target).closest('tr')
                         var hiddenAnimeID = await hiddenRow.children("td.animeTitle").children("a").attr("data-value")
-                        savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs") || {}
-                        delete savedHiddenAnimeIDs[hiddenAnimeID]
+                        await delete savedHiddenAnimeIDs[hiddenAnimeID]
                         await saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
                         // No Hidden Anime
                         await hiddenRow.addClass("remove-me")
                         await $("#anime-table").trigger("pagerUpdate")
-                        if(await jsonIsEmpty(savedHiddenAnimeIDs)||$("#anime-table")[0].config.rowsCopy.length===0){
+                        if(await jsonIsEmpty(savedHiddenAnimeIDs)||$("#anime-table")?.[0]?.config?.rowsCopy?.length===0){
                             await $("#animeRecommendationList").empty()
                             await $("#animeRecommendationList").append(`
                                 <tr class="item ${savedTheme}" role="row">
-                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
+                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                         No Data
                                     </td>
@@ -3151,22 +3104,19 @@
                             `)
                             await $("#showAllAnime").hide()
                         }
-                        if(await ($('#anime-table')?.[0]?.config)){
-                            await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
-                        }
+                        await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')?.[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                         return false
                     })
                     .bind('pageMoved', async() => {
-                        if($('#anime-table')?.[0]?.config){
-                            await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
-                            var page = await $('#anime-table')[0].config.pager.page
-                            ++page
-                            savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
-                            if(savedTableStatus==="Unhidden"){
-                                await saveJSON(page,"savedUnhiddenTablePage")
-                            } else {
-                                await saveJSON(page,"savedHiddenTablePage")
-                            }
+                        await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')?.[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
+                        var page = await $('#anime-table')?.[0]?.config?.pager?.page
+                        ++page
+                        if(savedTableStatus==="Unhidden"){
+                            savedUnhiddenTablePage = await page || 1
+                            await saveJSON(savedUnhiddenTablePage,"savedUnhiddenTablePage")
+                        } else {
+                            savedUnhiddenTablePage = await page || 1
+                            await saveJSON(savedUnhiddenTablePage,"savedHiddenTablePage")
                         }
                     })
                 // Flex DataList
@@ -3180,22 +3130,25 @@
             return await new Promise(async(resolve)=>{
                 if(savedBackUpVersion<backUpVersion){
                     if(typeof savedAnalyzeVariableTime==="number"){
-                        savedAnalyzeVariableTime = [savedAnalyzeVariableTime]
+                        savedAnalyzeVariableTime = await [savedAnalyzeVariableTime||90]
                         await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
                     } else {
-                        await saveJSON([90],"savedAnalyzeVariableTime")
+                        savedAnalyzeVariableTime = await [90]
+                        await saveJSON([savedAnalyzeVariableTime],"savedAnalyzeVariableTime")
                     }
                     if(typeof savedUpdateAnalyzeAnimeTime==="number"){
-                        savedUpdateAnalyzeAnimeTime = [savedUpdateAnalyzeAnimeTime]
+                        savedUpdateAnalyzeAnimeTime = await [savedUpdateAnalyzeAnimeTime||3]
                         await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
                     } else {
-                        await saveJSON([3],"savedUpdateAnalyzeAnimeTime")
+                        savedUpdateAnalyzeAnimeTime = await [3]
+                        await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
                     }
                     if(typeof savedDeepUpdateTime==="number"){
-                        savedDeepUpdateTime = [savedDeepUpdateTime]
+                        savedDeepUpdateTime = await [savedDeepUpdateTime||320]
                         await saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
                     } else {
-                        await saveJSON([320],"savedDeepUpdateTime")
+                        savedDeepUpdateTime = await [320]
+                        await saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
                     }
                     resolve()
                 } else {
@@ -3208,14 +3161,16 @@
                     worker0.onmessage = async (message) => {
                         await worker0.terminate()
                         const data = await message.data
-                        savedAnimeEntries = await data.savedAnimeEntries
+                        savedAnimeEntries = await data.savedAnimeEntries || []
                         await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                         lastSavedUpdateTime = await data.lastSavedUpdateTime || 0
                         await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
                         if(savedUsername){
-                            versionUpdate = true
-                            saveJSON(versionUpdate,"versionUpdate")
-                            Update(true)
+                            versionUpdate = await true
+                            await saveJSON(versionUpdate,"versionUpdate")
+                            if($("#username").val()){
+                                Update(true)
+                            }
                         }
                         return
                     }
@@ -3232,9 +3187,9 @@
                     worker1.onmessage = async (message) => {
                         await worker1.terminate()
                         const data = await message.data
-                        savedFilterOptionsJson = await data.savedFilterOptionsJson
+                        savedFilterOptionsJson = await data.savedFilterOptionsJson || []
                         await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
-                        allFilterInfo = await data.allFilterInfo
+                        allFilterInfo = await data.allFilterInfo || {}
                         await saveJSON(allFilterInfo,"allFilterInfo")
                         await $('.flexdatalist').flexdatalist({
                             minLength: 0,
@@ -3261,7 +3216,7 @@
                     worker8.onmessage = async (message) => {
                         await worker8.terminate()
                         const data = await message.data
-                        savedAnimeFranchises = await data.savedAnimeFranchises
+                        savedAnimeFranchises = await data.savedAnimeFranchises || []
                         await saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
                     }
                     worker8.onerror = async (message) => {
@@ -3277,13 +3232,12 @@
                     await $("#username").val(savedUsername)
                     await $("#updateIntervalBtn").show()
                 } else {
-                    savedUserList = {}
+                    savedUserList = await {}
                     await saveJSON(savedUserList,"savedUserList")
                 }
                 // Reload Table Filters/Identifiers
                     // Table Filters
                 if(savedUsername){
-                    savedFilters = await retrieveJSON("savedFilters") || []
                     var filterInput
                     for(let i=0; i<savedFilters.length; i++) {
                         filterInput = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
@@ -3359,7 +3313,7 @@
                 } else {
                     animeData = `
                         <tr class="item ${savedTheme}" role="row">
-                            <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
+                            <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                 <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                 No Data
                             </td>
@@ -3381,8 +3335,8 @@
         }).then(async()=>{
             // Update Saved DOM State
             return await new Promise(async(resolve)=>{
-                await $.tablesorter.sortOn($('#anime-table')[0].config, [savedSort])
-                await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
+                await $.tablesorter.sortOn($('#anime-table')?.[0]?.config, [savedSort])
+                await $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')?.[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                 await $('body').animate({scrollTop: savedYscroll},1)
                 $(`ul.flex0`).animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
                 $(`ul.flex1`).animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
@@ -3401,11 +3355,10 @@
                 // Auto Update
                 if(await updateIntervalIsActive){
                     await $("#updateIntervalBtn").css({background: "white",color:"black"})
-                    updateIntervalStartDate = await retrieveJSON("updateIntervalStartDate") || new Date()
+                    updateIntervalStartDate = await updateIntervalStartDate || new Date()
                     await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                     if(await (new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hr
-                        if(!requestIsRunning){
-                            savedUsername = await retrieveJSON("savedUsername") || ""
+                        if(!requestIsRunning&&$("#username").val()){
                             if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                             willAutoUpdate = true
                             Update(false)
@@ -3413,11 +3366,10 @@
                         // Interval
                         for(let i=0;i<updateIntervalTimeout.length;i++) await clearInterval(updateIntervalTimeout[i])
                         var saveUpdateIntervalTimeout = setInterval(async()=>{
-                            if(!requestIsRunning){
-                                savedUsername = await retrieveJSON("savedUsername") || ""
+                            if(!requestIsRunning&&$("#username").val()){
                                 if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                                 willAutoUpdate = true
-                                await Update(false)
+                                Update(false)
                             }
                         },3600000)
                         await updateIntervalTimeout.push(saveUpdateIntervalTimeout)
@@ -3425,20 +3377,18 @@
                     } else {
                         // Timeout
                         setTimeout(async()=>{
-                            if(!requestIsRunning){
-                                savedUsername = await retrieveJSON("savedUsername") || ""
+                            if(!requestIsRunning&&$("#username").val()){
                                 if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                                 willAutoUpdate = true
-                                await Update(false)
+                                Update(false)
                             }
                             // Interval
                             for(let i=0;i<updateIntervalTimeout.length;i++) await clearInterval(updateIntervalTimeout[i])
                             var saveUpdateIntervalTimeout = setInterval(async()=>{
-                                if(!requestIsRunning){
-                                    savedUsername = await retrieveJSON("savedUsername") || ""
+                                if(!requestIsRunning&&$("#username").val()){
                                     if(await $("#username").val()!==savedUsername) await $("#username").val(savedUsername)
                                     willAutoUpdate = true
-                                    await Update(false)
+                                    Update(false)
                                 }
                             },3600000)
                             await updateIntervalTimeout.push(saveUpdateIntervalTimeout)
@@ -3450,9 +3400,9 @@
                 }
             }).then(async()=>{
                 // Auto Export
-                if(await exportIntervalIsActive){
+                if(exportIntervalIsActive){
                     await $("#exportIntervalBtn").css({background: "white",color:"black"})
-                    exportIntervalStartDate = await retrieveJSON("exportIntervalStartDate") || new Date()
+                    exportIntervalStartDate = await exportIntervalStartDate || new Date()
                     await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
                         $("#dataStatusSpinner").show()
@@ -3498,7 +3448,7 @@
             })
         }).then(async()=>{
             // Check if User Data is Updated
-            if(versionUpdate&&savedUsername){
+            if(versionUpdate&&savedUsername&&$("#username").val()){
                 Update(true)
             }
             // Save Back-Up Data Version Updates
@@ -3560,11 +3510,8 @@
     }
 
     async function analyzeVariables(updateID, username, notAnUpdate, filterAlgo, doHideUnwatchedSeq) {
-        var savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || [90]
         var analyzeVariableTime = Math.ceil(arrayMean(savedAnalyzeVariableTime))
-        savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises") || []
-        savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
-        savedFilterAlgo = await (filterAlgo || await retrieveJSON("savedFilterAlgo") || [])
+        savedFilterAlgo = await (filterAlgo || savedFilterAlgo || [])
         //
         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
         for(let i=analyzeVariableTime; i>=0; i--){
@@ -3606,7 +3553,6 @@
             else savedIncluded.push(filterName)
         }
         if(!notAnUpdate){
-            var lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
             var AnalyzeVariableStartTime = new Date()
             if(lastSavedUpdateTime===0){
                 deepUpdateStartTime = new Date()
@@ -3685,7 +3631,6 @@
                         }
                     }
                     `;
-                    savedUserList = await retrieveJSON("savedUserList") || {}
                     // Request API
                     $.ajax({
                         type: 'POST',
@@ -3710,8 +3655,8 @@
                             } else {
                                 // Reset User List
                                 if(isDeepUpdate){
-                                    savedUserList = {};
                                     (async()=>{
+                                        savedUserList = await {}
                                         await saveJSON(savedUserList,"savedUserList")
                                     })();
                                 }
@@ -3803,21 +3748,22 @@
                                             }
                                         })
                                     }
-                                    savedUserList = data.savedUserList
-                                    const varScheme = data.varScheme
-                                    const userListStatus = data.userListStatus
-                                    const alteredVariables = data.alteredVariables
-                                    var timeInterval = (new Date).getTime()-AnalyzeVariableStartTime.getTime();
                                     (async()=>{
+                                        savedUserList = data.savedUserList
+                                        const varScheme = data.varScheme
+                                        const userListStatus = data.userListStatus
+                                        const alteredVariables = data.alteredVariables
+                                        var timeInterval = await (new Date).getTime()-AnalyzeVariableStartTime.getTime()
                                         if(savedAnalyzeVariableTime.length<33){
-                                            await savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
-                                            await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime");
+                                            await savedAnalyzeVariableTime?.push(Math.ceil(timeInterval/1000))
+                                            await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
                                         } else {
-                                            await savedAnalyzeVariableTime.shift()
-                                            await savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
-                                            await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime");
+                                            await savedAnalyzeVariableTime?.shift()
+                                            await savedAnalyzeVariableTime?.push(Math.ceil(timeInterval/1000))
+                                            await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
                                         }
                                         if(savedAnimeEntries.length>0){
+                                            savedUserList = await savedUserList || {}
                                             await saveJSON(savedUserList,"savedUserList")
                                             await analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, true)
                                         } else {
@@ -3839,7 +3785,6 @@
                             try {
                                 if(err==='Not Found.'){
                                     (async()=>{
-                                        lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
                                         for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                         $("#dataStatusSpinner").hide()
                                         $("#dataStatus")
@@ -3862,7 +3807,6 @@
                                         if(value.isConfirmed){
                                             await window.open('https://anilist.co/signup', '_blank');
                                             if(!requestIsRunning){
-                                                var initStartTime = await retrieveJSON("initStartTime") || undefined
                                                 const { value: xusername} = await Swal.fire({
                                                     heightAuto: false,
                                                     text: "Done signing-up your new account with Anilist? Update with your new username or Return to the old username.",
@@ -3913,8 +3857,8 @@
                                                                             )
                                                                     },
                                                                     success: (data) => {
-                                                                        initStartTime = undefined;
                                                                         (async()=>{
+                                                                            initStartTime = await undefined
                                                                             await saveJSON(initStartTime,"initStartTime")
                                                                             $("#UsernameValidation").fadeOut(1000,()=>{
                                                                                 $("#UsernameValidation").remove()
@@ -3933,8 +3877,8 @@
                                                                     error: (xhr) =>{
                                                                         try{
                                                                             if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
-                                                                                initStartTime = undefined;
                                                                                 (async()=>{
+                                                                                    initStartTime = await undefined
                                                                                     await saveJSON(initStartTime,"initStartTime")
                                                                                     $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
                                                                                     resolve("Username not Found, Please Try Again")
@@ -3943,8 +3887,8 @@
                                                                         } catch(ex){}
                                                                         try{
                                                                             if(!xhr?.responseJSON?.data?.User){
-                                                                                initStartTime = undefined;
                                                                                 (async()=>{
+                                                                                    initStartTime = await undefined
                                                                                     await saveJSON(initStartTime,"initStartTime")
                                                                                     $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
                                                                                     resolve("Username not Found, Please Try Again")
@@ -3952,8 +3896,8 @@
                                                                             }
                                                                         } catch(ex){
                                                                             if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                                                                initStartTime = new Date();
                                                                                 (async()=>{
+                                                                                    initStartTime = await new Date()
                                                                                     await saveJSON(initStartTime,"initStartTime")
                                                                                 })();
                                                                             }
@@ -3970,12 +3914,10 @@
                                                     await $("#username").val(xusername)
                                                     Update(false)
                                                 } else {
-                                                    savedUsername = await retrieveJSON("savedUsername")
                                                     $("#username").val(savedUsername)
                                                 }
                                             }
                                         } else if(value.isDenied){
-                                            savedUsername = await retrieveJSON("savedUsername")
                                             $("#username").val(savedUsername)
                                         }
                                     })
@@ -4021,7 +3963,6 @@
                                 requestIsRunning = false
                                 console.error(ex);
                                 (async()=>{
-                                    lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
                                     for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                     $("#dataStatusSpinner").hide()
                                     $("#dataStatus")
@@ -4036,7 +3977,6 @@
                                     confirmButtonColor: "#000"
                                 });
                                 (async()=>{
-                                    savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                                     await LoadData(savedRecScheme)
                                 })();
                                 console.log("WebtoApp: Update Error")
@@ -4044,7 +3984,7 @@
                                     $("#animeRecommendationList").empty()
                                     $("#animeRecommendationList").append(`
                                         <tr class="item ${savedTheme}" role="row">
-                                            <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
+                                            <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                                 <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                                 No Data
                                             </td>
@@ -4058,7 +3998,6 @@
                 recallAV(1) // first chunk
             }
         } else {
-            savedUserList = await retrieveJSON("savedUserList") || {}
             var savedUserListValues = Object.values(savedUserList)
             if(isJson(savedUserList)&&isJson(savedUserListValues[0])&&!jsonIsEmpty(savedUserList)){
                 var worker7 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
@@ -4075,7 +4014,6 @@
                     return
                 }
             } else {
-                lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
                 for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                 $("#dataStatusSpinner").hide()
                 $("#dataStatus")
@@ -4088,8 +4026,6 @@
     }
 
     async function updateAllAnimeList(updateID, username, varScheme, userListStatus, alteredVariables, savedUserList){
-        var lastAnilistPage = await retrieveJSON("lastAnilistPage") || 284
-        var lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
         var tempLastSavedUpdateTime = lastSavedUpdateTime
         var maxAnimePerPage = 50
         var animeEntries = []
@@ -4202,11 +4138,14 @@
                             .empty()
                             .append(`<span style="white-space:nowrap;">Getting Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="100" max="100"></progress>⠀100%</span>`);
                         (async()=>{
-                            await saveJSON(animeEntries,"savedAnimeEntries")
-                            lastSavedUpdateTime = tempLastSavedUpdateTime || 0
+                            savedAnimeEntries = await animeEntries || []
+                            await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                            lastSavedUpdateTime = await tempLastSavedUpdateTime || 0
                             await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
-                            await saveJSON(page, "lastAnilistPage")
+                            lastAnilistPage = await page || 284
+                            await saveJSON(lastAnilistPage, "lastAnilistPage")
                             if(savedUserList){
+                                savedUserList = await savedUserList || {}
                                 await saveJSON(savedUserList,"savedUserList")
                             }
                             analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, false)
@@ -4250,11 +4189,9 @@
                             confirmButtonColor: "#000"
                         });
                         (async()=>{
-                            savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                             await LoadData(savedRecScheme)
                         })();
                         (async()=>{
-                            lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
                             for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                             $("#dataStatusSpinner").hide()
                             $("#dataStatus")
@@ -4266,7 +4203,7 @@
                             $("#animeRecommendationList").empty()
                             $("#animeRecommendationList").append(`
                                 <tr class="item ${savedTheme}" role="row">
-                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
+                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                         No Data
                                     </td>
@@ -4281,9 +4218,7 @@
     }
 
     async function updateAnimeList(updateID, username, varScheme, userListStatus, alteredVariables){
-        var lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
         var tempLastSavedUpdateTime = lastSavedUpdateTime
-        var savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
         if(lastSavedUpdateTime!==0&&savedAnimeEntries.length>0&&!isDeepUpdate){
             var maxAnimePerPage = 50
             var updatedAnimeEntries = []
@@ -4407,7 +4342,8 @@
                                 const data = message.data
                                 animeEntries = data.animeEntries;
                                 (async()=>{
-                                    await saveJSON(animeEntries,"savedAnimeEntries")
+                                    savedAnimeEntries = await animeEntries || []
+                                    await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                                     lastSavedUpdateTime = tempLastSavedUpdateTime || 0
                                     await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
                                     analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, false)
@@ -4455,11 +4391,9 @@
                                 confirmButtonColor: "#000"
                             });
                             (async()=>{
-                                savedRecScheme = await retrieveJSON("savedRecScheme") || {}
                                 await LoadData(savedRecScheme)
                             })();
                             (async()=>{
-                                lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
                                 for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                 $("#dataStatusSpinner").hide()
                                 $("#dataStatus")
@@ -4471,7 +4405,7 @@
                                 $("#animeRecommendationList").empty()
                                 $("#animeRecommendationList").append(`
                                     <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="10">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                             <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
                                             No Data
                                         </td>
@@ -4491,17 +4425,10 @@
     async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser, notAnUpdate, filterAlgo, doHideUnwatchedSeq){
         return await new Promise(async(resolve)=>{
             var UpdateAnalyzeAnimeStartTime = new Date()
-            var savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime") || [3]
             var updateAnalyzeAnimeTime = Math.ceil(arrayMean(savedUpdateAnalyzeAnimeTime))
             if(doHideUnwatchedSeq){
                 hideUnwatchedSequels = doHideUnwatchedSeq
-            } else {
-                hideUnwatchedSequels = await retrieveJSON("hideUnwatchedSequels")
-                if(hideUnwatchedSequels===undefined){
-                    hideUnwatchedSequels = true
-                }
             }
-            allFilterInfo = await retrieveJSON("allFilterInfo") || {}
             if(notAnUpdate){
                 $("#filterAlgoModal #filterAlgo-validation")
                     .removeClass("success-before")
@@ -4533,15 +4460,12 @@
             }
             // Normal Update
             if(animeEntries.length===0) {
-                animeEntries = await retrieveJSON("savedAnimeEntries") || []
+                animeEntries = savedAnimeEntries || []
             }
-            var savedUsername = await retrieveJSON("savedUsername") || ""
             // Reset if Username Changed || isDeepUpdate
             if(username!==savedUsername||isDeepUpdate||versionUpdate){
                 savedRecScheme = {}
             // Normal Update
-            } else {
-                savedRecScheme = await retrieveJSON("savedRecScheme") || {}
             }
             var worker4 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
             worker4.postMessage({
@@ -4556,20 +4480,20 @@
             worker4.onmessage = async(message) => {
                 worker4.terminate()
                 const data = message.data
-                savedRecScheme = data.savedRecScheme
                 if(!notAnUpdate||versionUpdate){
                     // Save New Filter Options
-                    allFilterInfo = data.allFilterInfo
+                    allFilterInfo = await data.allFilterInfo || {}
                     await saveJSON(allFilterInfo,"allFilterInfo")
                     // Save New anime Franchises
                     if(!alertUser){
-                        savedAnimeFranchises = data.animeFranchises
+                        savedAnimeFranchises = await data.animeFranchises || []
                         saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
                     }
                 }
                 // Save Filtered Algorithm Contents
                 if(notAnUpdate&&filterAlgo){
-                    await saveJSON(filterAlgo,"savedFilterAlgo")
+                    savedFilterAlgo = await filterAlgo || []
+                    await saveJSON(savedFilterAlgo,"savedFilterAlgo")
                 }
                 // Save Table Filters
                 var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
@@ -4579,20 +4503,25 @@
                     filterName = filterInputs[i].textContent
                     filters.push(filterName)
                 }
-                await saveJSON(filters, "savedFilters")
+                savedFilters = await filters || []
+                await saveJSON(savedFilters, "savedFilters")
                 // Save Username
-                await saveJSON(username,"savedUsername")
+                savedUsername = await username || ""
+                await saveJSON(savedUsername,"savedUsername")
                 // Save new Recommendation List
+                savedRecScheme = await data.savedRecScheme || {}
                 await saveJSON(savedRecScheme, "savedRecScheme")
                 if(versionUpdate){
-                    saveJSON(false,"versionUpdate")
+                    versionUpdate = await false
+                    await saveJSON(versionUpdate,"versionUpdate")
                 }
                 if(Object.keys(savedRecScheme).length>1){
                     $("#updateBtn").show()
                     $("#updateIntervalBtn").show()
                 }
                 if(doHideUnwatchedSeq!==undefined){
-                    await saveJSON(doHideUnwatchedSeq,"hideUnwatchedSequels")
+                    hideUnwatchedSequels = await doHideUnwatchedSeq || true
+                    await saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
                 }
                 var worker5 = new Worker(`./js-css/worker/updateOptions-${version}.js`)
                 worker5.postMessage({
@@ -4604,7 +4533,7 @@
                     var filtersHasFocus = false
                     if(!notAnUpdate||versionUpdate){
                         // Save and Reload Filters
-                        savedFilterOptionsJson = data.savedFilterOptionsJson
+                        savedFilterOptionsJson = await data.savedFilterOptionsJson || []
                         await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
                         // Check input Focus before updating
                         if( $("#flex0").is(":focus")
@@ -4635,7 +4564,6 @@
                                     data: savedFilterOptionsJson
                                 })
                                 // Reload Saved Table Filters
-                                savedFilters = await retrieveJSON("savedFilters") || []
                                 var filters
                                 await new Promise(async(resolve)=>{
                                     filters = await $("#filters .flexdatalist-multiple").children("li.value")
@@ -4667,7 +4595,6 @@
                                 if($("#filterAlgoContainer").css("display")!=="none"){
                                     $("#filterAlgoContainer").css({visibility:"hidden"}).show()
                                 }
-                                savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
                                 await new Promise(async(resolve)=>{
                                     var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
                                     var infoName
@@ -4694,10 +4621,6 @@
                                 if($("#warnAnimeContainer").css("display")!=="none"){
                                     $("#warnAnimeContainer").css({visibility:"hidden"}).show()
                                 }
-                                savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: !ecchi","!tag: !boys' love","tag: cgi","!tag: !ero guro","!tag: !female harem",
-                                                                                            "tag: full cgi","!tag: !male harem","!tag: !mixed gender harem",
-                                                                                            "!tag: !nudity","!tag: !slavery","!tag: !suicide","!tag: !yuri","!tag: !netorare", "!tag: !rape"
-                                                                                         ]
                                 await new Promise(async(resolve)=>{
                                     var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
                                     var infoName
@@ -4736,7 +4659,6 @@
                     // Reload New Recommendation Data
                     await LoadData(savedRecScheme)
                     if(notAnUpdate){
-                        savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
                         await new Promise(async(resolve)=>{
                             var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
                             var infoName
@@ -4763,7 +4685,6 @@
                         setTimeout(()=>{
                             $("#filterAlgoModal #filterAlgo-validation").fadeOut(1000)
                         },1000)
-                        lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
                         for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                         $("#dataStatusSpinner").hide()
                         $("#dataStatus")
@@ -4797,7 +4718,6 @@
                         if(isDeepUpdate){
                             (async()=>{
                                 isDeepUpdate = false
-                                savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || [320]
                                 var timeInterval = (new Date).getTime()-deepUpdateStartTime.getTime()
                                 if(savedDeepUpdateTime.length<33){
                                     await savedDeepUpdateTime.push(Math.ceil(timeInterval/1000))
@@ -4809,7 +4729,6 @@
                                 }
                             })();
                         }
-                        lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
                         for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                         $("#dataStatusSpinner").hide()
                         $("#dataStatus")
@@ -4868,11 +4787,8 @@
                         break;
                     }
                 }
-                await saveJSON(filters, "savedFilters")
-                savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: !ecchi","!tag: !boys' love","tag: cgi","!tag: !ero guro","!tag: !female harem",
-                                                                            "tag: full cgi","!tag: !male harem","!tag: !mixed gender harem",
-                                                                            "!tag: !nudity","!tag: !slavery","!tag: !suicide","!tag: !yuri","!tag: !netorare", "!tag: !rape"
-                                                                         ]
+                savedFilters = await filters || []
+                await saveJSON(savedFilters, "savedFilters")
                 var savedWarnR = {}
                 var savedWarnY = {}
                 for(let i=0; i<savedWarnAnime.length; i++){
@@ -4896,7 +4812,6 @@
                     }
                     else savedWarnY[warnName] = true
                 }
-                savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs") || {}
                 var worker6 = new Worker(`./js-css/worker/loadData-${version}.js`)
                 worker6.postMessage({
                     recList: recList,
@@ -4911,9 +4826,6 @@
                     worker6.terminate()
                     const data = message.data
                     const animeData = data.animeData
-                    savedUnhiddenTablePage = await retrieveJSON("savedUnhiddenTablePage") || 0
-                    savedHiddenTablePage = await retrieveJSON("savedHiddenTablePage") || 0
-                    savedTableStatus = await retrieveJSON("savedTableStatus") || "Unhidden"
                     await $("#animeRecommendationList").empty()
                     await $("#animeRecommendationList").css({
                         "display":"none"
@@ -4926,9 +4838,7 @@
                     // idk why savedUnhiddenTable Page sets to (page - 1) in SecondTolast and Last
                     await $("#anime-table").trigger("pageSet",(savedTableStatus==="Unhidden"? savedUnhiddenTablePage:savedHiddenTablePage))
                     // Rename Pager Options Text
-                    if($('#anime-table')?.[0]?.config){
-                        $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')[0].config.pager.totalPages||1}`).prop('selected', true)
-                    }
+                    $("#pageNumberOptions").find("option:selected").text(`${$("#pageNumberOptions").val()} of ${$('#anime-table')?.[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                     isLoading = false
                     resolve()
                 }
@@ -4946,35 +4856,21 @@
                 exportWorker.terminate()
             }
             exportWorker = new Worker(`./js-css/worker/export-${version}.js`)
-            const expsavedUsername = await retrieveJSON("savedUsername")
-            const expsavedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs")
-            const expsavedWarnAnime = await retrieveJSON("savedWarnAnime")
-            const expsavedFilterAlgo = await retrieveJSON("savedFilterAlgo")
-            const expsavedUserList = await retrieveJSON("savedUserList")
-            const expsavedAnimeFranchises = await retrieveJSON("savedAnimeFranchises")
-            const expsavedAnimeEntries = await retrieveJSON("savedAnimeEntries")
-            const expsavedRecScheme = await retrieveJSON("savedRecScheme")
-            const expsavedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime")
-            const expsavedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime")
-            const expsavedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime")
-            const explastAnilistPage = await retrieveJSON("lastAnilistPage")
-            const explastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
-            const expbackUpVersion = await retrieveJSON("backUpVersion")
             exportWorker.postMessage({
-                savedUsername: expsavedUsername,
-                savedWarnAnime: expsavedWarnAnime,
-                savedFilterAlgo: expsavedFilterAlgo,
-                savedHiddenAnimeIDs: expsavedHiddenAnimeIDs,
-                savedRecScheme: expsavedRecScheme,
-                savedAnimeEntries: expsavedAnimeEntries,
-                savedUserList: expsavedUserList,
-                savedAnimeFranchises: expsavedAnimeFranchises,
-                savedAnalyzeVariableTime: expsavedAnalyzeVariableTime,
-                savedUpdateAnalyzeAnimeTime: expsavedUpdateAnalyzeAnimeTime,
-                savedDeepUpdateTime: expsavedDeepUpdateTime,
-                lastAnilistPage: explastAnilistPage,
-                lastSavedUpdateTime: explastSavedUpdateTime,
-                backUpVersion: expbackUpVersion,
+                savedUsername: savedUsername,
+                savedWarnAnime: savedWarnAnime,
+                savedFilterAlgo: savedFilterAlgo,
+                savedHiddenAnimeIDs: savedHiddenAnimeIDs,
+                savedRecScheme: savedRecScheme,
+                savedAnimeEntries: savedAnimeEntries,
+                savedUserList: savedUserList,
+                savedAnimeFranchises: savedAnimeFranchises,
+                savedAnalyzeVariableTime: savedAnalyzeVariableTime,
+                savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,
+                savedDeepUpdateTime: savedDeepUpdateTime,
+                lastAnilistPage: lastAnilistPage,
+                lastSavedUpdateTime: lastSavedUpdateTime,
+                backUpVersion: await retrieveJSON("backUpVersion"),
             })
             exportWorker.onmessage = async(message) => {
                 exportWorker.terminate()
@@ -5006,7 +4902,6 @@
     }
 
     async function initUsernameData(){
-        var initStartTime = await retrieveJSON("initStartTime") || undefined
         const { value: username } = await Swal.fire({
             heightAuto: false,
             title: "Starting Up",
@@ -5059,8 +4954,8 @@
                                     )
                             },
                             success: (data) => {
-                                initStartTime = undefined;
                                 (async()=>{
+                                    initStartTime = await undefined
                                     await saveJSON(initStartTime,"initStartTime")
                                     $("#UsernameValidation").fadeOut(1000,()=>{
                                         $("#UsernameValidation").remove()
@@ -5079,8 +4974,8 @@
                             error: (xhr) =>{
                                 try{
                                     if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
-                                        initStartTime = undefined;
                                         (async()=>{
+                                            initStartTime = await undefined
                                             await saveJSON(initStartTime,"initStartTime")
                                             $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
                                             resolve("Username not Found, Please Try Again")
@@ -5089,8 +4984,8 @@
                                 } catch(ex){}
                                 try{
                                     if(!xhr?.responseJSON?.data?.User){
-                                        initStartTime = undefined;
                                         (async()=>{
+                                            initStartTime = await undefined
                                             await saveJSON(initStartTime,"initStartTime")
                                             $("#UsernameValidation").fadeOut(1000,()=>$(this).remove())
                                             resolve("Username not Found, Please Try Again")
@@ -5098,8 +4993,8 @@
                                     }
                                 } catch(ex){
                                     if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                        initStartTime = new Date();
                                         (async()=>{
+                                            initStartTime = await new Date()
                                             await saveJSON(initStartTime,"initStartTime")
                                         })();
                                     }
