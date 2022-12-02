@@ -6,7 +6,7 @@
   1. Install the [Kanshi.VI](https://github.com/u-Kuro/Kanshi.Anime-Recommendation/raw/main/Kanshi.VI.apk) or [Kanshi.R](https://github.com/u-Kuro/Kanshi.Anime-Recommendation/raw/main/Kanshi.R.apk) application in an Android mobile or visit the website [Kanshi.WebOne](https://u-kuro.github.io/Kanshi.Anime-Recommendation/) or [Kanshi.WebTwo](http://kanshi.rf.gd/).
   2. Run/Visit the app and Enter a username of an Exsting anilist account (A properly rated list is highly recommended). If you don't have one, you can easily Create an account in their website ([Anilist](https://anilist.co/home)) or Export your List from MAL (MyAnimeList) if you have one ([MAL export](https://myanimelist.net/panel.php?go=export)) then Import the XML file in the Anilist settings ([Anilist Import](https://anilist.co/settings/import)).
   
-#### ____Features/Usage Instructions____
+#### ____Features/Usage Instructions (Mostly for VI)____
   1. Settings can be found by clicking the bar at the top.  
   2. Sort by Scores/Status/Popularity/etc. to the desired order.  
   3. Auto Recommendation updates and Exports every hour are available in the settings.  
