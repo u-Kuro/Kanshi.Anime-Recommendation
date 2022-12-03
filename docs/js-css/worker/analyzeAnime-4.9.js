@@ -162,47 +162,68 @@ self.onmessage = (message) => {
             if(!allFilterInfo["wscore>="]
              &&!allFilterInfo["wscore>"]
              &&!allFilterInfo["wscore<"]
-             &&!allFilterInfo["wscore<="]){
+             &&!allFilterInfo["wscore<="]
+             &&!allFilterInfo["wscore:"]){
                 allFilterInfo["wscore>="] = true
                 allFilterInfo["wscore>"] = true
                 allFilterInfo["wscore<"] = true
                 allFilterInfo["wscore<="] = true
+                allFilterInfo["wscore:"] = true
             }
             if(!allFilterInfo["score>="]
              &&!allFilterInfo["score>"]
              &&!allFilterInfo["score<"]
-             &&!allFilterInfo["score<="]){
+             &&!allFilterInfo["score<="]
+             &&!allFilterInfo["score:"]){
                 allFilterInfo["score>="] = true
                 allFilterInfo["score>"] = true
                 allFilterInfo["score<"] = true
                 allFilterInfo["score<="] = true
+                allFilterInfo["score:"] = true
             }
             if(!allFilterInfo["userScore>="]
              &&!allFilterInfo["userScore>"]
              &&!allFilterInfo["userScore<"]
-             &&!allFilterInfo["userScore<="]){
+             &&!allFilterInfo["userScore<="]
+             &&!allFilterInfo["userScore:"]){
                 allFilterInfo["userScore>="] = true
                 allFilterInfo["userScore>"] = true
+                allFilterInfo["userScore:"] = true
                 allFilterInfo["userScore<"] = true
                 allFilterInfo["userScore<="] = true
             }
             if(!allFilterInfo["averageScore>="]
              &&!allFilterInfo["averageScore>"]
              &&!allFilterInfo["averageScore<"]
-             &&!allFilterInfo["averageScore<="]){
+             &&!allFilterInfo["averageScore<="]
+             &&!allFilterInfo["averageScore:"]){
                 allFilterInfo["averageScore>="] = true
                 allFilterInfo["averageScore>"] = true
+                allFilterInfo["averageScore:"] = true
                 allFilterInfo["averageScore<"] = true
                 allFilterInfo["averageScore<="] = true
             }
             if(!allFilterInfo["popularity>="]
              &&!allFilterInfo["popularity>"]
              &&!allFilterInfo["popularity<"]
-             &&!allFilterInfo["popularity<="]){
+             &&!allFilterInfo["popularity<="]
+             &&!allFilterInfo["popularity:"]){
                 allFilterInfo["popularity>="] = true
                 allFilterInfo["popularity>"] = true
                 allFilterInfo["popularity<"] = true
                 allFilterInfo["popularity<="] = true
+                allFilterInfo["popularity:"] = true
+            }
+            if(!allFilterInfo["year>="]
+             &&!allFilterInfo["year>"]
+             &&!allFilterInfo["year<"]
+             &&!allFilterInfo["year<="]
+             &&!allFilterInfo["year:"]){
+                allFilterInfo["year:"] = true
+                allFilterInfo["year>="] = true
+                allFilterInfo["year>"] = true
+                allFilterInfo["year<"] = true
+                allFilterInfo["year<="] = true
             }
             if(!allFilterInfo["minimum popularity: "]){
                 allFilterInfo["minimum popularity: "] = true
@@ -268,15 +289,6 @@ self.onmessage = (message) => {
                 var fullTitle = "title: "+title.trim().toLowerCase()
                 if(!allFilterInfo[fullTitle]){
                     allFilterInfo[fullTitle] = true
-                }
-            }
-            if(typeof year==="number"){
-                var strYear = year.toString().trim().toLowerCase()
-                var fullStrYear = "year: "+strYear
-                if(!allFilterInfo[fullStrYear]
-                 &&!allFilterInfo["!year: !"+strYear]){
-                    allFilterInfo[fullStrYear] = true  
-                    allFilterInfo["!year: !"+strYear] = true
                 }
             }
             if(typeof season==="string"){
@@ -763,47 +775,68 @@ self.onmessage = (message) => {
             if(!allFilterInfo["wscore>="]
              &&!allFilterInfo["wscore>"]
              &&!allFilterInfo["wscore<"]
-             &&!allFilterInfo["wscore<="]){
+             &&!allFilterInfo["wscore<="]
+             &&!allFilterInfo["wscore:"]){
                 allFilterInfo["wscore>="] = true
                 allFilterInfo["wscore>"] = true
                 allFilterInfo["wscore<"] = true
                 allFilterInfo["wscore<="] = true
+                allFilterInfo["wscore:"] = true
             }
             if(!allFilterInfo["score>="]
              &&!allFilterInfo["score>"]
              &&!allFilterInfo["score<"]
-             &&!allFilterInfo["score<="]){
+             &&!allFilterInfo["score<="]
+             &&!allFilterInfo["score:"]){
                 allFilterInfo["score>="] = true
                 allFilterInfo["score>"] = true
                 allFilterInfo["score<"] = true
                 allFilterInfo["score<="] = true
+                allFilterInfo["score:"] = true
             }
             if(!allFilterInfo["userScore>="]
              &&!allFilterInfo["userScore>"]
              &&!allFilterInfo["userScore<"]
-             &&!allFilterInfo["userScore<="]){
+             &&!allFilterInfo["userScore<="]
+             &&!allFilterInfo["userScore:"]){
                 allFilterInfo["userScore>="] = true
                 allFilterInfo["userScore>"] = true
+                allFilterInfo["userScore:"] = true
                 allFilterInfo["userScore<"] = true
                 allFilterInfo["userScore<="] = true
             }
             if(!allFilterInfo["averageScore>="]
              &&!allFilterInfo["averageScore>"]
              &&!allFilterInfo["averageScore<"]
-             &&!allFilterInfo["averageScore<="]){
+             &&!allFilterInfo["averageScore<="]
+             &&!allFilterInfo["averageScore:"]){
                 allFilterInfo["averageScore>="] = true
                 allFilterInfo["averageScore>"] = true
+                allFilterInfo["averageScore:"] = true
                 allFilterInfo["averageScore<"] = true
                 allFilterInfo["averageScore<="] = true
             }
             if(!allFilterInfo["popularity>="]
              &&!allFilterInfo["popularity>"]
              &&!allFilterInfo["popularity<"]
-             &&!allFilterInfo["popularity<="]){
+             &&!allFilterInfo["popularity<="]
+             &&!allFilterInfo["popularity:"]){
                 allFilterInfo["popularity>="] = true
                 allFilterInfo["popularity>"] = true
                 allFilterInfo["popularity<"] = true
                 allFilterInfo["popularity<="] = true
+                allFilterInfo["popularity:"] = true
+            }
+            if(!allFilterInfo["year>="]
+             &&!allFilterInfo["year>"]
+             &&!allFilterInfo["year<"]
+             &&!allFilterInfo["year<="]
+             &&!allFilterInfo["year:"]){
+                allFilterInfo["year:"] = true
+                allFilterInfo["year>="] = true
+                allFilterInfo["year>"] = true
+                allFilterInfo["year<"] = true
+                allFilterInfo["year<="] = true
             }
             if(!allFilterInfo["minimum popularity: "]){
                 allFilterInfo["minimum popularity: "] = true
@@ -869,15 +902,6 @@ self.onmessage = (message) => {
                 var fullTitle = "title: "+title.trim().toLowerCase()
                 if(!allFilterInfo[fullTitle]){
                     allFilterInfo[fullTitle] = true
-                }
-            }
-            if(typeof year==="number"){
-                var strYear = year.toString().trim().toLowerCase()
-                var fullStrYear = "year: "+strYear
-                if(!allFilterInfo[fullStrYear]
-                 &&!allFilterInfo["!year: !"+strYear]){
-                    allFilterInfo[fullStrYear] = true  
-                    allFilterInfo["!year: !"+strYear] = true
                 }
             }
             if(typeof season==="string"){

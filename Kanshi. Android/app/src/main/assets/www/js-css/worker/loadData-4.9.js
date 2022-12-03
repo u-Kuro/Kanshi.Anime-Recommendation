@@ -20,11 +20,11 @@ self.onmessage = (message) => {
             if(isaN(tempMinTopSim)){
                 minTopSimilarities = parseFloat(tempMinTopSim)
             }
-            if(includes.length>1){
-                continue
-            } else{
-                break
-            }
+            continue
+        }
+        if(equalsNCS("hidden",included)){
+            isHiddenTable = true
+            continue
         }
         var noType = !included.includes(":")
         for(let j=0; j<recList.length; j++){
@@ -64,12 +64,34 @@ self.onmessage = (message) => {
                     continue
                 }
             }
-            if(equalsNCS("hidden",included)){
-                isHiddenTable = true
-                continue
-            }
             // Numbers
             // Weighted Score
+            if(included.includes("wscore:")){
+                var score=included.replace("wscore:", "")
+                if(isaN(score)) if(recList[j]?.weightedScore===parseFloat(score)) tempRecScheme.push(recList[j])
+                continue
+            }
+            if(included.includes("userscore:")){
+                var userScore=included.replace("userscore:", "")
+                console.log(recList[j]?.userScore==parseFloat(userScore),recList[j]?.userScore,parseFloat(userScore),typeof recList[j]?.userScore,typeof parseFloat(userScore))
+                if(isaN(userScore)) if(recList[j]?.userScore===parseFloat(userScore)) tempRecScheme.push(recList[j])
+                continue
+            }
+            if(included.includes("averagescore:")){
+                var averageScore=included.replace("averagescore:", "")
+                if(isaN(averageScore)) if(recList[j]?.averageScore===parseFloat(averageScore)) tempRecScheme.push(recList[j])
+                continue
+            }
+            if(included.includes("score:")&&!included.includes("wscore:")){
+                var score=included.replace("score>=", "")
+                if(isaN(score)) if(recList[j]?.score===parseFloat(score)) tempRecScheme.push(recList[j])
+                continue
+            }
+            if(included.includes("popularity:")){
+                var popularity=included.replace("popularity:", "")
+                if(isaN(popularity)) if(recList[j]?.popularity===parseFloat(popularity)) tempRecScheme.push(recList[j])
+                continue
+            }
             if(included.includes("wscore>=")){
                 var score=included.replace("wscore>=", "")
                 if(isaN(score)) if(recList[j]?.weightedScore>=parseFloat(score)) tempRecScheme.push(recList[j])
@@ -313,6 +335,37 @@ self.onmessage = (message) => {
                     continue
                 }
             }
+            // Numbers
+            // Weighted Score
+            console.log(excluded)
+            if(excluded.includes("wscore:")){
+                var score=excluded.replace("wscore:", "")
+                if(isaN(score)) if(recList[j]?.weightedScore===parseFloat(score)) continue
+            }
+            if(excluded.includes("wscore:")){
+                var score=excluded.replace("wscore:", "")
+                if(isaN(score)) if(recList[j]?.weightedScore===parseFloat(score)) continue
+            }
+            if(excluded.includes("userscore:")){
+                var userScore=excluded.replace("userscore:", "")
+                if(isaN(userScore)) if(recList[j]?.userScore===parseFloat(userScore)) continue
+            }
+            if(excluded.includes("averagescore:")){
+                var averageScore=excluded.replace("averagescore:", "")
+                if(isaN(averageScore)) if(recList[j]?.averageScore===parseFloat(averageScore)) continue
+            }
+            if(excluded.includes("score:")&&!excluded.includes("wscore:")){
+                var score=excluded.replace("score>=", "")
+                if(isaN(score)) if(recList[j]?.score===parseFloat(score)) continue
+            }
+            if(excluded.includes("popularity:")){
+                var popularity=excluded.replace("popularity:", "")
+                if(isaN(popularity)) if(recList[j]?.popularity===parseFloat(popularity)) continue
+            }
+            if(excluded.includes("year:")){
+                var year=excluded.replace("year:", "")
+                if(isaN(year)) if(recList[j]?.year===parseFloat(year)) continue
+            }
             if(noType){
                 if(
                     findWord(recList[j]?.format,excluded)
@@ -329,12 +382,12 @@ self.onmessage = (message) => {
                 var genres = recList[j]?.genres
                 var tags = recList[j]?.tags
                 if(typeof genres==="string"||genres instanceof Array){
-                    if(findWord(genres,included)){
+                    if(findWord(genres,excluded)){
                         continue
                     }
                 }
                 if(typeof tags==="string"||tags instanceof Array){
-                    if(findWord(tags,included)){
+                    if(findWord(tags,excluded)){
                         continue
                     }
                 }
@@ -426,6 +479,7 @@ self.onmessage = (message) => {
                 <td class="animeTitle ${savedTheme}">
                     <a class="${savedTheme}" target="_blank" rel="noopener noreferrer" href="${value?.animeUrl||'javascript:;'}" data-value="${value?.id||''}">${value?.title||'Title: N/A'}</a>
                 </td>
+                <td class="${savedTheme}">${value?.format||'Format: N/A'}</td>
                 <td class="${savedTheme}">`
                     animeData += similarities.length>0 ? similarities.join(', ') : 'Top Similarities: N/A'
                     animeData += `
@@ -436,7 +490,6 @@ self.onmessage = (message) => {
                 <td class="anime-score ${savedTheme}" title="${popularity||0}">${popularity||0}</td>
                 <td class="${savedTheme}">${value?.userStatus||'User Status: N/A'}</td>
                 <td class="${savedTheme}">${value?.status||'Status: N/A'}</td>
-                <td class="${savedTheme}">${value?.format||'Format: N/A'}</td>
             </tr>`
         } else {
             animeData.push(`
@@ -457,6 +510,7 @@ self.onmessage = (message) => {
                 <td class="animeTitle ${savedTheme}">
                     <a class="${savedTheme}" target="_blank" rel="noopener noreferrer" href="${value?.animeUrl||'javascript:;'}" data-value="${value?.id||''}">${value?.title||'Title: N/A'}</a>
                 </td>
+                <td class="${savedTheme}">${value?.format||'Format: N/A'}</td>
                 <td class="${savedTheme}">
                     ${similarities.length>0 ? similarities.join(', ') : 'Similarities: N/A'}
                 </td>
@@ -466,7 +520,6 @@ self.onmessage = (message) => {
                 <td class="anime-score ${savedTheme}" title="${popularity||0}">${popularity||0}</td>
                 <td class="${savedTheme}">${value?.userStatus||'User Status: N/A'}</td>
                 <td class="${savedTheme}">${value?.status||'Status: N/A'}</td>
-                <td class="${savedTheme}">${value?.format||'Format: N/A'}</td>
             </tr>`)
         }
     })
