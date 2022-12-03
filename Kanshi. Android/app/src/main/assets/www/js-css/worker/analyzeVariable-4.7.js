@@ -1012,7 +1012,7 @@ self.onmessage = (message) => {
         return true
     }
     function parseJson(obj){
-        try{return JSON.parse(obj)}catch(ex){return null}
+        try{return JSON.parse(obj)}catch(ex){return {}}
     }
     function arrayMean(obj) {
         return (arraySum(obj) / obj.length) || 0
@@ -1028,7 +1028,7 @@ self.onmessage = (message) => {
         var min = parseFloat(Math.min(...obj))
         const boundary = minNumber
         var classW = parseFloat(((max-min)/(1.0+(3.322*Math.log(obj.length)))))
-        var classIs
+        var classIs = []
         if(max===min||classW<boundary){ // To avoid Inf loop if classWidth is very small
             classIs = [{low:min,high:max,freq:0}]
         } else {

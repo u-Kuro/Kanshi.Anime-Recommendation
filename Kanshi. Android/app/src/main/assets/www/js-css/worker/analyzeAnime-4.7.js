@@ -9,7 +9,7 @@ self.onmessage = (message) => {
     var varScheme = data.varScheme
     // Algorithm Configs
     const measure = varScheme?.measure || "mean"
-    const includeUnknownVar = varScheme?.includeUnknownVar!==undefined?varScheme.includeUnknownVar:true
+    const includeUnknownVar = varScheme?.includeUnknownVar ?? true
     const popularityArray = animeEntries.map((anime)=>{
                                     var popularity = anime?.popularity
                                     if(typeof popularity==="number"){

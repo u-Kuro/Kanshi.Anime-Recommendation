@@ -66,7 +66,6 @@ self.onmessage = (message) => {
             }
             if(equalsNCS("hidden",included)){
                 isHiddenTable = true
-                tempRecScheme.push(recList[j])
                 continue
             }
             // Numbers
@@ -495,13 +494,9 @@ self.onmessage = (message) => {
         }
     }
     function equalsNCS(str1, str2) {
-        var s1 = str1 || ""
-        var s2 = str2 || ""
-        if(typeof s1==="number") s1 = s1.toString()
-        if(typeof s2==="number") s2 = s2.toString()
-        if(typeof s1==="string") s1 = s1.trim().toLowerCase()
-        if(typeof s2==="string") s2 = s2.trim().toLowerCase()
-        return s1 === s2
+        if(!(typeof str1==="number"||typeof str1==="string")
+         &&(typeof str2==="number"||typeof str2==="string")) return false
+        return str1.toString() === str2.toString()
     }
     function isaN(num){
         if(!num&&num!==0){return false}

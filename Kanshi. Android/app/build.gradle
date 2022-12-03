@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
 }
 apply plugin: 'com.android.application'
-//
 apply plugin: 'com.google.gms.google-services'
 
 android {
@@ -14,8 +13,11 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
 
     buildTypes {

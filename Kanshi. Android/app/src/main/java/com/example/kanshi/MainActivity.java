@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity  {
                                         DocumentsContract.getTreeDocumentId(uri));
                                 exportPath = getThisPath(docUri);
                                 Toast.makeText(getApplicationContext(), "Export Folder is Selected, you may Export now!", Toast.LENGTH_LONG).show();
-                                System.out.println(exportPath);
                                 prefsEdit.putString("savedExportPath",exportPath).apply();
                                 webView.loadUrl("javascript:" +
                                         "exportPathIsAvailable=true;" +
@@ -181,7 +180,7 @@ public class MainActivity extends AppCompatActivity  {
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setAllowFileAccessFromFileURLs(true);
         webSettings.setBlockNetworkLoads(false);
-        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setAllowUniversalAccessFromFileURLs(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("My Notification","My Notification", NotificationManager.IMPORTANCE_DEFAULT);
@@ -364,6 +363,7 @@ public class MainActivity extends AppCompatActivity  {
 
     // Native and Webview Connection
     class JSBridge {
+        @SuppressWarnings("unused")
         @RequiresApi(api = Build.VERSION_CODES.R)
         @JavascriptInterface
         public void exportJSON(String objStr, String fileName){
@@ -382,21 +382,33 @@ public class MainActivity extends AppCompatActivity  {
                 if(new File(exportPath).isDirectory()){
                     String directoryPath = exportPath + File.separator;
                     File directory = new File(directoryPath);
+                    boolean dirIsCreated;
                     if (!directory.exists()) {
-                        directory.mkdirs();
+                        dirIsCreated = directory.mkdirs();
+                    } else {
+                        dirIsCreated = true;
                     }
-                    if (directory.isDirectory()) {
+                    if (directory.isDirectory()&&dirIsCreated) {
                         try {
                             //String date = new SimpleDateFormat("GyyMMddHH").format(new Date());
                             File file = new File(directoryPath + fileName);
+                            boolean fileIsDeleted;
                             if (file.exists()) {
-                                file.delete();
+                                fileIsDeleted = file.delete();
+                            } else {
+                                fileIsDeleted = true;
                             }
-                            Files.write(Paths.get(file.getAbsolutePath()), objStr.getBytes());
-                            Toast.makeText(getApplicationContext(), "Data was successfully Exported!", Toast.LENGTH_LONG).show();
+                            if(fileIsDeleted){
+                                Files.write(Paths.get(file.getAbsolutePath()), objStr.getBytes());
+                                Toast.makeText(getApplicationContext(), "Data was successfully Exported!", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Data can't be re-written, Please delete it first!", Toast.LENGTH_LONG).show();
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    } else if(!dirIsCreated){
+                        Toast.makeText(getApplicationContext(), "Error: Directory can't be created!", Toast.LENGTH_LONG).show();
                     }
                 } else if(!Objects.equals(exportPath, "") &&!new File(exportPath).isDirectory()){
                     String[] tempExportPath = exportPath.split("/");
