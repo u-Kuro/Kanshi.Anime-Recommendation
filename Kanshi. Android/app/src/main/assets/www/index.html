@@ -1198,17 +1198,20 @@
     isRunning = false, requestIsRunning = false, isLoading = false,
     isDeepUpdate = false, willAutoUpdate = false, updateStateText = [], checkFiltersFocus = [],
         // Helper
-    pageInits = true, enteredOnce = false, versionUpdate = false, exportWorker, initStartTime, pageLoadStartDate = new Date().getTime(),
+    pageInits = true, enteredOnce = false, versionUpdate = false, exportWorker, initStartTime,
+    pageLoadStartDate = new Date().getTime(), maxClientHeight,
         // Jquery Elements
     bodyEl, usernameEl, pagerEl, menuContainerEl, pageNumberOptionsEl,
     animeTableEl, animeRecommendationListEl, filtersEl,
     warnAnimeContainerEl, warnAnimeModalEl,
     filterAlgoContainerEl, filterAlgoModalEl, filterAlgoValidationEl,
-    dataStatusEl, dataStatusSpinnerHomeEl, 
+    dataStatusEl, dataStatusSpinnerHomeEl,
     searchBtnEl, updateBtnEl, importBtnEl, importFileEl, exportIntervalBtnEl, updateIntervalBtnEl,
     hiddenUnhiddenBtnEl, showAllAnimeBtnEl, hideUnwatchedSequelsBtnEl, themeBtnEl
 
     window.onload = async () => {
+        // Check Client Height
+        maxClientHeight = document.body.clientHeight
         // Initialize Jquery Elements
         bodyEl = await $("body"),
         usernameEl = await $("#username"),
@@ -1861,7 +1864,7 @@
                         const importedFile = importFileEl[0].files[0]
                         const reader = new FileReader()
                         reader.onload = async() => {
-                            const fullPath = importFileEl.val() 
+                            const fullPath = importFileEl.val()
                             var filename
                             if(typeof fullPath==="string"&&fullPath){
                                 const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
@@ -3042,13 +3045,54 @@
                         await saveJSON(bodyEl.scrollTop()||0,"savedYscroll")
                     },1)
                 })
-                $("input").on("focusin", () => {
-                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                        pagerEl.css({position: "static"})
+                $(window).on("resize", (e) => {
+                    // Hide Fixed Pager on Mobile
+                    if(maxClientHeight<document.body.clientHeight){
+                        maxClientHeight = document.body.clientHeight
                     }
+                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+                        if(screen.availHeight>screen.availWidth){
+                            if(document.body.clientHeight<.9*maxClientHeight){
+                                pagerEl.css({position: "static"})
+                            } else {
+                                setTimeout(()=>{
+                                    pagerEl.css({position: "fixed"})
+                                },100)
+                            }
+                        } else {
+                            setTimeout(()=>{
+                                pagerEl.css({position: "fixed"})
+                            },100)
+                        }
+                    }
+                    // Hide Fixed Pager on Mobile
+                })
+                $(window).on("orientationchange", () => {
+                    // Hide Fixed Pager on Mobile
+                    if(maxClientHeight<document.body.clientHeight){
+                        maxClientHeight = document.body.clientHeight
+                    }
+                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+                        if(screen.availHeight>screen.availWidth){
+                            if(document.body.clientHeight<.9*maxClientHeight){
+                                pagerEl.css({position: "static"})
+                            } else {
+                                setTimeout(()=>{
+                                    pagerEl.css({position: "fixed"})
+                                },100)
+                            }
+                        } else {
+                            setTimeout(()=>{
+                                pagerEl.css({position: "fixed"})
+                            },100)
+                        }
+                    }
+                    // Hide Fixed Pager on Mobile
                 })
                 $("input").on("focusout",() => {
-                    pagerEl.css({position: "fixed"})
+                    setTimeout(()=>{
+                        pagerEl.css({position: "fixed"}) // If the pager didn't show back
+                    },100)
                 })
                 resolve()
             })
@@ -5079,19 +5123,19 @@
             }
         })
     }
-    
+
     async function loadTheme(newTheme,prevTheme){
         return await new Promise(async(resolve)=>{
             // Remove default
             if(newTheme!=="dakMode"&&!prevTheme){
-                await $(` 
+                await $(`
                     html
                     body,
                     .Home,
                     .searchData,
                     button,
                     .overlay,
-                    #username, 
+                    #username,
                     .flexdatalist-multiple,
                     .flexdatalist-alias,
                     .flexdatalist-results,
@@ -5105,15 +5149,15 @@
                     #anime-table td,
                     .table-responsive,
                     #animeRecommendationList a,
-                    .userInput, 
-                    .nav, 
+                    .userInput,
+                    .nav,
                     #pager,
                     #pageNumberOptions,
                     .swal2-popup,
                     .swal2-popup-custom,
                     .swal2-validation-message,
                     .swal2-footer a,
-                    .swal2-confirm, 
+                    .swal2-confirm,
                     .swal2-confirm-custom,
                     .spinner
                 `).removeClass("darkMode")
@@ -5132,14 +5176,14 @@
             }
             // Remove Previous
             if(prevTheme){
-                await $(` 
+                await $(`
                     html
                     body,
                     .Home,
                     .searchData,
                     button,
                     .overlay,
-                    #username, 
+                    #username,
                     .flexdatalist-multiple,
                     .flexdatalist-alias,
                     .flexdatalist-results,
@@ -5153,15 +5197,15 @@
                     #anime-table td,
                     .table-responsive,
                     #animeRecommendationList a,
-                    .userInput, 
-                    .nav, 
+                    .userInput,
+                    .nav,
                     #pager,
                     #pageNumberOptions,
                     .swal2-popup,
                     .swal2-popup-custom,
                     .swal2-validation-message,
                     .swal2-footer a,
-                    .swal2-confirm, 
+                    .swal2-confirm,
                     .swal2-confirm-custom,
                     .spinner
                 `).removeClass(prevTheme)
@@ -5179,14 +5223,14 @@
                 })
             }
             // Apply New
-            await $(` 
+            await $(`
                 html,
                 body,
                 .Home,
                 .searchData,
                 button,
                 .overlay,
-                #username, 
+                #username,
                 .flexdatalist-multiple,
                 .flexdatalist-alias,
                 .flexdatalist-results,
@@ -5200,15 +5244,15 @@
                 #anime-table td,
                 .table-responsive,
                 #animeRecommendationList a,
-                .userInput, 
-                .nav, 
+                .userInput,
+                .nav,
                 #pager,
                 #pageNumberOptions,
                 .swal2-popup,
                 .swal2-popup-custom,
                 .swal2-validation-message,
                 .swal2-footer a,
-                .swal2-confirm, 
+                .swal2-confirm,
                 .swal2-confirm-custom,
                 .spinner
             `).addClass(newTheme)
@@ -5227,36 +5271,36 @@
             resolve()
         })
     }
-    
-    // Helper Function 
-    async function saveJSON(data, name) { 
+
+    // Helper Function
+    async function saveJSON(data, name) {
         return new Promise((resolve)=>{
-            try { 
-                var write = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").openCursor() 
-                write.onsuccess = (event) => { 
-                    const cursor = event.target.result; 
-                    if (cursor) { 
-                        if(cursor.key===name){ 
-                            cursor.update(data) 
-                            resolve() 
-                        } 
-                        cursor.continue() 
-                    } else { 
-                        db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name) 
-                        resolve() 
-                    } 
-                } 
-            } catch(ex) { 
-                try{ 
-                    console.error(ex) 
-                    db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name) 
+            try {
+                var write = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").openCursor()
+                write.onsuccess = (event) => {
+                    const cursor = event.target.result;
+                    if (cursor) {
+                        if(cursor.key===name){
+                            cursor.update(data)
+                            resolve()
+                        }
+                        cursor.continue()
+                    } else {
+                        db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
+                        resolve()
+                    }
+                }
+            } catch(ex) {
+                try{
+                    console.error(ex)
+                    db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
                     resolve()
-                } catch(ex2) { 
+                } catch(ex2) {
                     console.error(ex2)
-                    resolve() 
-                } 
-            } 
-        }) 
+                    resolve()
+                }
+            }
+        })
     }
     async function retrieveJSON(name) {
         return new Promise((resolve)=>{
@@ -5274,21 +5318,21 @@
             }
         })
     }
-    async function deleteJSON(name) { 
-        return new Promise((resolve)=>{ 
-            try { 
-                var read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").delete(name) 
-                read.onsuccess = (event) => { 
-                    resolve() 
-                } 
+    async function deleteJSON(name) {
+        return new Promise((resolve)=>{
+            try {
+                var read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").delete(name)
+                read.onsuccess = (event) => {
+                    resolve()
+                }
                 read.onerror = (event) => {
-                    resolve() 
-                } 
-            } catch(ex) { 
-                console.error(ex) 
-                resolve() 
-            } 
-        }) 
+                    resolve()
+                }
+            } catch(ex) {
+                console.error(ex)
+                resolve()
+            }
+        })
     }
     function equalsNCS(str1, str2) {
         var s1 = str1

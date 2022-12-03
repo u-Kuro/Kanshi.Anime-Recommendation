@@ -1189,7 +1189,8 @@
     isRunning = false, requestIsRunning = false, isLoading = false,
     isDeepUpdate = false, willAutoUpdate = false, updateStateText = [], checkFiltersFocus = [],
         // Helper
-    pageInits = true, enteredOnce = false, versionUpdate = false, exportWorker, initStartTime, pageLoadStartDate = new Date().getTime(),
+    pageInits = true, enteredOnce = false, versionUpdate = false, exportWorker, initStartTime,
+    pageLoadStartDate = new Date().getTime(), maxClientHeight,
         // Jquery Elements
     bodyEl, usernameEl, pagerEl, menuContainerEl, pageNumberOptionsEl,
     animeTableEl, animeRecommendationListEl, filtersEl,
@@ -1203,6 +1204,8 @@
         // Browser
 
     window.onload = async () => {
+        // Check Client Height
+        maxClientHeight = document.body.clientHeight
         // Initialize Jquery Elements
         bodyEl = await $("body"),
         usernameEl = await $("#username"),
@@ -2991,19 +2994,58 @@
                         await saveJSON(bodyEl.scrollTop()||0,"savedYscroll")
                     },1)
                 })
-                $("input").on("focusin", () => {
-                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                        pagerEl.css({position: "static"})
+                $(window).on("resize", (e) => {
+                    // Hide Fixed Pager on Mobile
+                    if(maxClientHeight<document.body.clientHeight){
+                        maxClientHeight = document.body.clientHeight
                     }
+                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+                        if(screen.availHeight>screen.availWidth){
+                            if(document.body.clientHeight<.9*maxClientHeight){
+                                pagerEl.css({position: "static"})
+                            } else {
+                                setTimeout(()=>{
+                                    pagerEl.css({position: "fixed"})
+                                },100)
+                            }
+                        } else {
+                            setTimeout(()=>{
+                                pagerEl.css({position: "fixed"})
+                            },100)
+                        }
+                    }
+                    // Hide Fixed Pager on Mobile
+                })
+                $(window).on("orientationchange", () => {
+                    // Browser (Mobile)
+                    bodyEl.animate({scrollTop: 0},1)
+                    // Browser (Mobile)
+                    // Hide Fixed Pager on Mobile
+                    if(maxClientHeight<document.body.clientHeight){
+                        maxClientHeight = document.body.clientHeight
+                    }
+                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+                        if(screen.availHeight>screen.availWidth){
+                            if(document.body.clientHeight<.9*maxClientHeight){
+                                pagerEl.css({position: "static"})
+                            } else {
+                                setTimeout(()=>{
+                                    pagerEl.css({position: "fixed"})
+                                },100)
+                            }
+                        } else {
+                            setTimeout(()=>{
+                                pagerEl.css({position: "fixed"})
+                            },100)
+                        }
+                    }
+                    // Hide Fixed Pager on Mobile
                 })
                 $("input").on("focusout",() => {
-                    pagerEl.css({position: "fixed"})
+                    setTimeout(()=>{
+                        pagerEl.css({position: "fixed"}) // If the pager didn't show back
+                    },100)
                 })
-                // Browser (Mobile)
-                $(window).on("orientationchange", () => {
-                    bodyEl.animate({scrollTop: 0},1)
-                })
-                // Browser (Mobile)
                 resolve()
             })
         }).then(async()=>{
