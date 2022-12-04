@@ -32,7 +32,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) The filters in this need to be specific (adding staff: etc), In order to only include directors or original creators in staff, type [staff role: director] or [staff role: original creator].  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) To change the minimum sample size for the algorithm, type [sample size: N], the default is adaptive (each has its own sample size equals to its mean count).  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e) Measure allows custom average (only Grouped Mode, and Mean), e.g., type [measure: mode] (the default is Mean).   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f) To exclude/include unknown predictors or simply the anime contents you haven't seen yet, in the algorithm, type [include unknown variables: false] (the default is true).  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f) To exclude/include unknown variablles or simply the anime contents you haven't seen yet, in the algorithm, type [include unknown variables: false] (the default is true).  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g) To set a custom threshold for both popularity and average scores in anilist, type [minimum popularity: 3000] or [minimum averagescore: 50] (the default for popularity is 33% of the mean popularity of all anime, while the default for average score is 49.67).  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h) Algorithm Filter Indicators are as follows are [sample size: ], [measure: ], [format: ], [genre: ], [tag: ], [tag category: ], [studio: ], [staff: ], [staff role: ], and add ! as the first character to exclude.  
 
@@ -46,10 +46,10 @@
   
   1. Getting Variable Importance Schema from User - User's scores for each Anime in ones' list is added to each of its own categoric variable all and of it are averaged, while Numeric Variables are built with Linear Regression Model to predict each scores later.
   2. Analyzing Anime for Initial Recommendation Score - Each available variable in the Variable Importance Schema that is in an Anime from Anilist are then averaged by the scores from variables' scores or Predicted by the created Models given in the analyzed Schema.
-  3. The Initial Score Calculation is then calculated by dividing it into three group e.g., Anime Contents (Genres and Tags), Anime Production (Staff by Roles and Studio), and Other Minimal Influences (Anilist Average Score/Anime Popularity, Format [TV, Movie, etc.], Length/Duration, and Year), then getting the average of the three.
-  4. Lastly weight is added for Accuracy (Wscore) - In order to avoid bias to every anime with very Few variables, a weight is added for each shows calculated by [(SumOfAnalyzedVariableFromSpecificAnime/SumOfAllAnalyzedVariableFromAllAnime)].
+  3. The Initial Score Calculation is then calculated by dividing it into three group e.g., Anime Contents (Genres and Tags), Anime Production (Staff by Roles and Studio), and Other Minimal Influences (Anilist Average Score, Year), then getting the probability of the three as the score/affinity.
+  4. Lastly weight is added for Accuracy (Wscore) - In order to avoid bias to each anime with few variables (mostly non-popular ones), and to also avoid low average-scored anime in anilist, a weight is added differently. For non-popular shows the threshold is calculated by [SumOfAllAnimePopularity*0.33] and in those that didn't reach the popularity threshold a weight is added [(AnimePopularity/SumOfAllAnimePopularity)]. On the other hand for low average-scored anime in anilist with 49.67 (100-based) as threshold a weight is also added [AverageScore*.01].
 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score for recommendation is WScore, calculated by multiplying the Weight and the Initial Score [InitialScore * Weight]. Unweighted Score is still included in the app to see if there were any Highly recommended  Anime that was put within the margin of error.
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score for recommendation is WScore, calculated by multiplying different Weights and the Initial Score [InitialScore * Weight]. In addition, Unweighted Score is still included in the app to see if there were any Highly recommended Anime that was put within the margin of error.
 
 ### ____Website Preview____
 
