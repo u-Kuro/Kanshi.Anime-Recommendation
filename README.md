@@ -44,12 +44,25 @@
   
 #### ____Steps for Calculation:____
   
-  1. Getting Variable Importance Schema from User - User's scores for each Anime in ones' list is added to each of its own categoric variable all and of it are averaged, while Numeric Variables are built with Linear Regression Model to predict each scores later.
-  2. Analyzing Anime for Initial Recommendation Score - Each available variable in the Variable Importance Schema that is in an Anime from Anilist are then averaged by the scores from variables' scores or Predicted by the created Models given in the analyzed Schema.
-  3. The Initial Score Calculation is then calculated by dividing it into three group e.g., Anime Contents (Genres and Tags), Anime Production (Staff by Roles and Studio), and Other Minimal Influences (Anilist Average Score, Year), then getting the probability of the three as the score/affinity.
-  4. Lastly weight is added for Accuracy (Wscore) - In order to avoid bias to each anime with few variables (mostly non-popular ones), and to also avoid low average-scored anime in anilist, a weight is added differently. For non-popular shows the threshold is calculated by [SumOfAllAnimePopularity*0.33] and in those that didn't reach the popularity threshold a weight is added [(AnimePopularity/SumOfAllAnimePopularity)]. On the other hand for low average-scored anime in anilist with 49.67 (100-based) as threshold a weight is also added [AverageScore*.01].
+1. Each variable from the anime user has already watched, e.g., Comedy, Wit Studio, etc., is averaged from the scores of each Anime in your List that it corresponds.
+    * Variables Included: Genre, Tags (with rank>=50%), Studio, and Staff.)
+2. For numeric contents e.g., Year,  Average Score, a linear algorithm model is built that will later predict a score.
+    * Variables Included: Year and Average Score
+3. Next, each variable was clustered as follows: 
+    * Anime Content: Genre, Tags
+    * Anime Production: Studio and Staff Roles (e.g., Original Creator, Director, etc.)
+    * General Trend: Average Score and Year
+4. After clustering, SCORE was then calculated by the group's probability, instead of its mean to avoid low scores in each group.
+    * Formula: [SCORE = Anime Content x Anime Production x General Trend]
+5. To reduce high Scores in an Anime with few variables to analyze a weight is added for non-popular and low average-scored Anime. 
+    * Identifying Non-Popular Anime: [Threshold = Average Popularity x 0.33]
+    * Calculating Weight for Non-Popular Anime: [PWeight = Anime Popularity/Average Popularity]
+    * Identifying Low Average-Scored Anime: [Threshold = 49.67]
+    * Calculating Weight for Low Average-Scored Anime: [AWeight = Anime Average Score*0.01]
+6. After identifying and calculating weight, the WSCORE was then calculated by multiplying the available weights to its SCORE.
+    * Formula: [WSCORE = SCORE x PWeight x AWeight] (Only multiplied if an anime is identified as Non-Popular or Low Average-Scored, Else it remains the same)
 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final Score for recommendation is WScore, calculated by multiplying different Weights and the Initial Score [InitialScore * Weight]. In addition, Unweighted Score is still included in the app to see if there were any Highly recommended Anime that was put within the margin of error.
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final score for Recommendation is WSCORE. In addition, Unweighted SCORE is still included in the app to see if there were any Highly recommended Anime that was put within the margin of error.
 
 ### ____Website Preview____
 
