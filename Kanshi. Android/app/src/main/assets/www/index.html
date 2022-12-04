@@ -1093,13 +1093,13 @@
 <!-- pager -->
 <div id="pager" class="pager darkMode">
     <form class="pager-form">
-        <span id="first" class="first"><h5>First</h5></span>
-        <span id="prev" class="prev"><h5>Prev</h5></span>
-        <span id="selectPageNumber">
+        <div id="first" class="first"><h5>First</h5></div>
+        <div id="prev" class="prev"><h5>Prev</h5></div>
+        <div id="selectPageNumber">
             <select id="pageNumberOptions" class="custom-select pagenum darkMode" title="Select page number"></select>
-        </span>
-        <span id="next" class="next"><h5>Next</h5></span>
-        <span id="last" class="last"><h5>Last</h5></span>
+        </div>
+        <div id="next" class="next"><h5>Next</h5></div>
+        <div id="last" class="last"><h5>Last</h5></div>
     </form>
 </div>
 
@@ -1162,13 +1162,13 @@
 </div>
 
 <div id="loader" class="loader">
-    <span><h1 id="loaderText">Loading...</h1></span>
+    <div><h1 id="loaderText">Loading...</h1></div>
 </div>
 
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "5.0",
+    const version = "5.1",
           backUpVersion = 3.2
         // IndexDB
     var request, db,

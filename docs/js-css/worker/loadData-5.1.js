@@ -20,8 +20,9 @@ self.onmessage = (message) => {
         included = included.length>2? [included.shift(),included.shift(),included.join("").trim()] : included.shift()
         var type, filter, seperator
         if(typeof included==="string"){  
-            filter = included.trim()
             type = ""
+            seperator===null
+            filter = included.trim()
         } else {
             type = included[0].replace(/\s|-|_/g,"")
             seperator = included[1]?.trim()??null
@@ -279,9 +280,10 @@ self.onmessage = (message) => {
         var excluded = excludes[i].trim().toLowerCase().split(/(:|>=|<=|>|<)/)
         excluded = excluded.length>2? [excluded.shift(),excluded.shift(),excluded.join("").trim()] : excluded.shift()
         var type, filter, seperator
-        if(typeof excluded==="string"){  
-            filter = excluded.trim()
+        if(typeof excluded==="string"){
             type = ""
+            seperator = null
+            filter = excluded.trim()
         } else {
             type = excluded[0].replace(/\s|-|_/g,"")
             seperator = excluded[1]?.trim()??null
@@ -394,9 +396,10 @@ self.onmessage = (message) => {
             var savedWarn = savedWarnR[i].trim().toLowerCase().split(/(:)/)
             savedWarn = savedWarn.length>2? [savedWarn.shift(),savedWarn.shift(),savedWarn.join("").trim()] : savedWarn.shift()
             var type, content, seperator
-            if(typeof savedWarn==="string"){  
-                content = savedWarn.trim()
+            if(typeof savedWarn==="string"){
                 type = ""
+                seperator = null
+                content = savedWarn.trim()
             } else {
                 type = savedWarn[0].replace(/\s/g,"")
                 seperator = savedWarn[1]?.trim()??null
@@ -425,9 +428,10 @@ self.onmessage = (message) => {
             var savedWarn = savedWarnY[i].trim().toLowerCase().split(/(:)/)
             savedWarn = savedWarn.length>2? [savedWarn.shift(),savedWarn.shift(),savedWarn.join("").trim()] : savedWarn.shift()
             var type, content, seperator
-            if(typeof savedWarn==="string"){  
-                content = savedWarn.trim()
+            if(typeof savedWarn==="string"){
                 type = ""
+                seperator = null
+                content = savedWarn.trim()
             } else {
                 type = savedWarn[0].replace(/\s/g,"")
                 seperator = savedWarn[1]?.trim()??null
