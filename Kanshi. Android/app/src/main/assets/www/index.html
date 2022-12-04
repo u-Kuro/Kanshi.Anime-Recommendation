@@ -378,9 +378,6 @@
                 text-overflow: ellipsis !important;
                 overflow: hidden !important;
                 cursor: pointer;
-                -ms-user-select: none !important;
-                -webkit-user-select: none !important;
-                user-select: none !important;
             }
             .anime-score > div {
                 display: flex;
@@ -388,13 +385,6 @@
                 max-width: 50px !important;
                 text-overflow: ellipsis !important;
                 overflow: hidden !important;
-            }
-            .overlay,
-            .searchData,
-            .flexdatalist-results{
-                -ms-user-select: none;
-                -webkit-user-select: none;
-                user-select: none;
             }
             .spinner {
                 border: 2px solid #f3f3f3;
@@ -990,11 +980,13 @@
             }
             #dataStatus>span{
                 padding-block: 0.5ch;
-                user-select: none;
                 white-space: nowrap;
                 display: flex;
                 align-items: center;
                 gap: 0.75ch;
+                -ms-user-select: none;
+                -webkit-user-select: none;
+                user-select: none;
             }
             .flexdatalist-alias{
                 height: 41px !important;
@@ -1176,8 +1168,8 @@
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "4.9",
-          backUpVersion = 3.1
+    const version = "5.0",
+          backUpVersion = 3.2
         // IndexDB
     var request, db,
         // Saved Data
@@ -3045,6 +3037,27 @@
                         await saveJSON(bodyEl.scrollTop()||0,"savedYscroll")
                     },1)
                 })
+                $(window).on("keydown", (e) => {
+                    if(!$("input").is(':focus')){
+                        e.preventDefault()
+                        var evtobj = window.event? event : e
+                        var keyCode = evtobj.which || evtobj.keyCode || 0
+                        console.log(keyCode,evtobj.ctrlKey)
+                        if(keyCode===37){//left arrow
+                            if(evtobj.ctrlKey){
+                                $("#first").click()
+                            } else {
+                                $("#prev").click()
+                            }
+                        } else if(keyCode===39){//right arrow
+                            if(evtobj.ctrlKey){
+                                $("#last").click()
+                            } else {
+                                $("#next").click()
+                            }
+                        }
+                    }
+                })
                 $(window).on("resize", (e) => {
                     // Hide Fixed Pager on Mobile
                     if(maxClientHeight<document.body.clientHeight){
@@ -3481,11 +3494,13 @@
                     exportIntervalStartDate = await exportIntervalStartDate || new Date()
                     await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
-                        dataStatusSpinnerHomeEl.show()
-                        dataStatusEl
-                            .empty()
-                            .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                        await backUpData()
+                        if(!willAutoUpdate){
+                            dataStatusSpinnerHomeEl.show()
+                            dataStatusEl
+                                .empty()
+                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                            await backUpData()
+                        }
                         // Interval
                         for(let i=0;i<exportIntervalTimeout.length;i++) await clearInterval(exportIntervalTimeout[i])
                         var saveExportIntervalTimeout = await setInterval(async()=>{
@@ -4137,8 +4152,7 @@
                             media(
                                 type: ANIME,
                                 genre_not_in: ["Hentai"],
-                                status_in:[FINISHED, RELEASING],
-                                format_in:[TV,TV_SHORT,MOVIE,OVA,ONA,SPECIAL],
+                                format_not_in:[MUSIC,MANGA,NOVEL,ONE_SHOT],
                                 sort: [UPDATED_AT_DESC]) {
                                 id
                                 ${page===1?'updatedAt':''}
@@ -4330,8 +4344,7 @@
                                 media(
                                     type: ANIME,
                                     genre_not_in: ["Hentai"],
-                                    status_in:[FINISHED, RELEASING],
-                                    format_in:[TV,TV_SHORT,MOVIE,OVA,ONA,SPECIAL],
+                                    format_not_in:[MUSIC,MANGA,NOVEL,ONE_SHOT],
                                     sort: [UPDATED_AT_DESC]) {
                                     id
                                     updatedAt
@@ -4505,15 +4518,15 @@
         }
     }
 
-    async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser, notAnUpdate, filterAlgo, doHideUnwatchedSeq){
+    async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser=false, notAnUpdate, filterAlgo, doHideUnwatchedSeq){
         return await new Promise(async(resolve)=>{
-            var UpdateAnalyzeAnimeStartTime = new Date()
-            var updateAnalyzeAnimeTime = Math.ceil(arrayMean(savedUpdateAnalyzeAnimeTime))
+            var UpdateAnalyzeAnimeStartTime = await new Date()
+            var updateAnalyzeAnimeTime = await Math.ceil(arrayMean(savedUpdateAnalyzeAnimeTime))
             if(doHideUnwatchedSeq){
-                hideUnwatchedSequels = doHideUnwatchedSeq
+                hideUnwatchedSequels = await doHideUnwatchedSeq
             }
             if(notAnUpdate){
-                filterAlgoValidationEl
+                await filterAlgoValidationEl
                     .removeClass("success-before")
                     .addClass("no-before")
                     .css({display:"flex"})
@@ -4524,30 +4537,30 @@
                         </div>`
                     )
             }
-            for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
-            dataStatusSpinnerHomeEl.show()
+            for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
+            await dataStatusSpinnerHomeEl.show()
             for(let i=updateAnalyzeAnimeTime; i>=0; i--){
-                var timeout = setTimeout(()=>{
+                var timeout = await setTimeout(async()=>{
                     if(i<1){
-                        dataStatusSpinnerHomeEl.show()
-                        dataStatusEl
+                        await dataStatusSpinnerHomeEl.show()
+                        await dataStatusEl
                             .empty()
                             .append(`<span style="white-space:nowrap;">Updating Recommendations List, Please Wait a Moment...`)
                     } else {
-                        dataStatusEl
+                        await dataStatusEl
                             .empty()
                             .append(`<span style="white-space:nowrap;">Updating Recommendations List,⠀</span><span style="white-space:nowrap;">Estimated Time: ${msToTime(i*1000)}</span>`)
                     }
                 },(updateAnalyzeAnimeTime-i)*1000)
-                updateStateText.push(timeout)
+                await updateStateText.push(timeout)
             }
             // Normal Update
             if(animeEntries.length===0) {
-                animeEntries = savedAnimeEntries || []
+                animeEntries = await savedAnimeEntries || []
             }
             // Reset if Username Changed || isDeepUpdate
             if(username!==savedUsername||isDeepUpdate||versionUpdate){
-                savedRecScheme = {}
+                savedRecScheme = await {}
             // Normal Update
             }
             var worker4 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
@@ -4613,7 +4626,7 @@
                 worker5.onmessage = async(message) => {
                     worker5.terminate()
                     const data = message.data
-                    var filtersHasFocus = false
+                    var filtersHasFocus = await false
                     if(!notAnUpdate||versionUpdate){
                         // Save and Reload Filters
                         savedFilterOptionsJson = await data.savedFilterOptionsJson || []
@@ -4625,25 +4638,23 @@
                             ||warnAnimeContainerEl.css("display")!=="none"
                             ||filterAlgoContainerEl.css("display")!=="none"
                         ){
-                            filtersHasFocus = true
+                            filtersHasFocus = await true
                         }
                         // This Remove Current Filters in DOM so Check First
                         for(let i=0;i<checkFiltersFocus.length;i++) clearInterval(checkFiltersFocus[i])
-                        checkFiltersFocus.push(setInterval(async()=>{
-                            if( !requestIsRunning
-                                &&!$("#flex0").is(":focus")
+                        var updateFiltersValid = setInterval(async()=>{
+                            if( !$("#flex0").is(":focus")
                                 &&!$("#flex1").is(":focus")
                                 &&!$("#flex2").is(":focus")
                                 &&warnAnimeContainerEl.css("display")==="none"
                                 &&filterAlgoContainerEl.css("display")==="none"
                             ){
+                                await clearInterval(updateFiltersValid)
                                 // Get Current Value
-                                var currentInputValue = $("#filters .flexdatalist-multiple-value > .flexdatalist-alias").val()
-                                // Double Check
-                                for(let i=0;i<checkFiltersFocus.length;i++) clearInterval(checkFiltersFocus[i])
-                                checkFiltersFocus = []
+                                var currentInputValue = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias").val()
+                                checkFiltersFocus = await []
                                 // Update
-                                $(".flexdatalist").flexdatalist({
+                                await $(".flexdatalist").flexdatalist({
                                     data: savedFilterOptionsJson
                                 })
                                 // Reload Saved Table Filters
@@ -4668,15 +4679,16 @@
                                         await filterInput.val("")
                                     }
                                     if(typeof currentInputValue==="string"){
-                                        $("#filters .flexdatalist-multiple-value > .flexdatalist-alias").val(currentInputValue)
+                                        await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias").val(currentInputValue)
                                     }
-                                    var flex0El = $("ul.flex0")
-                                    flex0El.animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
-                                    flex0El[0]?.scroll(0, flex0El.outerHeight())
+                                    var flex0El = await $("ul.flex0")
+                                    await flex0El.animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
+                                    await flex0El[0]?.scroll(0, flex0El.outerHeight())
+                                    return
                                 })
                                 // Reload Saved Algorithm Filters
                                 if(filterAlgoContainerEl.css("display")!=="none"){
-                                    filterAlgoContainerEl.css({visibility:"hidden"}).show()
+                                    await filterAlgoContainerEl.css({visibility:"hidden"}).show()
                                 }
                                 await new Promise(async(resolve)=>{
                                     var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
@@ -4696,12 +4708,13 @@
                                     }
                                     await filterAlgoContainerEl.css({visibility:"visible"}).hide()
                                     var flex2El = await $("ul.flex2")
-                                    flex2El.animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
-                                    flex2El[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                                    await flex2El.animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
+                                    await flex2El[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                                    return
                                 })
                                 // Reload Warn Anime Contents
                                 if(warnAnimeContainerEl.css("display")!=="none"){
-                                    warnAnimeContainerEl.css({visibility:"hidden"}).show()
+                                    await warnAnimeContainerEl.css({visibility:"hidden"}).show()
                                 }
                                 await new Promise(async(resolve)=>{
                                     var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
@@ -4721,11 +4734,15 @@
                                     }
                                     await warnAnimeContainerEl.css({visibility:"visible"}).hide()
                                     var flex1El = await $("ul.flex1")
-                                    flex1El.animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
-                                    flex1El[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                                    await flex1El.animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
+                                    await flex1El[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                                    return
                                 })
+                                // Double Check
+                                for(let i=0;i<checkFiltersFocus.length;i++) clearInterval(checkFiltersFocus[i])
                             }
-                        },250))
+                        },250)
+                        checkFiltersFocus.push(updateFiltersValid)
                     }
                     // Lastly Update Update Time
                     var timeInterval = (new Date).getTime()-UpdateAnalyzeAnimeStartTime.getTime()
@@ -4769,8 +4786,6 @@
                         dataStatusEl
                             .empty()
                             .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
-                        requestIsRunning = false
-                        resolve()
                     } else if(alertUser){
                         console.log("WebtoApp: List is Updated")
                         if(!swal.isVisible()
@@ -4813,6 +4828,21 @@
                         dataStatusEl
                             .empty()
                             .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                        }
+                    // Check Auto Export After Update
+                    if(exportIntervalIsActive){
+                        await exportIntervalBtnEl.css({background: "white",color:"black"})
+                        exportIntervalStartDate = await exportIntervalStartDate || new Date()
+                        await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                        if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
+                            dataStatusSpinnerHomeEl.show()
+                            dataStatusEl
+                                .empty()
+                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                            await backUpData()
+                        }
+                    }
+                    if(!alertUser){
                         requestIsRunning = false
                         resolve()
                     }
@@ -4822,7 +4852,11 @@
                 }
             }
             worker4.onerror = async (message) => {
-                return
+                requestIsRunning = false
+                dataStatusEl
+                    .empty()
+                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                resolve()
             }
         })
     }
@@ -4868,8 +4902,8 @@
                 }
                 savedFilters = await filters || []
                 await saveJSON(savedFilters, "savedFilters")
-                var savedWarnR = {}
-                var savedWarnY = {}
+                var savedWarnR = []
+                var savedWarnY = []
                 for(let i=0; i<savedWarnAnime.length; i++){
                     var warnName = savedWarnAnime[i].trim().toLowerCase()
                     if(warnName.charAt(0)==="!") {
@@ -4881,15 +4915,15 @@
                             var cinfo = warnName[1].trim().toLowerCase()
                             if(cinfo.charAt(0)==="!"){
                                 cinfo = cinfo.slice(1)
-                                savedWarnR[type+": "+cinfo] = true
+                                savedWarnR.push(type+": "+cinfo)
                             } else {
-                                savedWarnR[type+": "+cinfo] = true
+                                savedWarnR.push(type+": "+cinfo)
                             }
                         } else if(warnName.length===1){
-                            savedWarnR[warnName] = true
+                            savedWarnR.push(warnName)
                         }
                     }
-                    else savedWarnY[warnName] = true
+                    else savedWarnY.push(warnName)
                 }
                 var worker6 = new Worker(`./js-css/worker/loadData-${version}.js`)
                 worker6.postMessage({
@@ -4978,6 +5012,7 @@
                         confirmButtonColor: "#000"
                     })
                 }
+                resolve()
             }
         })
     }
