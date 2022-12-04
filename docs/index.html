@@ -2991,7 +2991,6 @@
                         e.preventDefault()
                         var evtobj = window.event? event : e
                         var keyCode = evtobj.which || evtobj.keyCode || 0
-                        console.log(keyCode,evtobj.ctrlKey)
                         if(keyCode===37){//left arrow
                             if(evtobj.ctrlKey){
                                 $("#first").click()
