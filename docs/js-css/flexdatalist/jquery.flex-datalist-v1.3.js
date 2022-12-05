@@ -232,7 +232,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     options = _this.options.get();
                 
                 clearTimeout(_searchTimeout);
-                if (!key || ((key < 9 || key > 32) && (key < 37 || key > 40))) {
+                if (!key || ((key < 9 || key > 45) && (key < 91 || key > 93) && (key < 112 || key > 145))) {
                     if(key){
                         if(key!==-1){ // Mouse Custom Code -1
                             if(keyPressed.length<5){
@@ -1317,7 +1317,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                                 if (item) {
                                     matches.push(item);
                                     // Added by Me
-                                    if(++counter>6){
+                                    if(++counter>=7){
                                         break
                                     }
                                     // Added by Me
@@ -1622,8 +1622,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                             'border-color': $target.css("border-left-color"),
                             'border-width': '1px',
                             'border-bottom-left-radius': $target.css("border-bottom-left-radius"),
-                            'border-bottom-right-radius': $target.css("border-bottom-right-radius"),
-                            'max-height': '155px'
+                            'border-bottom-right-radius': $target.css("border-bottom-right-radius")
                         }).data({
                             target: ($multiple ? $multiple : $alias),
                             input: $this

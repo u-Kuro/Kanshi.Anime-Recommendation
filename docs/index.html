@@ -20,7 +20,7 @@
     <!-- Datalist Search Code -->
     <link rel="preload" href="./js-css/flexdatalist/jquery.flex-datalist.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/flexdatalist/jquery.flex-datalist.css"></noscript>
-    <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.2.js" defer></script>
+    <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.3.js" defer></script>
     <!-- Bootstrap -->
     <link rel="preload" href="./js-css/bootstrap-3.3.6.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/bootstrap-3.3.6.min.css"></noscript>
@@ -829,7 +829,8 @@
             html.darkMode,
             body.darkMode,
             .Home.darkMode,
-            .searchData.darkMode{
+            .searchData.darkMode,
+            #dataStatusHolder.darkMode{
                 background-color: rgb(11,22,34) !important;
                 color: rgb(185, 202, 221) !important
             }
@@ -847,7 +848,8 @@
             #hiddenUnhiddenBtn.darkMode,
             .hide-anime-column button.darkMode,
             #menu-container button.darkMode,
-            .swal2-confirm.darkMode, .swal2-confirm-custom.darkMode{
+            .swal2-confirm.darkMode, 
+            .swal2-confirm-custom.darkMode{
                 background-color: rgb(40 69 102) !important;
                 color: rgb(185, 202, 221) !important;
             }
@@ -856,10 +858,14 @@
                 color: rgb(185, 202, 221) !important;
             }
             #username.darkMode,
+            .table-responsive.darkMode,
+            #anime-table.darkMode,
+            #animeRecommendationList.darkMode,
+            #animeRecommendationList tr.darkMode,
+            #animeRecommendationList td.darkMode,
             .flexdatalist-multiple.darkMode,
             .flexdatalist-alias.darkMode,
-            .flexdatalist-results.darkMode, 
-            #animeRecommendationList td.darkMode{
+            .flexdatalist-results.darkMode{
                 background-color: rgb(21,31,46) !important;
                 color: rgb(185, 202, 221) !important
             }
@@ -942,7 +948,6 @@
             }
             #warnAnimeContainer,
             #filterAlgoContainer{
-                overflow: hidden !important;
                 -ms-user-select: none;
                 -webkit-user-select: none;
                 user-select: none;
@@ -1166,7 +1171,7 @@
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "5.2",
+    const version = "5.3",
           backUpVersion = 3.3
         // IndexDB
     var request, db,
@@ -5167,6 +5172,7 @@
                     button,
                     .overlay,
                     #username, 
+                    #dataStatusHolder,
                     .flexdatalist-multiple,
                     .flexdatalist-alias,
                     .flexdatalist-results,
@@ -5192,18 +5198,18 @@
                     .swal2-confirm-custom,
                     .spinner
                 `).removeClass("darkMode")
-                await pagerEl.on('click',()=>{
-                    $(`#animeRecommendationList td,
-                        #anime-table,
-                        #anime-table thead,
-                        #anime-table tbody,
-                        #anime-table th,
-                        #anime-table tr,
-                        #anime-table td,
-                        .table-responsive,
-                        #animeRecommendationList a
-                    `).removeClass("darkMode")
-                })
+                //await pagerEl.on('click',()=>{
+                //    $(`#animeRecommendationList td,
+                //        #anime-table,
+                //        #anime-table thead,
+                //        #anime-table tbody,
+                //        #anime-table th,
+                //        #anime-table tr,
+                //        #anime-table td,
+                //        .table-responsive,
+                //        #animeRecommendationList a
+                //    `).removeClass("darkMode")
+                //})
             }
             // Remove Previous
             if(prevTheme){
@@ -5215,6 +5221,7 @@
                     button,
                     .overlay,
                     #username, 
+                    #dataStatusHolder,
                     .flexdatalist-multiple,
                     .flexdatalist-alias,
                     .flexdatalist-results,
@@ -5240,18 +5247,6 @@
                     .swal2-confirm-custom,
                     .spinner
                 `).removeClass(prevTheme)
-                await pagerEl.on('click',()=>{
-                    $(`#animeRecommendationList td,
-                        #anime-table,
-                        #anime-table thead,
-                        #anime-table tbody,
-                        #anime-table th,
-                        #anime-table tr,
-                        #anime-table td,
-                        .table-responsive,
-                        #animeRecommendationList a
-                    `).removeClass(prevTheme)
-                })
             }
             // Apply New
             await $(` 
@@ -5287,18 +5282,6 @@
                 .swal2-confirm-custom,
                 .spinner
             `).addClass(newTheme)
-            await pagerEl.on('click',()=>{
-                $(`#animeRecommendationList td,
-                    #anime-table,
-                    #anime-table thead,
-                    #anime-table tbody,
-                    #anime-table th,
-                    #anime-table tr,
-                    #anime-table td,
-                    .table-responsive,
-                    #animeRecommendationList a
-                `).addClass(newTheme)
-            })
             resolve()
         })
     }

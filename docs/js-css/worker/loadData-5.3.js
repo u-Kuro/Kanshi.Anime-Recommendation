@@ -26,7 +26,7 @@ self.onmessage = (message) => {
         var type, filter, seperator
         if(typeof included==="string"){  
             type = ""
-            seperator===null
+            seperator = null
             filter = included.trim()
         } else {
             type = included[0].replace(/\s|-|_/g,"")
