@@ -206,7 +206,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
         /**
          * Add value on comma or enter keypress.
          */
-            keypressValue: function (event, keyCode) {//here
+            keypressValue: function (event, keyCode) {//here//
                 var key = _this.keyNum(event),
                     val = $alias[0].value,
                     options = _this.options.get();
