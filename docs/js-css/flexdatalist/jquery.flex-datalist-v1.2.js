@@ -112,13 +112,13 @@ jQuery.fn.flexdatalist = function (_option, _value) {
         searchEqual: false,
         searchByWord: false,
         searchDisabled: false,
-        searchDelay: 400,
+        searchDelay: 500,
         normalizeString: null,
         multiple: null,
         disabled: null,
         maxShownResults: 100,
         removeOnBackspace: true,
-        noResultsText: '...',
+        noResultsText: '',
         toggleSelected: false,
         allowDuplicateValues: false,
         redoSearchOnFocus: true,
@@ -200,7 +200,8 @@ jQuery.fn.flexdatalist = function (_option, _value) {
 
     /**
      * Handle user actions.
-     */
+     */ 
+        var keyPressed = [1,2,3,4,5]
         this.action = {
         /**
          * Add value on comma or enter keypress.
@@ -229,18 +230,41 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     keyword = $alias.val(),
                     length = keyword.length,
                     options = _this.options.get();
-
+                
                 clearTimeout(_searchTimeout);
-                if (!key || (key !== 13 && (key < 37 || key > 40))) {
-                    _searchTimeout = setTimeout(function () {
-                        if ((options.minLength === 0 && length > 0) || (options.minLength > 0 && length >= options.minLength)) {
-                            _this.data.load(function (data) {
-                                _this.search.get(keyword, data, function (matches) {
-                                    _this.results.show(matches);
-                                });
-                            });
+                if (!key || ((key < 9 || key > 32) && (key < 37 || key > 40))) {
+                    if(key){
+                        if(key!==-1){ // Mouse Custom Code -1
+                            if(keyPressed.length<5){
+                                keyPressed.push(key)
+                            } else {
+                                keyPressed.shift()
+                                keyPressed.push(key)
+                            }
                         }
-                    }, options.searchDelay);
+
+                        if(keyPressed.every((e,i,a)=>e===a[0])){
+                            _searchTimeout = setTimeout(function () {
+                                if ((options.minLength === 0 && length > 0) || (options.minLength > 0 && length >= options.minLength)) {
+                                    _this.data.load(function (data) {
+                                        _this.search.get(keyword, data, function (matches) {
+                                            _this.results.show(matches);
+                                        });
+                                    });
+                                }
+                            },options.searchDelay);
+                        } else {
+                            _searchTimeout = setTimeout(function () {
+                                if ((options.minLength === 0 && length > 0) || (options.minLength > 0 && length >= options.minLength)) {
+                                    _this.data.load(function (data) {
+                                        _this.search.get(keyword, data, function (matches) {
+                                            _this.results.show(matches);
+                                        });
+                                    });
+                                }
+                            },0);
+                        }
+                    }
                 }
             },
         /**
@@ -251,6 +275,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     options = _this.options.get(),
                     alias = $alias.val();
                 if (options.redoSearchOnFocus && ((alias.length > 0 && options.multiple) || (alias.length > 0 && val.length === 0))) {
+                    event.which=event.keyCode=-1
                     this.keypressSearch(event);
                 }
             },
@@ -1579,22 +1604,26 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                 if ($multiple) {
                     $target = $multiple;
                 }
-
+                
                 var $container = $('ul.flexdatalist-results');
 
                 if ($container.length === 0) {
+                    var tarParent = $target.parent()
+                    tarParent.css({display:"block","max-height":tarParent.height()})
+                    tarParent.parent().css({overflow:"initial"})
                     $container = $('<ul>')
                         .addClass('flexdatalist-results ')
-                        .appendTo('body')
+                        .appendTo($target.parent())
                         .attr({
                             'id': $alias.attr('id') + '-results',
                             'role': 'listbox'
                         })
-                        .css({
+                        .css({//here
                             'border-color': $target.css("border-left-color"),
                             'border-width': '1px',
                             'border-bottom-left-radius': $target.css("border-bottom-left-radius"),
-                            'border-bottom-right-radius': $target.css("border-bottom-right-radius")
+                            'border-bottom-right-radius': $target.css("border-bottom-right-radius"),
+                            'max-height': '155px'
                         }).data({
                             target: ($multiple ? $multiple : $alias),
                             input: $this
@@ -1852,8 +1881,8 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                 // Set some required CSS properties
                 $results.css({
                     'width': $target.outerWidth() + 'px',
-                    'top': (($target.offset().top + $target.outerHeight())) + 'px',
-                    'left': $target.offset().left + 'px'
+                    // 'top': (($target.offset().top + $target.outerHeight())) + 'px',
+                    // 'left': $target.offset().left + 'px'
                 });
             }
         }
@@ -2139,13 +2168,19 @@ jQuery(function ($) {
                     } else {
                         if($active.length>0){
                             $active = $li.removeClass('active')
+                            // Return to original input
+                            if(originalValue){
+                                event.stopPropagation()
+                                event.target.value = originalValue
+                            }
                         } else {
                             $active = $li.removeClass('active').filter('.item:first').addClass('active');
-                        }
-                        // Return to original input
-                        if(originalValue){
-                            event.stopPropagation()
-                            event.target.value = originalValue
+                            // Update Input
+                            allValue = $active?.[0]?.innerText||$active?.[0]?.outerText
+                            if(allValue){
+                                event.stopPropagation()
+                                event.target.value = allValue
+                            }
                         }
                     }
                 // Up key
@@ -2161,13 +2196,19 @@ jQuery(function ($) {
                     } else {
                         if($active.length>0){
                             $active = $li.removeClass('active')
+                            // Return to original input
+                            if(originalValue){
+                                event.stopPropagation()
+                                event.target.value = originalValue
+                            }
                         } else {
                             $active = $li.removeClass('active').filter('.item:last').addClass('active');
-                        }
-                        // Return to original input
-                        if(originalValue){
-                            event.stopPropagation()
-                            event.target.value = originalValue
+                            allValue = $active?.[0]?.innerText||$active?.[0]?.outerText
+                            // Update Input
+                            if(allValue){
+                                event.stopPropagation()
+                                event.target.value = allValue
+                            }
                         }
                     }
                 }

@@ -20,7 +20,7 @@
     <!-- Datalist Search Code -->
     <link rel="preload" href="./js-css/flexdatalist/jquery.flex-datalist.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/flexdatalist/jquery.flex-datalist.css"></noscript>
-    <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.1.js" defer></script>
+    <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.2.js" defer></script>
     <!-- Bootstrap -->
     <link rel="preload" href="./js-css/bootstrap-3.3.6.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/bootstrap-3.3.6.min.css"></noscript>
@@ -236,7 +236,6 @@
                 justify-content: center;
                 align-items: center;
                 margin-block: 15px;
-                gap: 0.5em;
             }
             .userInputContainer>:not(label),.filter-container>:not(label),.btn-container>:not(label){
                 flex-grow: 1;
@@ -765,7 +764,7 @@
             }
             .swal2-actions-custom {
                 display: flex;
-                z-index: 1;
+                z-index: 0;
                 box-sizing: border-box;
                 flex-wrap: wrap;
                 align-items: center;
@@ -943,9 +942,14 @@
             }
             #warnAnimeContainer,
             #filterAlgoContainer{
+                overflow: hidden !important;
                 -ms-user-select: none;
                 -webkit-user-select: none;
                 user-select: none;
+            }
+            #warnAnimeModal,
+            #filterAlgoModal{
+                max-height: 310px !important;
             }
             #dataStatusHolder{
                 height: 20px;
@@ -1264,6 +1268,7 @@
             request.onupgradeneeded = (event) => {
                 db = event.target.result;
                 db.createObjectStore("MyObjectStore")
+                resolve()
             }
         }).then(async()=>{
             // Init Global Saved Data from IndexedDB
@@ -3323,6 +3328,7 @@
                         const data = await message.data
                         savedAnimeFranchises = await data.savedAnimeFranchises || []
                         await saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
+                        return
                     }
                     worker8.onerror = async (message) => {
                         return
@@ -3518,7 +3524,7 @@
                             dataStatusEl
                                 .empty()
                                 .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                            await backUpData()
+                            backUpData()
                         }
                         // Interval
                         if(!exportIntervalTimeout.length){
@@ -3529,7 +3535,7 @@
                                         dataStatusEl
                                             .empty()
                                             .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                        await backUpData()
+                                        backUpData()
                                     }
                                 },1000)
                             },3600000)
@@ -3545,7 +3551,7 @@
                                     dataStatusEl
                                         .empty()
                                         .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                    await backUpData()
+                                    backUpData()
                                 }
                                 // Interval
                                 if(!exportIntervalTimeout.length){
@@ -3556,7 +3562,7 @@
                                                 dataStatusEl
                                                     .empty()
                                                     .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                                await backUpData()
+                                                backUpData()
                                             }
                                         },1000)
                                     },3600000)
