@@ -30,12 +30,12 @@ self.onmessage = (message) => {
         // Get the type, seperator, and content
         var included = savedIncluded[i].trim().toLowerCase().split(/(:)/)
         if(included.length>2&&availableFilterTypes[included[0].replace(/\s|-|_/g,"")]){
-            savedWarn = [included.shift(),included.shift(),included.join("").trim()]
+            included = [included.shift(),included.shift(),included.join("").trim()]
         } else {
-            savedWarn = included.shift()
+            included = included.shift()
         }
         var type, filter, seperator
-        if(typeof savedWarn==="string"){  
+        if(typeof included==="string"){  
             type = ""
             seperator = null
             filter = included.trim()
@@ -147,12 +147,12 @@ self.onmessage = (message) => {
         // Get the type, seperator, and content
         var excluded = savedExcluded[i].trim().toLowerCase().split(/(:)/)
         if(excluded.length>2&&availableFilterTypes[excluded[0].replace(/\s|-|_/g,"")]){
-            savedWarn = [excluded.shift(),excluded.shift(),excluded.join("").trim()]
+            excluded = [excluded.shift(),excluded.shift(),excluded.join("").trim()]
         } else {
-            savedWarn = excluded.shift()
+            excluded = excluded.shift()
         }
         var type, filter, seperator
-        if(typeof savedWarn==="string"){
+        if(typeof excluded==="string"){
             type = ""
             seperator = null
             filter = excluded.trim()
@@ -192,6 +192,10 @@ self.onmessage = (message) => {
             }
         }
     }
+    console.log(JSON.stringify(exclude))
+    console.log(savedIncluded)
+    console.log(JSON.stringify(include))
+    console.log(savedExcluded)
     
     if(!notAnUpdate){
         userEntries = data?.userEntries || []
