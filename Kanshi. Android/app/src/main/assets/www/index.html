@@ -952,10 +952,6 @@
                 -webkit-user-select: none;
                 user-select: none;
             }
-            #warnAnimeModal,
-            #filterAlgoModal{
-                max-height: 310px !important;
-            }
             #dataStatusHolder{
                 height: 20px;
                 min-height: 20px;
@@ -2578,7 +2574,7 @@
                     if(exportPathIsAvailable) {
                         Swal.fire({
                             heightAuto: false,
-                            text: `Do you want to change your?`,
+                            text: `Do you want to change your folder for export?`,
                             showConfirmButton: true,
                             confirmButtonText: "Yes",
                             showDenyButton: true,
@@ -5261,18 +5257,6 @@
                     .swal2-confirm-custom,
                     .spinner
                 `).removeClass("darkMode")
-                //await pagerEl.on('click',()=>{
-                //    $(`#animeRecommendationList td,
-                //        #anime-table,
-                //        #anime-table thead,
-                //        #anime-table tbody,
-                //        #anime-table th,
-                //        #anime-table tr,
-                //        #anime-table td,
-                //        .table-responsive,
-                //        #animeRecommendationList a
-                //    `).removeClass("darkMode")
-                //})
             }
             // Remove Previous
             if(prevTheme){
