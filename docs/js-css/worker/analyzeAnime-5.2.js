@@ -254,11 +254,11 @@ self.onmessage = (message) => {
                 allFilterInfo["studio: "] = true
                 allFilterInfo["!studio: !"] = true
             }
-            if(!allFilterInfo["format: all"]
-             &&!allFilterInfo["!format: !all"]){
-                allFilterInfo["format: all"] = true
-                allFilterInfo["!format: !all"] = true
-            }
+            // if(!allFilterInfo["format: all"]
+            //  &&!allFilterInfo["!format: !all"]){
+            //     allFilterInfo["format: all"] = true
+            //     allFilterInfo["!format: !all"] = true
+            // }
             if(!allFilterInfo["genre: all"]
              &&!allFilterInfo["!genre: !all"]){
                 allFilterInfo["genre: all"] = true 
@@ -315,9 +315,9 @@ self.onmessage = (message) => {
                 }
             }
             // Arrange
-            if(typeof format==="string"){
-                if(alteredVariables.format_in["format: "+format.trim().toLowerCase()]||recSchemeIsNew) animeShallUpdate=true
-            }
+            // if(typeof format==="string"){
+            //     if(alteredVariables.format_in["format: "+format.trim().toLowerCase()]||recSchemeIsNew) animeShallUpdate=true
+            // }
             if(!animeShallUpdate){
                 for(let j=0; j<genres.length; j++){
                     var genre = genres[j]
@@ -375,22 +375,22 @@ self.onmessage = (message) => {
             var studiosIncluded = {}
             var staffIncluded = {}
             // Analyze
-            var zformat = []
-            if(typeof format==="string"){
-                var tmpformat = format.trim().toLowerCase()
-                var fullFormat = "format: "+tmpformat
-                if(typeof varScheme.format[fullFormat]==="number") {
-                    zformat.push(varScheme.format[fullFormat])
-                } else if(typeof varScheme.meanFormat==="number"&&includeUnknownVar){
-                    zformat.push(varScheme.meanFormat-minNumber)
-                }
-                // Filters
-                if(!allFilterInfo[fullFormat]
-                 &&!allFilterInfo["!format: !"+tmpformat]){
-                    allFilterInfo[fullFormat] = true
-                    allFilterInfo["!format: !"+tmpformat] = true
-                }
-            }
+            // var zformat = []
+            // if(typeof format==="string"){
+            //     var tmpformat = format.trim().toLowerCase()
+            //     var fullFormat = "format: "+tmpformat
+            //     if(typeof varScheme.format[fullFormat]==="number") {
+            //         zformat.push(varScheme.format[fullFormat])
+            //     } else if(typeof varScheme.meanFormat==="number"&&includeUnknownVar){
+            //         zformat.push(varScheme.meanFormat-minNumber)
+            //     }
+            //     // Filters
+            //     if(!allFilterInfo[fullFormat]
+            //      &&!allFilterInfo["!format: !"+tmpformat]){
+            //         allFilterInfo[fullFormat] = true
+            //         allFilterInfo["!format: !"+tmpformat] = true
+            //     }
+            // }
             var zgenres = []
             for(let j=0; j<genres.length; j++){
                 var genre = genres[j]
@@ -873,11 +873,11 @@ self.onmessage = (message) => {
                 allFilterInfo["studio: "] = true
                 allFilterInfo["!studio: !"] = true
             }
-            if(!allFilterInfo["format: all"]
-             &&!allFilterInfo["!format: !all"]){
-                allFilterInfo["format: all"] = true
-                allFilterInfo["!format: !all"] = true
-            }
+            // if(!allFilterInfo["format: all"]
+            //  &&!allFilterInfo["!format: !all"]){
+            //     allFilterInfo["format: all"] = true
+            //     allFilterInfo["!format: !all"] = true
+            // }
             if(!allFilterInfo["genre: all"]
              &&!allFilterInfo["!genre: !all"]){
                 allFilterInfo["genre: all"] = true 
@@ -933,15 +933,15 @@ self.onmessage = (message) => {
                     allFilterInfo["!status: !"+tempStatus] = true
                 }
             }
-            if(typeof format==="string"){
-                var tempFormat = format.trim().toLowerCase()
-                var fullFormat = "format: "+tempFormat
-                if(!allFilterInfo[fullFormat]
-                 &&!allFilterInfo["!format: !"+tempFormat]){
-                    allFilterInfo[fullFormat] = true
-                    allFilterInfo["!format: !"+tempFormat] = true
-                }
-            }
+            // if(typeof format==="string"){
+            //     var tempFormat = format.trim().toLowerCase()
+            //     var fullFormat = "format: "+tempFormat
+            //     if(!allFilterInfo[fullFormat]
+            //      &&!allFilterInfo["!format: !"+tempFormat]){
+            //         allFilterInfo[fullFormat] = true
+            //         allFilterInfo["!format: !"+tempFormat] = true
+            //     }
+            // }
             // Arrange
             for(let j=0; j<genres.length; j++){
                 var genre = genres[j]

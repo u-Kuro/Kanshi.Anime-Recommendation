@@ -18,7 +18,7 @@
 
 jQuery.fn.flexdatalist = function (_option, _value) {
     'use strict';
-
+    
     var destroy = function ($flex, clear) {
         $flex.each(function () {
             var $this = $(this),
@@ -205,7 +205,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
         /**
          * Add value on comma or enter keypress.
          */
-            keypressValue: function (event, keyCode) {
+            keypressValue: function (event, keyCode) {//here
                 var key = _this.keyNum(event),
                     val = $alias[0].value,
                     options = _this.options.get();
@@ -633,8 +633,35 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                         if (_this.isDup(txt)) {
                             return;
                         }
-                        _values.push(txt);
-                        this.multiple.add(value, txt);
+                        // Check
+                        var seperator, filter, type
+                        if(typeof value==="string"){
+                            // Get the type, seperator, and content
+                            const availableFilterTypes = {format:true,formats:true,genre:true,genres:true,tagcategory:true,tagcategories:true,tag:true,tags:true,studio:true,studios:true,staffrole:true,staffroles:true,staff:true,staffs:true,measure:true,measures:true,average:true,averages:true,includeunknownvariables:true,unknownvariables:true,unknownvariable:true,includeunknown:true,unknown:true,samplesizes:true,samplesize:true,samples:true,sample:true,size:true,minimumpopularity:true,minpopularity:true,popularity:true,minimumaveragescores:true,minimumaveragescore:true,minimumaverages:true,minimumaverage:true,minimumscores:true,minimumscore:true,averagescores:true,averagescore:true,scores:true,score:true,minaveragescores:true,minaveragescore:true,minaverages:true,minaverage:true,minscores:true,minscore:true,minimumavescores:true,minimumavescore:true,minimumave:true,avescores:true,avescore:true,limittopsimilarity:true,limittopsimilarities:true,limitsimilarity:true,limitsimilarities:true,topsimilarities:true,topsimilarity:true,similarities:true,similarity:true,userscore:true,userscores:true,wscore:true,wscores:true,year:true,years:true,season:true,seasons:true,userstatus:true,status:true,title:true,titles:true}
+                            var allValArr = value.trim().toLowerCase().split(/(:|>=|<=|>|<)/)
+                            if(allValArr.length>2&&availableFilterTypes[allValArr[0].replace(/\s|-|_/g,"")]){
+                                allValArr = [allValArr.shift(),allValArr.shift(),allValArr.join("").trim()]
+                            } else {
+                                allValArr = allValArr.shift()
+                            }
+                            if(typeof allValArr==="string"){  
+                                type = ""
+                                seperator = null
+                                filter = allValArr.trim()
+                            } else {
+                                type = allValArr[0].replace(/\s|-|_/g,"")
+                                seperator = allValArr[1]?.trim()??null
+                                filter = (allValArr[2]??type).trim()
+                            }
+                        }
+                        
+                        if((type&&filter&&seperator)||(filter&&!type&!seperator)){
+                            _values.push(txt);
+                            this.multiple.add(value, txt);
+                        } else {
+                            $alias[0].value = value
+                            $alias[0].focus()
+                        }
                     }
                 } else {
                     this.single(value, txt);
@@ -669,7 +696,8 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     }).find('.fdl-remove').on('click', function () {
                         _this.fvalue.remove($(this).parent());
                     });
-
+                    
+                    //seperator
                     this.push(val);
                     $alias[0].value = '';
                     this.handleLimit();
@@ -1426,7 +1454,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                                 )
                                 .append($('<span>')
                                     .addClass('group-item-count')
-                                    .text(' ' + items.length)
+                                    .text(' ' + items.leselectngth)
                                 )
                                 .appendTo($ul);
 
@@ -1438,6 +1466,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
 
                 // Listen to result's item events
                 $li.on('click', function (event) {
+                    //here
                     var item = $(this).data('item');
                     if (item) {
                         _this.fvalue.extract(item);
@@ -2018,6 +2047,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
 
 jQuery(function ($) {
     var $document = $(document);
+    var originalValue = ''
     // Handle results selection list keyboard shortcuts and events.
     if (!$document.data('flexdatalist')) {
         // Remove results on outside click
@@ -2028,34 +2058,71 @@ jQuery(function ($) {
                 $container.remove();
             }
         // Keyboard navigation
+        }).on('keyup', function (event) {
+            var keynum = event.which || event.keyCode;
+
+            // Save Original Value, Not toggling up and down arrow keys
+            if(keynum !== 40 && keynum !== 38 && keynum !== 9){
+                originalValue = $(event.target)[0].value
+            }
+
         }).on('keydown', function (event) {
             var $ul = $('.flexdatalist-results'),
                 $li = $ul.find('li'),
                 $active = $li.filter('.active'),
                 index = $active.index(),
-                length = $li.length,
-                keynum = event.which || event.keyCode;
+                length = $li.length;
 
             if (length === 0) {
                 return;
             }
 
-            // on escape key, remove results
-            if (keynum === 27) {
-                $ul.remove();
-                return;
+            var keynum = event.which || event.keyCode,
+                allValue = $active?.[0]?.innerText||$active?.[0]?.outerText;
+
+            // // on escape key, remove results
+            // if (keynum === 27) {
+            //     $ul.remove();
+            //     return;
+            // }
+
+            // Check
+            var seperator, filter, type
+            if(typeof allValue==="string"){
+                // Get the type, seperator, and content
+                const availableFilterTypes = {format:true,formats:true,genre:true,genres:true,tagcategory:true,tagcategories:true,tag:true,tags:true,studio:true,studios:true,staffrole:true,staffroles:true,staff:true,staffs:true,measure:true,measures:true,average:true,averages:true,includeunknownvariables:true,unknownvariables:true,unknownvariable:true,includeunknown:true,unknown:true,samplesizes:true,samplesize:true,samples:true,sample:true,size:true,minimumpopularity:true,minpopularity:true,popularity:true,minimumaveragescores:true,minimumaveragescore:true,minimumaverages:true,minimumaverage:true,minimumscores:true,minimumscore:true,averagescores:true,averagescore:true,scores:true,score:true,minaveragescores:true,minaveragescore:true,minaverages:true,minaverage:true,minscores:true,minscore:true,minimumavescores:true,minimumavescore:true,minimumave:true,avescores:true,avescore:true,limittopsimilarity:true,limittopsimilarities:true,limitsimilarity:true,limitsimilarities:true,topsimilarities:true,topsimilarity:true,similarities:true,similarity:true,userscore:true,userscores:true,wscore:true,wscores:true,year:true,years:true,season:true,seasons:true,userstatus:true,status:true,title:true,titles:true}
+                var allValArr = allValue.trim().toLowerCase().split(/(:|>=|<=|>|<)/)
+                if(allValArr.length>2&&availableFilterTypes[allValArr[0].replace(/\s|-|_/g,"")]){
+                    allValArr = [allValArr.shift(),allValArr.shift(),allValArr.join("").trim()]
+                } else {
+                    allValArr = allValArr.shift()
+                }
+                if(typeof allValArr==="string"){  
+                    type = ""
+                    seperator = null
+                    filter = allValArr.trim()
+                } else {
+                    type = allValArr[0].replace(/\s|-|_/g,"")
+                    seperator = allValArr[1]?.trim()??null
+                    filter = (allValArr[2]??type).trim()
+                }
             }
+
             // Tab Key
             if (keynum === 9){
                 event.preventDefault();
-                var value = $active?.[0]?.innerText||$active?.[0]?.outerText
-                if(value&&event?.target?.value){
-                    event.target.value = value
+                if(allValue&&event?.target?.value){
+                    event.target.value = allValue
                 }
             // Enter
             } else if (keynum === 13) {
                 event.preventDefault();
-                $active.trigger('click');
+                if((filter&&type&&seperator)||(filter&&!type&&!seperator)){
+                    $active.trigger('click')
+                    event.target.value = ''
+                } else if(allValue){
+                    event.target.value = allValue
+                }
             // Up/Down key
             } else if (keynum === 40 || keynum === 38) {
                 event.preventDefault();
@@ -2063,15 +2130,45 @@ jQuery(function ($) {
                 if (keynum === 40) {
                     if (index < length && $active.nextAll('.item').first().length > 0) {
                         $active = $active.removeClass('active').nextAll('.item').first().addClass('active');
+                        // Update Input
+                        allValue = $active?.[0]?.innerText||$active?.[0]?.outerText
+                        if(allValue){
+                            event.stopPropagation()
+                            event.target.value = allValue
+                        }
                     } else {
-                        $active = $li.removeClass('active').filter('.item:first').addClass('active');
+                        if($active.length>0){
+                            $active = $li.removeClass('active')
+                        } else {
+                            $active = $li.removeClass('active').filter('.item:first').addClass('active');
+                        }
+                        // Return to original input
+                        if(originalValue){
+                            event.stopPropagation()
+                            event.target.value = originalValue
+                        }
                     }
                 // Up key
                 } else if (keynum === 38) {
                     if (index > 0 && $active.prevAll('.item').first().length > 0) {
                         $active = $active.removeClass('active').prevAll('.item').first().addClass('active');
+                        // Update Input
+                        allValue = $active?.[0]?.innerText||$active?.[0]?.outerText
+                        if(allValue){
+                            event.stopPropagation()
+                            event.target.value = allValue
+                        }
                     } else {
-                        $active = $li.removeClass('active').filter('.item:last').addClass('active');
+                        if($active.length>0){
+                            $active = $li.removeClass('active')
+                        } else {
+                            $active = $li.removeClass('active').filter('.item:last').addClass('active');
+                        }
+                        // Return to original input
+                        if(originalValue){
+                            event.stopPropagation()
+                            event.target.value = originalValue
+                        }
                     }
                 }
 

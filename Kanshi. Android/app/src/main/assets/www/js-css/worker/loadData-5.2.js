@@ -17,7 +17,11 @@ self.onmessage = (message) => {
         if(typeof includes[i]!=="string") continue
         // Get the type, seperator, and filter
         var included = includes[i].trim().toLowerCase().split(/(:|>=|<=|>|<)/)
-        included = included.length>2? [included.shift(),included.shift(),included.join("").trim()] : included.shift()
+        if(included.length>2&&availableFilterTypes[included[0].replace(/\s|-|_/g,"")]){
+            included = [included.shift(),included.shift(),included.join("").trim()]
+        } else {
+            included = included.shift()
+        }
         var type, filter, seperator
         if(typeof included==="string"){  
             type = ""
@@ -278,7 +282,11 @@ self.onmessage = (message) => {
         if(typeof excludes[i]!=="string") continue
         // Get the type, seperator, and filter
         var excluded = excludes[i].trim().toLowerCase().split(/(:|>=|<=|>|<)/)
-        excluded = excluded.length>2? [excluded.shift(),excluded.shift(),excluded.join("").trim()] : excluded.shift()
+        if(excluded.length>2&&availableFilterTypes[excluded[0].replace(/\s|-|_/g,"")]){
+            excluded = [excluded.shift(),excluded.shift(),excluded.join("").trim()]
+        } else {
+            excluded = excluded.shift()
+        }
         var type, filter, seperator
         if(typeof excluded==="string"){
             type = ""
@@ -394,7 +402,11 @@ self.onmessage = (message) => {
             if(typeof savedWarnR[i]!=="string") continue
             // Get the type, seperator, and content
             var savedWarn = savedWarnR[i].trim().toLowerCase().split(/(:)/)
-            savedWarn = savedWarn.length>2? [savedWarn.shift(),savedWarn.shift(),savedWarn.join("").trim()] : savedWarn.shift()
+            if(savedWarn.length>2&&availableFilterTypes[savedWarn[0].replace(/\s|-|_/g,"")]){
+                savedWarn = [savedWarn.shift(),savedWarn.shift(),savedWarn.join("").trim()]
+            } else {
+                savedWarn = savedWarn.shift()
+            }
             var type, content, seperator
             if(typeof savedWarn==="string"){
                 type = ""
@@ -426,7 +438,11 @@ self.onmessage = (message) => {
             if(typeof savedWarnY[i]!=="string") continue
             // Get the type, seperator, and content
             var savedWarn = savedWarnY[i].trim().toLowerCase().split(/(:)/)
-            savedWarn = savedWarn.length>2? [savedWarn.shift(),savedWarn.shift(),savedWarn.join("").trim()] : savedWarn.shift()
+            if(savedWarn.length>2&&availableFilterTypes[savedWarn[0].replace(/\s|-|_/g,"")]){
+                savedWarn = [savedWarn.shift(),savedWarn.shift(),savedWarn.join("").trim()]
+            } else {
+                savedWarn = savedWarn.shift()
+            }
             var type, content, seperator
             if(typeof savedWarn==="string"){
                 type = ""

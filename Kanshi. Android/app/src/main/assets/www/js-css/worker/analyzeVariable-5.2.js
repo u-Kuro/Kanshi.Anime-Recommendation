@@ -1,6 +1,7 @@
 self.onmessage = (message) => {
     const minNumber = 1-6e-17!==1? 6e-17 : 1e-16 // Min Value Javascript
     const mediaRelationTypes = ["adaptation","prequel","sequel","parent","side_story","summary","alternative","spin_off"]
+    const availableFilterTypes = {format:true,formats:true,genre:true,genres:true,tagcategory:true,tagcategories:true,tag:true,tags:true,studio:true,studios:true,staffrole:true,staffroles:true,staff:true,staffs:true,measure:true,measures:true,average:true,averages:true,includeunknownvariables:true,unknownvariables:true,unknownvariable:true,includeunknown:true,unknown:true,samplesizes:true,samplesize:true,samples:true,sample:true,size:true,minimumpopularity:true,minpopularity:true,popularity:true,minimumaveragescores:true,minimumaveragescore:true,minimumaverages:true,minimumaverage:true,minimumscores:true,minimumscore:true,averagescores:true,averagescore:true,scores:true,score:true,minaveragescores:true,minaveragescore:true,minaverages:true,minaverage:true,minscores:true,minscore:true,minimumavescores:true,minimumavescore:true,minimumave:true,avescores:true,avescore:true,limittopsimilarity:true,limittopsimilarities:true,limitsimilarity:true,limitsimilarities:true,topsimilarities:true,topsimilarity:true,similarities:true,similarity:true,userscore:true,userscores:true,wscore:true,wscores:true,year:true,years:true,season:true,seasons:true,userstatus:true,status:true,title:true,titles:true}
     const data = message?.data
     const notAnUpdate = data?.notAnUpdate
     const savedAnimeFranchises = data?.savedAnimeFranchises || []
@@ -15,10 +16,12 @@ self.onmessage = (message) => {
     // Filter Algorithm
     var userEntries
     var include = {
-        formats: {}, genres: {}, tags: {}, categories: {}, studios: {}, staffs: {}, roles: {}
+    //    formats: {}, 
+        genres: {}, tags: {}, categories: {}, studios: {}, staffs: {}, roles: {}
     }, 
     exclude = {
-       formats: {}, genres: {}, tags: {}, categories: {}, studios: {}, staffs: {}, roles: {} 
+    //    formats: {}, 
+       genres: {}, tags: {}, categories: {}, studios: {}, staffs: {}, roles: {} 
     }, 
     savedIncluded = data?.savedIncluded || [],
     savedExcluded = data?.savedExcluded || []
@@ -26,7 +29,11 @@ self.onmessage = (message) => {
         if(typeof savedIncluded[i]!=="string") continue
         // Get the type, seperator, and content
         var included = savedIncluded[i].trim().toLowerCase().split(/(:)/)
-        included = included.length>2? [included.shift(),included.shift(),included.join("").trim()] : included.shift()
+        if(included.length>2&&availableFilterTypes[included[0].replace(/\s|-|_/g,"")]){
+            savedWarn = [included.shift(),included.shift(),included.join("").trim()]
+        } else {
+            savedWarn = included.shift()
+        }
         var type, filter, seperator
         if(typeof savedWarn==="string"){  
             type = ""
@@ -38,10 +45,10 @@ self.onmessage = (message) => {
             filter = (included[2]??type).trim()
         }
         if(seperator===":"){
-            if(type===("format")||type===("formats")){
-                include.formats["format: "+filter] = true
-                continue
-            }
+            // if(type===("format")||type===("formats")){
+            //     include.formats["format: "+filter] = true
+            //     continue
+            // }
             if(type===("genre")||type===("genres")){
                 include.genres["genre: "+filter] = true
                 continue
@@ -139,7 +146,11 @@ self.onmessage = (message) => {
         if(typeof savedExcluded[i]!=="string") continue
         // Get the type, seperator, and content
         var excluded = savedExcluded[i].trim().toLowerCase().split(/(:)/)
-        excluded = excluded.length>2? [excluded.shift(),excluded.shift(),excluded.join("").trim()] : excluded.shift()
+        if(excluded.length>2&&availableFilterTypes[excluded[0].replace(/\s|-|_/g,"")]){
+            savedWarn = [excluded.shift(),excluded.shift(),excluded.join("").trim()]
+        } else {
+            savedWarn = excluded.shift()
+        }
         var type, filter, seperator
         if(typeof savedWarn==="string"){
             type = ""
@@ -151,10 +162,10 @@ self.onmessage = (message) => {
             filter = (excluded[2]??type).trim()
         }
         if(seperator===":"){
-            if(type===("format")||type===("formats")){
-                exclude.formats["format: "+filter] = true
-                continue
-            }
+            // if(type===("format")||type===("formats")){
+            //     exclude.formats["format: "+filter] = true
+            //     continue
+            // }
             if(type===("genre")||type===("genres")){
                 exclude.genres["genre: "+filter] = true
                 continue
@@ -195,7 +206,7 @@ self.onmessage = (message) => {
         tempUserList = {}
     }
     var alteredVariables = {
-        format_in: {},
+        // format_in: {},
         genres_in: {},
         tags_in: {},
         studios_in: {},
@@ -218,7 +229,7 @@ self.onmessage = (message) => {
         }
     }
     var varScheme = {
-        format: {},
+        // format: {},
         genres: {},
         tags: {},
         studios: {},
@@ -238,7 +249,7 @@ self.onmessage = (message) => {
     var favourites = []
     var year = []
     //
-    var formatMeanCount = {}
+    // var formatMeanCount = {}
     var genresMeanCount = {}
     var tagsMeanCount = {}
     var studiosMeanCount = {}
@@ -300,21 +311,21 @@ self.onmessage = (message) => {
             savedUserList[anilistId] = userEntries[i]
         }
         // Variables
-        var format = anime?.format
+        // var format = anime?.format
         var genres = anime?.genres || []
         var tags = anime?.tags || []
         var studios = anime?.studios?.nodes || []
         var staffs = anime?.staff?.edges || []
         // Altered Variables
           // Altered Formats
-        if(typeof format==="string"){
-            var fullFormat = "format: "+format.trim().toLowerCase()
-            if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
-                if(!alteredVariables.format_in[fullFormat]){
-                    alteredVariables.format_in[fullFormat] = true
-                }
-            }
-        }
+        // if(typeof format==="string"){
+        //     var fullFormat = "format: "+format.trim().toLowerCase()
+        //     if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
+        //         if(!alteredVariables.format_in[fullFormat]){
+        //             alteredVariables.format_in[fullFormat] = true
+        //         }
+        //     }
+        // }
           // Altered Genres
         for(let j=0; j<genres.length; j++){
             var genre = genres[j]
@@ -404,40 +415,40 @@ self.onmessage = (message) => {
             }
             ++userListCount
             // Formats
-            if(typeof format==="string"){
-                var fullFormat = "format: "+format.trim().toLowerCase()
-                if(!jsonIsEmpty(include.formats)){
-                    if((include.formats[fullFormat]&&!exclude.formats[fullFormat]
-                        &&!exclude.formats["format: all"])||include.formats["format: all"]){
-                        if(varScheme.format[fullFormat]){
-                            varScheme.format[fullFormat].userScore.push(userScore)
-                            ++varScheme.format[fullFormat].count
-                        } else {
-                            varScheme.format[fullFormat] = {userScore:[userScore],count:1}
-                        }
-                        if(formatMeanCount[fullFormat]){
-                            ++formatMeanCount[fullFormat]
-                        } else {
-                            formatMeanCount[fullFormat] = 1
-                        }
-                    }
-                } else {
-                    if((!exclude.formats[fullFormat]
-                        &&!exclude.formats["format: all"])||include.formats["format: all"]){
-                        if(varScheme.format[fullFormat]){
-                            varScheme.format[fullFormat].userScore.push(userScore)
-                            ++varScheme.format[fullFormat].count                            
-                        } else {
-                            varScheme.format[fullFormat] = {userScore:[userScore],count:1}
-                        }
-                        if(formatMeanCount[fullFormat]){
-                            ++formatMeanCount[fullFormat]
-                        } else {
-                            formatMeanCount[fullFormat] = 1
-                        }
-                    }
-                }
-            }
+            // if(typeof format==="string"){
+            //     var fullFormat = "format: "+format.trim().toLowerCase()
+            //     if(!jsonIsEmpty(include.formats)){
+            //         if((include.formats[fullFormat]&&!exclude.formats[fullFormat]
+            //             &&!exclude.formats["format: all"])||include.formats["format: all"]){
+            //             if(varScheme.format[fullFormat]){
+            //                 varScheme.format[fullFormat].userScore.push(userScore)
+            //                 ++varScheme.format[fullFormat].count
+            //             } else {
+            //                 varScheme.format[fullFormat] = {userScore:[userScore],count:1}
+            //             }
+            //             if(formatMeanCount[fullFormat]){
+            //                 ++formatMeanCount[fullFormat]
+            //             } else {
+            //                 formatMeanCount[fullFormat] = 1
+            //             }
+            //         }
+            //     } else {
+            //         if((!exclude.formats[fullFormat]
+            //             &&!exclude.formats["format: all"])||include.formats["format: all"]){
+            //             if(varScheme.format[fullFormat]){
+            //                 varScheme.format[fullFormat].userScore.push(userScore)
+            //                 ++varScheme.format[fullFormat].count                            
+            //             } else {
+            //                 varScheme.format[fullFormat] = {userScore:[userScore],count:1}
+            //             }
+            //             if(formatMeanCount[fullFormat]){
+            //                 ++formatMeanCount[fullFormat]
+            //             } else {
+            //                 formatMeanCount[fullFormat] = 1
+            //             }
+            //         }
+            //     }
+            // }
             // Genres
             for(let j=0; j<genres.length; j++){
                 var genre = genres[j]
@@ -677,24 +688,24 @@ self.onmessage = (message) => {
             }
             
             // Number
-            if(isaN(anime?.episodes)){
-                episodes.push({userScore: userScore, episodes: anime.episodes})
-            }
-            if(isaN(anime?.duration)){
-                duration.push({userScore: userScore, duration: anime.duration})
-            }
+            // if(isaN(anime?.episodes)){
+            //     episodes.push({userScore: userScore, episodes: anime.episodes})
+            // }
+            // if(isaN(anime?.duration)){
+            //     duration.push({userScore: userScore, duration: anime.duration})
+            // }
             if(isaN(anime?.averageScore)){
                 averageScore.push({userScore: userScore, averageScore: anime.averageScore})
             }
-            if(isaN(anime?.trending)){
-                trending.push({userScore: userScore, trending: anime.trending})
-            }
-            if(isaN(anime?.popularity)){
-                popularity.push({userScore: userScore, popularity: anime.popularity})
-            }
-            if(isaN(anime?.favourites)){
-                favourites.push({userScore: userScore, favourites: anime.favourites})
-            }
+            // if(isaN(anime?.trending)){
+            //     trending.push({userScore: userScore, trending: anime.trending})
+            // }
+            // if(isaN(anime?.popularity)){
+            //     popularity.push({userScore: userScore, popularity: anime.popularity})
+            // }
+            // if(isaN(anime?.favourites)){
+            //     favourites.push({userScore: userScore, favourites: anime.favourites})
+            // }
             if(isaN(parseFloat(anime?.seasonYear))){
                 year.push({userScore: userScore, year: parseFloat(anime.seasonYear)})
             }
@@ -711,13 +722,13 @@ self.onmessage = (message) => {
             if(!jsonIsEmpty(entry)){
                 var anime = entry.media
                 if(anime){
-                    var format = anime.format
-                    if(typeof format==="string"){
-                        var fullFormat = "format: "+format.trim().toLowerCase()
-                        if(!alteredVariables.format_in[fullFormat]){
-                            alteredVariables.format_in[fullFormat] = true
-                        }
-                    }
+                    // var format = anime.format
+                    // if(typeof format==="string"){
+                    //     var fullFormat = "format: "+format.trim().toLowerCase()
+                    //     if(!alteredVariables.format_in[fullFormat]){
+                    //         alteredVariables.format_in[fullFormat] = true
+                    //     }
+                    // }
                     var genres = anime.genres || []
                     for(let j=0; j<genres.length; j++){   
                         if(typeof genres[j]==="string"){
@@ -762,15 +773,15 @@ self.onmessage = (message) => {
         }
     }
     // Clean Data JSON
-    if(!jsonIsEmpty(formatMeanCount)){
-        var formatCountValues = Object.values(formatMeanCount)
-        var formatCountMode = arrayMode(formatCountValues)
-        var formatCountMean = arrayMean(formatCountValues)
-        var tempformatMeanCount = formatCountMean>=33? 33 : Math.max(formatCountMode,formatCountMean)
-        formatMeanCount = minSampleSize? minSampleSize : tempformatMeanCount
-    } else {
-        formatMeanCount = 10
-    }
+    // if(!jsonIsEmpty(formatMeanCount)){
+    //     var formatCountValues = Object.values(formatMeanCount)
+    //     var formatCountMode = arrayMode(formatCountValues)
+    //     var formatCountMean = arrayMean(formatCountValues)
+    //     var tempformatMeanCount = formatCountMean>=33? 33 : Math.max(formatCountMode,formatCountMean)
+    //     formatMeanCount = minSampleSize? minSampleSize : tempformatMeanCount
+    // } else {
+    //     formatMeanCount = 10
+    // }
     if(!jsonIsEmpty(genresMeanCount)){
         var genresCountValues = Object.values(genresMeanCount)
         var genresCountMode = arrayMode(genresCountValues)
@@ -817,32 +828,32 @@ self.onmessage = (message) => {
         varScheme.minAverageScore = minAverageScore
     }
     if(!jsonIsEmpty(varScheme)){
-        var formatKey = Object.keys(varScheme.format)
-        var formatMean = []
-        // Format
-        for(let i=0; i<formatKey.length; i++){
-            if(measure==="mode"){
-                formatMean.push(arrayMode(varScheme.format[formatKey[i]].userScore))
-            } else {
-                formatMean.push(arrayMean(varScheme.format[formatKey[i]].userScore))
-            }
-        }
-        formatMean = arrayMode(formatMean)
-        for(let i=0; i<formatKey.length; i++){
-            var tempScore = 0
-            if(measure==="mode"){
-                tempScore = arrayMode(varScheme.format[formatKey[i]].userScore)
-            } else {
-                tempScore = arrayMean(varScheme.format[formatKey[i]].userScore)
-            }
-            // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-            var count = varScheme.format[formatKey[i]].count
-            if(count>=formatMeanCount||tempScore<formatMean){ 
-                varScheme.format[formatKey[i]] = tempScore
-            } else {
-                delete varScheme.format[formatKey[i]]
-            }
-        }
+        // var formatKey = Object.keys(varScheme.format)
+        // var formatMean = []
+        // // Format
+        // for(let i=0; i<formatKey.length; i++){
+        //     if(measure==="mode"){
+        //         formatMean.push(arrayMode(varScheme.format[formatKey[i]].userScore))
+        //     } else {
+        //         formatMean.push(arrayMean(varScheme.format[formatKey[i]].userScore))
+        //     }
+        // }
+        // formatMean = arrayMode(formatMean)
+        // for(let i=0; i<formatKey.length; i++){
+        //     var tempScore = 0
+        //     if(measure==="mode"){
+        //         tempScore = arrayMode(varScheme.format[formatKey[i]].userScore)
+        //     } else {
+        //         tempScore = arrayMean(varScheme.format[formatKey[i]].userScore)
+        //     }
+        //     // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
+        //     var count = varScheme.format[formatKey[i]].count
+        //     if(count>=formatMeanCount||tempScore<formatMean){ 
+        //         varScheme.format[formatKey[i]] = tempScore
+        //     } else {
+        //         delete varScheme.format[formatKey[i]]
+        //     }
+        // }
         // Genres
         var genresKey = Object.keys(varScheme.genres)
         var genresMean = []
@@ -948,7 +959,7 @@ self.onmessage = (message) => {
             }
         }
         // Join Data
-        varScheme.meanFormat = formatMean
+        // varScheme.meanFormat = formatMean
         varScheme.meanGenres = genresMean
         varScheme.meanTags = tagsMean
         varScheme.meanStudios = studiosMean

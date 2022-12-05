@@ -20,7 +20,7 @@
     <!-- Datalist Search Code -->
     <link rel="preload" href="./js-css/flexdatalist/jquery.flex-datalist.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/flexdatalist/jquery.flex-datalist.css"></noscript>
-    <script src="./js-css/flexdatalist/jquery.flex-datalist-v2.0.js" defer></script>
+    <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.1.js" defer></script>
     <!-- Bootstrap -->
     <link rel="preload" href="./js-css/bootstrap-3.3.6.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/bootstrap-3.3.6.min.css"></noscript>
@@ -1162,8 +1162,8 @@
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "5.1",
-          backUpVersion = 3.2
+    const version = "5.2",
+          backUpVersion = 3.3
         // IndexDB
     var request, db,
         // Saved Data
@@ -1850,7 +1850,7 @@
                         const importedFile = importFileEl[0].files[0]
                         const reader = new FileReader()
                         reader.onload = async() => {
-                            const fullPath = importFileEl.val() 
+                            const fullPath = importFileEl.val()
                             var filename
                             if(typeof fullPath==="string"&&fullPath){
                                 const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
@@ -2401,15 +2401,16 @@
                                         Update(false)
                                     }
                                     // Interval
-                                    for(let i=0;i<updateIntervalTimeout.length;i++) clearInterval(updateIntervalTimeout[i])
-                                    var saveUpdateIntervalTimeout = setInterval(async()=>{
-                                        if(!requestIsRunning){
-                                            if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
-                                            willAutoUpdate = true
-                                            Update(false)
-                                        }
-                                    },3600000)
-                                    updateIntervalTimeout.push(saveUpdateIntervalTimeout)
+                                    if(!updateIntervalTimeout.length){
+                                        var saveUpdateIntervalTimeout = setInterval(async()=>{
+                                            if(!requestIsRunning){
+                                                if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
+                                                willAutoUpdate = true
+                                                Update(false)
+                                            }
+                                        },3600000)
+                                        updateIntervalTimeout.push(saveUpdateIntervalTimeout)
+                                    }
                                 } else {
                                     // Timeout
                                     setTimeout(async()=>{
@@ -2419,15 +2420,16 @@
                                             Update(false)
                                         }
                                         // Interval
-                                        for(let i=0;i<updateIntervalTimeout.length;i++) clearInterval(updateIntervalTimeout[i])
-                                        var saveUpdateIntervalTimeout = setInterval(async()=>{
-                                            if(!requestIsRunning){
-                                                if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
-                                                willAutoUpdate = true
-                                                Update(false)
-                                            }
-                                        },3600000)
-                                        updateIntervalTimeout.push(saveUpdateIntervalTimeout)
+                                        if(!updateIntervalTimeout.length){
+                                            var saveUpdateIntervalTimeout = setInterval(async()=>{
+                                                if(!requestIsRunning){
+                                                    if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
+                                                    willAutoUpdate = true
+                                                    Update(false)
+                                                }
+                                            },3600000)
+                                            updateIntervalTimeout.push(saveUpdateIntervalTimeout)
+                                        }
                                     },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                                 }
                             }
@@ -2478,42 +2480,58 @@
                                     if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
                                         await new Promise(async(resolve)=>{
                                             await menuContainerEl.fadeOut(250)
-                                            dataStatusSpinnerHomeEl.show()
-                                            dataStatusEl
-                                                .empty()
-                                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                                             resolve()
                                         }).then(async()=>{
-                                            await backUpData()
-                                            // Interval
-                                            for(let i=0;i<exportIntervalTimeout.length;i++) clearInterval(exportIntervalTimeout[i])
-                                            var saveExportIntervalTimeout = setInterval(async()=>{
+                                            if(!willAutoUpdate){
                                                 dataStatusSpinnerHomeEl.show()
                                                 dataStatusEl
                                                     .empty()
                                                     .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                                                 await backUpData()
-                                            },3600000)
-                                            exportIntervalTimeout.push(saveExportIntervalTimeout)
+                                            }
+                                            // Interval
+                                            if(!exportIntervalTimeout.length){
+                                                var saveExportIntervalTimeout = setInterval(async()=>{
+                                                    setTimeout(async()=>{
+                                                        if(!willAutoUpdate){
+                                                            dataStatusSpinnerHomeEl.show()
+                                                            dataStatusEl
+                                                                .empty()
+                                                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                                            await backUpData()
+                                                        }
+                                                    },1000)
+                                                },3600000)
+                                                exportIntervalTimeout.push(saveExportIntervalTimeout)
+                                            }
                                         })
                                     } else {
                                         // Timeout
                                         setTimeout(async()=>{
-                                            dataStatusSpinnerHomeEl.show()
-                                            dataStatusEl
-                                                .empty()
-                                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                            await backUpData()
-                                            // Interval
-                                            for(let i=0;i<exportIntervalTimeout.length;i++) clearInterval(exportIntervalTimeout[i])
-                                            var saveExportIntervalTimeout = setInterval(async()=>{
-                                                dataStatusSpinnerHomeEl.show()
-                                                dataStatusEl
-                                                    .empty()
-                                                    .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                                await backUpData()
-                                            },3600000)
-                                            exportIntervalTimeout.push(saveExportIntervalTimeout)
+                                            setTimeout(async()=>{
+                                                if(!willAutoUpdate){
+                                                    dataStatusSpinnerHomeEl.show()
+                                                    dataStatusEl
+                                                        .empty()
+                                                        .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                                    await backUpData()
+                                                }
+                                                // Interval
+                                                if(!exportIntervalTimeout.length){
+                                                    var saveExportIntervalTimeout = setInterval(async()=>{
+                                                        setTimeout(async()=>{
+                                                            if(!willAutoUpdate){
+                                                                dataStatusSpinnerHomeEl.show()
+                                                                dataStatusEl
+                                                                    .empty()
+                                                                    .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                                                await backUpData()
+                                                            }
+                                                        },1000)
+                                                    },3600000)
+                                                    exportIntervalTimeout.push(saveExportIntervalTimeout)
+                                                }
+                                            },1000)
                                         },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
                                     }
                                 }
@@ -3397,15 +3415,16 @@
                             Update(false)
                         }
                         // Interval
-                        for(let i=0;i<updateIntervalTimeout.length;i++) await clearInterval(updateIntervalTimeout[i])
-                        var saveUpdateIntervalTimeout = setInterval(async()=>{
-                            if(!requestIsRunning&&usernameEl.val()){
-                                if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
-                                willAutoUpdate = true
-                                Update(false)
-                            }
-                        },3600000)
-                        await updateIntervalTimeout.push(saveUpdateIntervalTimeout)
+                        if(!updateIntervalTimeout.length){
+                            var saveUpdateIntervalTimeout = setInterval(async()=>{
+                                if(!requestIsRunning){
+                                    if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
+                                    willAutoUpdate = true
+                                    Update(false)
+                                }
+                            },3600000)
+                            updateIntervalTimeout.push(saveUpdateIntervalTimeout)
+                        }
                         resolve()
                     } else {
                         // Timeout
@@ -3416,15 +3435,16 @@
                                 Update(false)
                             }
                             // Interval
-                            for(let i=0;i<updateIntervalTimeout.length;i++) await clearInterval(updateIntervalTimeout[i])
-                            var saveUpdateIntervalTimeout = setInterval(async()=>{
-                                if(!requestIsRunning&&usernameEl.val()){
-                                    if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
-                                    willAutoUpdate = true
-                                    Update(false)
-                                }
-                            },3600000)
-                            await updateIntervalTimeout.push(saveUpdateIntervalTimeout)
+                            if(!updateIntervalTimeout.length){
+                                var saveUpdateIntervalTimeout = setInterval(async()=>{
+                                    if(!requestIsRunning){
+                                        if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
+                                        willAutoUpdate = true
+                                        Update(false)
+                                    }
+                                },3600000)
+                                updateIntervalTimeout.push(saveUpdateIntervalTimeout)
+                            }
                         },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                         resolve()
                     }
@@ -3446,34 +3466,48 @@
                             await backUpData()
                         }
                         // Interval
-                        for(let i=0;i<exportIntervalTimeout.length;i++) await clearInterval(exportIntervalTimeout[i])
-                        var saveExportIntervalTimeout = await setInterval(async()=>{
-                            dataStatusSpinnerHomeEl.show()
-                            dataStatusEl
-                                .empty()
-                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                            await backUpData()
-                        },3600000)
-                        await exportIntervalTimeout.push(saveExportIntervalTimeout)
+                        if(!exportIntervalTimeout.length){
+                            var saveExportIntervalTimeout = await setInterval(async()=>{
+                                setTimeout(async()=>{
+                                    if(!willAutoUpdate){
+                                        dataStatusSpinnerHomeEl.show()
+                                        dataStatusEl
+                                            .empty()
+                                            .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                        await backUpData()
+                                    }
+                                },1000)
+                            },3600000)
+                            await exportIntervalTimeout.push(saveExportIntervalTimeout)
+                        }
                         return
                     } else {
                         // Timeout
                         setTimeout(async()=>{
-                            dataStatusSpinnerHomeEl.show()
-                            dataStatusEl
-                                .empty()
-                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                            await backUpData()
-                            // Interval
-                            for(let i=0;i<exportIntervalTimeout.length;i++) await clearInterval(exportIntervalTimeout[i])
-                            var saveExportIntervalTimeout = await setInterval(async()=>{
-                                dataStatusSpinnerHomeEl.show()
-                                dataStatusEl
-                                    .empty()
-                                    .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                await backUpData()
-                            },3600000)
-                            await exportIntervalTimeout.push(saveExportIntervalTimeout)
+                            setTimeout(async()=>{
+                                if(!willAutoUpdate){
+                                    dataStatusSpinnerHomeEl.show()
+                                    dataStatusEl
+                                        .empty()
+                                        .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                    await backUpData()
+                                }
+                                // Interval
+                                if(!exportIntervalTimeout.length){
+                                    var saveExportIntervalTimeout = await setInterval(async()=>{
+                                        setTimeout(async()=>{
+                                            if(!willAutoUpdate){
+                                                dataStatusSpinnerHomeEl.show()
+                                                dataStatusEl
+                                                    .empty()
+                                                    .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                                await backUpData()
+                                            }
+                                        },1000)
+                                    },3600000)
+                                    await exportIntervalTimeout.push(saveExportIntervalTimeout)   
+                                }
+                            },1000)
                         },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
                         return
                     }

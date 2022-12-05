@@ -72,8 +72,6 @@ self.onmessage = (message) => {
         {"info":"!studio: !all"},
         {"info":"staff: all"},
         {"info":"!staff: !all"},
-        {"info":"format: all"},
-        {"info":"!format: !all"},
         {"info":"format: tv"},
         {"info":"!format: !tv"},
         {"info":"format: special"},
