@@ -628,7 +628,7 @@ self.onmessage = (message) => {
                 if(typeof seasonYear==="string"){
                     seasonYear = parseFloat(seasonYear)
                 }
-                animeType.push(Math.max(0,LRpredict(yearModel,seasonYear)))
+                animeType.push(Math.max(1,LRpredict(yearModel,seasonYear)))
             } else {
                 animeType.push(1)
             }
@@ -638,7 +638,7 @@ self.onmessage = (message) => {
                 if(typeof averageScore==="string"){
                     averageScore = parseFloat(averageScore)
                 }
-                animeType.push(Math.max(0,LRpredict(averageScoreModel,averageScore)))
+                animeType.push(Math.max(1,LRpredict(averageScoreModel,averageScore)))
             } else {
                 animeType.push(1)
             }
@@ -647,18 +647,18 @@ self.onmessage = (message) => {
             var animeContent = []
             if(zgenres.length){
                 if(measure==="mode"){
-                    animeContent.push(arrayMode(zgenres))
+                    animeContent.push(Math.max(1,arrayMode(zgenres)))
                 } else {
-                    animeContent.push(arrayMean(zgenres))
+                    animeContent.push(Math.max(1,arrayMean(zgenres)))
                 }
             } else {
                 animeContent.push(1)
             }
             if(ztags.length){
                 if(measure==="mode"){
-                    animeContent.push(arrayMode(ztags))
+                    animeContent.push(Math.max(1,arrayMode(ztags)))
                 } else {
-                    animeContent.push(arrayMean(ztags))
+                    animeContent.push(Math.max(1,arrayMean(ztags)))
                 }
             } else {
                 animeContent.push(1)
@@ -668,35 +668,35 @@ self.onmessage = (message) => {
             var animeProduction = []
             var zstaffRolesArray = Object.values(zstaff).map((e)=>{
                 if(measure==="mode"){
-                    return arrayMode(e)
+                    return Math.max(1,arrayMode(e))
                 } else {
-                    return arrayMean(e)
+                    return Math.max(1,arrayMean(e))
                 }
             }) || []
             
             if(zstaffRolesArray.length&&zstudios.length){
                 if(measure==="mode"){
-                    animeProduction.push(arrayMean(zstaffRolesArray.concat(arrayMode(zstudios))))
+                    animeProduction.push(Math.max(1,arrayMean(zstaffRolesArray.concat([Math.max(1,arrayMode(zstudios))]))))
                 } else {
-                    animeProduction.push(arrayMean(zstaffRolesArray.concat(arrayMean(zstudios))))
+                    animeProduction.push(Math.max(1,arrayMean(zstaffRolesArray.concat([Math.max(1,arrayMean(zstudios))]))))
                 }
             } else if(zstaffRolesArray.length){
-                animeProduction.push(arrayMean(zstaffRolesArray))
+                animeProduction.push(Math.max(1,arrayMean(zstaffRolesArray)))
             } else if(zstudios.length){
                 if(measure==="mode"){
-                    animeProduction.push(arrayMode(zstudios))
+                    animeProduction.push(Math.max(1,arrayMode(zstudios)))
                 } else {
-                    animeProduction.push(arrayMean(zstudios))
+                    animeProduction.push(Math.max(1,arrayMean(zstudios)))
                 }
             } else {
                 animeProduction.push(1)
             }
             // Scores
-            var score = arrayProbability([
-                arrayProbability(animeType),
-                arrayProbability(animeContent),
-                arrayProbability(animeProduction)
-            ])
+            var score = Math.max(1,arrayProbability([
+                Math.max(1,arrayProbability(animeType)),
+                Math.max(1,arrayProbability(animeContent)),
+                Math.max(1,arrayProbability(animeProduction))
+            ]))
             var weightedScore = score
             // Other Anime Recommendation Info
             genres = genres.length?genres:[]

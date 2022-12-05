@@ -192,11 +192,7 @@ self.onmessage = (message) => {
             }
         }
     }
-    console.log(JSON.stringify(exclude))
-    console.log(savedIncluded)
-    console.log(JSON.stringify(include))
-    console.log(savedExcluded)
-    
+
     if(!notAnUpdate){
         userEntries = data?.userEntries || []
     } else {
@@ -1060,6 +1056,7 @@ self.onmessage = (message) => {
             varScheme[sortedWellKnownAnimeModels[1]] = sortedWellKnownAnimeModels[0]
         }
     }
+    
     self.postMessage({
         varScheme: varScheme, 
         userListStatus: userListStatus,
