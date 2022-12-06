@@ -505,9 +505,12 @@ self.onmessage = (message) => {
             }
             //
             var zstudios = []
+            var includedStudios = {}
             for(let j=0; j<studios.length; j++){
                 var studio = studios[j]?.name
                 if(typeof studio!=="string") continue
+                if(includedStudios[studio]) continue
+                includedStudios[studio] = true
                 studio = studio.trim().toLowerCase()
                 var fullStudio = "studio: "+studio
                 if(typeof varScheme.studios[fullStudio]==="number"){
@@ -538,9 +541,12 @@ self.onmessage = (message) => {
             }
             //
             var zstaff = {}
+            var includedStaff = {}
             for(let j=0; j<staffs.length; j++){
                 var staff = staffs[j]?.node?.name?.userPreferred
                 if(typeof staff!=="string") continue
+                if(includedStaff[staff]) continue
+                includedStaff[staff] = true
                 var staffRole = staffs[j]?.role
                 if(typeof staffRole!=="string") continue
                 staff = staff.trim().toLowerCase()

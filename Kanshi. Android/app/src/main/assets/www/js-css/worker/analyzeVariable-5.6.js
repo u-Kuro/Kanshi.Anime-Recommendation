@@ -1,7 +1,7 @@
 self.onmessage = (message) => {
     const minNumber = 1-6e-17!==1? 6e-17 : 1e-16 // Min Value Javascript
     const mediaRelationTypes = ["adaptation","prequel","sequel","parent","side_story","summary","alternative","spin_off"]
-    const availableFilterTypes = {format:true,formats:true,genre:true,genres:true,tagcategory:true,tagcategories:true,tag:true,tags:true,studio:true,studios:true,staffrole:true,staffroles:true,staff:true,staffs:true,measure:true,measures:true,average:true,averages:true,includeunknownvariables:true,unknownvariables:true,unknownvariable:true,includeunknown:true,unknown:true,samplesizes:true,samplesize:true,samples:true,sample:true,size:true,minimumpopularity:true,minpopularity:true,popularity:true,minimumaveragescores:true,minimumaveragescore:true,minimumaverages:true,minimumaverage:true,minimumscores:true,minimumscore:true,averagescores:true,averagescore:true,scores:true,score:true,minaveragescores:true,minaveragescore:true,minaverages:true,minaverage:true,minscores:true,minscore:true,minimumavescores:true,minimumavescore:true,minimumave:true,avescores:true,avescore:true,limittopsimilarity:true,limittopsimilarities:true,limitsimilarity:true,limitsimilarities:true,topsimilarities:true,topsimilarity:true,similarities:true,similarity:true,userscore:true,userscores:true,wscore:true,wscores:true,year:true,years:true,season:true,seasons:true,userstatus:true,status:true,title:true,titles:true}
+    const availableFilterTypes = {minsize:true,minsizes:true,minsamplesize:true,minsamplesizes:true,minimumsizes:true,minimumsizes:true,minimumsamplesize:true,minimumsamplesizes:true,format:true,formats:true,genre:true,genres:true,tagcategory:true,tagcategories:true,tag:true,tags:true,studio:true,studios:true,staffrole:true,staffroles:true,staff:true,staffs:true,measure:true,measures:true,average:true,averages:true,includeunknownvariables:true,unknownvariables:true,unknownvariable:true,includeunknown:true,unknown:true,samplesizes:true,samplesize:true,samples:true,sample:true,size:true,minimumpopularity:true,minpopularity:true,popularity:true,minimumaveragescores:true,minimumaveragescore:true,minimumaverages:true,minimumaverage:true,minimumscores:true,minimumscore:true,averagescores:true,averagescore:true,scores:true,score:true,minaveragescores:true,minaveragescore:true,minaverages:true,minaverage:true,minscores:true,minscore:true,minimumavescores:true,minimumavescore:true,minimumave:true,avescores:true,avescore:true,limittopsimilarity:true,limittopsimilarities:true,limitsimilarity:true,limitsimilarities:true,topsimilarities:true,topsimilarity:true,similarities:true,similarity:true,userscore:true,userscores:true,wscore:true,wscores:true,year:true,years:true,season:true,seasons:true,userstatus:true,status:true,title:true,titles:true}
     const data = message?.data
     const notAnUpdate = data?.notAnUpdate
     const savedAnimeFranchises = data?.savedAnimeFranchises || []
@@ -11,6 +11,7 @@ self.onmessage = (message) => {
     var measure = "mean"
     var includeUnknownVar = true
     var minSampleSize
+    var sampleSize
     var minPopularity
     var minAverageScore
     // Filter Algorithm
@@ -94,14 +95,25 @@ self.onmessage = (message) => {
                 }
                 continue
             }
+            if(type===("minimumsamplesizes")
+             ||type===("minimumsamplesize")
+             ||type===("minimumsizes")
+             ||type===("minimumsize")
+             ||type===("minsamplesizes")
+             ||type===("minsamplesize")
+             ||type===("minsizes")
+             ||type===("minsize")){
+                if(isaN(filter)){
+                    minSampleSize = parseFloat(filter)
+                }
+                continue
+            }
             if(type===("samplesizes")
              ||type===("samplesize")
              ||type===("samples")
-             ||type===("sample")
-             // Need to Delete if other size is added
-             ||type===("size")){
+             ||type===("sample")){
                 if(isaN(filter)){
-                    minSampleSize = parseFloat(filter)
+                    sampleSize = parseFloat(filter)
                 }
                 continue
             }
@@ -568,10 +580,13 @@ self.onmessage = (message) => {
                 }
             }
             // Studios
+            var includedStudios = {}
             for(let j=0; j<studios.length; j++){
                 if(!studios[j]?.isAnimationStudio) continue
                 var studio = studios[j]?.name
                 if(typeof studio==="string"){
+                    if(includedStudios[studio]) continue
+                    includedStudios[studio] = true
                     var fullStudio = "studio: "+studio.trim().toLowerCase()
                     if(!jsonIsEmpty(include.studios)){
                         if((include.studios[fullStudio]&&!exclude.studios[fullStudio]
@@ -607,9 +622,12 @@ self.onmessage = (message) => {
                 }
             }
             // Staffs
+            var includedStaff = {}
             for(let j=0; j<staffs.length; j++){
                 var staff = staffs[j]?.node?.name?.userPreferred
                 if(typeof staff==="string"&&typeof staffs[j]?.role==="string"){
+                    if(includedStaff[staff]) continue
+                    includedStaff[staff] = true
                     var staffRole = staffs[j].role.split("(")[0].trim()
                     var fullStaff = "staff: "+staff.trim().toLowerCase()
                     var fullStaffRole = "role: "+staffRole.trim().toLowerCase()
@@ -773,50 +791,78 @@ self.onmessage = (message) => {
         }
     }
     // Clean Data JSON
-    // if(!jsonIsEmpty(formatMeanCount)){
+    // if(sampleSize>=0){
+    //     formatMeanCount = sampleSize
+    // } else if(!jsonIsEmpty(formatMeanCount)){
     //     var formatCountValues = Object.values(formatMeanCount)
     //     var formatCountMode = arrayMode(formatCountValues)
     //     var formatCountMean = arrayMean(formatCountValues)
     //     var tempformatMeanCount = formatCountMean>=33? 33 : Math.max(formatCountMode,formatCountMean)
-    //     formatMeanCount = minSampleSize? minSampleSize : tempformatMeanCount
+    //     formatMeanCount = tempformatMeanCount
     // } else {
     //     formatMeanCount = 10
     // }
-    if(!jsonIsEmpty(genresMeanCount)){
+    // if(minSampleSize>=0){
+    //     formatMeanCount = Math.max(minSampleSize,formatMeanCount)
+    // }
+    if(sampleSize>=0){
+        genresMeanCount = sampleSize
+    } else if(!jsonIsEmpty(genresMeanCount)){
         var genresCountValues = Object.values(genresMeanCount)
         var genresCountMode = arrayMode(genresCountValues)
         var genresCountMean = arrayMean(genresCountValues)
         var tempgenresMeanCount = genresCountMean>=33? 33 : Math.max(genresCountMode,genresCountMean)
-        genresMeanCount = minSampleSize? minSampleSize : tempgenresMeanCount
+        genresMeanCount = tempgenresMeanCount
     } else {
         genresMeanCount = 10
     }
-    if(!jsonIsEmpty(tagsMeanCount)){
+    if(minSampleSize>=0){
+        genresMeanCount = Math.max(minSampleSize,genresMeanCount)
+    }
+
+    if(sampleSize>=0){
+        tagsMeanCount = sampleSize
+    } else if(!jsonIsEmpty(tagsMeanCount)){
         var tagsCountValues = Object.values(tagsMeanCount)
         var tagsCountMode = arrayMode(tagsCountValues)
         var tagsCountMean = arrayMean(tagsCountValues)
         var temptagsMeanCount = tagsCountMean>=33? 33 : Math.max(tagsCountMode,tagsCountMean)
-        tagsMeanCount = minSampleSize? minSampleSize : temptagsMeanCount
+        tagsMeanCount = temptagsMeanCount
     } else {
         tagsMeanCount = 10
     }
-    if(!jsonIsEmpty(studiosMeanCount)){
+    if(minSampleSize>=0){
+        tagsMeanCount = Math.max(minSampleSize,tagsMeanCount)
+    }
+
+    if(sampleSize>=0){
+        studiosMeanCount = sampleSize
+    } else if(!jsonIsEmpty(studiosMeanCount)){
         var studiosCountValues = Object.values(studiosMeanCount)
         var studiosCountMode = arrayMode(studiosCountValues)
         var studiosCountMean = arrayMean(studiosCountValues)
         var tempstudiosMeanCount = studiosCountMean>=33? 33 : Math.max(studiosCountMode,studiosCountMean)
-        studiosMeanCount = minSampleSize? minSampleSize : tempstudiosMeanCount
+        studiosMeanCount = tempstudiosMeanCount
     } else {
         studiosMeanCount = 10
     }
-    if(!jsonIsEmpty(staffMeanCount)){
+    if(minSampleSize>=0){
+        studiosMeanCount = Math.max(minSampleSize,studiosMeanCount)
+    }
+
+    if(sampleSize>=0){
+        staffMeanCount = sampleSize
+    } else if(!jsonIsEmpty(staffMeanCount)){
         var staffCountValues = Object.values(staffMeanCount)
         var staffCountMode = arrayMode(staffCountValues)
         var staffCountMean = arrayMean(staffCountValues)
         var tempstaffMeanCount = staffCountMean>=33? 33 : Math.max(staffCountMode,staffCountMean)
-        staffMeanCount = minSampleSize? minSampleSize : tempstaffMeanCount
+        staffMeanCount = tempstaffMeanCount
     } else {
         staffMeanCount = 10
+    }
+    if(minSampleSize>=0){
+        staffMeanCount = Math.max(minSampleSize,staffMeanCount)
     }
     
     // If User List Scores is Empty

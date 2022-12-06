@@ -50,6 +50,7 @@ self.onmessage = (message) => {
         {"info":"status: cancelled"},
         {"info":"!status: !cancelled"},
         {"info":"sample size:"},
+        {"info":"minimum sample size:"},
         {"info":"minimum popularity: "},
         {"info":"minimum average score: "},
         {"info":"limit top similarities: "},
