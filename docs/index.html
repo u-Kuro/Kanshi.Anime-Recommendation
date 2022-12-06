@@ -20,7 +20,7 @@
     <!-- Datalist Search Code -->
     <link rel="preload" href="./js-css/flexdatalist/jquery.flex-datalist-v1.0.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/flexdatalist/jquery.flex-datalist-v1.0.css"></noscript>
-    <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.3.js" defer></script>
+    <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.4.js" defer></script>
     <!-- Bootstrap -->
     <link rel="preload" href="./js-css/bootstrap-3.3.6.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/bootstrap-3.3.6.min.css"></noscript>
@@ -4826,21 +4826,33 @@
                             .empty()
                             .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
                     }
-                    // Check Auto Export After Update
-                    if(exportIntervalIsActive){
-                        await exportIntervalBtnEl.css({background: "white",color:"black"})
-                        exportIntervalStartDate = await exportIntervalStartDate || new Date()
-                        await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                        if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
-                            dataStatusSpinnerHomeEl.show()
-                            dataStatusEl
-                                .empty()
-                                .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                            await backUpData()
+                    if(alertUser){
+                        if(exportIntervalIsActive){
+                            await exportIntervalBtnEl.css({background: "white",color:"black"})
+                            exportIntervalStartDate = await exportIntervalStartDate || new Date() // Don't Save At First Analysis
+                            if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
+                                dataStatusSpinnerHomeEl.show()
+                                dataStatusEl
+                                    .empty()
+                                    .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                await backUpData()
+                            }
                         }
-                    }
-                    if(!alertUser){
-                        requestIsRunning = false
+                    } else {
+                        requestIsRunning = false // Before backUpData
+                        // Check Auto Export After Update
+                        if(exportIntervalIsActive){
+                            await exportIntervalBtnEl.css({background: "white",color:"black"})
+                            exportIntervalStartDate = await exportIntervalStartDate || new Date()
+                            await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                            if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
+                                dataStatusSpinnerHomeEl.show()
+                                dataStatusEl
+                                    .empty()
+                                    .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                await backUpData()
+                            }
+                        }
                         resolve()
                     }
                 }
