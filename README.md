@@ -30,11 +30,12 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) In the settings click the button to filter the algorithm, which works similarly to table/list filters in instruction number 7.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) The filters in this need to be specific (adding staff: etc), In order to exclude all the staff or staff roles in the algorithm, type [!staff: all] or [!staff role: all].  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) The filters in this need to be specific (adding staff: etc), In order to only include directors or original creators in staff, type [staff role: director] or [staff role: original creator].  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) To change the minimum sample size for the algorithm, type [sample size: N], the default is adaptive (each has its own sample size equals to its mean count).  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e) Measure allows custom average (only Grouped Mode, and Mean), e.g., type [measure: mode] (the default is Mean).   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f) To exclude/include unknown variablles or simply the anime contents you haven't seen yet, in the algorithm, type [include unknown variables: false] (the default is true).  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g) To set a custom threshold for both popularity and average scores in anilist, type [minimum popularity: 3000] or [minimum averagescore: 50] (the default for popularity is 33% of the mean popularity of all anime, while the default for average score is 49.67).  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h) Algorithm Filter Indicators are as follows are [sample size: ], [measure: ], [format: ], [genre: ], [tag: ], [tag category: ], [studio: ], [staff: ], [staff role: ], and add ! as the first character to exclude.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) To change the minimum sample size for the algorithm, type [minimum sample size: N], there is no default but 2 will suffice.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e) To change the sample size for all algorithm, type [sample size: N], the default is adaptive (each has its own sample size equals to its mean count).  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f) Measure allows custom average (only Grouped Mode, and Mean), e.g., type [measure: mode] (the default is Mean).   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g) To exclude/include unknown variablles or simply the anime contents you haven't seen yet, in the algorithm, type [include unknown variables: false] (the default is true).  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h) To set a custom threshold for both popularity and average scores in anilist, type [minimum popularity: 3000] or [minimum averagescore: 50] (the default for popularity is 33% of the mean popularity of all anime, while the default for average score is 49.67).  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i) Algorithm Filter Indicators are as follows are [sample size: ], [minimum sample size: ], [measure: ], [format: ], [genre: ], [tag: ], [tag category: ], [studio: ], [staff: ], [staff role: ], and add ! as the first character to exclude.  
 
 ## Kanshi.VI (Recommended)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that uses existing Anilist account analyzed based through User Score Variable Importance including Genres, Tags, Format, Studios, and Staffs by Role as Categorical. Each variables or variable component are averaged. Numeric variables including Anilist Average-Score, Popularity, Year, Favourites, Episodes, Trending, Duration have their own Linear Regression Model to be predicted and accepted at 0.1 r-squared. Finally, all anime in Anilist are then analyzed based on the Variable Importance Schema from ones' rating.
@@ -52,14 +53,15 @@
     * Anime Content: Genre, Tags
     * Anime Production: Studio and Staff Roles (e.g., Original Creator, Director, etc.)
     * General Trend: Average Score and Year
-4. After clustering, SCORE was then calculated by the group's probability, instead of its mean to avoid low scores in each group.
+4. Next, the tool will calculate affinity/score based on the available information from the previous steps. For each Anime, the contents they are associated with are averaged to their according type, e.g., Genre, Tags, Studios, and Staff by Roles. Then each of the clusters with their respective types is also averaged.
+5. After clustering, SCORE was then calculated by the group's probability, instead of its mean to avoid low scores in each group.
     * Formula: [SCORE = Anime Content x Anime Production x General Trend]
-5. To reduce high Scores in an Anime with few variables to analyze a weight is added for non-popular and low average-scored Anime. 
+6. To reduce high Scores in an Anime with few variables to analyze a weight is added for non-popular and low average-scored Anime. 
     * Identifying Non-Popular Anime: [Threshold = Average Popularity x 0.33]
     * Calculating Weight for Non-Popular Anime: [PWeight = Anime Popularity/Average Popularity]
     * Identifying Low Average-Scored Anime: [Threshold = 49.67]
     * Calculating Weight for Low Average-Scored Anime: [AWeight = Anime Average Score*0.01]
-6. After identifying and calculating weight, the WSCORE was then calculated by multiplying the available weights to its SCORE.
+7. After identifying and calculating weight, the WSCORE was then calculated by multiplying the available weights to its SCORE.
     * Formula: [WSCORE = SCORE x PWeight x AWeight] (Only multiplied if an anime is identified as Non-Popular or Low Average-Scored, Else it remains the same)
 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Final score for Recommendation is WSCORE. In addition, Unweighted SCORE is still included in the app to see if there were any Highly recommended Anime that was put within the margin of error.
