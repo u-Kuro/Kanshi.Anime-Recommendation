@@ -7,11 +7,12 @@ self.onmessage = (message) => {
     var savedWarnR = data.savedWarnR
     var savedWarnY = data.savedWarnY
     var savedTheme = data.savedTheme
-    const availableFilterTypes = {format:true,formats:true,genre:true,genres:true,tagcategory:true,tagcategories:true,tag:true,tags:true,studio:true,studios:true,staffrole:true,staffroles:true,staff:true,staffs:true,measure:true,measures:true,average:true,averages:true,includeunknownvariables:true,unknownvariables:true,unknownvariable:true,includeunknown:true,unknown:true,samplesizes:true,samplesize:true,samples:true,sample:true,size:true,minimumpopularity:true,minpopularity:true,popularity:true,minimumaveragescores:true,minimumaveragescore:true,minimumaverages:true,minimumaverage:true,minimumscores:true,minimumscore:true,averagescores:true,averagescore:true,scores:true,score:true,minaveragescores:true,minaveragescore:true,minaverages:true,minaverage:true,minscores:true,minscore:true,minimumavescores:true,minimumavescore:true,minimumave:true,avescores:true,avescore:true,limittopsimilarity:true,limittopsimilarities:true,limitsimilarity:true,limitsimilarities:true,topsimilarities:true,topsimilarity:true,similarities:true,similarity:true,userscore:true,userscores:true,wscore:true,wscores:true,year:true,years:true,season:true,seasons:true,userstatus:true,status:true,title:true,titles:true}
+    const availableFilterTypes = {topscore:true,topscores:true,limittopscore:true,limittopscores:true,topwscore:true,limittopwscores:true,limittopwscore:true,topwscores:true,format:true,formats:true,genre:true,genres:true,tagcategory:true,tagcategories:true,tag:true,tags:true,studio:true,studios:true,staffrole:true,staffroles:true,staff:true,staffs:true,measure:true,measures:true,average:true,averages:true,includeunknownvariables:true,unknownvariables:true,unknownvariable:true,includeunknown:true,unknown:true,samplesizes:true,samplesize:true,samples:true,sample:true,size:true,minimumpopularity:true,minpopularity:true,popularity:true,minimumaveragescores:true,minimumaveragescore:true,minimumaverages:true,minimumaverage:true,minimumscores:true,minimumscore:true,averagescores:true,averagescore:true,scores:true,score:true,minaveragescores:true,minaveragescore:true,minaverages:true,minaverage:true,minscores:true,minscore:true,minimumavescores:true,minimumavescore:true,minimumave:true,avescores:true,avescore:true,limittopsimilarity:true,limittopsimilarities:true,limitsimilarity:true,limitsimilarities:true,topsimilarities:true,topsimilarity:true,similarities:true,similarity:true,userscore:true,userscores:true,wscore:true,wscores:true,year:true,years:true,season:true,seasons:true,userstatus:true,status:true,title:true,titles:true}
     var minTopSimilarities = 5
     // FilterOut User Includes and Excludes
       // Note: Order of Sequence is Important Here 
     // Include
+    // For other Filters
     var isHiddenTable = false
     var tempRecScheme = []
     for(let i=0; i<includes.length; i++){
@@ -32,6 +33,18 @@ self.onmessage = (message) => {
             type = included[0].replace(/\s|-|_/g,"")
             seperator = included[1]?.trim()??null
             filter = (included[2]??type).trim()
+        }
+        if(type===("limittopwscores")
+         ||type===("limittopwscore")
+         ||type===("topwscores")
+         ||type===("topwscore")){
+                continue
+            }
+        if(type===("limittopscores")
+         ||type===("limittopscore")
+         ||type===("topscores")
+         ||type===("topscore")){
+            continue
         }
         if((type===("limittopsimilarity")
           ||type===("limittopsimilarities")
@@ -396,6 +409,48 @@ self.onmessage = (message) => {
         recList = tempRecScheme
         tempRecScheme = []
     }
+
+    // Filter for Limiting Items In List
+    for(let i=0; i<includes.length; i++){
+        if(typeof includes[i]!=="string") continue
+        // Get the type, seperator, and filter
+        var included = includes[i].trim().toLowerCase().split(/(:|>=|<=|>|<)/)
+        if(included.length>2&&availableFilterTypes[included[0].replace(/\s|-|_/g,"")]){
+            included = [included.shift(),included.shift(),included.join("").trim()]
+        } else {
+            included = included.shift()
+        }
+        var type, filter, seperator
+        if(typeof included==="string"){  
+            type = ""
+            seperator = null
+            filter = included.trim()
+        } else {
+            type = included[0].replace(/\s|-|_/g,"")
+            seperator = included[1]?.trim()??null
+            filter = (included[2]??type).trim()
+        }
+        if(seperator===":"&&isaN(filter)&&recList instanceof Array){
+            if(type===("limittopwscores")
+             ||type===("limittopwscore")
+             ||type===("topwscores")
+             ||type===("topwscore")){
+                recList = recList.sort((a,b)=>parseFloat(b?.weightedScore??0)-parseFloat(a?.weightedScore??0))
+                    .filter((e)=>isHiddenTable?savedHiddenAnimeIDs[e?.id]:!savedHiddenAnimeIDs[e?.id])
+                    .slice(0,parseFloat(filter))
+            }
+            if(type===("limittopscores")
+             ||type===("limittopscore")
+             ||type===("topscores")
+             ||type===("topscore")){
+                recList = recList.sort((a,b)=>parseFloat(b?.score??0)-parseFloat(a?.score??0))
+                    .filter((e)=>isHiddenTable?savedHiddenAnimeIDs[e?.id]:!savedHiddenAnimeIDs[e?.id])
+                    .slice(0,parseFloat(filter))
+                break
+            }
+        }
+    }
+
     var warnR = {}, warnY = {}
     // Validate Warn Content
     if(savedWarnR instanceof Array){

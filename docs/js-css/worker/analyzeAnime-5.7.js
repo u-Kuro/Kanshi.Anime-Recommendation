@@ -225,11 +225,23 @@ self.onmessage = (message) => {
                 allFilterInfo["year<"] = true
                 allFilterInfo["year<="] = true
             }
+            if(!allFilterInfo["sample size: "]){
+                allFilterInfo["sample size: "] = true
+            }
+            if(!allFilterInfo["minimum sample size: "]){
+                allFilterInfo["minimum sample size: "] = true
+            }
             if(!allFilterInfo["minimum popularity: "]){
                 allFilterInfo["minimum popularity: "] = true
             }
             if(!allFilterInfo["minimum average score: "]){
                 allFilterInfo["minimum average score: "] = true
+            }
+            if(!allFilterInfo["limit top wscore: "]){
+                allFilterInfo["limit top wscore: "] = true
+            }
+            if(!allFilterInfo["limit top score: "]){
+                allFilterInfo["limit top score: "] = true
             }
             if(!allFilterInfo["limit top similarities: "]){
                 allFilterInfo["limit top similarities: "] = true

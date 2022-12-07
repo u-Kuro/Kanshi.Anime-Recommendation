@@ -20,7 +20,7 @@
     <!-- Datalist Search Code -->
     <link rel="preload" href="./js-css/flexdatalist/jquery.flex-datalist-v1.0.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/flexdatalist/jquery.flex-datalist-v1.0.css"></noscript>
-    <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.4.js" defer></script>
+    <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.5.js" defer></script>
     <!-- Bootstrap -->
     <link rel="preload" href="./js-css/bootstrap-3.3.6.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/bootstrap-3.3.6.min.css"></noscript>
@@ -1167,8 +1167,8 @@
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "5.6",
-          backUpVersion = 3.4
+    const version = "5.7",
+          backUpVersion = 3.5
         // IndexDB
     var request, db,
         // Saved Data
@@ -1279,7 +1279,7 @@
                 savedUsername = await retrieveJSON("savedUsername") || ""
                 savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson") || []
                 allFilterInfo = await retrieveJSON("allFilterInfo") || {}
-                savedFilters = await retrieveJSON("savedFilters") || []
+                savedFilters = await retrieveJSON("savedFilters") || ["limit top wscore: 100", "user status: unwatched"]
                 savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises") || []
                 savedBackUpVersion = await retrieveJSON(`backUpVersion`) || 0
                 kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden") ?? true
@@ -2000,7 +2000,7 @@
                                             await usernameEl.val(savedUsername)
                                             return
                                         }).then(async()=>{
-                                            await new Promise(async(resolve)=>{
+                                            return await new Promise(async(resolve)=>{
                                                 await warnAnimeContainerEl.css({visibility:"hidden"}).show()
                                                 // Remove Current Filters
                                                 var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
@@ -2009,7 +2009,9 @@
                                                     await $("#warnAnimeModal .flexdatalist-alias").blur()
                                                 }
                                                 resolve()
-                                            }).then(async()=>{
+                                            })
+                                        }).then(async()=>{
+                                            return await new Promise(async(resolve)=>{
                                                 // Reload Filters
                                                 var warnAnimeInput
                                                 for(let i=0; i<savedWarnAnime.length; i++) {
@@ -2020,7 +2022,7 @@
                                                     await warnAnimeInput.val("")
                                                 }
                                                 await warnAnimeContainerEl.css({visibility:"visible"}).hide()
-                                                return
+                                                resolve()
                                             })
                                         }).then(async()=>{
                                             return await new Promise(async(resolve)=>{
@@ -2032,9 +2034,11 @@
                                                     await $("#filterAlgoModal .flexdatalist-alias").blur()
                                                 }
                                                 resolve()
-                                            }).then(async()=>{
+                                            })
+                                        }).then(async()=>{
+                                            return await new Promise(async(resolve)=>{
                                                 // Reload Filters
-                                                var filterAlgoInput
+                                                var filterAlgoInput;
                                                 for(let i=0; i<savedFilterAlgo.length; i++) {
                                                     filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                                     await filterAlgoInput.val(savedFilterAlgo[i])
@@ -2043,7 +2047,7 @@
                                                     await filterAlgoInput.val("")
                                                 }
                                                 await filterAlgoContainerEl.css({visibility:"visible"}).hide()
-                                                return
+                                                resolve()
                                             })
                                         }).then(async()=>{
                                             if(Object.keys(savedRecScheme).length) {
@@ -2238,7 +2242,9 @@
                                             await $("#warnAnimeModal .flexdatalist-alias").blur()
                                         }
                                         resolve()
-                                    }).then(async()=>{
+                                    })
+                                }).then(async()=>{
+                                    return await new Promise(async(resolve)=>{
                                         // Reload Filters
                                         var warnAnimeInput
                                         for(let i=0; i<savedWarnAnime.length; i++) {
@@ -2249,7 +2255,7 @@
                                             await warnAnimeInput.val("")
                                         }
                                         await warnAnimeContainerEl.css({visibility:"visible"}).hide()
-                                        return
+                                        resolve()
                                     })
                                 }).then(async()=>{
                                     return await new Promise(async(resolve)=>{
@@ -2261,9 +2267,11 @@
                                             await $("#filterAlgoModal .flexdatalist-alias").blur()
                                         }
                                         resolve()
-                                    }).then(async()=>{
+                                    })
+                                }).then(async()=>{
+                                    return await new Promise(async(resolve)=>{
                                         // Reload Filters
-                                        var filterAlgoInput
+                                        var filterAlgoInput;
                                         for(let i=0; i<savedFilterAlgo.length; i++) {
                                             filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                             await filterAlgoInput.val(savedFilterAlgo[i])
@@ -2272,7 +2280,7 @@
                                             await filterAlgoInput.val("")
                                         }
                                         await filterAlgoContainerEl.css({visibility:"visible"}).hide()
-                                        return
+                                        resolve()
                                     })
                                 }).then(async()=>{
                                     if(Object.keys(savedRecScheme).length) {
@@ -2633,7 +2641,7 @@
                     } else {
                         var filterAlgoInputs = $("#filterAlgoModal .flexdatalist-multiple > .value").children(".text")
                         var filterAlgo = []
-                        var filterName
+                        var filterName;
                         for(let i=0; i<filterAlgoInputs.length; i++){
                             filterName = filterAlgoInputs[i].textContent
                             filterAlgo.push(filterName)
@@ -2664,7 +2672,7 @@
                             }
                             resolve()
                         }).then(async()=>{
-                            var filterAlgoInput
+                            var filterAlgoInput;
                             for(let i=0; i<savedFilterAlgo.length; i++) {
                                 filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                 await filterAlgoInput.val(savedFilterAlgo[i])
@@ -3217,7 +3225,9 @@
                 } else {
                     resolve()
                 }
-            }).then(async()=>{
+            })
+        }).then(async()=>{
+            return await new Promise(async(resolve)=>{
                 if(savedAnimeEntries.length<1||lastSavedUpdateTime===0||savedBackUpVersion<backUpVersion){
                     var worker0 = await new Worker(`./js-css/worker/getAnimeEntries-${version}.js`)
                     await worker0.postMessage("")
@@ -3235,15 +3245,17 @@
                                 Update(true)
                             }
                         }
-                        return
+                        resolve()
                     }
                     worker0.onerror = () => {
-                        return
+                        resolve()
                     }
                 } else {
-                    return
+                    resolve()
                 }
-            }).then(async()=>{
+            })
+        }).then(async()=>{
+            return await new Promise(async(resolve)=>{
                 if(await savedFilterOptionsJson.length<1||savedBackUpVersion<backUpVersion){
                     var worker1 = await new Worker(`./js-css/worker/getOptions-${version}.js`)
                     await worker1.postMessage("")
@@ -3259,10 +3271,10 @@
                             searchIn: 'info',
                             data: savedFilterOptionsJson
                         })
-                        return
+                        resolve()
                     }
                     worker1.onerror = async (message) => {
-                        return
+                        resolve()
                     }
                 } else {
                     await $(".flexdatalist").flexdatalist({
@@ -3270,9 +3282,21 @@
                         searchIn: 'info',
                         data: savedFilterOptionsJson
                     })
-                    return
+                    resolve()
                 }
-            }).then(async()=>{
+            })
+        }).then(async()=>{
+            return await new Promise(async(resolve)=>{
+                if(savedBackUpVersion<backUpVersion){
+                    savedFilters = ["limit top wscore: 100", "user status: unwatched"]
+                    await saveJSON(savedFilters,"savedFilters")
+                    resolve()
+                } else {
+                    resolve()
+                }
+            })
+        }).then(async()=>{
+            return await new Promise(async(resolve)=>{
                 if(await savedAnimeFranchises.length<1||savedBackUpVersion<backUpVersion){
                     var worker8 = await new Worker(`./js-css/worker/getAnimeFranchises-${version}.js`)
                     await worker8.postMessage("")
@@ -3281,11 +3305,13 @@
                         const data = await message.data
                         savedAnimeFranchises = await data.savedAnimeFranchises || []
                         await saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
-                        return
+                        resolve()
                     }
                     worker8.onerror = async (message) => {
-                        return
+                        resolve()
                     }
+                } else {
+                    resolve()
                 }
             })
         }).then(async()=>{
@@ -3301,18 +3327,16 @@
                 }
                 // Reload Table Filters/Identifiers
                     // Table Filters
-                if(savedUsername){
-                    var filterInput
-                    for(let i=0; i<savedFilters.length; i++) {
-                        filterInput = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
-                        await filterInput.val(savedFilters[i])
-                        var e = await $.Event("keyup",{keyCode:13})
-                        await filterInput.trigger(e)
-                        await filterInput.val("")
-                    }
+                var filterInput;
+                for(let i=0; i<savedFilters.length; i++) {
+                    filterInput = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
+                    await filterInput.val(savedFilters[i])
+                    var e = await $.Event("keyup",{keyCode:13})
+                    await filterInput.trigger(e)
+                    await filterInput.val("")
                 }
                     // Algorithm Filters
-                var filterAlgoInput
+                var filterAlgoInput;
                 for(let i=0; i<savedFilterAlgo.length; i++) {
                     filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
                     await filterAlgoInput.val(savedFilterAlgo[i])
@@ -3322,7 +3346,7 @@
                 }
                 await filterAlgoContainerEl.css({visibility:"visible"}).hide()
                     // Warn Content Identifier
-                var warnAnimeInput
+                var warnAnimeInput;
                 for(let i=0; i<savedWarnAnime.length; i++) {
                     warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
                     await warnAnimeInput.val(savedWarnAnime[i])
@@ -3620,7 +3644,7 @@
         }
         var savedIncluded = []
         var savedExcluded = []
-        var filterName
+        var filterName;
         for(let i=0; i<savedFilterAlgo.length; i++){
             filterName = savedFilterAlgo[i].trim().toLowerCase()
             if(filterName.charAt(0)==="!") {
@@ -4588,12 +4612,12 @@
                 // Save Table Filters
                 var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
                 var filters = []
-                var filterName
+                var filterName;
                 for(let i=0; i<filterInputs.length; i++){
                     filterName = filterInputs[i].textContent
                     filters.push(filterName)
                 }
-                savedFilters = await filters || []
+                savedFilters = await filters || ["limit top wscore: 100", "user status: unwatched"]
                 await saveJSON(savedFilters, "savedFilters")
                 // Save Username
                 savedUsername = await username || ""
@@ -4664,7 +4688,7 @@
                                     }
                                     resolve()
                                 }).then(async()=>{
-                                    var filterInput
+                                    var filterInput;
                                     for(let i=0; i<savedFilters.length; i++) {
                                         filterInput = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
                                         await filterInput.val(savedFilters[i])
@@ -4692,7 +4716,7 @@
                                     }
                                     resolve()
                                 }).then(async()=>{
-                                    var filterAlgoInput
+                                    var filterAlgoInput;
                                     for(let i=0; i<savedFilterAlgo.length; i++) {
                                         filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                         await filterAlgoInput.val(savedFilterAlgo[i])
@@ -4759,7 +4783,7 @@
                             }
                             resolve()
                         }).then(async()=>{
-                            var filterAlgoInput
+                            var filterAlgoInput;
                             for(let i=0; i<savedFilterAlgo.length; i++) {
                                 filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                 await filterAlgoInput.val(savedFilterAlgo[i])
@@ -4829,8 +4853,8 @@
                     if(alertUser){
                         if(exportIntervalIsActive){
                             await exportIntervalBtnEl.css({background: "white",color:"black"})
-                            exportIntervalStartDate = await exportIntervalStartDate || new Date() // Don't Save At First Analysis
-                            if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
+                            // Don't Save At First Analysis
+                            if(await ((new Date).getTime()-((await exportIntervalStartDate || new Date()).getTime())>3600000)){// 1hr
                                 dataStatusSpinnerHomeEl.show()
                                 dataStatusEl
                                     .empty()
@@ -4879,7 +4903,7 @@
                 var filters = []
                 var includes = []
                 var excludes = kidsAnimeIsHidden? ["tag: kids"] : []
-                var filterName
+                var filterName;
                 for(let i=0; i<filterInputs.length; i++){
                     filterName = filterInputs[i].textContent.trim().toLowerCase()
                     filters.push(filterName)
@@ -4909,7 +4933,7 @@
                         break;
                     }
                 }
-                savedFilters = await filters || []
+                savedFilters = await filters || ["limit top wscore: 100", "user status: unwatched"]
                 await saveJSON(savedFilters, "savedFilters")
                 var savedWarnR = []
                 var savedWarnY = []
