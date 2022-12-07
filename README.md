@@ -8,25 +8,28 @@
   
 #### ____Features/Usage Instructions (Mostly for VI)____
   1. Settings can be found by clicking the bar at the top.  
-  2. Sort by Scores/Status/Popularity/etc. to the desired order.  
-  3. Auto Recommendation updates and Exports every hour are available in the settings.  
-  4. Dark/Light Theme in the settings (If this lags rendering, follow the suggestion below to have better performance).   
-  5. Update button in the settings to update your recommendation list (Used when you change an anime in your list in anilist).
-  6. Deep Update button in the settings to reset all data in the app (This will take a longer time to finish).
-  7. Import/Export your user data recommendation in the settings (This is recommended, a backup will be useful when Anilist is Down or the API had a problem with the Tool).
-  8. Hide Unwatched Sequel button in the settings will only show the first season for each anime franchise or the very first unwatched sequel (For example it shows standalone movies / specials / etc., or if you already completed / currently rewatching an anime season only the next unwatched sequel will show [If there's a case where {prequel-popularity<sequel-popularity} the sequel will also be included in the list]).
-  9. Table/List Filter Anime is used to filter the list shown in the table by adding Title/Genres/Tags/User Status/Anime Status/Format/Year/Season/Studios/Staff to include and/or exclude an anime in your recommendation list. Numeric Filters >,<,>=,<= for numeric columns including WScore, Score, User Score, Average Score in anilist, Popularity, and Year.   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) To only see the Unwatched Anime, type [user status: unwatched] or [unwatched] in the filter  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To remove the Completed or Dropped anime, type [!user status: completed] or [!user status: !dropped] or just type [!dropped] (Type what you want to, the first two variations are more specific than the last).  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) To only allow Weighted SCORES of 7-10, type wscore>=7.  
-  10. Hidden/Unhidden List to hide an Anime in the apps list or show to bring it back.  
+  2. The list is paginated, click the next/prev/first/last below to see more recommendation. You can also click right arrow/left arrow/ctrl+left arrow/ctrl+right arrow respectively.  
+  3. Sort by Scores/Status/Popularity/etc. to the desired order.  
+  4. Auto Recommendation updates and Exports every hour are available in the settings.  
+  5. Dark/Light Theme in the settings (If this lags rendering, follow the suggestion below to have better performance).   
+  6. Update button in the settings to update your recommendation list (Used when you change an anime in your list in anilist).
+  7. Deep Update button in the settings to reset all data in the app (This will take a longer time to finish).
+  8. Import/Export your user data recommendation in the settings (This is recommended, a backup will be useful when Anilist is Down or the API had a problem with the Tool).
+  9. Hide Unwatched Sequel button in the settings will only show the first season for each anime franchise or the very first unwatched sequel (For example it shows standalone movies / specials / etc., or if you already completed / currently rewatching an anime season only the next unwatched sequel will show [If there's a case where {prequel-popularity<sequel-popularity} the sequel will also be included in the list]).
+  10. Table/List Filter Anime is used to filter the list shown in the table by adding Title/Genres/Tags/User Status/Anime Status/Format/Year/Season/Studios/Staff to include and/or exclude an anime in your recommendation list. Numeric Filters >,<,>=,<= for numeric columns including WScore, Score, User Score, Average Score in anilist, Popularity, and Year.   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) limit the amount of recommendations by highest wscore, type [limit top wscore: N], (This filter limit by scores is recommended for faster loading).  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To limit the amount of recommendations by highest score, type [limit top score: N]  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) To only see the Unwatched Anime, type [user status: unwatched] or [unwatched] in the filter  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) To remove the Completed or Dropped anime, type [!user status: completed] or [!user status: !dropped] or just type [!dropped] (Type what you want to, the first two variations are more specific than the last).  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e) To only allow Weighted SCORES of 7-10, type wscore>=7.  
+  11. Hidden/Unhidden List to hide an Anime in the apps list or show to bring it back.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) Click the black button named Unhidden or Hidden on the left side of the Wscore table header to change the list to Hidden or Unhidden respectively (you can also type hidden in the filters).  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) Click the Hide or Show button to transfer an Anime to the Hidden list or Unhidden list respectively.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) In the settings, the 'Show All' button can be used to Unhide all your Hidden Anime in the app, it transfers all Hidden anime to Unhidden list.  
-  11. Content Warning in the settings allows users to select Anime Content like Netorare, Nudity, etc. that will show a Warning Icon to Avoid any Undesired Content. You can also see the Warned Content by Clicking the Warning Icon Shown beside Wscore. Set custom warnings in the settings by clicking 'Choose Content Warn' Button.  
+  12. Content Warning in the settings allows users to select Anime Content like Netorare, Nudity, etc. that will show a Warning Icon to Avoid any Undesired Content. You can also see the Warned Content by Clicking the Warning Icon Shown beside Wscore. Set custom warnings in the settings by clicking 'Choose Content Warn' Button.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) Similar to Table/List filters, To have a Yellow Icon Semi-Warning for Netorare, type [tag: netorare] or [netorare].  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) Similar to Table/List filters, To have a Red Icon Warning for Netorare, type [!tag: !netorare] or [!tag: netorare] or [!netorare].  
-  12. Filtering Algorithm Contents in the settings allows the user to include and exclude contents in calculating the recommendation and affinity. The currently available fIlters are Formats, Genres, Tags, Tag Categories, Studios, Staff, and Staff Roles. You can use this as follows:  
+  13. Filtering Algorithm Contents in the settings allows the user to include and exclude contents in calculating the recommendation and affinity. The currently available fIlters are Formats, Genres, Tags, Tag Categories, Studios, Staff, and Staff Roles. You can use this as follows:  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) In the settings click the button to filter the algorithm, which works similarly to table/list filters in instruction number 7.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) The filters in this need to be specific (adding staff: etc), In order to exclude all the staff or staff roles in the algorithm, type [!staff: all] or [!staff role: all].  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) The filters in this need to be specific (adding staff: etc), In order to only include directors or original creators in staff, type [staff role: director] or [staff role: original creator].  
@@ -104,4 +107,4 @@
    - The Android app only runs on WebView for the moment so update pauses when app is not visible.
    - The Web page is static so updates may also stop when the tab is closed.
    - Anilist Request Limits to 50 anime per page/request might slow down update when getting all available anime information.
-   - App Kanshi.VI can also be slow due to the Amount of Anime 10000+ being Loaded. (This can be temporarily fixed by adding filters i.e wscore>=N to limit visible anime)
+   - App Kanshi.VI can also be slow due to the Amount of Anime 10000+ being Loaded. (This can be temporarily fixed by adding filters i.e limit top wscore: N to limit visible anime)
