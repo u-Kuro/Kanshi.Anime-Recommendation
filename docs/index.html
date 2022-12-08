@@ -4859,7 +4859,7 @@
                                 dataStatusEl
                                     .empty()
                                     .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                await backUpData()
+                                await backUpData(false)
                             }
                         }
                     } else {
@@ -4996,7 +4996,7 @@
         })
     }
 
-    async function backUpData(){
+    async function backUpData(saveBackUpDate = true){
         return await new Promise(async(resolve)=>{
             if(exportWorker){
                 exportWorker.terminate()
@@ -5023,8 +5023,10 @@
                 // Browser
                 await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                 // Browser
-                exportIntervalStartDate = await new Date()
-                await saveJSON(exportIntervalStartDate, "exportIntervalStartDate")
+                if(saveBackUpDate){
+                    exportIntervalStartDate = await new Date()
+                    await saveJSON(exportIntervalStartDate, "exportIntervalStartDate")
+                }
                 if(!requestIsRunning){
                     dataStatusSpinnerHomeEl.hide()
                     dataStatusEl
