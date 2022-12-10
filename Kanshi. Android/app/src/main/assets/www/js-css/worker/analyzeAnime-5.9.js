@@ -3,6 +3,7 @@ self.onmessage = (message) => {
     const mediaRelationTypes = ["adaptation","prequel","sequel","parent","side_story","summary","alternative","spin_off"]
     var data = message.data
     var animeEntries = data.animeEntries || []
+    var savedUserScores = data.savedUserScores || {}
     var savedRecScheme = data.savedRecScheme
     var recSchemeIsNew = jsonIsEmpty(savedRecScheme)
     var userListStatus = data.userListStatus
@@ -27,7 +28,13 @@ self.onmessage = (message) => {
     //
     if(!jsonIsEmpty(varScheme)){
         var userScores = Object.values(userListStatus.userScore)
-        var meanUserScore, meanScore = [];
+        var savedUserAnimeIDs = Object.keys(savedUserScores)
+        for(let i=0;i<savedUserAnimeIDs.length;i++){
+            if(!userListStatus.userScore[savedUserAnimeIDs[i]]){
+                delete savedUserScores[savedUserAnimeIDs[i]]
+            }
+        }
+        var meanUserScore, tmpMeanScore;
         if(userScores?.length){
             meanUserScore = arrayMean(userScores)
         }
@@ -93,7 +100,7 @@ self.onmessage = (message) => {
                 }
                 // Get the index of the New Franchise
                 afIdx = animeFranchises.length-1
-            } 
+            }
             // else if there is only one
             else {
                 // Index of Franchise
@@ -122,7 +129,7 @@ self.onmessage = (message) => {
             if(hideUnwatchedSequels){
                 var animeRelations = anime?.relations?.edges || []
                 // Conditions
-                var isUnwatchedSequel = 
+                var isUnwatchedSequel =
                   // No Prequel
                 !(animeRelations.some((e)=>{
                     var animeRelationType = e?.relationType
@@ -131,8 +138,8 @@ self.onmessage = (message) => {
                             return true
                         }
                     }
-                })) 
-                ||  
+                }))
+                ||
                   // or Have Prequel but...
                 (animeRelations.some((e)=>{
                     var animeRelationType = e?.relationType
@@ -157,7 +164,7 @@ self.onmessage = (message) => {
                         }
                     }
                 }))
-                // Don't Include if Anime Entry 
+                // Don't Include if Anime Entry
                 if(!isUnwatchedSequel){
                     delete savedRecScheme[anilistId]
                     continue
@@ -278,22 +285,22 @@ self.onmessage = (message) => {
             // }
             if(!allFilterInfo["genre: all"]
              &&!allFilterInfo["!genre: !all"]){
-                allFilterInfo["genre: all"] = true 
+                allFilterInfo["genre: all"] = true
                 allFilterInfo["!genre: !all"] = true
             }
             if(!allFilterInfo["tag category: all"]
              &&!allFilterInfo["!tag category: !all"]){
-                allFilterInfo["tag category: all"] = true 
+                allFilterInfo["tag category: all"] = true
                 allFilterInfo["!tag category: !all"] = true
             }
             if(!allFilterInfo["tag: all"]
              &&!allFilterInfo["!tag: !all"]){
-                allFilterInfo["tag: all"] = true 
+                allFilterInfo["tag: all"] = true
                 allFilterInfo["!tag: !all"] = true
             }
             if(!allFilterInfo["studio: all"]
              &&!allFilterInfo["!studio: !all"]){
-                allFilterInfo["studio: all"] = true  
+                allFilterInfo["studio: all"] = true
                 allFilterInfo["!studio: !all"] = true
             }
             if(!allFilterInfo["staff role: all"]
@@ -433,7 +440,7 @@ self.onmessage = (message) => {
                 // Filters
                 if(!allFilterInfo[fullGenre]
                  &&!allFilterInfo["!genre: !"+genre]){
-                    allFilterInfo[fullGenre] = true 
+                    allFilterInfo[fullGenre] = true
                     allFilterInfo["!genre: !"+genre] = true
                 }
             }
@@ -466,7 +473,7 @@ self.onmessage = (message) => {
                             // Top Similarities
                             if(typeof varScheme.meanTags==="number"
                              &&typeof tagRank==="number"){
-                                if(tagRank>=50 
+                                if(tagRank>=50
                                  &&varScheme.tags[fullTag]>=varScheme.meanTags
                                  &&!tagsIncluded[fullTag]){
                                     var tmpscore = varScheme.tags[fullTag]
@@ -511,12 +518,12 @@ self.onmessage = (message) => {
                 // Filters
                 if(!allFilterInfo[fullTagCategory]
                  &&!allFilterInfo["!tag category: !"+tagCategory]){
-                    allFilterInfo[fullTagCategory] = true 
+                    allFilterInfo[fullTagCategory] = true
                     allFilterInfo["!tag category: !"+tagCategory] = true
                 }
                 if(!allFilterInfo[fullTag]
                  &&!allFilterInfo["!tag: !"+tag]){
-                    allFilterInfo[fullTag] = true 
+                    allFilterInfo[fullTag] = true
                     allFilterInfo["!tag: !"+tag] = true
                 }
             }
@@ -552,7 +559,7 @@ self.onmessage = (message) => {
                 // Removed Since It's Lagging on Too Much Filters
                 // if(!allFilterInfo["studio: "+fullStudio]
                 //  &&!allFilterInfo["!studio: !"+studio]){
-                //     allFilterInfo["studio: "+fullStudio] = true  
+                //     allFilterInfo["studio: "+fullStudio] = true
                 //     allFilterInfo["!studio: !"+studio] = true
                 // }
             }
@@ -632,17 +639,17 @@ self.onmessage = (message) => {
                 // filters
                 if(!allFilterInfo[fullStaffRole]
                  &&!allFilterInfo["!staff role: !"+staffRole]){
-                    allFilterInfo[fullStaffRole] = true  
+                    allFilterInfo[fullStaffRole] = true
                     allFilterInfo["!staff role: !"+staffRole] = true
                 }
                 // Removed Since It's Lagging on Too Much Filters
                 // if(!allFilterInfo[fullStaff]
                 //  &&!allFilterInfo["!staff: !"+staff]){
-                //     allFilterInfo[fullStaff] = true  
+                //     allFilterInfo[fullStaff] = true
                 //     allFilterInfo["!staff: !"+staff] = true
                 // }
             }
-            
+
             // Anime Type
             var animeType = []
             var seasonYear = anime?.seasonYear
@@ -696,7 +703,7 @@ self.onmessage = (message) => {
                     return Math.max(1,arrayMean(e))
                 }
             }) || []
-            
+
             if(zstaffRolesArray.length&&zstudios.length){
                 if(measure==="mode"){
                     animeProduction.push(Math.max(1,arrayMean(zstaffRolesArray.concat([Math.max(1,arrayMode(zstudios))]))))
@@ -724,7 +731,7 @@ self.onmessage = (message) => {
             // Check mean score
             if(typeof meanUserScore==="number"&&typeof userListStatus.userScore[anilistId]==="number"){
                 if(userListStatus.userScore[anilistId]>=meanUserScore){
-                    meanScore.push(score)
+                    savedUserScores[anilistId] = score
                 }
             }
             // Other Anime Recommendation Info
@@ -740,26 +747,27 @@ self.onmessage = (message) => {
                 .sort((a,b)=>{return b?.[1]-a?.[1]}).map((e)=>{return e?.[0]||""})
             variablesIncluded = variablesIncluded.length?variablesIncluded:[]
             savedRecScheme[anilistId] = {
-                id: anilistId, title: title, animeUrl: animeUrl, 
-                userScore: userListStatus?.userScore?.[anilistId], 
+                id: anilistId, title: title, animeUrl: animeUrl,
+                userScore: userListStatus?.userScore?.[anilistId],
                 averageScore: averageScore,
                 popularity: popularity,
-                score: score, weightedScore: weightedScore, 
+                score: score, weightedScore: weightedScore,
                 variablesIncluded: variablesIncluded,
                 userStatus: userStatus, status: status,
                 // Others
-                genres: genres, tags: tags, year: year, 
+                genres: genres, tags: tags, year: year,
                 season: season, format: format, studios: studios, staffs: staffs
             }
         }
         // Calculate Mean Score minus Standard Deviation
-        if(meanScore.length){
+        if(!jsonIsEmpty(savedUserScores)){
             var scoreSD = [];
-            for(let i=0;i<meanScore.length-1;i++){
-                scoreSD.push(Math.abs(meanScore[i]-meanScore[i+1]))
+            var tmpMeanScore = Object.values(savedUserScores??{})
+            for(let i=0;i<tmpMeanScore.length-1;i++){
+                scoreSD.push(Math.abs(tmpMeanScore[i]-tmpMeanScore[i+1]))
             }
             scoreSD = scoreSD.length? arrayMean(scoreSD.sort((a,b)=>b-a)) : 0
-            meanScore = arrayMean(meanScore)-scoreSD
+            tmpMeanScore = arrayMean(tmpMeanScore)-scoreSD
         }
         // Add Weight to Scores
         var savedRecSchemeEntries = Object.keys(savedRecScheme)
@@ -769,8 +777,8 @@ self.onmessage = (message) => {
             var weightedScore = anime.weightedScore
             var averageScore = anime.averageScore
             // Add Mean Score
-            if(typeof meanScore==="number"){
-                savedRecScheme[savedRecSchemeEntries[i]].meanScore = meanScore
+            if(typeof tmpMeanScore==="number"){
+                savedRecScheme[savedRecSchemeEntries[i]].meanScore = tmpMeanScore
             } else {
                 savedRecScheme[savedRecSchemeEntries[i]].meanScore = 0
             }
@@ -923,22 +931,22 @@ self.onmessage = (message) => {
             // }
             if(!allFilterInfo["genre: all"]
              &&!allFilterInfo["!genre: !all"]){
-                allFilterInfo["genre: all"] = true 
+                allFilterInfo["genre: all"] = true
                 allFilterInfo["!genre: !all"] = true
             }
             if(!allFilterInfo["tag category: all"]
              &&!allFilterInfo["!tag category: !all"]){
-                allFilterInfo["tag category: all"] = true 
+                allFilterInfo["tag category: all"] = true
                 allFilterInfo["!tag category: !all"] = true
             }
             if(!allFilterInfo["tag: all"]
              &&!allFilterInfo["!tag: !all"]){
-                allFilterInfo["tag: all"] = true 
+                allFilterInfo["tag: all"] = true
                 allFilterInfo["!tag: !all"] = true
             }
             if(!allFilterInfo["studio: all"]
              &&!allFilterInfo["!studio: !all"]){
-                allFilterInfo["studio: all"] = true  
+                allFilterInfo["studio: all"] = true
                 allFilterInfo["!studio: !all"] = true
             }
             if(!allFilterInfo["staff role: all"]
@@ -993,7 +1001,7 @@ self.onmessage = (message) => {
                 fullGenre = "genre: "+genre
                 if(!allFilterInfo[fullGenre]
                  &&!allFilterInfo["!genre: !"+genre]){
-                    allFilterInfo[fullGenre] = true 
+                    allFilterInfo[fullGenre] = true
                     allFilterInfo["!genre: !"+genre] = true
                 }
             }
@@ -1004,7 +1012,7 @@ self.onmessage = (message) => {
                 fullTag = "tag: "+tag
                 if(!allFilterInfo[fullTag]
                  &&!allFilterInfo["!tag: !"+tag]){
-                    allFilterInfo[fullTag] = true 
+                    allFilterInfo[fullTag] = true
                     allFilterInfo["!tag: !"+tag] = true
                 }
                 var tagCategory = tags[j]?.category
@@ -1013,7 +1021,7 @@ self.onmessage = (message) => {
                 var fullTagCategory = "tag category: "+tagCategory
                 if(!allFilterInfo[fullTagCategory]
                  &&!allFilterInfo["!tag category: !"+tagCategory]){
-                    allFilterInfo[fullTagCategory] = true 
+                    allFilterInfo[fullTagCategory] = true
                     allFilterInfo["!tag category: !"+tagCategory] = true
                 }
             }
@@ -1025,7 +1033,7 @@ self.onmessage = (message) => {
                 // Removed Since It's Lagging on Too Much Filters
                 // if(!allFilterInfo[fullStudio]
                 //  &&!allFilterInfo["!studio: !"+studio]){
-                //     allFilterInfo[fullStudio] = true  
+                //     allFilterInfo[fullStudio] = true
                 //     allFilterInfo["!studio: !"+studio] = true
                 // }
             }
@@ -1086,15 +1094,15 @@ self.onmessage = (message) => {
             studios = studios.reduce((result,e)=>Object.assign(result,{[e?.name]:e?.siteUrl}),{})
             staffs = staffs.reduce((result,e)=>Object.assign(result,{[e?.node?.name?.userPreferred]:e?.node?.siteUrl}),{})
             savedRecScheme[anilistId] = {
-                id: anilistId, title: title, animeUrl: animeUrl, 
-                userScore: userListStatus?.userScore?.[anilistId], 
+                id: anilistId, title: title, animeUrl: animeUrl,
+                userScore: userListStatus?.userScore?.[anilistId],
                 averageScore: averageScore,
                 popularity: popularity,
-                score: score, weightedScore: weightedScore, 
+                score: score, weightedScore: weightedScore,
                 variablesIncluded: [],
                 userStatus: userStatus, status: status,
                 // Others
-                genres: genres, tags: tags, year: year, 
+                genres: genres, tags: tags, year: year,
                 season: season, format: format, studios: studios, staffs: staffs
             }
         }
@@ -1128,7 +1136,8 @@ self.onmessage = (message) => {
     self.postMessage({
         savedRecScheme: savedRecScheme,
         allFilterInfo: allFilterInfo,
-        animeFranchises: animeFranchises
+        animeFranchises: animeFranchises,
+        savedUserScores: savedUserScores
     })
     // Used Functions
     function isaN(num){

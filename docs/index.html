@@ -1170,13 +1170,13 @@
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "5.8",
-          backUpVersion = 3.6
+    const version = "5.9",
+          backUpVersion = 3.7
         // IndexDB
     var request, db,
         // Saved Data
     savedUsername, savedRecScheme, savedUserList, savedAnimeEntries, savedHiddenAnimeIDs, savedAnimeFranchises,
-    savedFilters, savedWarnAnime, savedFilterAlgo, savedBackUpVersion,
+    savedFilters, savedWarnAnime, savedFilterAlgo, savedBackUpVersion, savedUserScores,
     savedHiddenTablePage, savedUnhiddenTablePage, savedTableStatus, savedYscroll, savedSort,
     savedTheme, kidsAnimeIsHidden, hideUnwatchedSequels,
     savedFilterOptionsJson, allFilterInfo,
@@ -1273,6 +1273,7 @@
             return await new Promise(async(resolve)=>{
                 savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
                 savedUserList = await retrieveJSON("savedUserList") || {}
+                savedUserScores = await retrieveJSON("savedUserScores") || {}
                 lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
                 lastAnilistPage = await retrieveJSON("lastAnilistPage") || 284
                 savedTheme = await retrieveJSON("savedTheme") || "darkMode"
@@ -1378,6 +1379,8 @@
                                                     // Reset User List
                                                     savedUserList = await {}
                                                     await saveJSON(savedUserList,"savedUserList")
+                                                    savedUserScores = await {}
+                                                    await saveJSON(savedUserScores,"savedUserScores")
                                                     Update(false)
                                                 }
                                             })
@@ -1385,6 +1388,8 @@
                                             // Reset User List
                                             savedUserList = await {}
                                             await saveJSON(savedUserList,"savedUserList")
+                                            savedUserScores = await {}
+                                            await saveJSON(savedUserScores,"savedUserScores")
                                             Update(false)
                                         }
                                     } else {
@@ -1487,6 +1492,8 @@
                                                 // Reset User List
                                                 savedUserList = await {}
                                                 await saveJSON(savedUserList,"savedUserList")
+                                                savedUserScores = await {}
+                                                await saveJSON(savedUserScores,"savedUserScores")
                                                 Update(false)
                                             } else {
                                                 usernameEl.focus()
@@ -1539,6 +1546,8 @@
                                                 // Reset User List
                                                 savedUserList = await {}
                                                 await saveJSON(savedUserList,"savedUserList")
+                                                savedUserScores = await {}
+                                                await saveJSON(savedUserScores,"savedUserScores")
                                                 Update(false)
                                             } else {
                                                 usernameEl.focus()
@@ -1593,6 +1602,8 @@
                                                 // Reset User List
                                                 savedUserList = await {}
                                                 await saveJSON(savedUserList,"savedUserList")
+                                                savedUserScores = await {}
+                                                await saveJSON(savedUserScores,"savedUserScores")
                                                 Update(false)
                                             } else {
                                                 usernameEl.focus()
@@ -1645,6 +1656,8 @@
                                                 // Reset User List
                                                 savedUserList = await {}
                                                 await saveJSON(savedUserList,"savedUserList")
+                                                savedUserScores = await {}
+                                                await saveJSON(savedUserScores,"savedUserScores")
                                                 Update(false)
                                             } else {
                                                 usernameEl.focus()
@@ -1964,6 +1977,10 @@
                                             await saveJSON(savedUserList,"savedUserList")
                                             return
                                         }).then(async()=>{
+                                            savedUserScores = await fileContent.savedUserScores || {}
+                                            await saveJSON(savedUserScores,"savedUserScores")
+                                            return
+                                        }).then(async()=>{
                                             var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
                                                 savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || [90]
@@ -2195,6 +2212,10 @@
                                 }).then(async()=>{
                                     savedUserList = await fileContent.savedUserList || {}
                                     await saveJSON(savedUserList,"savedUserList")
+                                    return
+                                }).then(async()=>{
+                                    savedUserScores = await fileContent.savedUserScores || {}
+                                    await saveJSON(savedUserScores,"savedUserScores")
                                     return
                                 }).then(async()=>{
                                     var importedBackUpVersion = await fileContent.backUpVersion
@@ -3327,6 +3348,8 @@
                 } else {
                     savedUserList = await {}
                     await saveJSON(savedUserList,"savedUserList")
+                    savedUserScores = await {}
+                    await saveJSON(savedUserScores,"savedUserScores")
                 }
                 // Reload Table Filters/Identifiers
                     // Table Filters
@@ -3776,6 +3799,8 @@
                                     (async()=>{
                                         savedUserList = await {}
                                         await saveJSON(savedUserList,"savedUserList")
+                                        savedUserScores = await {}
+                                        await saveJSON(savedUserScores,"savedUserScores")
                                     })();
                                 }
                                 var worker2 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
@@ -3883,6 +3908,8 @@
                                         if(savedAnimeEntries.length>0){
                                             savedUserList = await savedUserList || {}
                                             await saveJSON(savedUserList,"savedUserList")
+                                            savedUserScores = await savedUserScores || {}
+                                            await saveJSON(savedUserScores,"savedUserScores")
                                             await analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, true)
                                         } else {
                                             await updateAllAnimeList(updateID, username, varScheme, userListStatus, alteredVariables, savedUserList)
@@ -4259,6 +4286,8 @@
                             if(savedUserList){
                                 savedUserList = await savedUserList || {}
                                 await saveJSON(savedUserList,"savedUserList")
+                                savedUserScores = await savedUserScores || {}
+                                await saveJSON(savedUserScores,"savedUserScores")
                             }
                             analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, false)
                         })();
@@ -4592,11 +4621,15 @@
                 varScheme: varScheme,
                 allFilterInfo: allFilterInfo,
                 alteredVariables: alteredVariables,
-                hideUnwatchedSequels: hideUnwatchedSequels
+                hideUnwatchedSequels: hideUnwatchedSequels,
+                savedUserScores: savedUserScores
             })
             worker4.onmessage = async(message) => {
                 worker4.terminate()
                 const data = message.data
+                // Save Mean Score
+                savedUserScores = data.savedUserScores || {}
+                saveJSON(savedUserScores,"savedUserScores")
                 if(!notAnUpdate||versionUpdate){
                     // Save New Filter Options
                     allFilterInfo = await data.allFilterInfo || {}
@@ -5013,6 +5046,7 @@
                 savedRecScheme: savedRecScheme,
                 savedAnimeEntries: savedAnimeEntries,
                 savedUserList: savedUserList,
+                savedUserScores: savedUserScores,
                 savedAnimeFranchises: savedAnimeFranchises,
                 savedAnalyzeVariableTime: savedAnalyzeVariableTime,
                 savedUpdateAnalyzeAnimeTime: savedUpdateAnalyzeAnimeTime,

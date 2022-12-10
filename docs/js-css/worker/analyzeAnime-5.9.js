@@ -3,6 +3,7 @@ self.onmessage = (message) => {
     const mediaRelationTypes = ["adaptation","prequel","sequel","parent","side_story","summary","alternative","spin_off"]
     var data = message.data
     var animeEntries = data.animeEntries || []
+    var savedUserScores = data.savedUserScores || {}
     var savedRecScheme = data.savedRecScheme
     var recSchemeIsNew = jsonIsEmpty(savedRecScheme)
     var userListStatus = data.userListStatus
@@ -27,7 +28,13 @@ self.onmessage = (message) => {
     //
     if(!jsonIsEmpty(varScheme)){
         var userScores = Object.values(userListStatus.userScore)
-        var meanUserScore, meanScore = [];
+        var savedUserAnimeIDs = Object.keys(savedUserScores)
+        for(let i=0;i<savedUserAnimeIDs.length;i++){
+            if(!userListStatus.userScore[savedUserAnimeIDs[i]]){
+                delete savedUserScores[savedUserAnimeIDs[i]]
+            }
+        }
+        var meanUserScore, tmpMeanScore;
         if(userScores?.length){
             meanUserScore = arrayMean(userScores)
         }
@@ -724,7 +731,7 @@ self.onmessage = (message) => {
             // Check mean score
             if(typeof meanUserScore==="number"&&typeof userListStatus.userScore[anilistId]==="number"){
                 if(userListStatus.userScore[anilistId]>=meanUserScore){
-                    meanScore.push(score)
+                    savedUserScores[anilistId] = score
                 }
             }
             // Other Anime Recommendation Info
@@ -753,13 +760,14 @@ self.onmessage = (message) => {
             }
         }
         // Calculate Mean Score minus Standard Deviation
-        if(meanScore.length){
+        if(!jsonIsEmpty(savedUserScores)){
             var scoreSD = [];
-            for(let i=0;i<meanScore.length-1;i++){
-                scoreSD.push(Math.abs(meanScore[i]-meanScore[i+1]))
+            var tmpMeanScore = Object.values(savedUserScores??{})
+            for(let i=0;i<tmpMeanScore.length-1;i++){
+                scoreSD.push(Math.abs(tmpMeanScore[i]-tmpMeanScore[i+1]))
             }
             scoreSD = scoreSD.length? arrayMean(scoreSD.sort((a,b)=>b-a)) : 0
-            meanScore = arrayMean(meanScore)-scoreSD
+            tmpMeanScore = arrayMean(tmpMeanScore)-scoreSD
         }
         // Add Weight to Scores
         var savedRecSchemeEntries = Object.keys(savedRecScheme)
@@ -769,8 +777,8 @@ self.onmessage = (message) => {
             var weightedScore = anime.weightedScore
             var averageScore = anime.averageScore
             // Add Mean Score
-            if(typeof meanScore==="number"){
-                savedRecScheme[savedRecSchemeEntries[i]].meanScore = meanScore
+            if(typeof tmpMeanScore==="number"){
+                savedRecScheme[savedRecSchemeEntries[i]].meanScore = tmpMeanScore
             } else {
                 savedRecScheme[savedRecSchemeEntries[i]].meanScore = 0
             }
@@ -1128,7 +1136,8 @@ self.onmessage = (message) => {
     self.postMessage({
         savedRecScheme: savedRecScheme,
         allFilterInfo: allFilterInfo,
-        animeFranchises: animeFranchises
+        animeFranchises: animeFranchises,
+        savedUserScores: savedUserScores
     })
     // Used Functions
     function isaN(num){
