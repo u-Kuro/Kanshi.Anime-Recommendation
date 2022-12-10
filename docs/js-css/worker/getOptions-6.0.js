@@ -69,6 +69,8 @@ self.onmessage = (message) => {
         {"info":"popularity: "},
         {"info":"year>"},
         {"info":"year<"},
+        {"info":"!year"},
+        {"info":"!average score"},
         {"info":"genre: all"},
         {"info":"!genre: !all"},
         {"info":"studio: all"},

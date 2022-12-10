@@ -14,6 +14,8 @@ self.onmessage = (message) => {
     var sampleSize
     var minPopularity
     var minAverageScore
+    var includeYear = true
+    var includeAverageScore = true
     // Filter Algorithm
     var userEntries
     var include = {
@@ -39,7 +41,7 @@ self.onmessage = (message) => {
         if(typeof included==="string"){  
             type = ""
             seperator = null
-            filter = included.trim()
+            filter = included.replace(/\s|-|_/g,"")
         } else {
             type = included[0].replace(/\s|-|_/g,"")
             seperator = included[1]?.trim()??null
@@ -131,10 +133,6 @@ self.onmessage = (message) => {
              ||type===("minimumaverage")
              ||type===("minimumscores")
              ||type===("minimumscore")
-             ||type===("averagescores")
-             ||type===("averagescore")
-             ||type===("scores")
-             ||type===("score")
              ||type===("minaveragescores")
              ||type===("minaveragescore")
              ||type===("minaverages")
@@ -143,9 +141,7 @@ self.onmessage = (message) => {
              ||type===("minscore")
              ||type===("minimumavescores")
              ||type===("minimumavescore")
-             ||type===("minimumave")
-             ||type===("avescores")
-             ||type===("avescore")){
+             ||type===("minimumave")){
                 if(isaN(filter)){
                     minAverageScore = parseFloat(filter)
                 }
@@ -167,7 +163,7 @@ self.onmessage = (message) => {
         if(typeof excluded==="string"){
             type = ""
             seperator = null
-            filter = excluded.trim()
+            filter = excluded.replace(/\s|-|_/g,"")
         } else {
             type = excluded[0].replace(/\s|-|_/g,"")
             seperator = excluded[1]?.trim()??null
@@ -200,6 +196,18 @@ self.onmessage = (message) => {
             }
             if(type===("staff")||type===("staffs")){
                 exclude.staffs["staff: "+filter] = true
+                continue
+            }
+        } else if(!seperator){
+            if(filter===("year")||filter===("years")){
+                includeYear = false
+                continue
+            }
+            if(filter===("averagescores")
+             ||filter===("averagescore")
+             ||filter===("avescores")
+             ||filter===("avescore")){
+                includeAverageScore = false
                 continue
             }
         }
@@ -1019,88 +1027,94 @@ self.onmessage = (message) => {
         // Average Score Model
         // const r2Thresh = 0.1 // Lower than 0.3 Since Media is Subjective
         // For Anime Date Model
-        var animeDateModel = []
-        var yearXY = []
-        for(let i=0; i<year.length;i++){
-            yearXY.push([year[i].year,year[i].userScore])
+        // var animeDateModel = []
+        if(includeYear){
+            var yearXY = []
+            for(let i=0; i<year.length;i++){
+                yearXY.push([year[i].year,year[i].userScore])
+            }
+            if(yearXY.length>=(minSampleSize||33)){
+                // var tempLinearReg = linearRegression(yearXY)
+                // animeDateModel.push([tempLinearReg,"yearModel"])
+                varScheme.yearModel = linearRegression(yearXY)
+            }
         }
-        if(yearXY.length>=(minSampleSize||33)){
-            var tempLinearReg = linearRegression(yearXY)
-            animeDateModel.push([tempLinearReg,"yearModel"])
-        }
-        var sortedAnimeDateModels = animeDateModel.sort(function(a, b) {
-            return b[0].r2 - a[0].r2;
-        })
-        if(sortedAnimeDateModels.length>0){
-            sortedAnimeDateModels = sortedAnimeDateModels[0]
-            varScheme[sortedAnimeDateModels[1]] = sortedAnimeDateModels[0]
-        }
+        // var sortedAnimeDateModels = animeDateModel.sort(function(a, b) {
+        //     return b[0].r2 - a[0].r2;
+        // })
+        // if(sortedAnimeDateModels.length>0){
+        //     sortedAnimeDateModels = sortedAnimeDateModels[0]
+        //     varScheme[sortedAnimeDateModels[1]] = sortedAnimeDateModels[0]
+        // }
         // For Anime Length Models
-        var animeLengthModels = []
-        var episodesXY = []
-        for(let i=0; i<episodes.length;i++){
-            episodesXY.push([episodes[i].episodes,episodes[i].userScore])
-        }
-        if(episodesXY.length>=(minSampleSize||33)){
-            var tempLinearReg = linearRegression(episodesXY)
-            animeLengthModels.push([tempLinearReg,"episodesModel"])
-        }
-        var durationXY = []
-        for(let i=0; i<duration.length;i++){
-            durationXY.push([duration[i].duration,duration[i].userScore])
-        }
-        if(durationXY.length>=(minSampleSize||33)){
-            var tempLinearReg = linearRegression(durationXY)
-            animeLengthModels.push([tempLinearReg,"durationModel"])
-        }
-        var sortedAnimeLengthModels = animeLengthModels.sort(function(a, b) {
-            return b[0].r2 - a[0].r2;
-        })
-        if(sortedAnimeLengthModels.length>0){
-            sortedAnimeLengthModels = sortedAnimeLengthModels[0]
-            varScheme[sortedAnimeLengthModels[1]] = sortedAnimeLengthModels[0]
-        }
+        // var animeLengthModels = []
+        // var episodesXY = []
+        // for(let i=0; i<episodes.length;i++){
+        //     episodesXY.push([episodes[i].episodes,episodes[i].userScore])
+        // }
+        // if(episodesXY.length>=(minSampleSize||33)){
+        //     var tempLinearReg = linearRegression(episodesXY)
+        //     animeLengthModels.push([tempLinearReg,"episodesModel"])
+        // }
+        // var durationXY = []
+        // for(let i=0; i<duration.length;i++){
+        //     durationXY.push([duration[i].duration,duration[i].userScore])
+        // }
+        // if(durationXY.length>=(minSampleSize||33)){
+        //     var tempLinearReg = linearRegression(durationXY)
+        //     animeLengthModels.push([tempLinearReg,"durationModel"])
+        // }
+        // var sortedAnimeLengthModels = animeLengthModels.sort(function(a, b) {
+        //     return b[0].r2 - a[0].r2;
+        // })
+        // if(sortedAnimeLengthModels.length>0){
+        //     sortedAnimeLengthModels = sortedAnimeLengthModels[0]
+        //     varScheme[sortedAnimeLengthModels[1]] = sortedAnimeLengthModels[0]
+        // }
         // For Popularity Models
-        var wellKnownAnimeModels = []
-        var averageScoreXY = []
-        for(let i=0; i<averageScore.length;i++){
-            averageScoreXY.push([averageScore[i].averageScore,averageScore[i].userScore])
+        // var wellKnownAnimeModels = []
+        if(includeAverageScore){
+            var averageScoreXY = []
+            for(let i=0; i<averageScore.length;i++){
+                averageScoreXY.push([averageScore[i].averageScore,averageScore[i].userScore])
+            }
+            if(averageScoreXY.length>=(minSampleSize||33)){
+                // var tempLinearReg = linearRegression(averageScoreXY)
+                // wellKnownAnimeModels.push([tempLinearReg,"averageScoreModel"])
+                varScheme.averageScoreModel = linearRegression(averageScoreXY)
+            }
         }
-        if(averageScoreXY.length>=(minSampleSize||33)){
-            var tempLinearReg = linearRegression(averageScoreXY)
-            wellKnownAnimeModels.push([tempLinearReg,"averageScoreModel"])
-        }
-        var trendingXY = []
-        for(let i=0; i<trending.length;i++){
-            trendingXY.push([trending[i].trending,trending[i].userScore])
-        }
-        if(trendingXY.length>=(minSampleSize||33)){
-            var tempLinearReg = linearRegression(trendingXY)
-            wellKnownAnimeModels.push([tempLinearReg,"trendingModel"])
-        }
-        var popularityXY = []
-        for(let i=0; i<popularity.length;i++){
-            popularityXY.push([popularity[i].popularity,popularity[i].userScore])
-        }
-        if(popularityXY.length>=(minSampleSize||33)){
-            var tempLinearReg = linearRegression(popularityXY)
-            wellKnownAnimeModels.push([tempLinearReg,"popularityModel"])
-        }
-        var favouritesXY = []
-        for(let i=0; i<favourites.length;i++){
-            favouritesXY.push([favourites[i].favourites,favourites[i].userScore])
-        }
-        if(favouritesXY.length>=(minSampleSize||33)){
-            var tempLinearReg = linearRegression(favouritesXY)
-            wellKnownAnimeModels.push([tempLinearReg,"favouritesModel"])
-        }
-        var sortedWellKnownAnimeModels = wellKnownAnimeModels.sort(function(a, b) {
-            return b[0].r2 - a[0].r2;
-        })
-        if(sortedWellKnownAnimeModels.length>0){
-            sortedWellKnownAnimeModels = sortedWellKnownAnimeModels[0]
-            varScheme[sortedWellKnownAnimeModels[1]] = sortedWellKnownAnimeModels[0]
-        }
+        // var trendingXY = []
+        // for(let i=0; i<trending.length;i++){
+        //     trendingXY.push([trending[i].trending,trending[i].userScore])
+        // }
+        // if(trendingXY.length>=(minSampleSize||33)){
+        //     var tempLinearReg = linearRegression(trendingXY)
+        //     wellKnownAnimeModels.push([tempLinearReg,"trendingModel"])
+        // }
+        // var popularityXY = []
+        // for(let i=0; i<popularity.length;i++){
+        //     popularityXY.push([popularity[i].popularity,popularity[i].userScore])
+        // }
+        // if(popularityXY.length>=(minSampleSize||33)){
+        //     var tempLinearReg = linearRegression(popularityXY)
+        //     wellKnownAnimeModels.push([tempLinearReg,"popularityModel"])
+        // }
+        // var favouritesXY = []
+        // for(let i=0; i<favourites.length;i++){
+        //     favouritesXY.push([favourites[i].favourites,favourites[i].userScore])
+        // }
+        // if(favouritesXY.length>=(minSampleSize||33)){
+        //     var tempLinearReg = linearRegression(favouritesXY)
+        //     wellKnownAnimeModels.push([tempLinearReg,"favouritesModel"])
+        // }
+        // var sortedWellKnownAnimeModels = wellKnownAnimeModels.sort(function(a, b) {
+        //     return b[0].r2 - a[0].r2;
+        // })
+        // if(sortedWellKnownAnimeModels.length>0){
+        //     sortedWellKnownAnimeModels = sortedWellKnownAnimeModels[0]
+        //     varScheme[sortedWellKnownAnimeModels[1]] = sortedWellKnownAnimeModels[0]
+        // }
     }
     
     self.postMessage({

@@ -34,8 +34,11 @@ self.onmessage = (message) => {
                 delete savedUserScores[savedUserAnimeIDs[i]]
             }
         }
-        var meanUserScore, tmpMeanScore;
+        var meanUserScore, tmpMeanScore, userScoreBase;
         if(userScores?.length){
+            var max = Math.max(...userScores)
+            var min = Math.min(...userScores)
+            userScoreBase = max<=5&&min>=1?5:max<=10&&min>=1?10:100
             meanUserScore = arrayMean(userScores)
         }
         for(let i=0; i<animeEntries.length; i++){
@@ -649,30 +652,46 @@ self.onmessage = (message) => {
                 //     allFilterInfo["!staff: !"+staff] = true
                 // }
             }
-            
+            // Average Mean Score for All Categorical Variables (Avoid High Predicted Value from Linear Regression)
+            var meanCatVars = []
+            if(typeof varScheme.meanGenres==="number"){
+                meanCatVars.push(varScheme.meanGenres)
+            }
+            if(typeof varScheme.meanTags==="number"){
+                meanCatVars.push(varScheme.meanTags)
+            }
+            if(typeof varScheme.meanStudios==="number"){
+                meanCatVars.push(varScheme.meanStudios)
+            }
+            if(typeof varScheme.meanStaff==="number"){
+                meanCatVars.push(varScheme.meanStaff)
+            }
+            if(meanCatVars.length){
+                meanCatVars = arrayMean(meanCatVars)
+            }
+            var userScoreMid = userScoreBase/2
             // Anime Type
             var animeType = []
             var seasonYear = anime?.seasonYear
             var yearModel = varScheme.yearModel
-            if(isaN(seasonYear)&&!jsonIsEmpty(yearModel)){
+            if(isaN(seasonYear)&&!jsonIsEmpty(yearModel)&&userScoreMid&&meanCatVars){
                 if(typeof seasonYear==="string"){
                     seasonYear = parseFloat(seasonYear)
                 }
-                animeType.push(Math.max(1,LRpredict(yearModel,seasonYear)))
+                animeType.push(Math.max(1,(LRpredict(yearModel,seasonYear)*meanCatVars)/userScoreMid))
             } else {
                 animeType.push(1)
             }
             var averageScore = anime?.averageScore
             var averageScoreModel = varScheme.averageScoreModel
-            if(isaN(averageScore)&&!jsonIsEmpty(averageScoreModel)){
+            if(isaN(averageScore)&&!jsonIsEmpty(averageScoreModel)&&userScoreMid&&meanCatVars){
                 if(typeof averageScore==="string"){
                     averageScore = parseFloat(averageScore)
                 }
-                animeType.push(Math.max(1,LRpredict(averageScoreModel,averageScore)))
+                animeType.push(Math.max(1,LRpredict((averageScoreModel,averageScore)*meanCatVars)/userScoreMid))
             } else {
                 animeType.push(1)
             }
-
             // Anime Content
             var animeContent = []
             if(zgenres.length){
@@ -767,7 +786,7 @@ self.onmessage = (message) => {
                 scoreSD.push(Math.abs(tmpMeanScore[i]-tmpMeanScore[i+1]))
             }
             scoreSD = scoreSD.length? arrayMean(scoreSD.sort((a,b)=>b-a)) : 0
-            tmpMeanScore = arrayMean(tmpMeanScore)-scoreSD
+            tmpMeanScore = Math.min(Math.min(...tmpMeanScore),arrayMean(tmpMeanScore)-scoreSD)
         }
         // Add Weight to Scores
         var savedRecSchemeEntries = Object.keys(savedRecScheme)
