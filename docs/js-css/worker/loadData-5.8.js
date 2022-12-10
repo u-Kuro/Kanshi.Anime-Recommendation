@@ -538,12 +538,14 @@ self.onmessage = (message) => {
         }
         var hasWarnR = false
         var hasWarnY = false
+        var hasWarnP = false
         var warns = []
-        var score = parseFloat(value?.score)
-        var weightedScore = parseFloat(value?.weightedScore)
-        var userScore = parseFloat(value?.userScore)
-        var averageScore = parseFloat(value?.averageScore)
-        var popularity = parseInt(value?.popularity)
+        var score = parseFloat(value?.score??0)
+        var weightedScore = parseFloat(value?.weightedScore??0)
+        var userScore = parseFloat(value?.userScore??0)
+        var averageScore = parseFloat(value?.averageScore??0)
+        var popularity = parseInt(value?.popularity??0)
+        var meanScore = parseFloat(value?.meanScore??0)
         var similarities = []
         value?.variablesIncluded?.forEach((v)=>{
             if(isJson(v)){
@@ -556,6 +558,11 @@ self.onmessage = (message) => {
         })
         similarities = similarities.splice(0,minTopSimilarities)
         // Content Warns
+        if(meanScore){
+            if(score<meanScore){
+               hasWarnP = true 
+            }
+        }
         var genres = value?.genres || []
         if(typeof genres==="string"){
             genres = genres.split(", ")
@@ -586,7 +593,10 @@ self.onmessage = (message) => {
                 hasWarnY = true
             }
         })
-        var hasWarn = hasWarnR||hasWarnY
+        if(hasWarnP&&typeof meanScore==="number"){
+            warns.unshift(`Low Score (Mean: ${nFormatter(meanScore.toFixed(2),2)??'N/A'})`)
+        }
+        var hasWarn = hasWarnR||hasWarnY||hasWarnP
         if(isHiddenTable){
             animeData += `
             <tr class="item ${savedTheme}" role="row" style="height:65px;">
@@ -597,9 +607,9 @@ self.onmessage = (message) => {
                         type="button" 
                         title="Hide this Anime">Show</button>
                 </td>
-                <td class="anime-score ${savedTheme}" title="${weightedScore||0}">
+                <td class="anime-score ${savedTheme}" title="${nFormatter((weightedScore||0),2)}">
                     <div>
-                        ${hasWarn?`<div title="${warns.join(', ')}"><i class="${savedTheme} fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
+                        ${hasWarn?`<div title="${warns.join(', ')}"><i class="${savedTheme} fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':hasWarnP?'iris':''}"></i></div>`:''}
                         ${weightedScore||0}
                     </div>
                 </td>
@@ -611,7 +621,7 @@ self.onmessage = (message) => {
                     animeData += similarities.length>0 ? similarities.join(', ') : 'Top Similarities: N/A'
                     animeData += `
                 </td>
-                <td class="anime-score ${savedTheme}" title="${score||0}">${score||0}</td>
+                <td class="anime-score ${savedTheme}" title="${nFormatter((score||0),2)}">${score||0}</td>
                 <td class="anime-score ${savedTheme}" title="${userScore||0}">${userScore||0}</td>
                 <td class="anime-score ${savedTheme}" title="${averageScore||0}">${averageScore||0}</td>
                 <td class="anime-score ${savedTheme}" title="${popularity||0}">${popularity||0}</td>
@@ -628,9 +638,9 @@ self.onmessage = (message) => {
                         type="button" 
                         title="Hide this Anime">Hide</button>
                 </td>
-                <td class="anime-score ${savedTheme}" title="${weightedScore||0}">
+                <td class="anime-score ${savedTheme}" title="${nFormatter((weightedScore||0),2)}">
                     <div>
-                        ${hasWarn?`<div title="${warns.join(', ')}"><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':''}"></i></div>`:''}
+                        ${hasWarn?`<div title="${warns.join(', ')}"><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':hasWarnP?'iris':''}"></i></div>`:''}
                         ${weightedScore||0}
                     </div>
                 </td>
@@ -641,7 +651,7 @@ self.onmessage = (message) => {
                 <td class="${savedTheme}">
                     ${similarities.length>0 ? similarities.join(', ') : 'Similarities: N/A'}
                 </td>
-                <td class="anime-score ${savedTheme}" title="${score||0}">${score||0}</td>
+                <td class="anime-score ${savedTheme}" title="${nFormatter((score||0),2)}">${score||0}</td>
                 <td class="anime-score ${savedTheme}" title="${userScore||0}">${userScore||0}</td>
                 <td class="anime-score ${savedTheme}" title="${averageScore||0}">${averageScore||0}</td>
                 <td class="anime-score ${savedTheme}" title="${popularity||0}">${popularity||0}</td>
@@ -690,4 +700,21 @@ self.onmessage = (message) => {
         try {return Object.entries(data).length>0;} 
         catch (e) {return false;}
     }
+    function nFormatter(num, digits) {
+        const lookup = [
+            { value: 1, symbol: "" },
+            { value: 1e3, symbol: "k" },
+            { value: 1e6, symbol: "M" },
+            { value: 1e9, symbol: "G" },
+            { value: 1e12, symbol: "T" },
+            { value: 1e15, symbol: "P" },
+            { value: 1e18, symbol: "E" }
+        ];
+        const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+        var item = lookup.slice().reverse().find(function(item) {
+            return num >= item.value;
+        });
+        return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : num;
+    }
+
 }

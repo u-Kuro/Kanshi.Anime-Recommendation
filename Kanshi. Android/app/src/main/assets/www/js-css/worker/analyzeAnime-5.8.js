@@ -26,6 +26,11 @@ self.onmessage = (message) => {
     const hideUnwatchedSequels = data.hideUnwatchedSequels
     //
     if(!jsonIsEmpty(varScheme)){
+        var userScores = Object.values(userListStatus.userScore)
+        var meanUserScore, meanScore = [];
+        if(userScores?.length){
+            meanUserScore = arrayMean(userScores)
+        }
         for(let i=0; i<animeEntries.length; i++){
             var animeShallUpdate = false
             var anime = animeEntries[i]
@@ -716,6 +721,12 @@ self.onmessage = (message) => {
                 Math.max(1,arrayProbability(animeProduction))
             ]))
             var weightedScore = score
+            // Check mean score
+            if(typeof meanUserScore==="number"&&typeof userListStatus.userScore[anilistId]==="number"){
+                if(userListStatus.userScore[anilistId]>=meanUserScore){
+                    meanScore.push(score)
+                }
+            }
             // Other Anime Recommendation Info
             genres = genres.length?genres:[]
             tags = tags.length?tags.map((e)=>e?.name||""):[]
@@ -741,6 +752,15 @@ self.onmessage = (message) => {
                 season: season, format: format, studios: studios, staffs: staffs
             }
         }
+        // Calculate Mean Score minus Standard Deviation
+        if(meanScore.length){
+            var scoreSD = [];
+            for(let i=0;i<meanScore.length-1;i++){
+                scoreSD.push(Math.abs(meanScore[i]-meanScore[i+1]))
+            }
+            scoreSD = scoreSD.length? arrayMean(scoreSD.sort((a,b)=>b-a)) : 0
+            meanScore = arrayMean(meanScore)-scoreSD
+        }
         // Add Weight to Scores
         var savedRecSchemeEntries = Object.keys(savedRecScheme)
         for(let i=0;i<savedRecSchemeEntries.length;i++){
@@ -748,7 +768,12 @@ self.onmessage = (message) => {
             var popularity = anime.popularity
             var weightedScore = anime.weightedScore
             var averageScore = anime.averageScore
-            // Low Average Scores
+            // Add Mean Score
+            if(typeof meanScore==="number"){
+                savedRecScheme[savedRecSchemeEntries[i]].meanScore = meanScore
+            } else {
+                savedRecScheme[savedRecSchemeEntries[i]].meanScore = 0
+            }
             // Low Average
             if(isaN(averageScore)){
                 if(typeof averageScore==="string"){
