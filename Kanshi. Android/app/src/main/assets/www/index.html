@@ -1176,8 +1176,8 @@
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "6.1",
-          backUpVersion = 3.9
+    const version = "6.2",
+          backUpVersion = 4.0
         // IndexDB
     var request, db,
         // Saved Data
@@ -1277,7 +1277,7 @@
         }).then(async()=>{
             // Init Global Saved Data from IndexedDB
             return await new Promise(async(resolve)=>{
-                savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || []
+                savedAnimeEntries = await retrieveJSON("savedAnimeEntries") || {}
                 savedUserList = await retrieveJSON("savedUserList") || {}
                 savedUserScores = await retrieveJSON("savedUserScores") || {}
                 lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
@@ -1311,7 +1311,7 @@
                 // Android
                 exportPathIsAvailable = await retrieveJSON("exportPathIsAvailable") ?? false
                 // Android
-                savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || [350]
+                savedAnalyzeVariableTime = await retrieveJSON("savedAnalyzeVariableTime") || [15]
                 savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime") || [15]
                 savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || [6700]
                 versionUpdate = await retrieveJSON("versionUpdate") ?? false
@@ -1963,7 +1963,7 @@
                                         }).then(async()=>{
                                             var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
-                                                savedAnimeEntries = await fileContent.savedAnimeEntries || []
+                                                savedAnimeEntries = await fileContent.savedAnimeEntries || {}
                                                 await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                                             }
                                             return
@@ -1992,7 +1992,7 @@
                                         }).then(async()=>{
                                             var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
-                                                savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || [350]
+                                                savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || [15]
                                                 await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
                                             }
                                             return
@@ -2200,7 +2200,7 @@
                                 }).then(async()=>{
                                     var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
-                                        savedAnimeEntries = await fileContent.savedAnimeEntries || []
+                                        savedAnimeEntries = await fileContent.savedAnimeEntries || {}
                                         await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                                     }
                                     return
@@ -2229,7 +2229,7 @@
                                 }).then(async()=>{
                                     var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
-                                        savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || [350]
+                                        savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || [15]
                                         await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
                                     }
                                     return
@@ -3293,7 +3293,7 @@
             // Init Backup Data
             return await new Promise(async(resolve)=>{
                 if(savedBackUpVersion<backUpVersion){
-                    savedAnalyzeVariableTime = await [350]
+                    savedAnalyzeVariableTime = await [15]
                     await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
                     savedUpdateAnalyzeAnimeTime = await [15]
                     await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
@@ -3306,13 +3306,13 @@
             })
         }).then(async()=>{
             return await new Promise(async(resolve)=>{
-                if(savedAnimeEntries.length<1||lastSavedUpdateTime===0||savedBackUpVersion<backUpVersion){
+                if(jsonIsEmpty(savedAnimeEntries)||lastSavedUpdateTime===0||savedBackUpVersion<backUpVersion){
                     var worker0 = await new Worker(`./js-css/worker/getAnimeEntries-${version}.js`)
                     await worker0.postMessage("")
                     worker0.onmessage = async (message) => {
                         await worker0.terminate()
                         const data = await message.data
-                        savedAnimeEntries = await data.savedAnimeEntries || []
+                        savedAnimeEntries = await data.savedAnimeEntries || {}
                         await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                         lastSavedUpdateTime = await data.lastSavedUpdateTime || 0
                         await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
@@ -3761,13 +3761,10 @@
             }
             // Check Parameters
             if(username.length>0) {
-                var userEntries = {}
+                var userEntries = []
                 var chunk = 1
                 var maxAnimePerChunk = 500
-                var staffPage = 1
-                var maxStaffPerPage = 25
-                var staffHasNextPage = false
-                async function recallAV(chunk, staffPage){
+                async function recallAV(chunk){
                     // Allow Single Instance of Update
                     if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
                         updateIDs = updateIDs.filter((id)=>id!==updateID) // one line
@@ -3787,52 +3784,6 @@
                                     status
                                     media {
                                         id
-                                        ${staffHasNextPage?'':`
-                                        title {
-                                            userPreferred
-                                        }
-                                        relations {
-                                            edges {
-                                                relationType
-                                                node{
-                                                    id
-                                                }
-                                            }
-                                        }
-                                        averageScore
-                                        episodes
-                                        duration
-                                        trending
-                                        popularity
-                                        favourites
-                                        format
-                                        genres
-                                        tags {
-                                            name
-                                            rank
-                                            category
-                                        }
-                                        studios {
-                                            nodes {
-                                                name
-                                                isAnimationStudio
-                                            }
-                                        }
-                                        seasonYear
-                                        season`}
-                                        staff(perPage:${maxStaffPerPage}, page:${staffPage}) {
-                                            pageInfo{
-                                                hasNextPage
-                                            }
-                                            edges {
-                                                node {
-                                                    name {
-                                                        userPreferred
-                                                    }
-                                                }
-                                                role
-                                            }
-                                        }
                                     }
                                     score
                                 }
@@ -3856,34 +3807,11 @@
                         success: (result)=> {
                             var userList = result?.data?.MediaListCollection?.lists ?? []
                             var hasNextChunk = (result?.data?.MediaListCollection?.hasNextChunk ?? (userList?.length??0)>0)
-                            if(jsonIsEmpty(userEntries)||!staffHasNextPage){
-                                for(let i=0; i<userList.length; i++){
-                                    var userEntry = userList[i]?.entries??[]
-                                    for(let j=0; j<userEntry.length;j++){
-                                        var anime = userEntry[j]?.media
-                                        if(anime?.id){
-                                            userEntries[anime.id] = userEntry[j]
-                                        }
-                                    }
-                                }
-                            } else if(staffHasNextPage&&!jsonIsEmpty(userEntries)){
-                                for(let i=0; i<userList.length;i++){
-                                    var userEntry = userList[i]?.entries??[]
-                                    for(let j=0; j<userEntry.length;j++){
-                                        var anime = userEntry[j]?.media
-                                        if(anime?.id&&userEntries[anime.id]?.media?.staff?.edges?.length&&anime?.staff?.edges?.length){
-                                            userEntries[anime.id].media.staff.edges = userEntries[anime.id].media.staff.edges.concat(anime.staff.edges)
-                                        }
-                                    }
-                                }
-                            }
-                            // Check Staff
-                            staffHasNextPage = userList?.some((userEntry)=>userEntry?.entries?.some((anime)=>anime?.media?.staff?.pageInfo?.hasNextPage??false)??false)??false
-                            if(staffHasNextPage){
-                                return recallAV(chunk,++staffPage)
+                            for(let i=0; i<userList.length; i++){
+                                userEntries = userEntries.concat(userList[i]?.entries??[])
                             }
                             if(hasNextChunk){
-                                return recallAV(++chunk,1)
+                                return recallAV(++chunk)
                             } else {
                                 // Reset User List
                                 if(isDeepUpdate){
@@ -3895,7 +3823,7 @@
                                     })();
                                 }
                                 var worker2 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
-                                worker2.postMessage({savedUserList: savedUserList, userEntries: Object.values(userEntries), savedAnimeFranchises: savedAnimeFranchises, savedIncluded: savedIncluded, savedExcluded: savedExcluded})
+                                worker2.postMessage({savedUserList: savedUserList, userEntries: userEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedIncluded: savedIncluded, savedExcluded: savedExcluded})
                                 worker2.onmessage = (message) => {
                                     worker2.terminate()
                                     const data = message.data
@@ -3996,7 +3924,7 @@
                                             await savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
                                             await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
                                         }
-                                        if(savedAnimeEntries.length>0){
+                                        if(!jsonIsEmpty(savedAnimeEntries)){
                                             savedUserList = await savedUserList || {}
                                             await saveJSON(savedUserList,"savedUserList")
                                             savedUserScores = await savedUserScores || {}
@@ -4185,7 +4113,7 @@
                                             },(analyzeVariableTime-i)*1000)
                                             updateStateText.push(timeout)
                                         }
-                                        return recallAV(chunk,staffPage)
+                                        return recallAV(chunk)
                                     },60000)
                                 }
                             } catch(ex) {
@@ -4223,7 +4151,7 @@
                         }
                     })
                 }
-                recallAV(1,1) // first chunk
+                recallAV(1) // first chunk
             }
         } else {
             var savedUserListValues = Object.values(savedUserList)
@@ -4390,7 +4318,7 @@
                             .empty()
                             .append(`<span style="white-space:nowrap;">Getting Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="100" max="100"></progress>⠀100%</span>`);
                         (async()=>{
-                            savedAnimeEntries = await Object.values(animeEntries) || []
+                            savedAnimeEntries = await animeEntries || {}
                             await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                             lastSavedUpdateTime = await tempLastSavedUpdateTime || 0
                             await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
@@ -4472,14 +4400,18 @@
     }
 
     async function updateAnimeList(updateID, username, varScheme, userListStatus, alteredVariables){
-        var tempLastSavedUpdateTime = lastSavedUpdateTime
-        if(lastSavedUpdateTime!==0&&savedAnimeEntries.length>0&&!isDeepUpdate){
+        if(lastSavedUpdateTime!==0&&!jsonIsEmpty(savedAnimeEntries)>0&&!isDeepUpdate){
+            var tempLastSavedUpdateTime = lastSavedUpdateTime
+            var pastDateUpdated = lastSavedUpdateTime
+            var currentDateAnilist = ((new Date).getTime())/1000
+            var currentDateUpdating = currentDateAnilist
             var updatedAnimeEntries = {}
             var staffPage = 1
             var maxAnimePerPage = 50
             var page = 1
             var maxStaffPerPage = 25
             var staffHasNextPage = false
+            var worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
             async function recalluAL(page, staffPage){
                 // Allow Single Instance of Update
                 if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
@@ -4508,8 +4440,8 @@
                                     format_not_in:[MUSIC,MANGA,NOVEL,ONE_SHOT],
                                     sort: [UPDATED_AT_DESC]) {
                                     id
-                                    ${staffHasNextPage?'':`
                                     updatedAt
+                                    ${staffHasNextPage?'':`
                                     title {
                                         userPreferred
                                     }
@@ -4567,9 +4499,17 @@
                     }),
                     beforeSend: ()=> {
                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                        var sAEL = Object.keys(savedAnimeEntries).length
+                        var uAEL = Object.keys(updatedAnimeEntries).length
+                        var uDR = currentDateAnilist-pastDateUpdated
+                        var uDC = currentDateAnilist-currentDateUpdating
+                        var pagePct = (uAEL/sAEL)*100
+                        var datePct = (uDC/uDR)*100
+                        var usUP = pagePct>=datePct? uAEL : uDC
+                        var usDN = pagePct>=datePct? sAEL : uDR
                         dataStatusEl
                             .empty()
-                            .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="${Object.values(updatedAnimeEntries).length}" max="${savedAnimeEntries.length}"></progress>⠀${Math.min(99.99,(Object.values(updatedAnimeEntries).length/savedAnimeEntries.length*100)).toFixed(2)}%</span>`);
+                            .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="${usUP}" max="${usDN}"></progress>⠀${(Math.min(99.99,(usUP/usDN)*100)).toFixed(2)}%</span>`);
                         if(dataStatusSpinnerHomeEl.css("display")!=="none") {
                             dataStatusSpinnerHomeEl.hide()
                         }
@@ -4586,7 +4526,7 @@
                             }
                             if(tempUpdatedAnimeEntries.length>0){
                                 if(tempUpdatedAnimeEntries[0]?.updatedAt>tempLastSavedUpdateTime){
-                                    tempLastSavedUpdateTime = tempUpdatedAnimeEntries[0].updatedAt || 0
+                                    currentDateAnilist = tempLastSavedUpdateTime = tempUpdatedAnimeEntries[0].updatedAt || 0
                                 }
                             }
                         } else if(staffHasNextPage&&!jsonIsEmpty(updatedAnimeEntries)){
@@ -4597,32 +4537,57 @@
                                 }
                             }
                         }
-                        // Check Staff
-                        staffHasNextPage = tempUpdatedAnimeEntries.some((userEntry)=>userEntry.staff.pageInfo.hasNextPage)
-                        if(staffHasNextPage){
-                            return recalluAL(page,++staffPage)
+                        if(tempUpdatedAnimeEntries?.at(-1)?.updatedAt){
+                            currentDateUpdating = tempUpdatedAnimeEntries.at(-1).updatedAt || 0
                         }
-                        if(hasNextPage&&tempUpdatedAnimeEntries.at(-1).updatedAt>lastSavedUpdateTime){
-                            return recalluAL(++page,1)
-                        } else {
-                            var worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
+                        // Check Staff
+                        staffHasNextPage = tempUpdatedAnimeEntries?.some((userEntry)=>userEntry?.staff?.pageInfo?.hasNextPage??false)??false
+                        if(staffHasNextPage){
+                            worker3.terminate()
+                            worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
                             worker3.postMessage({
-                                updatedAnimeEntries: Object.values(updatedAnimeEntries),
+                                updatedAnimeEntries: updatedAnimeEntries,
                                 savedAnimeEntries: savedAnimeEntries
                             })
                             worker3.onmessage = (message) => {
-                                worker3.terminate()
-                                dataStatusEl
-                                    .empty()
-                                    .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
-                                const data = message.data
-                                animeEntries = data.animeEntries;
                                 (async()=>{
-                                    savedAnimeEntries = await animeEntries || []
+                                    savedAnimeEntries = await message.data.savedAnimeEntries ?? {}
+                                    await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                })();
+                            }
+                            return recalluAL(page,++staffPage)
+                        } else if((hasNextPage&&currentDateUpdating>=lastSavedUpdateTime)||(tempUpdatedAnimeEntries?.at(-1)?.updatedAt??true)){
+                            worker3.terminate()
+                            worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
+                            worker3.postMessage({
+                                updatedAnimeEntries: updatedAnimeEntries,
+                                savedAnimeEntries: savedAnimeEntries
+                            })
+                            worker3.onmessage = (message) => {
+                                (async()=>{
+                                    savedAnimeEntries = await message.data.savedAnimeEntries ?? {}
+                                    await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                })();
+                            }
+                        return recalluAL(++page,1)
+                        } else {
+                            worker3.terminate()
+                            worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
+                            worker3.postMessage({
+                                updatedAnimeEntries: updatedAnimeEntries,
+                                savedAnimeEntries: savedAnimeEntries
+                            })
+                            worker3.onmessage = (message) => {
+                                (async()=>{
+                                    worker3.terminate()
+                                    dataStatusEl
+                                        .empty()
+                                        .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
+                                    savedAnimeEntries = message.data.savedAnimeEntries ?? {}
                                     await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                                     lastSavedUpdateTime = tempLastSavedUpdateTime || 0
                                     await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
-                                    analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, false)
+                                    analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false)
                                 })();
                             }
                             worker3.onerror = async (message) => {
@@ -4638,6 +4603,14 @@
                             }
                             err = xhr?.responseText?.errors?.[0]?.message || xhr
                             console.error(err)
+                            var sAEL = Object.keys(savedAnimeEntries).length
+                            var uAEL = Object.keys(updatedAnimeEntries).length
+                            var uDR = currentDateAnilist-pastDateUpdated
+                            var uDC = currentDateAnilist-currentDateUpdating
+                            var pagePct = (uAEL/sAEL)*100
+                            var datePct = (uDC/uDR)*100
+                            var usUP = pagePct>=datePct? uAEL : uDC
+                            var usDN = pagePct>=datePct? sAEL : uDR
                             for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                             for(let i=60; i>=0; i--){
                                 var timeout = setTimeout(()=>{
@@ -4645,11 +4618,11 @@
                                     if(i<1){
                                         dataStatusEl
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress value="${Object.values(updatedAnimeEntries).length}" max="${savedAnimeEntries.length}"></progress>⠀${Math.min(99.99,(Object.values(updatedAnimeEntries).length/savedAnimeEntries.length*100)).toFixed(2)}%</span>`)
+                                        .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress value="${usUP}" max="${usDN}"></progress>⠀${(Math.min(99.99,(usUP/usDN)*100)).toFixed(2)}%</span>`)
                                     } else {
                                         dataStatusEl
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress value="${Object.values(updatedAnimeEntries).length}" max="${savedAnimeEntries.length}"></progress>⠀${Math.min(99.99,(Object.values(updatedAnimeEntries).length/savedAnimeEntries.length*100)).toFixed(2)}%</span>`)
+                                        .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress value="${usUP}" max="${usDN}"></progress>⠀${(Math.min(99.99,(usUP/usDN)*100)).toFixed(2)}%</span>`)
                                     }
                                 },(60-i)*1000)
                                 updateStateText.push(timeout)
@@ -4735,8 +4708,8 @@
                 await updateStateText.push(timeout)
             }
             // Normal Update
-            if(animeEntries.length===0) {
-                animeEntries = await savedAnimeEntries || []
+            if(jsonIsEmpty(animeEntries)) {
+                animeEntries = await savedAnimeEntries || {}
             }
             // Reset if Username Changed || isDeepUpdate
             if(username!==savedUsername||isDeepUpdate||versionUpdate){
