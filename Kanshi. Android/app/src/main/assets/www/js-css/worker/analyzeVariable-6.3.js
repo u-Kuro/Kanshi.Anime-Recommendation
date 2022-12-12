@@ -27,8 +27,33 @@ self.onmessage = (message) => {
     //    formats: {}, 
        genres: {}, tags: {}, categories: {}, studios: {}, staffs: {}, roles: {} 
     }, 
-    savedIncluded = data?.savedIncluded || [],
-    savedExcluded = data?.savedExcluded || []
+    savedFilterAlgo = data?.savedFilterAlgo ?? [],
+    savedIncluded = [],
+    savedExcluded = [],
+    filterName
+    // Group Filters
+    for(let i=0; i<savedFilterAlgo.length; i++){
+        filterName = savedFilterAlgo[i].trim().toLowerCase()
+        if(filterName.charAt(0)==="!") {
+            filterName = filterName.slice(1)
+            filterName = typeof filterName==="string"? filterName.split(":") : []
+            // Only Allow Specific (non-specified removes almost all predictors)
+            if(filterName.length>1){
+                filterName = [filterName.shift(),filterName.join()]
+                var type = filterName[0]
+                var cinfo = filterName[1].trim().toLowerCase()
+                if(cinfo.charAt(0)==="!"){
+                    cinfo = cinfo.slice(1)
+                    savedExcluded.push(type+":"+cinfo)
+                } else {
+                    savedExcluded.push(type+":"+cinfo)
+                }
+            } else if(filterName.length===1){
+                savedExcluded.push(filterName[0])
+            }
+        }
+        else savedIncluded.push(filterName)
+    }
     for(let i=0;i<savedIncluded.length;i++){
         if(typeof savedIncluded[i]!=="string") continue
         // Get the type, seperator, and content
@@ -213,20 +238,28 @@ self.onmessage = (message) => {
             }
         }
     }
+    // For Alert user if Scored List is 0
+    // to have a better recommendation
+    var userListCount = 0
 
     if(!notAnUpdate){
-        userEntries = data?.userEntries || []
-        userEntries = userEntries.reduce((result, userEnty)=>{
-            var anime = userEnty?.media
-            var tmpAnimeEntry = {}
-            if(anime?.id&&savedAnimeEntries[anime?.id]){
-                tmpAnimeEntry.media = savedAnimeEntries[anime?.id]
-                tmpAnimeEntry.status = userEnty.status
-                tmpAnimeEntry.score = userEnty.score
-                result.push(tmpAnimeEntry)
-            }
-            return result
-        },[])
+        if(jsonIsEmpty(savedAnimeEntries)){
+            userListCount = 1000 // Stop User Alert
+            userEntries = []
+        } else {
+            userEntries = data?.userEntries || []
+            userEntries = userEntries.reduce((result, userEnty)=>{
+                var anime = userEnty?.media
+                var tmpAnimeEntry = {}
+                if(anime?.id&&savedAnimeEntries[anime?.id]){
+                    tmpAnimeEntry.media = savedAnimeEntries[anime?.id]
+                    tmpAnimeEntry.status = userEnty.status
+                    tmpAnimeEntry.score = userEnty.score
+                    result.push(tmpAnimeEntry)
+                }
+                return result
+            },[])
+        }
     } else {
         savedUserList = Object.values(savedUserList)
         for(let i=0;i<savedUserList.length;i++){
@@ -286,9 +319,6 @@ self.onmessage = (message) => {
     var tagsMeanCount = {}
     var studiosMeanCount = {}
     var staffMeanCount = {}
-    // For Alert user if Scored List is 0
-    // to have a better recommendation
-    var userListCount = 0
     // For checking any deleted Anime
     var savedUserListIDs = Object.keys(savedUserList) || []
     var newUserListIDs = {}

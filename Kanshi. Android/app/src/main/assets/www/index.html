@@ -22,8 +22,8 @@
     <noscript><link rel="stylesheet" href="./js-css/flexdatalist/jquery.flex-datalist-v1.0.css"></noscript>
     <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.5.js" defer></script>
     <!-- Bootstrap -->
-    <link rel="preload" href="./js-css/bootstrap-3.3.6.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="./js-css/bootstrap-3.3.6.min.css"></noscript>
+    <link rel="preload" href="./js-css/bootstrap-3.3.7.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="./js-css/bootstrap-3.3.7.min.css"></noscript>
     <!-- Fontawesome -->
     <link rel="preload" href="./js-css/font-awesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/font-awesome.min.css"></noscript>
@@ -44,20 +44,20 @@
                 font-size: 0.9rem !important;
             }
             /* Change/Add to Class/Tag of desired division for Padding */
-            .Home,
-            .overlay{
+            #Home,
+            #overlay{
                 padding-inline: clamp(0px, 5vw, 75px) !important;
             }
             /* Default */
             html,
             body {
-                height: 100%;
+                min-height: 100%;
                 width: 100%;
                 overflow: auto;
             }
             :root{
                 font-size: 0.9rem;
-                background-color: #fff;
+                background-color: #F0F0F0;
                 font-family: sans-serif;
                 z-index: 0;
                 min-width: 100%;
@@ -65,7 +65,7 @@
                 overflow:auto;
             }
             :root>*{
-                background-color: #fff;
+                background-color: #F0F0F0;
                 min-width: inherit;
                 min-height: inherit;
             }
@@ -170,14 +170,23 @@
                 -ms-overflow-style: none;
                 scrollbar-width: none;
             }
-            button {
-                background-color: black;
-                color: white;
+            button,
+            .swal2-confirm {
+                background-color: #57728e !important;
+                color: #F0F0F0;
+            }
+            .swal2-deny,
+            .swal2-deny-custom{
+                background-color: #e27d81 !important;
+            }
+            .swal2-popup,
+            .swal2-popup-custom{
+                background-color: #F0F0F0 !important;
             }
             input {
                 padding: 0.5em;
             }
-            .userInput {
+            #username {
                 width: min-content;
                 border-color: rgb(118, 118, 118);
                 border-width: 2px;
@@ -185,7 +194,7 @@
                 border-radius: 0px;
                 background-color: rgb(255, 255, 255);
             }
-            .loader {
+            #loader {
                 position: fixed;
                 left: 0px;
                 top: 0px;
@@ -196,7 +205,7 @@
                     50% 50% no-repeat
                     rgb(0, 0, 0)
             }
-            .loader > * {
+            #loader > * {
                 justify-content: center;
                 min-height: 100%;
                 align-items: center;
@@ -205,21 +214,17 @@
                 color: wheat;
                 text-align: center;
             }
-            html,body,.home{
-                width: 100%;
-                min-height: 100%;
-                height: 100%;
-            }
             label{margin: 0}
-            .searchData,.table-responsive{
+            #searchData,
+            #table-responsive{
                 margin-top: 15px;
                 margin-bottom: 15px;
             }
-            .searchData,
+            #searchData,
             .btn-container{
                 margin-bottom: 10px !important;
             }
-            .table-responsive{
+            #table-responsive{
                 margin-top: 10px !important;
             }
             .flexdatalist-multiple > .value {
@@ -230,14 +235,18 @@
                 max-width: fit-content;
                 cursor: pointer;
             }
-            .userInputContainer,.filter-container,.btn-container{
+            #userInputContainer,
+            .filter-container,
+            .btn-container{
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: center;
                 align-items: center;
                 margin-block: 15px;
             }
-            .userInputContainer>:not(label),.filter-container>:not(label),.btn-container>:not(label){
+            #userInputContainer>:not(label),
+            .filter-container>:not(label),
+            .btn-container>:not(label){
                 flex-grow: 1;
             }
             .flex0.flexdatalist-multiple{
@@ -262,12 +271,12 @@
             .flex2.flexdatalist-multiple{
                 flex-wrap: wrap-reverse;
             }
-            .flexdatalist-multiple>.flexdatalist-multiple-value{
+            .flexdatalist-multiple-value{
                 flex-grow: 1;
                 display: flex !important;
                 min-width: calc(100% - 10px) !important;
             }
-            .flexdatalist-multiple>.flexdatalist-multiple-value>.flexdatalist-alias{
+            .flexdatalist-alias{
                 outline: none;
                 flex-grow: 1;
                 padding-left: 5px !important;
@@ -282,7 +291,7 @@
                 text-align: center !important;
                 min-width: 85px !important;
             }
-            header {
+            #header {
                 background: url('./public/header.png');
                 text-align: left;
                 width: 100%;
@@ -292,14 +301,14 @@
                 overflow: hidden;
                 border-radius: 0 0 50% 50% / 5%;
             }
-            header .overlay{
+            #overlay{
                 width: 100%;
                 height: 100%;
                 padding: 1.75em;
                 color: #FFF;
-                background-image: linear-gradient( 135deg, #39343c69 10%, #6d00006b 100%);
+                background-image: linear-gradient( 135deg, #2B2D426b 10%, #2B2D426b 100%);
             }
-            header .overlay>*{
+            #overlay>*{
                 padding-right: 50%;
             }
             button {
@@ -315,7 +324,7 @@
             a,
             a:hover,
             a:focus {
-                color: #864548;
+                color: #005580;
             }
             #anime-table{
                 border: 1px solid #ddd !important;
@@ -323,26 +332,23 @@
             #animeRecommendationList{
                 content-visibility: auto;
             }
-            /* #animeRecommendationList > tr > *{
-                white-space: nowrap;
-            } */
             #updateIntervalBtn,
             #updateBtn,
             #showAllAnime{
                 display: none;
             }
             #hiddenUnhiddenBtn{
-                background: black !important;
-                color: white !important;
+                background: #57728e !important;
+                color: #F0F0F0 !important;
                 max-width: -moz-fit-content !important;
                 max-width: fit-content !important;
                 cursor: pointer;
             }
             #searchBtn:hover,
             #searchBtn:focus{
-                color: white;
+                color: #F0F0F0;
             }
-            .anime-table-headers > th{
+            .tablesorter-header{
                 vertical-align: middle !important;
                 padding: 1em !important;
             }
@@ -352,7 +358,7 @@
             }
             .show-all-anime{
                 background: black !important;
-                color: white !important;
+                color: #F0F0F0 !important;
                 border-radius: 5%;
                 max-width: -moz-fit-content !important;
                 max-width: fit-content !important;
@@ -367,6 +373,21 @@
                 -ms-user-select: none !important;
                 -webkit-user-select: none !important;
                 user-select: none !important;
+            }
+            .item,
+            .flexdatalist-multiple,
+            .flexdatalist-alias,
+            #userInputContainer,
+            #username,
+            .item > td{
+                background-color: #f4f4f4 !important;
+            }
+            .anime-table-headers,
+            .anime-table-headers > th{
+                background-color: #e7e7e7 !important;
+            }            
+            .flexdatalist-multiple>.value{
+                background-color: #e7e7e7 !important;
             }
             .item > td {
                 vertical-align: middle !important;
@@ -387,7 +408,7 @@
             }
             .spinner {
                 border: 2px solid #f3f3f3;
-                border-top: 2px solid #B06D70;
+                border-top: 2px solid #005885;
                 border-radius: 50%;
                 width: 13px;
                 min-width: 13px;
@@ -404,8 +425,8 @@
                 align-items: center;
                 justify-content: center;
             }
-            .table-responsive{
-                border: 1px solid #dddddd;
+            #table-responsive{
+                /* border: 1px solid #dddddd; */
                 min-height: 556px !important;
                 margin-bottom: 100px !important;
             }
@@ -414,8 +435,8 @@
                 bottom: 0;
                 width: 100%;
                 border-radius: 50% 50% 0 0 / 5%;
-                background: rgb(0,0,0,0.925);
-                color: white;
+                background: rgb(43, 45, 66,0.925);
+                color: #F0F0F0;
                 margin: 0;
                 z-index: 100;
             }
@@ -427,7 +448,11 @@
                 -webkit-user-select: none;
                 user-select: none;
             }
-            .pager-form>*{
+            #first,
+            #prev,
+            #next,
+            #last,
+            #selectPageNumber{
                 flex: 1;
                 min-width: -moz-fit-content;
                 min-width: -webkit-fill-available;
@@ -437,46 +462,27 @@
                 align-items: center;
                 cursor: pointer;
             }
-            .pager-form>*>*{
+            .pager-form>div>*{
                 flex: 1;
                 min-width: -moz-fit-content;
                 min-width: -webkit-fill-available;
                 min-width: fit-content;
                 cursor: pointer;
             }
-            .tablesorter-pager {
+            #pager {
                 padding: 1em;
             }
-            td.tablesorter-pager {
-                background-color: #e6eeee;
-                margin: 0;
-            }
-            .tablesorter-pager img {
-                vertical-align: middle;
-                margin-right: 2px;
-                cursor: pointer;
-            }
-            .tablesorter-pager .pagedisplay {
-                margin-block: auto;
-                text-align: left;
-            }
-            .tablesorter-pager select {
-                margin: 0;
-                padding: 0;
-            }
-            .tablesorter-pager.disabled {
-                display: none;
-            }
-            .tablesorter-pager .disabled {
+            #first.disabled,
+            #prev.disabled,
+            #next.disabled,
+            #last.disabled{
                 opacity: 0.5;
                 filter: alpha(opacity=50);
                 cursor: default;
             }
-            .pagedisplay{
-                max-width: -moz-fit-content;
-                max-width: fit-content;
-            }
-            .pagenum{
+            #pageNumberOptions{
+                margin: 0;
+                padding: 0;
                 height: -webkit-fill-available;
                 height: fit-content;
                 border: transparent;
@@ -487,41 +493,38 @@
                 appearance: none;
                 background-color: transparent !important;
             }
-            .pagenum>*{
-                background-color: black;
-                color: white;
+            #pageNumberOptions>option{
+                background-color: #2b2d42;
+                color: #F0F0F0;
             }
-            .endPage{
-                text-align: left;
-            }
-            .nav{
+            #nav{
                 z-index: 100;
                 position: fixed;
                 width: 100%;
                 height: 50px;
                 display: flex;
-                color: white;
+                color: #F0F0F0;
                 justify-content: space-between;
-                background-color: rgb(0,0,0,0.925);
+                background-color: rgb(43, 45, 66,0.925);
                 padding: 1em;
                 align-items: center;
                 -ms-user-select: none;
                 -webkit-user-select: none;
                 user-select: none;
             }
-            .nav > div{
+            #nav > div{
                 flex: 1;
                 display: flex;
             }
-            .nav img{
+            #menuIcon{
                 margin-left: auto;
                 max-height: 40px;
                 cursor: pointer;
             }
-            .nav h1{
+            #menuTitle{
                 cursor: pointer;
             }
-            header{
+            #header{
                 margin-top: 50px;
             }
             #menu-container {
@@ -533,7 +536,7 @@
                 height: 100%;
                 width: 100%;
                 background-color: rgb(0, 0, 0, 0.925);
-                color: white;
+                color: #F0F0F0;
                 display: none;
                 -ms-user-select: none;
                 -webkit-user-select: none;
@@ -549,9 +552,9 @@
                 height: min-content;
             }
             #menu-container>div>button{
-                -moz-box-shadow: 0 3px 20px 0 #af6e7138 !important;
-                -webkit-box-shadow: 0 3px 20px 0 #af6e7138 !important;
-                box-shadow: 0 3px 20px 0 #af6e7138 !important;
+                -moz-box-shadow: 0 3px 20px 0 #2B2D42 !important;
+                -webkit-box-shadow: 0 3px 20px 0 #2B2D42 !important;
+                box-shadow: 0 3px 20px 0 #2B2D42 !important;
             }
             .no-before::before{
                 content: none;
@@ -822,47 +825,48 @@
                 border-bottom-left-radius: 5px;
             }
             button.selected{
-                background-color: white !important;
+                background-color: #F0F0F0 !important;
                 color: black !important;
             }
             /* Dark Mode */
             html.darkMode,
             body.darkMode,
-            .Home.darkMode,
-            .searchData.darkMode,
+            #Home.darkMode,
+            #searchData.darkMode,
             #dataStatusHolder.darkMode{
                 background-color: rgb(11,22,34) !important;
                 color: rgb(185, 202, 221) !important
             }
-            header .overlay.darkMode{
+            #overlay.darkMode{
                 width: 100%;
                 height: 100%;
                 padding: 1.75em;
                 color: #FFF;
                 background-image: linear-gradient( 135deg, #39343c69 10%, #151F2E6b 100%) !important;
             }
-            .overlay.darkMode{
+            #overlay.darkMode{
                 color: rgb(214 233 255) !important;
             }
             #searchBtn.darkMode,
             #hiddenUnhiddenBtn.darkMode,
+            #menu-container>div>button.darkMode,
             .hide-anime-column button.darkMode,
-            #menu-container button.darkMode,
             .swal2-confirm.darkMode, 
             .swal2-confirm-custom.darkMode{
                 background-color: rgb(40 69 102) !important;
                 color: rgb(185, 202, 221) !important;
             }
-            #menu-container button.selected.darkMode{
+            #menu-container>div>button.selected.darkMode{
                 background-color: black !important;
                 color: rgb(185, 202, 221) !important;
             }
             #username.darkMode,
-            .table-responsive.darkMode,
+            #table-responsive.darkMode,
             #anime-table.darkMode,
             #animeRecommendationList.darkMode,
             #animeRecommendationList tr.darkMode,
             #animeRecommendationList td.darkMode,
+            #username.darkMode,
             .flexdatalist-multiple.darkMode,
             .flexdatalist-alias.darkMode,
             .flexdatalist-results.darkMode{
@@ -879,13 +883,13 @@
             #anime-table th.darkMode,
             #anime-table tr.darkMode,
             #anime-table td.darkMode,
-            .table-responsive.darkMode,
-            .userInput.darkMode, 
+            #table-responsive.darkMode,
+            #username.darkMode, 
             .flexdatalist-multiple.darkMode{
                 border: 1px solid rgb(21,34,50) !important;
             }
             #anime-table th:not(:first-child).darkMode,
-            .flexdatalist-multiple li.value.darkMode{
+            .flexdatalist-multiple>.value.darkMode{
                 background-color: rgb(67,81,97) !important;
                 color: rgb(185, 202, 221) !important;
             }
@@ -893,13 +897,17 @@
             .swal2-footer a.darkMode{
                 color: rgb(110, 185, 255) !important;
             }
-            .nav.darkMode, 
+            #nav.darkMode, 
             #pager.darkMode,
-            .pagenum.darkMode>*,
+            #pageNumberOptions.darkMode>*,
+            #pageNumberOptions>option.darkMode,
             .swal2-popup.darkMode,
             .swal2-popup-custom.darkMode{
                 background-color: rgb(21,34,50) !important;
                 color: rgb(185, 202, 221) !important;
+            }
+            #dataStatusUpdate.darkMode{
+                color: #6eb9ff !important;
             }
             .swal2-modal.darkMode{
                 background-color: rgb(11,22,34) !important;
@@ -910,7 +918,7 @@
             }
             .spinner.darkMode{
                 border: 2px solid #f3f3f3;
-                border-top: 2px solid rgb(110, 185, 255);
+                border-top: 2px solid #6eb9ff;
                 border-radius: 50%;
                 width: 13px;
                 min-width: 13px;
@@ -923,12 +931,12 @@
                 -webkit-box-shadow: 0 3px 20px 0 #6e89af38 !important;
                 box-shadow: 0 3px 20px 0 #6e89af38 !important;
             }
-            .darkMode ::placeholder{
+            .darkMode::placeholder{
                 opacity: 1 !important;
                 color: rgb(131,144,160) !important;
             }
-            .darkMode :-ms-input-placeholder,
-            .darkMode ::-ms-input-placeholder{ 
+            .darkMode:-ms-input-placeholder,
+            .darkMode::-ms-input-placeholder{ 
                 color: rgb(131,144,160) !important;
             }
             /* Dark Mode */
@@ -941,10 +949,10 @@
             .iris{
                 color: rgb(0,188,212);
             }
-            td.animeTitle>i{
+            td.anime-score>div>div>i{
                 padding: 0.5ch;
             }
-            .searchData #filters{
+            #filters{
                 height: 100px !important;
                 max-height: 100px !important;
                 min-height: 100px !important;
@@ -996,6 +1004,11 @@
                 -webkit-user-select: none;
                 user-select: none;
             }
+            #dataStatusUpdate{
+                color: #005885 !important;
+                font-size: 1rem !important;
+                font-weight: bolder !important;
+            }
             .flexdatalist-alias{
                 height: 41px !important;
             }
@@ -1006,7 +1019,7 @@
         </style>
 </head>
 <body class="darkMode">
-<nav class="nav darkMode">
+<nav id="nav" class="nav darkMode">
     <div><h1 id="menuTitle" class="textLogo">Kanshi.</h1></div>
     <div><img id="menuIcon" src="./public/logo.png" alt="menubar"></div>
 </nav>
@@ -1034,28 +1047,28 @@
         <!-- Android -->
     </div>
 </div>
-<header>
-    <div class="overlay darkMode">
+<header id="header">
+    <div id="overlay" class="darkMode">
         <h1 class="textLogo">Kanshi.</h1>
         <h3>Anime - Anilist</h3>
         <h3>Recommendations</h3>
     </div>
 </header>
-<div class="Home darkMode">
-    <div class="searchData darkMode">
-        <div class="userInputContainer">
-            <input class="userInput darkMode" placeholder="Anilist Username" name="username" id="username" type="text">
+<div id="Home" class="darkMode">
+    <div id="searchData" class="darkMode">
+        <div id="userInputContainer">
+            <input class="darkMode" placeholder="Anilist Username" name="username" id="username" type="text">
         </div>
         <div id="filters" class="filter-container">
             <input type="text"
-                   placeholder="Filter Table/List Contents (Include: Content / Exclude: !Content / WScore>=N / etc.)"
-                   class="flexdatalist"
-                   data-search-in="info"
-                   multiple="multiple"
-                   data-min-length="1"
-                   data-search-by-word="true"
-                   data-max-shown-results="7"
-                   name="filter">
+                placeholder="Filter Table/List Contents (Include: Content / Exclude: !Content / WScore>=N / etc.)"
+                class="flexdatalist"
+                data-search-in="info"
+                multiple="multiple"
+                data-min-length="1"
+                data-search-by-word="true"
+                data-max-shown-results="7"
+                name="filter">
         </div>
         <div class="btn-container">
             <button id="searchBtn" class="btn darkMode" type="submit">Search</button>
@@ -1065,11 +1078,11 @@
         <div id="dataStatusContainer" class="data-status-container">
             <div id="dataStatusWrapper">
                 <div id="dataStatusSpinnerHome" style="display: inline-table;"><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner darkMode"></div></div>
-                <h6 id="dataStatus"><b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A</h6>
+                <h6 id="dataStatus"><b class="darkMode" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A</h6>
             </div>
         </div>
     </div>
-    <div class="table-responsive darkMode">
+    <div id="table-responsive" class="table-responsive darkMode">
         <table id="anime-table" class="tablesorter table table-bordered table-striped darkMode">
             <thead class="darkMode">
             <tr class="anime-table-headers darkMode">
@@ -1119,14 +1132,14 @@
         <div class="swal2-html-container-custom" style="display: block;">
             <div class="filter-container-custom">
                 <input type="text"
-                       placeholder="Yellow-Warning (Content) or Red-Warning (!Content)"
-                       class="flexdatalistWarnAnime"
-                       data-search-in="info"
-                       multiple="multiple"
-                       data-min-length="1"
-                       data-search-by-word="true"
-                       data-max-shown-results="7"
-                       name="filter">
+                    placeholder="Yellow-Warning (Content) or Red-Warning (!Content)"
+                    class="flexdatalistWarnAnime"
+                    data-search-in="info"
+                    multiple="multiple"
+                    data-min-length="1"
+                    data-search-by-word="true"
+                    data-max-shown-results="7"
+                    name="filter">
             </div>
         </div>
         <div class="swal2-actions-custom" style="display: flex;">
@@ -1169,14 +1182,14 @@
     </div>
 </div>
 
-<div id="loader" class="loader">
+<div id="loader">
     <div><h1 id="loaderText">Loading...</h1></div>
 </div>
 
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "6.2",
+    const version = "6.3",
           backUpVersion = 4.0
         // IndexDB
     var request, db,
@@ -1337,8 +1350,7 @@
                     }
                 })
                 searchBtnEl.on('click', async ()=>{
-                    deepUpdateTime = arrayMean(savedDeepUpdateTime)
-                    if(Object.keys(savedRecScheme).length>0) {
+                    if(!jsonIsEmpty(savedRecScheme)) {
                         var newUsername = await usernameEl.val()
                         if(!newUsername){
                             await usernameEl[0]?.setCustomValidity("Anilist Username is Required!")
@@ -1372,9 +1384,12 @@
                                 }).then(async(value)=>{
                                     if(value.isConfirmed){
                                         if(requestIsRunning){
+                                            var updateTime = arrayMean(savedAnalyzeVariableTime) + arrayMean(savedUpdateAnalyzeAnimeTime)
+                                            var deepUpdateTime = arrayMean(savedDeepUpdateTime)
                                             Swal.fire({
                                                 heightAuto: false,
-                                                text: `List is already updating! Do you want to restart the update?`,
+                                                text: `List is already updating! Do you want to restart the update?
+                                                This may take ${msToTime((jsonIsEmpty(savedAnimeEntries)?deepUpdateTime:updateTime)*1000)} to finish.`,
                                                 showConfirmButton: true,
                                                 confirmButtonText: "Yes",
                                                 showDenyButton: true,
@@ -1407,11 +1422,57 @@
                                 })
                             }
                         }
-                    } else {
+                    } else if(!jsonIsEmpty(savedAnimeEntries)){
+                        var updateTime = arrayMean(savedAnalyzeVariableTime) + arrayMean(savedUpdateAnalyzeAnimeTime)
                         if(requestIsRunning){
                             Swal.fire({
                                 heightAuto: false,
-                                text: `List is already updating! Do you want to restart the update?`,
+                                text: `List is already updating! Do you want to restart the update?
+                                This may take ${msToTime(updateTime*1000)} to finish.`,
+                                showConfirmButton: true,
+                                confirmButtonText: "Yes",
+                                showDenyButton: true,
+                                denyButtonText: "No",
+                                confirmButtonColor: '#000',
+                                denyButtonColor: '#e27d81',
+                                icon: "question",
+                                reverseButtons: true
+                            }).then(async(value)=>{
+                                if(value.isConfirmed){
+                                    deepUpdateStartTime = new Date()
+                                    isDeepUpdate = true
+                                    Update(false)
+                                }
+                            })
+                        } else {
+                            Swal.fire({
+                                heightAuto: false,
+                                text: `Do you want to continue and update your recommendations list?
+                                The estimated time to finish is ${msToTime(updateTime*1000)}`,
+                                showConfirmButton: true,
+                                confirmButtonText: "Yes",
+                                showDenyButton: true,
+                                denyButtonText: "No",
+                                confirmButtonColor: '#000',
+                                denyButtonColor: '#e27d81',
+                                icon: "question",
+                                reverseButtons: true
+                            })
+                            .then((value) => {
+                                if(value.isConfirmed){
+                                    deepUpdateStartTime = new Date()
+                                    isDeepUpdate = true
+                                    Update(false)
+                                }
+                            })
+                        }
+                    } else {
+                        var deepUpdateTime = arrayMean(savedDeepUpdateTime)
+                        if(requestIsRunning){
+                            Swal.fire({
+                                heightAuto: false,
+                                text: `List is already updating! Do you want to restart the update? 
+                                This may take ${msToTime(deepUpdateTime*1000)} to finish.`,
                                 showConfirmButton: true,
                                 confirmButtonText: "Yes",
                                 showDenyButton: true,
@@ -1451,22 +1512,110 @@
                         }
                     }
                 })
-                $("nav.nav, #menu-container").on("click",()=>{
+                $("#nav, #menu-container").on("click",()=>{
                     if(menuContainerEl.css("display")==="none"){
                         menuContainerEl.fadeIn(250)
                     } else {
                         menuContainerEl.fadeOut(250)
                     }
                 })
-                $("#pager, #menu-container button").on('click', (e)=>{
+                $("#pager, #menu-container>div>button").on('click', (e)=>{
                     e.stopPropagation()
                 })
                 dataStatusEl.on('click',async (e) =>{
                     var updateTime = arrayMean(savedAnalyzeVariableTime) + arrayMean(savedUpdateAnalyzeAnimeTime)
-                    if(requestIsRunning){
+                    if(jsonIsEmpty(savedAnimeEntries)){
+                        var deepUpdateTime = arrayMean(savedDeepUpdateTime)
+                        if(requestIsRunning){
+                            Swal.fire({
+                                heightAuto: false,
+                                text: `List is already updating! Do you want to restart the update?
+                                This may take ${msToTime(deepUpdateTime*1000)} to finish.`,
+                                showConfirmButton: true,
+                                confirmButtonText: "Yes",
+                                showDenyButton: true,
+                                denyButtonText: "No",
+                                confirmButtonColor: '#000',
+                                denyButtonColor: '#e27d81',
+                                icon: "question",
+                                reverseButtons: true
+                            }).then(async(value)=>{
+                                if(value.isConfirmed){
+                                    savedUserList = await {}
+                                    await saveJSON(savedUserList,"savedUserList")
+                                    savedUserScores = await {}
+                                    await saveJSON(savedUserScores,"savedUserScores")
+                                    deepUpdateStartTime = new Date()
+                                    isDeepUpdate = true
+                                    Update(false)
+                                }
+                            })
+                        } else {
+                            Swal.fire({
+                                heightAuto: false,
+                                text: `Do you want to continue and update your recommendations list?
+                                The estimated time to finish is ${msToTime(deepUpdateTime*1000)}`,
+                                showConfirmButton: true,
+                                confirmButtonText: "Yes",
+                                showDenyButton: true,
+                                denyButtonText: "No",
+                                confirmButtonColor: '#000',
+                                denyButtonColor: '#e27d81',
+                                icon: "question",
+                                reverseButtons: true
+                            })
+                            .then(async(value) => {
+                                if(value.isConfirmed){
+                                    var newUsername = await usernameEl.val()
+                                    if(!newUsername){
+                                        menuContainerEl.fadeOut(250)
+                                        usernameEl[0]?.setCustomValidity("Anilist Username is Required!")
+                                        usernameEl[0]?.reportValidity()
+                                    } else {
+                                        if(newUsername!==savedUsername){
+                                            Swal.fire({
+                                                heightAuto: false,
+                                                text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
+                                                showConfirmButton: true,
+                                                confirmButtonText: "Yes",
+                                                showDenyButton: true,
+                                                denyButtonText: "No",
+                                                confirmButtonColor: '#000',
+                                                denyButtonColor: '#e27d81',
+                                                icon: "question",
+                                                reverseButtons: true
+                                            }).then(async(value)=>{
+                                                if(value.isConfirmed){
+                                                    // Reset User List
+                                                    savedUserList = await {}
+                                                    await saveJSON(savedUserList,"savedUserList")
+                                                    savedUserScores = await {}
+                                                    await saveJSON(savedUserScores,"savedUserScores")
+                                                    deepUpdateStartTime = new Date()
+                                                    isDeepUpdate = true
+                                                    Update(false)
+                                                } else {
+                                                    usernameEl.focus()
+                                                }
+                                            })
+                                        } else {
+                                            savedUserList = await {}
+                                            await saveJSON(savedUserList,"savedUserList")
+                                            savedUserScores = await {}
+                                            await saveJSON(savedUserScores,"savedUserScores")
+                                            deepUpdateStartTime = new Date()
+                                            isDeepUpdate = true
+                                            Update(false)
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                    } else if(requestIsRunning){
                         Swal.fire({
                             heightAuto: false,
-                            text: `List is already updating! Do you want to restart the update?`,
+                            text: `List is already updating! Do you want to restart the update?
+                            This may take ${msToTime(updateTime*1000)} to finish.`,
                             showConfirmButton: true,
                             confirmButtonText: "Yes",
                             showDenyButton: true,
@@ -1496,7 +1645,6 @@
                                             icon: "question",
                                             reverseButtons: true
                                         }).then(async(value)=>{
-                                            menuContainerEl.fadeOut(250)
                                             if(value.isConfirmed){
                                                 // Reset User List
                                                 savedUserList = await {}
@@ -1510,7 +1658,6 @@
                                         })
                                     } else {
                                         Update(false)
-                                        menuContainerEl.fadeOut(250)
                                     }
                                 }
                             }
@@ -1519,7 +1666,7 @@
                         Swal.fire({
                             heightAuto: false,
                             text: `Do you want to continue and update your recommendations list?
-                            This may take ${msToTime(updateTime*1000)} to finish.`,
+                            The estimated time to finish is ${msToTime(updateTime*1000)}`,
                             showConfirmButton: true,
                             confirmButtonText: "Yes",
                             showDenyButton: true,
@@ -1573,10 +1720,101 @@
                 })
                 updateBtnEl.on('click', async ()=>{
                     var updateTime = arrayMean(savedAnalyzeVariableTime) + arrayMean(savedUpdateAnalyzeAnimeTime)
-                    if(requestIsRunning){
+                    if(jsonIsEmpty(savedAnimeEntries)){
+                        var deepUpdateTime = arrayMean(savedDeepUpdateTime)
+                        if(requestIsRunning){
+                            Swal.fire({
+                                heightAuto: false,
+                                text: `List is already updating! Do you want to restart the update?
+                                This may take ${msToTime(deepUpdateTime*1000)} to finish.`,
+                                showConfirmButton: true,
+                                confirmButtonText: "Yes",
+                                showDenyButton: true,
+                                denyButtonText: "No",
+                                confirmButtonColor: '#000',
+                                denyButtonColor: '#e27d81',
+                                icon: "question",
+                                reverseButtons: true
+                            }).then(async(value)=>{
+                                if(value.isConfirmed){
+                                    savedUserList = await {}
+                                    await saveJSON(savedUserList,"savedUserList")
+                                    savedUserScores = await {}
+                                    await saveJSON(savedUserScores,"savedUserScores")
+                                    deepUpdateStartTime = new Date()
+                                    isDeepUpdate = true
+                                    Update(false)
+                                    menuContainerEl.fadeOut(250)
+                                }
+                            })
+                        } else {
+                            Swal.fire({
+                                heightAuto: false,
+                                text: `Do you want to continue and update your recommendations list?
+                                The estimated time to finish is ${msToTime(deepUpdateTime*1000)}`,
+                                showConfirmButton: true,
+                                confirmButtonText: "Yes",
+                                showDenyButton: true,
+                                denyButtonText: "No",
+                                confirmButtonColor: '#000',
+                                denyButtonColor: '#e27d81',
+                                icon: "question",
+                                reverseButtons: true
+                            })
+                            .then(async(value) => {
+                                if(value.isConfirmed){
+                                    var newUsername = await usernameEl.val()
+                                    if(!newUsername){
+                                        menuContainerEl.fadeOut(250)
+                                        usernameEl[0]?.setCustomValidity("Anilist Username is Required!")
+                                        usernameEl[0]?.reportValidity()
+                                    } else {
+                                        if(newUsername!==savedUsername){
+                                            Swal.fire({
+                                                heightAuto: false,
+                                                text: `Username was changed from ${savedUsername} to ${newUsername}. This will remove your current recommendation list, do you still want to continue?`,
+                                                showConfirmButton: true,
+                                                confirmButtonText: "Yes",
+                                                showDenyButton: true,
+                                                denyButtonText: "No",
+                                                confirmButtonColor: '#000',
+                                                denyButtonColor: '#e27d81',
+                                                icon: "question",
+                                                reverseButtons: true
+                                            }).then(async(value)=>{
+                                                if(value.isConfirmed){
+                                                    // Reset User List
+                                                    savedUserList = await {}
+                                                    await saveJSON(savedUserList,"savedUserList")
+                                                    savedUserScores = await {}
+                                                    await saveJSON(savedUserScores,"savedUserScores")
+                                                    deepUpdateStartTime = new Date()
+                                                    isDeepUpdate = true
+                                                    Update(false)
+                                                } else {
+                                                    usernameEl.focus()
+                                                }
+                                                menuContainerEl.fadeOut(250)
+                                            })
+                                        } else {
+                                            // Reset User List
+                                            savedUserList = await {}
+                                            await saveJSON(savedUserList,"savedUserList")
+                                            savedUserScores = await {}
+                                            await saveJSON(savedUserScores,"savedUserScores")
+                                            deepUpdateStartTime = new Date()
+                                            isDeepUpdate = true
+                                            Update(false)
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                    } else if(requestIsRunning){
                         Swal.fire({
                             heightAuto: false,
-                            text: `List is already updating! Do you want to restart the update?`,
+                            text: `List is already updating! Do you want to restart the update?
+                            This may take ${msToTime(updateTime*1000)} to finish.`,
                             showConfirmButton: true,
                             confirmButtonText: "Yes",
                             showDenyButton: true,
@@ -1629,7 +1867,7 @@
                         Swal.fire({
                             heightAuto: false,
                             text: `Do you want to continue and update your recommendations list?
-                            This may take ${msToTime(updateTime*1000)} to finish.`,
+                            The estimated time to finish is ${msToTime(updateTime*1000)}`,
                             showConfirmButton: true,
                             confirmButtonText: "Yes",
                             showDenyButton: true,
@@ -1686,7 +1924,8 @@
                     if(requestIsRunning){
                         Swal.fire({
                             heightAuto: false,
-                            text: `List is already updating! Do you want to restart the update?`,
+                            text: `List is already updating! Do you want to restart the update?
+                            This may take ${msToTime(deepUpdateTime*1000)} to finish.`,
                             showConfirmButton: true,
                             confirmButtonText: "Yes",
                             showDenyButton: true,
@@ -1707,7 +1946,7 @@
                         Swal.fire({
                             heightAuto: false,
                             text: `Do you want to continue and update all data in your recommendations list?
-                            This may take ${msToTime(deepUpdateTime*1000)} to finish.`,
+                            The estimated time to finish is ${msToTime(deepUpdateTime*1000)}`,
                             showConfirmButton: true,
                             confirmButtonText: "Yes",
                             showDenyButton: true,
@@ -1730,24 +1969,21 @@
                 hiddenUnhiddenBtnEl.on('click', async()=>{
                     if(!isRunning){
                         isRunning = true
-                        if(savedUsername&&Object.keys(savedRecScheme).length>0){
+                        if(savedUsername&&!jsonIsEmpty(savedRecScheme)){
                             var state = await hiddenUnhiddenBtnEl.text()
                             if(!equalsNCS(usernameEl.val(),savedUsername)){
                                 await usernameEl.val(savedUsername)
                             }
                             if(state==="Unhidden"){
-                                if($("#filters .flexdatalist-multiple-value > .flexdatalist-alias").length){
-                                    var filterInput = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
+                                var filterInput = await $("#flex0")
+                                if(filterInput.length){
                                     await filterInput.val("hidden")
                                     var e = await $.Event("keyup",{keyCode:13})
                                     await filterInput.trigger(e)
                                     await filterInput.val("")
                                 }
-                                await hiddenUnhiddenBtnEl.text("Hidden")
-                                savedTableStatus = await "Hidden"
-                                await saveJSON(savedTableStatus,"savedTableStatus")
                                 await animeRecommendationListEl.empty()
-                                await animeRecommendationListEl.append(`
+                                animeRecommendationListEl.append(`
                                     <tr class="item ${savedTheme}" role="row">
                                         <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                             <div style="display:flex; align-items:center;">
@@ -1757,25 +1993,22 @@
                                         </td>
                                     </tr>
                                 `)
+                                hiddenUnhiddenBtnEl.text("Hidden")
+                                savedTableStatus = await "Hidden"
+                                saveJSON(savedTableStatus,"savedTableStatus")
                                 await LoadData(savedRecScheme)
                                 pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                                 isRunning = false
                             } else {
-                                if($("#filters .flexdatalist-multiple-value").length){
-                                    var filters = await $("#filters .flexdatalist-multiple").children("li.value")
-                                    for(let i=0; i<filters.length; i++) {
-                                        var filterName = await filters.eq(i).children(".text")[0]?.innerText
-                                        if(filterName.toLowerCase()==="hidden"){
-                                            await filters.eq(i).children(".fdl-remove").trigger("click")
-                                            await $("#filters .flexdatalist-alias").blur()
-                                        }
+                                var filters = await $("ul.flex0>.value")
+                                await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                    if(e?.textContent?.toLowerCase()==="hidden"){
+                                        await filters.eq(idx).children(".fdl-remove").trigger("click")
+                                        await $("#flex0").blur()
                                     }
-                                }
-                                await hiddenUnhiddenBtnEl.text("Unhidden")
-                                savedTableStatus = await "Unhidden"
-                                await saveJSON(savedTableStatus,"savedTableStatus")
+                                })
                                 await animeRecommendationListEl.empty()
-                                await animeRecommendationListEl.append(`
+                                animeRecommendationListEl.append(`
                                     <tr class="item ${savedTheme}" role="row">
                                         <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                             <div style="display:flex; align-items:center;">
@@ -1785,6 +2018,9 @@
                                         </td>
                                     </tr>
                                 `)
+                                await hiddenUnhiddenBtnEl.text("Unhidden")
+                                savedTableStatus = await "Unhidden"
+                                saveJSON(savedTableStatus,"savedTableStatus")
                                 await LoadData(savedRecScheme)
                                 pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                                 isRunning = false
@@ -1812,44 +2048,40 @@
                                 usernameEl.val(savedUsername)
                             }
                             savedHiddenAnimeIDs = await {}
-                            await saveJSON(savedHiddenAnimeIDs, "savedHiddenAnimeIDs")
-                            if(await $("#filters .flexdatalist-multiple-value").length){
-                                var filters = await $("#filters .flexdatalist-multiple").children("li.value")
-                                for(let i=0; i<filters.length; i++) {
-                                    var filterName = await filters.eq(i).children(".text")[0]?.innerText
-                                    if(filterName.toLowerCase()==="hidden"){
-                                        await filters.eq(i).children(".fdl-remove").trigger("click")
-                                        await $("#filters .flexdatalist-alias").blur()
-                                    }
+                            saveJSON(savedHiddenAnimeIDs, "savedHiddenAnimeIDs")
+                            var filters = await $("ul.flex0>.value")
+                            await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                if(e?.textContent?.toLowerCase()==="hidden"){
+                                    await filters.eq(idx).children(".fdl-remove").trigger("click")
+                                    await $("#flex0").blur()
                                 }
-                            }
-                            if(hiddenUnhiddenBtnEl.text()==="Hidden"){
-                                await animeRecommendationListEl.empty()
-                                await animeRecommendationListEl.append(`
-                                    <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
-                                            <div style="display:flex; align-items:center;">
-                                                <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
-                                                <div>Loading...</div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                `)
-                            }
-                            await LoadData(savedRecScheme)
+                            })
+                            await animeRecommendationListEl.empty()
+                            await animeRecommendationListEl.append(`
+                                <tr class="item ${savedTheme}" role="row">
+                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
+                                        <div style="display:flex; align-items:center;">
+                                            <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
+                                            <div>Loading...</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `)
                             hiddenUnhiddenBtnEl.text("Unhidden")
                             await animeTableEl.trigger("pageSet",savedUnhiddenTablePage)
                             pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                             savedTableStatus = await "Unhidden"
-                            await saveJSON(savedTableStatus,"savedTableStatus")
-                            showAllAnimeBtnEl.hide()
-                            menuContainerEl.fadeOut(250)
+                            saveJSON(savedTableStatus,"savedTableStatus")
+                            await showAllAnimeBtnEl.hide()
+                            menuContainerEl.fadeOut(500)
+                            await LoadData(savedRecScheme)
                             Swal.fire({
                                 heightAuto: false,
                                 text: "All hidden anime has now been successfully transferred to your List!",
                                 icon: "success",
                                 confirmButtonColor: "#000"
                             })
+                            return
                         }
                     })
                 })
@@ -1907,7 +2139,7 @@
                                     if(value.isConfirmed){
                                         var fileContent
                                         await new Promise(async(resolve,reject)=>{
-                                            await importBtnEl.css({background: "black", color: "white"})
+                                            await importBtnEl.css({background: "black", color: "#F0F0F0"})
                                             try{
                                                 fileContent = await JSON.parse(reader.result);
                                             } catch(ex) {
@@ -2032,19 +2264,18 @@
                                             return await new Promise(async(resolve)=>{
                                                 await warnAnimeContainerEl.css({visibility:"hidden"}).show()
                                                 // Remove Current Filters
-                                                var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
-                                                for(let i=0; i<warnInfo.length; i++) {
-                                                    await warnInfo.eq(i).children(".fdl-remove").trigger("click")
-                                                    await $("#warnAnimeModal .flexdatalist-alias").blur()
-                                                }
+                                                var warnInfo = await $("ul.flex1>.value")
+                                                await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                                    await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
+                                                    await $("#flex1").blur()
+                                                })
                                                 resolve()
                                             })
                                         }).then(async()=>{
                                             return await new Promise(async(resolve)=>{
                                                 // Reload Filters
-                                                var warnAnimeInput
+                                                var warnAnimeInput = await $("#flex1")
                                                 for(let i=0; i<savedWarnAnime.length; i++) {
-                                                    warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                                     await warnAnimeInput.val(savedWarnAnime[i])
                                                     var e = await $.Event("keyup",{keyCode:13})
                                                     await warnAnimeInput.trigger(e)
@@ -2057,19 +2288,18 @@
                                             return await new Promise(async(resolve)=>{
                                                 await filterAlgoContainerEl.css({visibility:"hidden"}).show()
                                                 // Remove Current Filters
-                                                var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
-                                                for(let i=0; i<filterInfo.length; i++) {
-                                                    await filterInfo.eq(i).children(".fdl-remove").trigger("click")
-                                                    await $("#filterAlgoModal .flexdatalist-alias").blur()
-                                                }
+                                                var filterInfo = await $("ul.flex2>.value")
+                                                await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                                    await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
+                                                    await $("#flex2").blur()
+                                                })
                                                 resolve()
                                             })
                                         }).then(async()=>{
                                             return await new Promise(async(resolve)=>{
                                                 // Reload Filters
-                                                var filterAlgoInput;
-                                                for(let i=0; i<savedFilterAlgo.length; i++) {
-                                                    filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                                                var filterAlgoInput = await $("#flex2")
+                                                for(let i=0; i<savedFilterAlgo.length; i++){
                                                     await filterAlgoInput.val(savedFilterAlgo[i])
                                                     var e = await $.Event("keyup",{keyCode:13})
                                                     await filterAlgoInput.trigger(e)
@@ -2079,10 +2309,13 @@
                                                 resolve()
                                             })
                                         }).then(async()=>{
-                                            if(Object.keys(savedRecScheme).length) {
+                                            if(!jsonIsEmpty(savedAnimeEntries)&&!jsonIsEmpty(savedRecScheme)) {
                                                 await updateBtnEl.show()
                                                 await updateIntervalBtnEl.show()
                                                 await LoadData(savedRecScheme)
+                                            } else if(!jsonIsEmpty(savedAnimeEntries)){
+                                                await updateBtnEl.show()
+                                                await updateIntervalBtnEl.show()
                                             } else {
                                                 await updateBtnEl.hide()
                                                 await updateIntervalBtnEl.hide()
@@ -2105,7 +2338,7 @@
                                                 dataStatusSpinnerHomeEl.hide()
                                                 dataStatusEl
                                                     .empty()
-                                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                                             }
                                             await Swal.fire({
                                                 heightAuto: false,
@@ -2131,13 +2364,13 @@
                                         })
                                     } else {
                                         importFileEl.val(null)
-                                        await importBtnEl.css({background: "black", color: "white"})
+                                        await importBtnEl.css({background: "black", color: "#F0F0F0"})
                                     }
                                 })
                             } else {
                                 var fileContent
                                 await new Promise(async(resolve,reject)=>{
-                                    await importBtnEl.css({background: "black", color: "white"})
+                                    await importBtnEl.css({background: "black", color: "#F0F0F0"})
                                     try{
                                         fileContent = await JSON.parse(reader.result)
                                     } catch(ex) {
@@ -2269,19 +2502,18 @@
                                     return await new Promise(async(resolve)=>{
                                         await warnAnimeContainerEl.css({visibility:"hidden"}).show()
                                         // Remove Current Filters
-                                        var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
-                                        for(let i=0; i<warnInfo.length; i++) {
-                                            await warnInfo.eq(i).children(".fdl-remove").trigger("click")
-                                            await $("#warnAnimeModal .flexdatalist-alias").blur()
-                                        }
+                                        var warnInfo = await $("ul.flex1>.value")
+                                        await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                            await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
+                                            await $("#flex1").blur()
+                                        })
                                         resolve()
                                     })
                                 }).then(async()=>{
                                     return await new Promise(async(resolve)=>{
                                         // Reload Filters
-                                        var warnAnimeInput
+                                        var warnAnimeInput = await $("#flex1")
                                         for(let i=0; i<savedWarnAnime.length; i++) {
-                                            warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                             await warnAnimeInput.val(savedWarnAnime[i])
                                             var e = await $.Event("keyup",{keyCode:13})
                                             await warnAnimeInput.trigger(e)
@@ -2294,19 +2526,18 @@
                                     return await new Promise(async(resolve)=>{
                                         await filterAlgoContainerEl.css({visibility:"hidden"}).show()
                                         // Remove Current Filters
-                                        var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
-                                        for(let i=0; i<filterInfo.length; i++) {
-                                            await filterInfo.eq(i).children(".fdl-remove").trigger("click")
-                                            await $("#filterAlgoModal .flexdatalist-alias").blur()
-                                        }
+                                        var filterInfo = await $("ul.flex2>.value")
+                                        await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                            await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
+                                            await $("#flex2").blur()
+                                        })
                                         resolve()
                                     })
                                 }).then(async()=>{
                                     return await new Promise(async(resolve)=>{
                                         // Reload Filters
-                                        var filterAlgoInput;
-                                        for(let i=0; i<savedFilterAlgo.length; i++) {
-                                            filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                                        var filterAlgoInput = await $("#flex2")
+                                        for(let i=0; i<savedFilterAlgo.length; i++){
                                             await filterAlgoInput.val(savedFilterAlgo[i])
                                             var e = await $.Event("keyup",{keyCode:13})
                                             await filterAlgoInput.trigger(e)
@@ -2316,10 +2547,13 @@
                                         resolve()
                                     })
                                 }).then(async()=>{
-                                    if(Object.keys(savedRecScheme).length) {
+                                    if(!jsonIsEmpty(savedAnimeEntries)&&!jsonIsEmpty(savedRecScheme)) {
                                         await updateBtnEl.show()
                                         await updateIntervalBtnEl.show()
                                         await LoadData(savedRecScheme)
+                                    } else if(!jsonIsEmpty(savedAnimeEntries)){
+                                        await updateBtnEl.show()
+                                        await updateIntervalBtnEl.show()
                                     } else {
                                         await updateBtnEl.hide()
                                         await updateIntervalBtnEl.hide()
@@ -2340,7 +2574,7 @@
                                     dataStatusSpinnerHomeEl.hide()
                                     dataStatusEl
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                                     importFileEl.val(null)
                                     await Swal.fire({
                                         heightAuto: false,
@@ -2635,19 +2869,13 @@
                     flex1El[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                 })
                 $("#submitWarnAnime").on("click",async()=>{
-                    var warnAnimeInputs = $("#warnAnimeModal .flexdatalist-multiple > .value").children(".text")
-                    var warnAnime = []
-                    for(let i=0; i<warnAnimeInputs.length; i++){
-                        var warnName = warnAnimeInputs[i].textContent
-                        warnAnime.push(warnName)
-                    }
-                    savedWarnAnime = await warnAnime || []
+                    savedWarnAnime = await $("ul.flex1>.value>.text").toArray()?.map((e)=>e.textContent)??[]
                     await saveJSON(savedWarnAnime,"savedWarnAnime")
                     await warnAnimeModalEl.removeClass("swal2-show-custom").addClass("swal2-hide-custom")
                     setTimeout(()=>{
                         warnAnimeContainerEl.hide()
                     },300)
-                    LoadData(savedRecScheme)
+                    await LoadData(savedRecScheme)
                 })
                 $("#warnAnimeContainer, #cancelWarnAnime").on("click",async()=>{
                     warnAnimeModalEl.removeClass("swal2-show-custom").addClass("swal2-hide-custom")
@@ -2655,16 +2883,16 @@
                         warnAnimeContainerEl.hide()
                         await new Promise(async(resolve)=>{
                             // Remove Current Filters
-                            var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
-                            for(let i=0; i<warnInfo.length; i++) {
-                                await warnInfo.eq(i).children(".fdl-remove").trigger("click")
-                                await $("#warnAnimeModal .flexdatalist-alias").blur()
-                            }
+                            var warnInfo = await $("ul.flex1>.value")
+                            await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
+                                await $("#flex1").blur()
+                            })
                             resolve()
                         }).then(async()=>{
                             // apply saved
+                            var warnAnimeInput = await $("#flex1")
                             for(let i=0; i<savedWarnAnime.length; i++) {
-                                warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                 await warnAnimeInput.val(savedWarnAnime[i])
                                 var e = await $.Event("keyup",{keyCode:13})
                                 await warnAnimeInput.trigger(e)
@@ -2709,18 +2937,12 @@
                                 dataStatusSpinnerHomeEl.hide()
                                 dataStatusEl
                                     .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                             }
                         })
                         return
                     } else {
-                        var filterAlgoInputs = $("#filterAlgoModal .flexdatalist-multiple > .value").children(".text")
-                        var filterAlgo = []
-                        var filterName;
-                        for(let i=0; i<filterAlgoInputs.length; i++){
-                            filterName = filterAlgoInputs[i].textContent
-                            filterAlgo.push(filterName)
-                        }
+                        var filterAlgo = await $("ul.flex2>.value>.text").toArray()?.map((e)=>e.textContent)??[]
                         filterAlgoValidationEl
                             .removeClass("success-before")
                             .addClass("no-before")
@@ -2740,16 +2962,15 @@
                         filterAlgoContainerEl.hide()
                         // Remove Current Filters
                         await new Promise(async(resolve)=>{
-                            var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
-                            for(let i=0; i<filterInfo.length; i++) {
-                                await filterInfo.eq(i).children(".fdl-remove").trigger("click")
-                                await $("#filterAlgoModal .flexdatalist-alias").blur()
-                            }
+                            var filterInfo = await $("ul.flex2>.value")
+                            await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
+                                await $("#flex2").blur()
+                            })
                             resolve()
                         }).then(async()=>{
-                            var filterAlgoInput;
-                            for(let i=0; i<savedFilterAlgo.length; i++) {
-                                filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
+                            var filterAlgoInput = await $("#flex2")
+                            for(let i=0; i<savedFilterAlgo.length; i++){
                                 await filterAlgoInput.val(savedFilterAlgo[i])
                                 var e = await $.Event("keyup",{keyCode:13})
                                 await filterAlgoInput.trigger(e)
@@ -3071,17 +3292,17 @@
                         $(` .flexdatalist-multiple,
                             .flexdatalist-alias,
                             .flexdatalist-results,
-                            .flexdatalist-multiple li.value
+                            .flexdatalist-multiple > .value
                         `).addClass('darkMode')
                     }
                 })
                 bodyEl.on('DOMNodeInserted','.swal2-popup, .swal2-popup-custom, .swal2-container',()=>{
                     if(savedTheme==="darkMode"){
-                        $(` .swal2-confirm,
-                            .swal2-confirm-custom,
-                            .swal2-footer a,
-                            .swal2-popup,
-                            .swal2-popup-custom,
+                        $(` .swal2-confirm, 
+                            .swal2-confirm-custom, 
+                            .swal2-footer > a, 
+                            .swal2-popup, 
+                            .swal2-popup-custom, 
                             .swal2-validation-message
                         `).addClass('darkMode')
                         // Observe Attribute Change
@@ -3106,7 +3327,7 @@
                 })
                 $(".filter-container-custom, .filter-container").on('DOMNodeInserted','li.value',()=>{
                     if(savedTheme==="darkMode"){
-                        $(".flexdatalist-multiple li.value").addClass('darkMode')
+                        $(".flexdatalist-multiple > .value").addClass('darkMode')
                     }
                 })
                 bodyEl.on('scroll', function () {
@@ -3131,6 +3352,8 @@
                             } else {
                                 $("#next").click()
                             }
+                        } else if(keyCode===83&&evtobj.ctrlKey){
+                            dataStatusEl.click()
                         }
                     }
                 })
@@ -3223,16 +3446,26 @@
                         cssGoto: '.pagenum',
                         cssPageDisplay: '.pagedisplay'
                     })
-                    .delegate('button.hide-anime', 'click' , async(e) => {
+                    .delegate('.hide-anime', 'click' , async(e) => {
                         var hiddenRow = await $(e.currentTarget).closest('tr') || $(e.target).closest('tr')
-                        var hiddenAnimeID = hiddenRow.children("td.animeTitle").children("a").attr("data-value")
-                        savedHiddenAnimeIDs[hiddenAnimeID] = await true
-                        await saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
-                        hiddenRow.addClass("remove-me")
+                        var hiddenAnimeID = hiddenRow.children(".animeTitle").children("a").attr("data-value")
+                        await hiddenRow.html(`
+                            <tr class="item ${savedTheme}" role="row">
+                                <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
+                                    <div style="display:flex; align-items:center;">
+                                        <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
+                                        <div>Removing...</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        `)
+                        await hiddenRow.addClass("remove-me")
                         animeTableEl.trigger("pagerUpdate")
+                        savedHiddenAnimeIDs[hiddenAnimeID] = await true
+                        saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
                         if(animeTableEl[0]?.config?.rowsCopy?.length===0){
                             await animeRecommendationListEl.empty()
-                            await animeRecommendationListEl.append(`
+                            animeRecommendationListEl.append(`
                                 <tr class="item ${savedTheme}" role="row">
                                     <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
@@ -3248,17 +3481,27 @@
                         await pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                         return false
                     })
-                    .delegate('button.show-anime', 'click' , async(e) => {
+                    .delegate('.show-anime', 'click' , async(e) => {
                         var hiddenRow = await $(e.currentTarget).closest('tr') || $(e.target).closest('tr')
-                        var hiddenAnimeID = await hiddenRow.children("td.animeTitle").children("a").attr("data-value")
-                        await delete savedHiddenAnimeIDs[hiddenAnimeID]
-                        await saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
-                        // No Hidden Anime
+                        var hiddenAnimeID = await hiddenRow.children(".animeTitle").children("a").attr("data-value")
+                        await hiddenRow.html(`
+                            <tr class="item ${savedTheme}" role="row">
+                                <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
+                                    <div style="display:flex; align-items:center;">
+                                        <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
+                                        <div>Removing...</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        `)
                         await hiddenRow.addClass("remove-me")
-                        await animeTableEl.trigger("pagerUpdate")
+                        animeTableEl.trigger("pagerUpdate")
+                        await delete savedHiddenAnimeIDs[hiddenAnimeID]
+                        saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
+                        // No Hidden Anime
                         if(await jsonIsEmpty(savedHiddenAnimeIDs)||animeTableEl[0]?.config?.rowsCopy?.length===0){
                             await animeRecommendationListEl.empty()
-                            await animeRecommendationListEl.append(`
+                            animeRecommendationListEl.append(`
                                 <tr class="item ${savedTheme}" role="row">
                                     <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
                                         <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
@@ -3407,18 +3650,16 @@
                 }
                 // Reload Table Filters/Identifiers
                     // Table Filters
-                var filterInput;
+                var filterInput = await $("#flex0")
                 for(let i=0; i<savedFilters.length; i++) {
-                    filterInput = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
                     await filterInput.val(savedFilters[i])
                     var e = await $.Event("keyup",{keyCode:13})
                     await filterInput.trigger(e)
                     await filterInput.val("")
                 }
                     // Algorithm Filters
-                var filterAlgoInput;
+                var filterAlgoInput = await $("#flex2")
                 for(let i=0; i<savedFilterAlgo.length; i++) {
-                    filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
                     await filterAlgoInput.val(savedFilterAlgo[i])
                     var e = await $.Event("keyup",{keyCode:13})
                     await filterAlgoInput.trigger(e)
@@ -3426,9 +3667,8 @@
                 }
                 await filterAlgoContainerEl.css({visibility:"visible"}).hide()
                     // Warn Content Identifier
-                var warnAnimeInput;
+                var warnAnimeInput = await $("#flex1")
                 for(let i=0; i<savedWarnAnime.length; i++) {
-                    warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
                     await warnAnimeInput.val(savedWarnAnime[i])
                     var e = await $.Event("keyup",{keyCode:13})
                     await warnAnimeInput.trigger(e)
@@ -3454,27 +3694,29 @@
                 }
 
                 // Init Last List (Unhidden/Hidden)
-                var filters = await $("#filters .flexdatalist-multiple").children("li.value")
-                for(let i=0; i<filters.length; i++) {
-                    var filterName = await filters.eq(i).children(".text")[0]?.innerText
-                    if(await filterName.toLowerCase()==="hidden"){
+                var filters = await $("ul.flex0 > .value")
+                await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
+                    if(e?.textContent?.toLowerCase()==="hidden"){
                         await hiddenUnhiddenBtnEl.text("Hidden")
                     }
-                }
+                })
 
                 // Load Last Saved Update
                 dataStatusSpinnerHomeEl.hide()
                 dataStatusEl
                     .empty()
-                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
 
                 // Load Table
-                if(await Object.keys(savedRecScheme).length>0){
+                if(!jsonIsEmpty(savedAnimeEntries)&&!jsonIsEmpty(savedRecScheme)) {
                     await updateBtnEl.show()
-                    await LoadData(savedRecScheme)
                     if(await !jsonIsEmpty(savedHiddenAnimeIDs)){
                         await showAllAnimeBtnEl.show()
                     }
+                    await LoadData(savedRecScheme)
+                    resolve()
+                } else if(!jsonIsEmpty(savedAnimeEntries)){
+                    await updateBtnEl.show()
                     resolve()
                 } else {
                     animeData = `
@@ -3522,7 +3764,7 @@
             return await new Promise(async(resolve) => {
                 // Auto Update
                 if(await updateIntervalIsActive){
-                    await updateIntervalBtnEl.css({background: "white",color:"black"})
+                    await updateIntervalBtnEl.css({background: "#F0F0F0",color:"black"})
                     updateIntervalStartDate = await updateIntervalStartDate || new Date()
                     await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                     if(await (new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hr
@@ -3571,7 +3813,7 @@
             }).then(async()=>{
                 // Auto Export
                 if(exportIntervalIsActive){
-                    await exportIntervalBtnEl.css({background: "white",color:"black"})
+                    await exportIntervalBtnEl.css({background: "#F0F0F0",color:"black"})
                     exportIntervalStartDate = await exportIntervalStartDate || new Date()
                     await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
@@ -3622,7 +3864,7 @@
                                             }
                                         },1000)
                                     },3600000)
-                                    await exportIntervalTimeout.push(saveExportIntervalTimeout)
+                                    await exportIntervalTimeout.push(saveExportIntervalTimeout)   
                                 }
                             },1000)
                         },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
@@ -3649,6 +3891,9 @@
             // Init New User
             if(!savedUsername){
                 initUsernameData()
+                return
+            } else if(jsonIsEmpty(savedRecScheme)){
+                Update(false)
                 return
             } else {
                 return
@@ -3680,10 +3925,8 @@
 
     // Main Functions
     function Update(notAnUpdate, filterAlgo, doHideUnwatchedSeq){
-        updateStartTime = new Date
-        var filterInput = $("#filters > ul > .flexdatalist-multiple-value > input")
+        updateStartTime = new Date()
         var username = usernameEl.val()
-        var filter = filterInput.val()
         // Check Input Validity
         if(!username){
             usernameEl[0]?.setCustomValidity("Anilist Username is Required!")
@@ -3727,31 +3970,6 @@
                 }
             },(analyzeVariableTime-i)*1000)
             updateStateText.push(timeout)
-        }
-        var savedIncluded = []
-        var savedExcluded = []
-        var filterName;
-        for(let i=0; i<savedFilterAlgo.length; i++){
-            filterName = savedFilterAlgo[i].trim().toLowerCase()
-            if(filterName.charAt(0)==="!") {
-                filterName = filterName.slice(1)
-                filterName = typeof filterName==="string"? filterName.split(":") : []
-                // Only Allow Specific (non-specified removes almost all predictors)
-                if(filterName.length>1){
-                    filterName = [filterName.shift(),filterName.join()]
-                    var type = filterName[0]
-                    var cinfo = filterName[1].trim().toLowerCase()
-                    if(cinfo.charAt(0)==="!"){
-                        cinfo = cinfo.slice(1)
-                        savedExcluded.push(type+":"+cinfo)
-                    } else {
-                        savedExcluded.push(type+":"+cinfo)
-                    }
-                } else if(filterName.length===1){
-                    savedExcluded.push(filterName[0])
-                }
-            }
-            else savedIncluded.push(filterName)
         }
         if(!notAnUpdate){
             var AnalyzeVariableStartTime = new Date()
@@ -3823,7 +4041,7 @@
                                     })();
                                 }
                                 var worker2 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
-                                worker2.postMessage({savedUserList: savedUserList, userEntries: userEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedIncluded: savedIncluded, savedExcluded: savedExcluded})
+                                worker2.postMessage({savedUserList: savedUserList, userEntries: userEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
                                 worker2.onmessage = (message) => {
                                     worker2.terminate()
                                     const data = message.data
@@ -3948,7 +4166,7 @@
                                         dataStatusSpinnerHomeEl.hide()
                                         dataStatusEl
                                             .empty()
-                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                                     })();
                                     requestIsRunning = false
                                     Swal.fire({
@@ -4123,7 +4341,7 @@
                                     dataStatusSpinnerHomeEl.hide()
                                     dataStatusEl
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                                 })();
                                 console.error("Error 101: ",ex)
                                 Swal.fire({
@@ -4136,7 +4354,7 @@
                                     await LoadData(savedRecScheme)
                                 })();
                                 console.log("WebtoApp: Update Error")
-                                if(Object.keys(savedRecScheme).length===0){
+                                if(jsonIsEmpty(savedRecScheme)){
                                     animeRecommendationListEl.empty()
                                     animeRecommendationListEl.append(`
                                         <tr class="item ${savedTheme}" role="row">
@@ -4157,14 +4375,11 @@
             var savedUserListValues = Object.values(savedUserList)
             if(isJson(savedUserList)&&isJson(savedUserListValues[0])&&!jsonIsEmpty(savedUserList)){
                 var worker7 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
-                worker7.postMessage({savedUserList: savedUserList, savedAnimeFranchises: savedAnimeFranchises, notAnUpdate: notAnUpdate, savedIncluded: savedIncluded, savedExcluded: savedExcluded})
+                worker7.postMessage({savedUserList: savedUserList, savedAnimeFranchises: savedAnimeFranchises, notAnUpdate: notAnUpdate, savedFilterAlgo: savedFilterAlgo})
                 worker7.onmessage = (message) => {
                     worker7.terminate()
                     const data = message.data
-                    const varScheme = data.varScheme
-                    const userListStatus = data.userListStatus
-                    const alteredVariables = data.alteredVariables
-                    analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                    analyzeAnime(updateID, savedAnimeEntries, data.varScheme, data.userListStatus, data.alteredVariables, username, false, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
                 }
                 worker7.onerror = async (message) => {
                     return
@@ -4174,7 +4389,7 @@
                 dataStatusSpinnerHomeEl.hide()
                 dataStatusEl
                     .empty()
-                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                 requestIsRunning = false
                 filterAlgoValidationEl.hide()
             }
@@ -4214,7 +4429,7 @@
                             media(
                                 type: ANIME,
                                 genre_not_in: ["Hentai"],
-                               format_not_in:[MUSIC,MANGA,NOVEL,ONE_SHOT]) {
+                                format_not_in:[MUSIC,MANGA,NOVEL,ONE_SHOT]) {
                                 id
                                 ${staffHasNextPage?'':`
                                 updatedAt
@@ -4378,10 +4593,10 @@
                             dataStatusSpinnerHomeEl.hide()
                             dataStatusEl
                                 .empty()
-                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                         })();
                         console.log("WebtoApp: Update Error")
-                        if(Object.keys(savedRecScheme).length===0){
+                        if(jsonIsEmpty(savedRecScheme)){
                             animeRecommendationListEl.empty()
                             animeRecommendationListEl.append(`
                                 <tr class="item ${savedTheme}" role="row">
@@ -4400,7 +4615,7 @@
     }
 
     async function updateAnimeList(updateID, username, varScheme, userListStatus, alteredVariables){
-        if(lastSavedUpdateTime!==0&&!jsonIsEmpty(savedAnimeEntries)>0&&!isDeepUpdate){
+        if(lastSavedUpdateTime!==0&&!jsonIsEmpty(savedAnimeEntries)&&!isDeepUpdate){
             var tempLastSavedUpdateTime = lastSavedUpdateTime
             var pastDateUpdated = lastSavedUpdateTime
             var currentDateAnilist = ((new Date).getTime())/1000
@@ -4503,10 +4718,14 @@
                         var uAEL = Object.keys(updatedAnimeEntries).length
                         var uDR = currentDateAnilist-pastDateUpdated
                         var uDC = currentDateAnilist-currentDateUpdating
-                        var pagePct = (uAEL/sAEL)*100
-                        var datePct = (uDC/uDR)*100
-                        var usUP = pagePct>=datePct? uAEL : uDC
-                        var usDN = pagePct>=datePct? sAEL : uDR
+                        var usUP, usDN;
+                        if((uAEL/sAEL)>=(uDC/uDR)){
+                            usUP = uAEL
+                            usDN = sAEL
+                        } else {
+                            usUP = uDC
+                            usDN = uDR
+                        }
                         dataStatusEl
                             .empty()
                             .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="${usUP}" max="${usDN}"></progress>⠀${(Math.min(99.99,(usUP/usDN)*100)).toFixed(2)}%</span>`);
@@ -4543,33 +4762,23 @@
                         // Check Staff
                         staffHasNextPage = tempUpdatedAnimeEntries?.some((userEntry)=>userEntry?.staff?.pageInfo?.hasNextPage??false)??false
                         if(staffHasNextPage){
-                            worker3.terminate()
-                            worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
-                            worker3.postMessage({
-                                updatedAnimeEntries: updatedAnimeEntries,
-                                savedAnimeEntries: savedAnimeEntries
-                            })
-                            worker3.onmessage = (message) => {
-                                (async()=>{
-                                    savedAnimeEntries = await message.data.savedAnimeEntries ?? {}
-                                    await saveJSON(savedAnimeEntries,"savedAnimeEntries")
-                                })();
-                            }
                             return recalluAL(page,++staffPage)
                         } else if((hasNextPage&&currentDateUpdating>=lastSavedUpdateTime)||(tempUpdatedAnimeEntries?.at(-1)?.updatedAt??true)){
-                            worker3.terminate()
-                            worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
-                            worker3.postMessage({
-                                updatedAnimeEntries: updatedAnimeEntries,
-                                savedAnimeEntries: savedAnimeEntries
-                            })
-                            worker3.onmessage = (message) => {
-                                (async()=>{
-                                    savedAnimeEntries = await message.data.savedAnimeEntries ?? {}
-                                    await saveJSON(savedAnimeEntries,"savedAnimeEntries")
-                                })();
+                            if(!isLoading&&!jsonIsEmpty(updatedAnimeEntries)&&!staffHasNextPage){
+                                worker3.terminate()
+                                worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
+                                worker3.postMessage({
+                                    updatedAnimeEntries: updatedAnimeEntries,
+                                    savedAnimeEntries: savedAnimeEntries
+                                })
+                                worker3.onmessage = (message) => {
+                                    (async()=>{
+                                        savedAnimeEntries = await message.data.savedAnimeEntries ?? {}
+                                        await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                    })();
+                                }
                             }
-                        return recalluAL(++page,1)
+                            return recalluAL(++page,1)
                         } else {
                             worker3.terminate()
                             worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
@@ -4607,10 +4816,14 @@
                             var uAEL = Object.keys(updatedAnimeEntries).length
                             var uDR = currentDateAnilist-pastDateUpdated
                             var uDC = currentDateAnilist-currentDateUpdating
-                            var pagePct = (uAEL/sAEL)*100
-                            var datePct = (uDC/uDR)*100
-                            var usUP = pagePct>=datePct? uAEL : uDC
-                            var usDN = pagePct>=datePct? sAEL : uDR
+                            var usUP, usDN;
+                            if((uAEL/sAEL)>=(uDC/uDR)){
+                                usUP = uAEL
+                                usDN = sAEL
+                            } else {
+                                usUP = uDC
+                                usDN = uDR
+                            }
                             for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                             for(let i=60; i>=0; i--){
                                 var timeout = setTimeout(()=>{
@@ -4647,10 +4860,10 @@
                                 dataStatusSpinnerHomeEl.hide()
                                 dataStatusEl
                                     .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                             })();
                             console.log("WebtoApp: Update Error")
-                            if(Object.keys(savedRecScheme).length===0){
+                            if(jsonIsEmpty(savedRecScheme)){
                                 animeRecommendationListEl.empty()
                                 animeRecommendationListEl.append(`
                                     <tr class="item ${savedTheme}" role="row">
@@ -4749,14 +4962,7 @@
                     await saveJSON(savedFilterAlgo,"savedFilterAlgo")
                 }
                 // Save Table Filters
-                var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
-                var filters = []
-                var filterName;
-                for(let i=0; i<filterInputs.length; i++){
-                    filterName = filterInputs[i].textContent
-                    filters.push(filterName)
-                }
-                savedFilters = await filters || ["limit top wscore: 100", "user status: unwatched"]
+                savedFilters = await $("ul.flex0 > .value > .text").toArray()?.map((e)=>e.textContent) || ["limit top wscore: 100", "user status: unwatched"]
                 await saveJSON(savedFilters, "savedFilters")
                 // Save Username
                 savedUsername = await username || ""
@@ -4768,7 +4974,7 @@
                     versionUpdate = await false
                     await saveJSON(versionUpdate,"versionUpdate")
                 }
-                if(Object.keys(savedRecScheme).length>1){
+                if(!jsonIsEmpty(savedRecScheme)){
                     updateBtnEl.show()
                     updateIntervalBtnEl.show()
                 }
@@ -4808,35 +5014,32 @@
                             ){
                                 await clearInterval(updateFiltersValid)
                                 // Get Current Value
-                                var currentInputValue = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias").val()
+                                var currentInputValue = await $("#flex0").val()
                                 checkFiltersFocus = await []
                                 // Update
                                 await $(".flexdatalist").flexdatalist({
                                     data: savedFilterOptionsJson
                                 })
                                 // Reload Saved Table Filters
-                                var filters
                                 await new Promise(async(resolve)=>{
-                                    filters = await $("#filters .flexdatalist-multiple").children("li.value")
-                                    for(let i=0; i<filters.length; i++) {
-                                        var filterName = await filters.eq(i).children(".text")[0]?.innerText
-                                        if(filterName.toLowerCase()==="hidden"){
-                                            await filters.eq(i).children(".fdl-remove").trigger("click")
-                                            await $("#filters .flexdatalist-alias").blur()
+                                    var filters = await $("ul.flex0 > .value")
+                                    await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                        if(e?.textContent?.toLowerCase()==="hidden"){
+                                            await filters.eq(idx).children(".fdl-remove").trigger("click")
+                                            await $("#flex0").blur()
                                         }
-                                    }
+                                    })
                                     resolve()
                                 }).then(async()=>{
-                                    var filterInput;
+                                    var filterInput = await $("#flex0")
                                     for(let i=0; i<savedFilters.length; i++) {
-                                        filterInput = await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias")
                                         await filterInput.val(savedFilters[i])
                                         var e = await $.Event("keyup",{keyCode:13})
                                         await filterInput.trigger(e)
                                         await filterInput.val("")
                                     }
                                     if(typeof currentInputValue==="string"){
-                                        await $("#filters .flexdatalist-multiple-value > .flexdatalist-alias").val(currentInputValue)
+                                        await filterInput.val(currentInputValue)
                                     }
                                     var flex0El = await $("ul.flex0")
                                     await flex0El.animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
@@ -4848,16 +5051,15 @@
                                     await filterAlgoContainerEl.css({visibility:"hidden"}).show()
                                 }
                                 await new Promise(async(resolve)=>{
-                                    var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
-                                    for(let i=0; i<filterInfo.length; i++) {
-                                        await filterInfo.eq(i).children(".fdl-remove").trigger("click")
-                                        await $("#filterAlgoModal .flexdatalist-alias").blur()
-                                    }
+                                    var filterInfo = await $("ul.flex2 > .value")
+                                    await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                        await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
+                                        await $("#flex2").blur()
+                                    })
                                     resolve()
                                 }).then(async()=>{
-                                    var filterAlgoInput;
+                                    var filterAlgoInput = await $("#flex2")
                                     for(let i=0; i<savedFilterAlgo.length; i++) {
-                                        filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                         await filterAlgoInput.val(savedFilterAlgo[i])
                                         var e = await $.Event("keyup",{keyCode:13})
                                         await filterAlgoInput.trigger(e)
@@ -4915,16 +5117,15 @@
                     await LoadData(savedRecScheme)
                     if(notAnUpdate){
                         await new Promise(async(resolve)=>{
-                            var filterInfo = await $("#filterAlgoModal .flexdatalist-multiple").children("li.value")
-                            for(let i=0; i<filterInfo.length; i++) {
-                                await filterInfo.eq(i).children(".fdl-remove").trigger("click")
-                                await $("#filterAlgoModal .flexdatalist-alias").blur()
-                            }
+                            var filters = await $("ul.flex2 > .value")
+                            await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                await filters.eq(idx).children(".fdl-remove").trigger("click")
+                                await $("#flex2").blur()
+                            })
                             resolve()
                         }).then(async()=>{
-                            var filterAlgoInput;
+                            var filterAlgoInput = await $("#flex2")
                             for(let i=0; i<savedFilterAlgo.length; i++) {
-                                filterAlgoInput = await $("#filterAlgoModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                 await filterAlgoInput.val(savedFilterAlgo[i])
                                 var e = await $.Event("keyup",{keyCode:13})
                                 await filterAlgoInput.trigger(e)
@@ -4942,7 +5143,7 @@
                         dataStatusSpinnerHomeEl.hide()
                         dataStatusEl
                             .empty()
-                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                     } else if(alertUser){
                         console.log("WebtoApp: List is Updated")
                         if(!swal.isVisible()
@@ -4984,11 +5185,11 @@
                         dataStatusSpinnerHomeEl.hide()
                         dataStatusEl
                             .empty()
-                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                     }
                     if(alertUser){
                         if(exportIntervalIsActive){
-                            await exportIntervalBtnEl.css({background: "white",color:"black"})
+                            await exportIntervalBtnEl.css({background: "#F0F0F0",color:"black"})
                             // Don't Save At First Analysis
                             if(await ((new Date).getTime()-((await exportIntervalStartDate || new Date()).getTime())>3600000)){// 1hr
                                 dataStatusSpinnerHomeEl.show()
@@ -5002,7 +5203,7 @@
                         requestIsRunning = false // Before backUpData
                         // Check Auto Export After Update
                         if(exportIntervalIsActive){
-                            await exportIntervalBtnEl.css({background: "white",color:"black"})
+                            await exportIntervalBtnEl.css({background: "#F0F0F0",color:"black"})
                             exportIntervalStartDate = await exportIntervalStartDate || new Date()
                             await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                             if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
@@ -5024,101 +5225,51 @@
                 requestIsRunning = false
                 dataStatusEl
                     .empty()
-                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                 resolve()
             }
         })
     }
 
     async function LoadData(savedRecScheme){
-        if(!isLoading) isLoading = true
+        if(!isLoading) isLoading = await true
         return await new Promise(async(resolve) => {
-            var recList = Object.values(savedRecScheme)
+            var recList = await Object.values(savedRecScheme)
             if((recList.length>0)) {
-                var filterInputs = $("#filters .flexdatalist-multiple > .value").children(".text")
-                var filters = []
-                var includes = []
-                var excludes = kidsAnimeIsHidden? ["tag: kids"] : []
-                var filterName;
-                for(let i=0; i<filterInputs.length; i++){
-                    filterName = filterInputs[i].textContent.trim().toLowerCase()
-                    filters.push(filterName)
-                    if(filterName.charAt(0)==="!") {
-                        filterName = filterName.slice(1)
-                        filterName = typeof filterName==="string"? filterName.split(":") : []
-                        if(filterName.length>1){
-                            filterName = [filterName.shift(),filterName.join()]
-                            var type = filterName[0]
-                            var cinfo = filterName[1].trim().toLowerCase()
-                            if(cinfo.charAt(0)==="!"){
-                                cinfo = cinfo.slice(1)
-                                excludes.push(type+":"+cinfo)
-                            } else {
-                                excludes.push(type+":"+cinfo)
-                            }
-                        } else if(filterName.length===1){
-                            excludes.push(filterName[0])
-                        }
-                    }
-                    else includes.push(filterName)
-                }
-                hiddenUnhiddenBtnEl.text("Unhidden")
-                for(let i=0; i<includes.length; i++){
-                    if(equalsNCS(includes[i],"hidden")){
+                var filters = await $("ul.flex0 > .value > .text").toArray()
+                savedFilters = await filters.map((e)=>{
+                    var filter = e.textContent.trim().toLowerCase()
+                    if(filter==="hidden"){
                         hiddenUnhiddenBtnEl.text("Hidden")
-                        break;
+                    } else {
+                        hiddenUnhiddenBtnEl.text("Unhidden")
                     }
-                }
-                savedFilters = await filters || ["limit top wscore: 100", "user status: unwatched"]
-                await saveJSON(savedFilters, "savedFilters")
-                var savedWarnR = []
-                var savedWarnY = []
-                for(let i=0; i<savedWarnAnime.length; i++){
-                    var warnName = savedWarnAnime[i].trim().toLowerCase()
-                    if(warnName.charAt(0)==="!") {
-                        warnName = warnName.slice(1)
-                        warnName = typeof warnName==="string"? warnName.split(":") : []
-                        if(warnName.length>1){
-                            warnName = [warnName.shift(),warnName.join()]
-                            var type = warnName[0]
-                            var cinfo = warnName[1].trim().toLowerCase()
-                            if(cinfo.charAt(0)==="!"){
-                                cinfo = cinfo.slice(1)
-                                savedWarnR.push(type+": "+cinfo)
-                            } else {
-                                savedWarnR.push(type+": "+cinfo)
-                            }
-                        } else if(warnName.length===1){
-                            savedWarnR.push(warnName)
-                        }
-                    }
-                    else savedWarnY.push(warnName)
-                }
+                    return filter
+                }) || ["limit top wscore: 100", "user status: unwatched"]
+                saveJSON(savedFilters, "savedFilters")
                 var worker6 = new Worker(`./js-css/worker/loadData-${version}.js`)
                 worker6.postMessage({
                     recList: recList,
                     savedHiddenAnimeIDs: savedHiddenAnimeIDs,
-                    includes: includes,
-                    excludes: excludes,
-                    savedWarnR: savedWarnR,
-                    savedWarnY: savedWarnY,
+                    savedFilters: savedFilters,
+                    savedWarnAnime: savedWarnAnime,
+                    kidsAnimeIsHidden: kidsAnimeIsHidden,
                     savedTheme: savedTheme
                 })
                 worker6.onmessage = async (message) => {
                     worker6.terminate()
-                    const data = message.data
-                    const animeData = data.animeData
+                    const data = await message.data
+                    const animeData = await data.animeData
                     await animeRecommendationListEl.empty()
-                    await animeRecommendationListEl.css({
+                    animeRecommendationListEl.css({
                         "display":"none"
                     }).append(animeData)
                     await animeTableEl.trigger("update")
-                    // await animeTableEl.trigger("pagerUpdate")
-                    await animeRecommendationListEl.css({
+                    animeRecommendationListEl.css({
                         "display":""
                     })
                     // idk why savedUnhiddenTable Page sets to (page - 1) in SecondTolast and Last
-                    await animeTableEl.trigger("pageSet",(savedTableStatus==="Unhidden"? savedUnhiddenTablePage:savedHiddenTablePage))
+                    animeTableEl.trigger("pageSet",(savedTableStatus==="Unhidden"? savedUnhiddenTablePage:savedHiddenTablePage))
                     // Rename Pager Options Text
                     pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                     isLoading = false
@@ -5168,7 +5319,7 @@
                     dataStatusSpinnerHomeEl.hide()
                     dataStatusEl
                         .empty()
-                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: '+new Date(lastSavedUpdateTime*1000).toLocaleString():'<b style="color: #6eb9ff;font-size: 1rem;font-weight: bolder;">⟳</b> Latest Anilist Update: N/A'}</span>`)
+                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                 }
                 if(!swal.isVisible()
                  &&!usernameEl.is(":focus")
@@ -5296,6 +5447,10 @@
         filterAlgoValidationEl.html("").hide()
         if(username){
             await usernameEl.val(username)
+            if(await !usernameEl?.val()??true){
+                await $("#username").val(username)
+                document.getElementById("username").value = await username
+            }
             Update(false)
         }
     }
@@ -5335,36 +5490,37 @@
         return await new Promise(async(resolve)=>{
             // Remove default
             if(newTheme!=="dakMode"&&!prevTheme){
-                await $(`
+                await $(` 
                     html
                     body,
-                    .Home,
-                    .searchData,
+                    #nav,
+                    #Home,
+                    #searchData,
                     button,
-                    .overlay,
-                    #username,
+                    #overlay,
+                    #username, 
                     #dataStatusHolder,
+                    #dataStatusUpdate,
                     .flexdatalist-multiple,
                     .flexdatalist-alias,
                     .flexdatalist-results,
-                    .flexdatalist-multiple li.value,
-                    #animeRecommendationList td,
+                    .flexdatalist-multiple > .value,
+                    #table-responsive,
                     #anime-table,
-                    #anime-table thead,
-                    #anime-table tbody,
-                    #anime-table th,
-                    #anime-table tr,
-                    #anime-table td,
-                    .table-responsive,
-                    #animeRecommendationList a,
-                    .userInput,
-                    .nav,
+                    #anime-table > thead,
+                    #anime-table > thead > tr,
+                    #anime-table > thead > tr > th,
+                    #animeRecommendationList,
+                    #animeRecommendationList > tr,
+                    #animeRecommendationList > tr > td,
+                    #animeRecommendationList > tr > td > a,
                     #pager,
                     #pageNumberOptions,
+                    #pageNumberOptions>option.darkMode
                     .swal2-popup,
                     .swal2-popup-custom,
                     .swal2-validation-message,
-                    .swal2-footer a,
+                    .swal2-footer > a,
                     .swal2-confirm,
                     .swal2-confirm-custom,
                     .spinner
@@ -5372,71 +5528,74 @@
             }
             // Remove Previous
             if(prevTheme){
-                await $(`
+                await $(` 
                     html
                     body,
-                    .Home,
-                    .searchData,
+                    #nav,
+                    #Home,
+                    #searchData,
                     button,
-                    .overlay,
-                    #username,
+                    #overlay,
+                    #username, 
                     #dataStatusHolder,
+                    #dataStatusUpdate,
                     .flexdatalist-multiple,
                     .flexdatalist-alias,
                     .flexdatalist-results,
-                    .flexdatalist-multiple li.value,
-                    #animeRecommendationList td,
+                    .flexdatalist-multiple > .value,
+                    #table-responsive,
                     #anime-table,
-                    #anime-table thead,
-                    #anime-table tbody,
-                    #anime-table th,
-                    #anime-table tr,
-                    #anime-table td,
-                    .table-responsive,
-                    #animeRecommendationList a,
-                    .userInput,
-                    .nav,
+                    #anime-table > thead,
+                    #anime-table > thead > tr,
+                    #anime-table > thead > tr > th,
+                    #animeRecommendationList,
+                    #animeRecommendationList > tr,
+                    #animeRecommendationList > tr > td,
+                    #animeRecommendationList > tr > td > a,
                     #pager,
                     #pageNumberOptions,
+                    #pageNumberOptions>option.darkMode
                     .swal2-popup,
                     .swal2-popup-custom,
                     .swal2-validation-message,
-                    .swal2-footer a,
+                    .swal2-footer > a,
                     .swal2-confirm,
                     .swal2-confirm-custom,
                     .spinner
                 `).removeClass(prevTheme)
             }
             // Apply New
-            await $(`
-                html,
+            await $(` 
+                html
                 body,
-                .Home,
-                .searchData,
+                #nav,
+                #Home,
+                #searchData,
                 button,
-                .overlay,
-                #username,
+                #overlay,
+                #username, 
+                #dataStatusHolder,
+                #dataStatusUpdate,
                 .flexdatalist-multiple,
                 .flexdatalist-alias,
                 .flexdatalist-results,
-                .flexdatalist-multiple li.value,
-                #animeRecommendationList td,
+                .flexdatalist-multiple > .value,
+                #table-responsive,
                 #anime-table,
-                #anime-table thead,
-                #anime-table tbody,
-                #anime-table th,
-                #anime-table tr,
-                #anime-table td,
-                .table-responsive,
-                #animeRecommendationList a,
-                .userInput,
-                .nav,
+                #anime-table > thead,
+                #anime-table > thead > tr,
+                #anime-table > thead > tr > th,
+                #animeRecommendationList,
+                #animeRecommendationList > tr,
+                #animeRecommendationList > tr > td,
+                #animeRecommendationList > tr > td > a,
                 #pager,
                 #pageNumberOptions,
+                #pageNumberOptions>option.darkMode
                 .swal2-popup,
                 .swal2-popup-custom,
                 .swal2-validation-message,
-                .swal2-footer a,
+                .swal2-footer > a,
                 .swal2-confirm,
                 .swal2-confirm-custom,
                 .spinner

@@ -2,13 +2,64 @@ self.onmessage = (message) => {
     var data = message.data
     var recList = data.recList || []
     var savedHiddenAnimeIDs = data.savedHiddenAnimeIDs
-    var includes = data.includes || []
-    var excludes = data.excludes || []
-    var savedWarnR = data.savedWarnR
-    var savedWarnY = data.savedWarnY
     var savedTheme = data.savedTheme
+    var kidsAnimeIsHidden = data.kidsAnimeIsHidden?? true
+    var savedFilters = data.savedFilters??[]
+    var savedWarnAnime = data.savedWarnAnime??[]
     const availableFilterTypes = {topscore:true,topscores:true,limittopscore:true,limittopscores:true,topwscore:true,limittopwscores:true,limittopwscore:true,topwscores:true,format:true,formats:true,genre:true,genres:true,tagcategory:true,tagcategories:true,tag:true,tags:true,studio:true,studios:true,staffrole:true,staffroles:true,staff:true,staffs:true,measure:true,measures:true,average:true,averages:true,includeunknownvariables:true,unknownvariables:true,unknownvariable:true,includeunknown:true,unknown:true,samplesizes:true,samplesize:true,samples:true,sample:true,size:true,minimumpopularity:true,minpopularity:true,popularity:true,minimumaveragescores:true,minimumaveragescore:true,minimumaverages:true,minimumaverage:true,minimumscores:true,minimumscore:true,averagescores:true,averagescore:true,scores:true,score:true,minaveragescores:true,minaveragescore:true,minaverages:true,minaverage:true,minscores:true,minscore:true,minimumavescores:true,minimumavescore:true,minimumave:true,avescores:true,avescore:true,limittopsimilarity:true,limittopsimilarities:true,limitsimilarity:true,limitsimilarities:true,topsimilarities:true,topsimilarity:true,similarities:true,similarity:true,userscore:true,userscores:true,wscore:true,wscores:true,year:true,years:true,season:true,seasons:true,userstatus:true,status:true,title:true,titles:true}
     var minTopSimilarities = 5
+    // Arrange Filters
+      // Table/List Filters
+    var filters = []
+    var includes = []
+    var excludes = kidsAnimeIsHidden? ["tag: kids"] : []
+    var filterName;
+    for(let i=0; i<savedFilters.length; i++){
+        filterName = savedFilters[i].trim().toLowerCase()
+        filters.push(filterName)
+        if(filterName.charAt(0)==="!") {
+            filterName = filterName.slice(1)
+            filterName = typeof filterName==="string"? filterName.split(":") : []
+            if(filterName.length>1){
+                filterName = [filterName.shift(),filterName.join()]
+                var type = filterName[0]
+                var cinfo = filterName[1].trim().toLowerCase()
+                if(cinfo.charAt(0)==="!"){
+                    cinfo = cinfo.slice(1)
+                    excludes.push(type+":"+cinfo)
+                } else {
+                    excludes.push(type+":"+cinfo)
+                }
+            } else if(filterName.length===1){
+                excludes.push(filterName[0])
+            }
+        }
+        else includes.push(filterName)
+    }
+      // Content Warnings
+    var savedWarnR = []
+    var savedWarnY = []
+    for(let i=0; i<savedWarnAnime.length; i++){
+        var warnName = savedWarnAnime[i].trim().toLowerCase()
+        if(warnName.charAt(0)==="!") {
+            warnName = warnName.slice(1)
+            warnName = typeof warnName==="string"? warnName.split(":") : []
+            if(warnName.length>1){
+                warnName = [warnName.shift(),warnName.join()]
+                var type = warnName[0]
+                var cinfo = warnName[1].trim().toLowerCase()
+                if(cinfo.charAt(0)==="!"){
+                    cinfo = cinfo.slice(1)
+                    savedWarnR.push(type+": "+cinfo)
+                } else {
+                    savedWarnR.push(type+": "+cinfo)
+                }
+            } else if(warnName.length===1){
+                savedWarnR.push(warnName)
+            }
+        }
+        else savedWarnY.push(warnName)
+    }
     // FilterOut User Includes and Excludes
       // Note: Order of Sequence is Important Here 
     // Include
