@@ -1457,7 +1457,7 @@
         // Init Page
         return await new Promise((resolve)=>{
             // Create/Load IndexedDB
-            request = window.indexedDB.open("MyIndexDB", 1)
+            request = window.indexedDB.open("Kanshi.Anime.Recommendations.Anilist.W~uPtWCq=vG$TR:Zl^#t<vdS]I~N70", 1)
             request.onerror = (event) => {
                 Swal.fire({
                     heightAuto: false,
@@ -5823,8 +5823,8 @@
         await animeTableEl.addClass("display-none")
         await tableSkeleton.removeClass("display-none")
         return await new Promise(async(resolve) => {
-            var recList = await Object.values(savedRecScheme)
-            if((recList.length>0)) {
+            var recList = Object?.values(savedRecScheme??{})??[]
+            if(recList.length) {
                 var filters = await $("ul.flex0 > .value > .text").toArray()
                 savedFilters = await filters.map((e)=>{
                     var filter = e.textContent.trim().toLowerCase()
@@ -5888,6 +5888,12 @@
                     isLoading = false
                     resolve()
                 }
+            } else {
+                pageNumberOptionsEl.css('pointer-events','')
+                tableSkeleton.addClass("display-none")
+                animeTableEl.removeClass("display-none")
+                isLoading = false
+                resolve()
             }
         })
     }
