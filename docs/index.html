@@ -3230,7 +3230,7 @@
                             if(value.isConfirmed){
                                 var prevThem = await savedTheme
                                 savedTheme = await "lightMode"
-                                themeBtnEl.addClass("selected")
+                                themeBtnEl.removeClass("selected")
                                 menuContainerEl.fadeOut(250)
                                 await LoadData(savedRecScheme)
                                 await loadTheme(savedTheme,prevThem)
