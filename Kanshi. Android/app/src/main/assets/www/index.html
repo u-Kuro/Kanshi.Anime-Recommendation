@@ -22,8 +22,8 @@
     <noscript><link rel="stylesheet" href="./js-css/flexdatalist/jquery.flex-datalist-v1.0.css"></noscript>
     <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.5.js" defer></script>
     <!-- Bootstrap -->
-    <link rel="preload" href="./js-css/bootstrap-3.3.7.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="./js-css/bootstrap-3.3.7.min.css"></noscript>
+    <link rel="preload" href="./js-css/bootstrap-3.3.8.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="./js-css/bootstrap-3.3.8.min.css"></noscript>
     <!-- Fontawesome -->
     <link rel="preload" href="./js-css/font-awesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/font-awesome.min.css"></noscript>
@@ -175,6 +175,10 @@
                 background-color: #57728e !important;
                 color: #F0F0F0;
             }
+            button.hide-anime,
+            button.show-anime{
+                box-shadow: none !important;
+            }
             .swal2-deny,
             .swal2-deny-custom{
                 background-color: #e27d81 !important;
@@ -226,6 +230,8 @@
             }
             #table-responsive{
                 margin-top: 10px !important;
+                background-color: inherit !important;
+                border: none !important;
             }
             .flexdatalist-multiple > .value {
                 height: fit-content;
@@ -326,8 +332,21 @@
             a:focus {
                 color: #005580;
             }
-            #anime-table{
-                border: 1px solid #ddd !important;
+            .display-none{
+                display: none !important;
+            }
+            #anime-table,
+            #anime-table>thead,
+            .anime-table-headers,
+            #animeRecommendationList,
+            #animeRecommendationList>.item{
+                border: none !important;
+            }
+            #animeRecommendationList td{
+                border-top: 0px solid #E5E5E5 !important;
+                border-bottom: 1px solid #E5E5E5 !important;
+                border-left: 1px solid #E5E5E5 !important;
+                border-right: 1px solid #E5E5E5 !important;
             }
             #animeRecommendationList{
                 content-visibility: auto;
@@ -374,22 +393,33 @@
                 -webkit-user-select: none !important;
                 user-select: none !important;
             }
-            .item,
+            #animeRecommendationList>.item,
             .flexdatalist-multiple,
             .flexdatalist-alias,
             #userInputContainer,
-            #username,
-            .item > td{
+            #username{
                 background-color: #f4f4f4 !important;
             }
+            #anime-table,
+            #anime-table > thead,
+            .tablesorter-header,
             .anime-table-headers,
-            .anime-table-headers > th{
+            #animeRecommendationList,
+            #animeRecommendationList>.item,
+            #animeRecommendationList>.item>td,
+            .td-container,
+            .table-skeleton td{
+                background-color: #fafafa !important;
+            }
+            .anime-table-headers,
+            .anime-table-headers > th,
+            .table-skeleton th{
                 background-color: #e7e7e7 !important;
             }            
             .flexdatalist-multiple>.value{
                 background-color: #e7e7e7 !important;
             }
-            .item > td {
+            #animeRecommendationList>.item > td {
                 vertical-align: middle !important;
             }
             .anime-score{
@@ -426,7 +456,6 @@
                 justify-content: center;
             }
             #table-responsive{
-                /* border: 1px solid #dddddd; */
                 min-height: 556px !important;
                 margin-bottom: 100px !important;
             }
@@ -861,12 +890,14 @@
                 color: rgb(185, 202, 221) !important;
             }
             #username.darkMode,
-            #table-responsive.darkMode,
             #anime-table.darkMode,
             #animeRecommendationList.darkMode,
             #animeRecommendationList tr.darkMode,
             #animeRecommendationList td.darkMode,
-            #username.darkMode,
+            .td-container.darkMode,
+            #table-skeleton.darkMode,
+            #table-skeleton tr.darkMode,
+            #table-skeleton td.darkMode,
             .flexdatalist-multiple.darkMode,
             .flexdatalist-alias.darkMode,
             .flexdatalist-results.darkMode{
@@ -874,21 +905,24 @@
                 color: rgb(185, 202, 221) !important
             }
             .flexdatalist-results.darkMode,
-            .flexdatalist-results.darkMode>li.item{
+            .flexdatalist-results.darkMode>.item{
                 border: 1px solid rgb(21,34,50) !important;
             }
-            #anime-table.darkMode,
-            #anime-table thead.darkMode,
-            #anime-table tbody.darkMode,
             #anime-table th.darkMode,
-            #anime-table tr.darkMode,
-            #anime-table td.darkMode,
-            #table-responsive.darkMode,
+            #animeRecommendationList td.darkMode,
             #username.darkMode, 
             .flexdatalist-multiple.darkMode{
                 border: 1px solid rgb(21,34,50) !important;
             }
+            #table-skeleton td.darkMode,
+            #table-skeleton th.darkMode{
+                border-top: none !important;
+                border-right: none !important;
+                border-left: none !important;
+                border-bottom: 1px solid rgb(21,34,50) !important;
+            }
             #anime-table th:not(:first-child).darkMode,
+            #table-skeleton th.darkMode,
             .flexdatalist-multiple>.value.darkMode{
                 background-color: rgb(67,81,97) !important;
                 color: rgb(185, 202, 221) !important;
@@ -896,6 +930,9 @@
             #animeRecommendationList a.darkMode,
             .swal2-footer a.darkMode{
                 color: rgb(110, 185, 255) !important;
+            }
+            #table-skeleton span.darkMode{
+                background-image: linear-gradient(90deg, #394452  0px, #394756 40px, #394452 80px) !important;
             }
             #nav.darkMode, 
             #pager.darkMode,
@@ -948,9 +985,6 @@
             }
             .iris{
                 color: rgb(0,188,212);
-            }
-            td.anime-score>div>div>i{
-                padding: 0.5ch;
             }
             #filters{
                 height: 100px !important;
@@ -1009,6 +1043,25 @@
                 font-size: 1rem !important;
                 font-weight: bolder !important;
             }
+            .td-container{
+                max-height: 50px !important;
+                overflow-y: scroll !important;
+                background-color: transparent;
+            }
+            .txt-center{
+                text-align: center !important;
+            }
+            #animeRecommendationList > tr > td:first-child > div{
+                display: flex !important;
+                align-items: center !important;
+            }
+            #next,
+            #prev,
+            #first,
+            #last{
+                outline: none !important;
+                box-shadow: none !important;
+            }
             .flexdatalist-alias{
                 height: 41px !important;
             }
@@ -1016,6 +1069,81 @@
             .topOfLoader{
                 z-index: 10000 !important;
             }
+            /* Skeleton Table */
+            .table-skeleton {
+                color: #666;
+                width: 100%;
+                padding: 0;
+            }
+            .table-skeleton th{
+                border-top: 1px solid #E5E5E5;
+                border-bottom: 1px solid #E5E5E5;
+                padding: 12px 10px;
+                text-align: left;
+            }
+            .table-skeleton td{
+                border-top: 0px solid #E5E5E5;
+                border-bottom: 1px solid #E5E5E5;
+                padding: 12px 10px;
+                vertical-align: top;
+            }
+            .table-skeleton span{
+                width: calc(100% - 5px);
+                height: 8px;
+                border-radius: 3px;
+                background-image: linear-gradient(90deg, #ddd 0px, #dfdfdf 40px, #ddd 80px) !important;
+                background-size: 600px;
+                animation: shine-lines-table 1.6s infinite linear;
+                display: inline-block;
+                min-width:15px;
+            }
+            .table-skeleton span.sub-temp{
+                width: calc(100% - 50%);
+                margin-top: 5px;
+            }
+            .table-skeleton span.sub-temp-three{
+                width:calc(100% - 70%);
+                display:block
+            }
+            .tsk-col1{
+                    width: 25px;
+            }
+            .tsk-col2{
+                    width: 60px;
+            }
+            .tsk-col3{
+                    width: 45px;
+            }
+            .tsk-col4{
+                    width: 344px;
+            }
+            .tsk-col5{
+                    width: 145px;
+            }
+            .tsk-col6{
+                    width: 113px;
+            }
+            .tsk-col7{
+                    width: 73px;
+            }
+            .tsk-col8{
+                    width: 160px;
+            }
+            .tsk-col9{
+                    width: 92px;
+            }
+            @keyframes shine-lines-table {
+                0% {
+                    opacity:0.4;
+                }
+                40%{
+                    opacity:0.8;
+                }
+                100% {
+                    opacity:0.4;
+                }
+            }
+            /* Skeleton Table */
         </style>
 </head>
 <body class="darkMode">
@@ -1082,8 +1210,84 @@
             </div>
         </div>
     </div>
-    <div id="table-responsive" class="table-responsive darkMode">
-        <table id="anime-table" class="tablesorter table table-bordered table-striped darkMode">
+    
+    <!-- Table -->
+    <div id="table-responsive" class="table-responsive">
+        <!-- Table Skeleton -->
+        <table cellpadding="0" cellspacing="0" width="100%" id="table-skeleton" class="table-skeleton darkMode">
+            <tr class="darkMode">
+                <th class="tsk-col1 darkMode"><span class="darkMode"></span></th>
+                <th class="tsk-col4 darkMode"><span class="darkMode"></span></th>
+                <th class="tsk-col5 darkMode"><span class="darkMode"></span></th>
+            </tr>
+            <tr class="darkMode">
+                <td class="tsk-col1 darkMode"><span class="darkMode"></span></td>
+                <td class="tsk-col4 darkMode">
+                    <span class="darkMode"></span>
+                    <span class="sub-temp darkMode"></span>
+                </td>
+                <td class="tsk-col5 darkMode"><span class="darkMode"></span></td>
+            </tr>
+            <tr class="darkMode">
+                <td class="tsk-col1 darkMode"><span class="darkMode"></span></td>
+                <td class="tsk-col4 darkMode">
+                    <span class="darkMode"></span>
+                    <span class="sub-temp darkMode"></span>
+                </td>
+                <td class="tsk-col5 darkMode"><span class="darkMode"></span></td>
+            </tr>
+            <tr class="darkMode">
+                <td class="tsk-col1 darkMode"><span class="darkMode"></span></td>
+                <td class="tsk-col4 darkMode">
+                    <span class="darkMode"></span>
+                    <span class="sub-temp darkMode"></span>
+                </td>
+                <td class="tsk-col5 darkMode"><span class="darkMode"></span></td>
+            </tr>
+            <tr class="darkMode">
+                <td class="tsk-col1 darkMode"><span class="darkMode"></span></td>
+                <td class="tsk-col4 darkMode">
+                    <span class="darkMode"></span>
+                    <span class="sub-temp darkMode"></span>
+                </td>
+                <td class="tsk-col5 darkMode"><span class="darkMode"></span></td>
+            </tr>
+            <tr class="darkMode">
+                <td class="tsk-col1 darkMode"><span class="darkMode"></span></td>
+                <td class="tsk-col4 darkMode">
+                    <span class="darkMode"></span>
+                    <span class="sub-temp darkMode"></span>
+                </td>
+                <td class="tsk-col5 darkMode"><span class="darkMode"></span></td>
+            </tr>
+            <tr class="darkMode">
+                <td class="tsk-col1 darkMode"><span class="darkMode"></span></td>
+                <td class="tsk-col4 darkMode">
+                    <span class="darkMode"></span>
+                    <span class="sub-temp darkMode"></span>
+                </td>
+                <td class="tsk-col5 darkMode"><span class="darkMode"></span></td>
+            </tr>
+            <tr class="darkMode">
+                <td class="tsk-col1 darkMode"><span class="darkMode"></span></td>
+                <td class="tsk-col4 darkMode">
+                    <span class="darkMode"></span>
+                    <span class="sub-temp darkMode"></span>
+                </td>
+                <td class="tsk-col5 darkMode"><span class="darkMode"></span></td>
+            </tr>
+            <tr class="darkMode">
+                <td class="tsk-col1 darkMode"><span class="darkMode"></span></td>
+                <td class="tsk-col4 darkMode">
+                    <span class="darkMode"></span>
+                    <span class="sub-temp darkMode"></span>
+                </td>
+                <td class="tsk-col5 darkMode"><span class="darkMode"></span></td>
+            </tr>
+        </table>
+        <!-- Table Skeleton -->	
+        <!-- Original Table -->
+        <table id="anime-table" class="tablesorter table table-bordered table-striped display-none darkMode">
             <thead class="darkMode">
             <tr class="anime-table-headers darkMode">
                 <th id="hiddenUnhiddenBtn" class="trigger-btn sorter-false show-hidden-anime-btn darkMode">Unhidden</th>
@@ -1108,7 +1312,9 @@
             </tr>
             </tbody>
         </table>
+        <!-- Original Table -->
     </div>
+    <!-- Table -->
 </div>
 
 <!-- pager -->
@@ -1127,7 +1333,7 @@
 <div id="warnAnimeContainer" class="swal2-container-custom swal2-center-custom swal2-backdrop-show-custom" style="display: none; overflow-y: auto;">
     <div id="warnAnimeModal" class="swal2-popup-custom swal2-modal-custom swal2-hide-custom darkMode" style="display: grid;">
         <div class="swal2-html-container-custom" style="display: block;">
-            Add Custom Contents to be Warned
+            Content Warning
         </div>
         <div class="swal2-html-container-custom" style="display: block;">
             <div class="filter-container-custom">
@@ -1189,7 +1395,7 @@
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "6.3",
+    const version = "6.4",
           backUpVersion = 4.0
         // IndexDB
     var request, db,
@@ -1215,7 +1421,7 @@
     pageLoadStartDate = new Date().getTime(), maxClientHeight,
         // Jquery Elements
     bodyEl, usernameEl, pagerEl, menuContainerEl, pageNumberOptionsEl,
-    animeTableEl, animeRecommendationListEl, filtersEl,
+    animeTableEl, tableSkeleton, animeRecommendationListEl, filtersEl,
     warnAnimeContainerEl, warnAnimeModalEl,
     filterAlgoContainerEl, filterAlgoModalEl, filterAlgoValidationEl,
     dataStatusEl, dataStatusSpinnerHomeEl,
@@ -1232,6 +1438,7 @@
         menuContainerEl = await $("#menu-container"),
         pageNumberOptionsEl = await $("#pageNumberOptions"),
         animeTableEl = await $("#anime-table"),
+        tableSkeleton = await $("#table-skeleton"),
         animeRecommendationListEl = await $("#animeRecommendationList"),
         filtersEl = await $("#filters"),
         warnAnimeContainerEl = await $("#warnAnimeContainer"),
@@ -1357,17 +1564,6 @@
                             await usernameEl[0]?.reportValidity()
                         } else {
                             if(equalsNCS(newUsername,savedUsername)){
-                                await animeRecommendationListEl.empty()
-                                await animeRecommendationListEl.append(`
-                                    <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
-                                            <div style="display:flex; align-items:center;">
-                                                <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
-                                                <div>Loading...</div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                `)
                                 LoadData(savedRecScheme)
                             } else {
                                 Swal.fire({
@@ -1967,13 +2163,10 @@
                     }
                 })
                 hiddenUnhiddenBtnEl.on('click', async()=>{
-                    if(!isRunning){
-                        isRunning = true
+                    if(!isLoading){
+                        isLoading = true
                         if(savedUsername&&!jsonIsEmpty(savedRecScheme)){
                             var state = await hiddenUnhiddenBtnEl.text()
-                            if(!equalsNCS(usernameEl.val(),savedUsername)){
-                                await usernameEl.val(savedUsername)
-                            }
                             if(state==="Unhidden"){
                                 var filterInput = await $("#flex0")
                                 if(filterInput.length){
@@ -1982,23 +2175,11 @@
                                     await filterInput.trigger(e)
                                     await filterInput.val("")
                                 }
-                                await animeRecommendationListEl.empty()
-                                animeRecommendationListEl.append(`
-                                    <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
-                                            <div style="display:flex; align-items:center;">
-                                                <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
-                                                <div>Loading...</div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                `)
                                 hiddenUnhiddenBtnEl.text("Hidden")
                                 savedTableStatus = await "Hidden"
                                 saveJSON(savedTableStatus,"savedTableStatus")
                                 await LoadData(savedRecScheme)
                                 pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
-                                isRunning = false
                             } else {
                                 var filters = await $("ul.flex0>.value")
                                 await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
@@ -2007,25 +2188,13 @@
                                         await $("#flex0").blur()
                                     }
                                 })
-                                await animeRecommendationListEl.empty()
-                                animeRecommendationListEl.append(`
-                                    <tr class="item ${savedTheme}" role="row">
-                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
-                                            <div style="display:flex; align-items:center;">
-                                                <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
-                                                <div>Loading...</div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                `)
                                 await hiddenUnhiddenBtnEl.text("Unhidden")
                                 savedTableStatus = await "Unhidden"
                                 saveJSON(savedTableStatus,"savedTableStatus")
                                 await LoadData(savedRecScheme)
                                 pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
-                                isRunning = false
                             }
-                        } else isRunning = false
+                        }
                     }
                 })
 
@@ -2044,9 +2213,7 @@
                     })
                     .then(async(value) => {
                         if(value.isConfirmed){
-                            if(!equalsNCS(usernameEl.val(),savedUsername)){
-                                usernameEl.val(savedUsername)
-                            }
+                            isLoading = true
                             savedHiddenAnimeIDs = await {}
                             saveJSON(savedHiddenAnimeIDs, "savedHiddenAnimeIDs")
                             var filters = await $("ul.flex0>.value")
@@ -2056,25 +2223,14 @@
                                     await $("#flex0").blur()
                                 }
                             })
-                            await animeRecommendationListEl.empty()
-                            await animeRecommendationListEl.append(`
-                                <tr class="item ${savedTheme}" role="row">
-                                    <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
-                                        <div style="display:flex; align-items:center;">
-                                            <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
-                                            <div>Loading...</div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `)
                             hiddenUnhiddenBtnEl.text("Unhidden")
                             await animeTableEl.trigger("pageSet",savedUnhiddenTablePage)
                             pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                             savedTableStatus = await "Unhidden"
-                            saveJSON(savedTableStatus,"savedTableStatus")
-                            await showAllAnimeBtnEl.hide()
+                            showAllAnimeBtnEl.hide()
                             menuContainerEl.fadeOut(500)
                             await LoadData(savedRecScheme)
+                            saveJSON(savedTableStatus,"savedTableStatus")
                             Swal.fire({
                                 heightAuto: false,
                                 text: "All hidden anime has now been successfully transferred to your List!",
@@ -2623,17 +2779,13 @@
                         })
                         .then(async(value) => {
                             if(value.isConfirmed){
-                                await new Promise(async(resolve)=>{
-                                    await menuContainerEl.fadeOut(250)
-                                    dataStatusSpinnerHomeEl.show()
-                                    dataStatusEl
-                                        .empty()
-                                        .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                    resolve()
-                                }).then(async()=>{
-                                    await backUpData()
-                                    return
-                                })
+                                await menuContainerEl.fadeOut(250)
+                                dataStatusSpinnerHomeEl.show()
+                                dataStatusEl
+                                    .empty()
+                                    .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
+                                await backUpData()
+                                resolve()
                             }
                         })
                     // Android
@@ -3120,10 +3272,10 @@
                             if(value.isConfirmed){
                                 var newTheme = "lightMode"
                                 themeBtnEl.removeClass("selected")
+                                await LoadData(savedRecScheme)
                                 await loadTheme(newTheme,savedTheme)
                                 savedTheme = await newTheme
                                 await saveJSON(savedTheme,"savedTheme")
-                                LoadData(savedRecScheme)
                             }
                         })
                     } else {
@@ -3142,10 +3294,10 @@
                             if(value.isConfirmed){
                                 var newTheme = "darkMode"
                                 themeBtnEl.addClass("selected")
+                                await LoadData(savedRecScheme)
                                 await loadTheme(newTheme,savedTheme)
                                 savedTheme = await newTheme
                                 await saveJSON(savedTheme,"savedTheme")
-                                LoadData(savedRecScheme)
                             }
                         })
                     }
@@ -3336,7 +3488,7 @@
                     },1)
                 })
                 $(window).on("keydown", (e) => {
-                    if(!$("input").is(':focus')){
+                    if(!$("input").is(':focus')&&!isLoading){
                         e.preventDefault()
                         var evtobj = window.event? event : e
                         var keyCode = evtobj.which || evtobj.keyCode || 0
@@ -3447,72 +3599,79 @@
                         cssPageDisplay: '.pagedisplay'
                     })
                     .delegate('.hide-anime', 'click' , async(e) => {
-                        var hiddenRow = await $(e.currentTarget).closest('tr') || $(e.target).closest('tr')
-                        var hiddenAnimeID = hiddenRow.children(".animeTitle").children("a").attr("data-value")
-                        await hiddenRow.html(`
-                            <tr class="item ${savedTheme}" role="row">
-                                <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
-                                    <div style="display:flex; align-items:center;">
-                                        <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
-                                        <div>Removing...</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        `)
-                        await hiddenRow.addClass("remove-me")
-                        animeTableEl.trigger("pagerUpdate")
-                        savedHiddenAnimeIDs[hiddenAnimeID] = await true
-                        saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
-                        if(animeTableEl[0]?.config?.rowsCopy?.length===0){
-                            await animeRecommendationListEl.empty()
-                            animeRecommendationListEl.append(`
+                        if(!isRunning){
+                            isRunning = true
+                            var hiddenRow = await $(e.currentTarget).closest('tr') || $(e.target).closest('tr')
+                            var hiddenAnimeID = await hiddenRow.children(".animeTitle").children(".td-container").children("a").attr("data-value")
+                            await hiddenRow.html(`
                                 <tr class="item ${savedTheme}" role="row">
                                     <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
-                                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                                        No Data
+                                        <div style="display:flex; align-items:center;">
+                                            <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
+                                            <div>Removing...</div>
+                                        </div>
                                     </td>
                                 </tr>
                             `)
-                        }
-                        // Have a Hidden Anime
-                        if(await !jsonIsEmpty(savedHiddenAnimeIDs)){
-                            await showAllAnimeBtnEl.show()
-                        }
-                        await pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
-                        return false
+                            await hiddenRow.addClass("remove-me")
+                            animeTableEl.trigger("pagerUpdate")
+                            savedHiddenAnimeIDs[hiddenAnimeID] = await true
+                            saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
+                            if(animeTableEl[0]?.config?.rowsCopy?.length===0){
+                                await animeRecommendationListEl.empty()
+                                await animeRecommendationListEl.append(`
+                                    <tr class="item ${savedTheme}" role="row">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
+                                            <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                            No Data
+                                        </td>
+                                    </tr>
+                                `)
+                                await animeTableEl.trigger("pagerUpdate")
+                            }
+                            // Have a Hidden Anime
+                            if(await !jsonIsEmpty(savedHiddenAnimeIDs)){
+                                await showAllAnimeBtnEl.show()
+                            }
+                            await pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
+                            isRunning = false
+                        } else isRunning = false
                     })
                     .delegate('.show-anime', 'click' , async(e) => {
-                        var hiddenRow = await $(e.currentTarget).closest('tr') || $(e.target).closest('tr')
-                        var hiddenAnimeID = await hiddenRow.children(".animeTitle").children("a").attr("data-value")
-                        await hiddenRow.html(`
-                            <tr class="item ${savedTheme}" role="row">
-                                <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
-                                    <div style="display:flex; align-items:center;">
-                                        <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
-                                        <div>Removing...</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        `)
-                        await hiddenRow.addClass("remove-me")
-                        animeTableEl.trigger("pagerUpdate")
-                        await delete savedHiddenAnimeIDs[hiddenAnimeID]
-                        saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
-                        // No Hidden Anime
-                        if(await jsonIsEmpty(savedHiddenAnimeIDs)||animeTableEl[0]?.config?.rowsCopy?.length===0){
-                            await animeRecommendationListEl.empty()
-                            animeRecommendationListEl.append(`
+                        if(!isRunning){
+                            isRunning = true
+                            var hiddenRow = await $(e.currentTarget).closest('tr') || $(e.target).closest('tr')
+                            var hiddenAnimeID = await hiddenRow.children(".animeTitle").children(".td-container").children("a").attr("data-value")
+                            await hiddenRow.html(`
                                 <tr class="item ${savedTheme}" role="row">
                                     <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
-                                        <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                                        No Data
+                                        <div style="display:flex; align-items:center;">
+                                            <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
+                                            <div>Removing...</div>
+                                        </div>
                                     </td>
                                 </tr>
                             `)
-                            await showAllAnimeBtnEl.hide()
-                        }
-                        await pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
-                        return false
+                            await hiddenRow.addClass("remove-me")
+                            animeTableEl.trigger("pagerUpdate")
+                            await delete savedHiddenAnimeIDs[hiddenAnimeID]
+                            saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
+                            // No Hidden Anime
+                            if(await jsonIsEmpty(savedHiddenAnimeIDs)||animeTableEl[0]?.config?.rowsCopy?.length===0){
+                                await animeRecommendationListEl.empty()
+                                animeRecommendationListEl.append(`
+                                    <tr class="item ${savedTheme}" role="row">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
+                                            <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                            No Data
+                                        </td>
+                                    </tr>
+                                `)
+                                await showAllAnimeBtnEl.hide()
+                            }
+                            await pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
+                            isRunning = false
+                        } else isRunning = false
                     })
                     .bind('pageMoved', async() => {
                         await pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
@@ -3569,6 +3728,9 @@
                         resolve()
                     }
                     worker0.onerror = () => {
+                        worker0.terminate()
+                        worker0 = null
+                        console.error("Error 112: Oops...Something went wrong! Please try again...")
                         resolve()
                     }
                 } else {
@@ -3595,6 +3757,9 @@
                         resolve()
                     }
                     worker1.onerror = async (message) => {
+                        worker1.terminate()
+                        worker1 = null
+                        console.error("Error 113: Oops...Something went wrong! Please try again...")
                         resolve()
                     }
                 } else {
@@ -3629,6 +3794,9 @@
                         resolve()
                     }
                     worker8.onerror = async (message) => {
+                        worker8.terminate()
+                        worker8 = null
+                        console.error("Error 114: Oops...Something went wrong! Please try again...")
                         resolve()
                     }
                 } else {
@@ -3943,17 +4111,19 @@
             updateIDs.push(updateID)
             if(updateIDs.length>1){
                 setTimeout(()=>{
-                    analyzeVariables(updateID, username, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                    analyzeVariables(updateID, username, undefined, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
                 },requestIntervalMS)
             } else {
-                analyzeVariables(updateID, username, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                analyzeVariables(updateID, username, undefined, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
             }
         }
     }
 
-    async function analyzeVariables(updateID, username, notAnUpdate, filterAlgo, doHideUnwatchedSeq) {
+    async function analyzeVariables(updateID, username, pastUserEntries, notAnUpdate, filterAlgo, doHideUnwatchedSeq, returned=false) {
         var analyzeVariableTime = Math.ceil(arrayMean(savedAnalyzeVariableTime))
-        savedFilterAlgo = await (filterAlgo || savedFilterAlgo || [])
+        if(filterAlgo?.length){
+            savedFilterAlgo = filterAlgo
+        }
         //
         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
         for(let i=analyzeVariableTime; i>=0; i--){
@@ -3978,189 +4148,513 @@
                 isDeepUpdate = true
             }
             // Check Parameters
-            if(username.length>0) {
-                var userEntries = []
-                var chunk = 1
-                var maxAnimePerChunk = 500
-                async function recallAV(chunk){
-                    // Allow Single Instance of Update
-                    if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
-                        updateIDs = updateIDs.filter((id)=>id!==updateID) // one line
+            if(username.length>0&&!jsonIsEmpty(savedAnimeEntries)) {
+                var worker2 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
+                if(pastUserEntries?.length){// After Getting new Anime
+                    // Reset User List
+                    if(isDeepUpdate){
+                        (async()=>{
+                            savedUserList = await {}
+                            await saveJSON(savedUserList,"savedUserList")
+                            savedUserScores = await {}
+                            await saveJSON(savedUserScores,"savedUserScores")
+                        })();
+                    }
+                    worker2.postMessage({savedUserList: savedUserList, userEntries: pastUserEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
+                    worker2.onmessage = (message) => {
+                        worker2.terminate()
+                        const data = message.data
+                        // Alert user if Scored List is 0
+                        // to have a better recommendation
+                        var userListCount = data.userListCount
+                        if(userListCount===0){
+                            Swal.fire({
+                                heightAuto: false,
+                                title: "Let us know you've liked...",
+                                text: `To make your recommendations better, rate the anime you've already watched in your Anilist account for us to make an Analysis, you can also transfer your MAL List to Anilist.`,
+                                showConfirmButton: true,
+                                confirmButtonText: "Go to Anilist",
+                                showDenyButton: true,
+                                denyButtonText: "Import my MAL",
+                                showCancelButton: true,
+                                cancelButtonText: "Later",
+                                confirmButtonColor: '#000',
+                                denyButtonColor: '#2E51A2',
+                                cancelButtonColor: '#e27d81',
+                                icon: "info",
+                                reverseButtons: true
+                            })
+                            .then(async(value) => {
+                                if(value.isConfirmed){
+                                    window.open('https://anilist.co/search/anime', '_blank')
+                                    Swal.fire({
+                                        heightAuto: false,
+                                        title: "Let us know you've liked...",
+                                        text: `If you're done rating an Anime, click update below or in the settings.`,
+                                        showConfirmButton: true,
+                                        confirmButtonText: "Update",
+                                        showDenyButton: true,
+                                        denyButtonText: "Cancel",
+                                        confirmButtonColor: '#000',
+                                        denyButtonColor: '#e27d81',
+                                        icon: "info",
+                                        reverseButtons: true
+                                    })
+                                    .then(async(value)=>{
+                                        if(value.isConfirmed){
+                                            Update(false)
+                                        }
+                                    })
+                                } else if(value.isDenied) {
+                                    malanilistImportExport()
+                                }
+                            })
+                        } else if(userListCount>0&&userListCount<100) {
+                            Swal.fire({
+                                heightAuto: false,
+                                title: "Let us know you've liked...",
+                                text: `You currently rated ≤${userListCount} unique anime in your Anilist account, a minimum of 30-100 will suffice the recommendation analysis.`,
+                                showConfirmButton: true,
+                                confirmButtonText: "Sure, Later",
+                                showDenyButton: true,
+                                denyButtonText: "Go to Anilist",
+                                confirmButtonColor: '#e27d81',
+                                denyButtonColor: '#000',
+                                icon: "info",
+                                reverseButtons: true
+                            })
+                            .then(async(value) => {
+                                if(value.isDenied){
+                                    window.open('https://anilist.co/search/anime', '_blank');
+                                    Swal.fire({
+                                        heightAuto: false,
+                                        title: "Let us know you've liked...",
+                                        text: `If you're done rating an Anime, click update below or in the settings.`,
+                                        showConfirmButton: true,
+                                        confirmButtonText: "Update",
+                                        showDenyButton: true,
+                                        denyButtonText: "Cancel",
+                                        confirmButtonColor: '#000',
+                                        denyButtonColor: '#e27d81',
+                                        icon: "info",
+                                        reverseButtons: true
+                                    })
+                                    .then(async(value)=>{
+                                        if(value.isConfirmed){
+                                            Update(false)
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                        (async()=>{
+                            savedUserList = data.savedUserList
+                            const varScheme = data.varScheme
+                            const userListStatus = data.userListStatus
+                            const alteredVariables = data.alteredVariables
+                            var timeInterval = await (new Date).getTime()-AnalyzeVariableStartTime.getTime()
+                            if(savedAnalyzeVariableTime.length<33){
+                                await savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
+                                await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
+                            } else {
+                                await savedAnalyzeVariableTime.shift()
+                                await savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
+                                await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
+                            }
+                            savedUserList = await savedUserList || {}
+                            await saveJSON(savedUserList,"savedUserList")
+                            savedUserScores = await savedUserScores || {}
+                            await saveJSON(savedUserScores,"savedUserScores")
+                            // Don't Redo loop if its not found
+                            await analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, true, false)
+                        })();
+                    }
+                    worker2.onerror = async (message) => {
+                        worker2.terminate()
+                        worker2 = null
+                        dataStatusEl
+                            .empty()
+                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                        console.error("Error 103: Oops...Something went wrong! Please try again...")
+                        Swal.fire({
+                            heightAuto: false,
+                            text: "Error 103: Oops...Something went wrong! Please try again...",
+                            icon: "error",
+                            confirmButtonColor: "#000"
+                        })
+                        requestIsRunning = false
                         return
                     }
-                    // Initialize Anilist Graphql Data
-                    var query = `
-                    {
-                        MediaListCollection(userName: "${username}",
-                        chunk:${chunk},
-                        perChunk:${maxAnimePerChunk},
-                        forceSingleCompletedList: true,
-                        type: ANIME) {
-                            hasNextChunk
-                            lists {
-                                entries {
-                                    status
-                                    media {
-                                        id
+                } else {
+                    var userEntries = []
+                    var chunk = 1
+                    var maxAnimePerChunk = 500
+                    async function recallAV(chunk){
+                        // Allow Single Instance of Update
+                        if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+                            updateIDs = updateIDs.filter((id)=>id!==updateID) // one line
+                            return
+                        }
+                        // Initialize Anilist Graphql Data
+                        var query = `
+                        {
+                            MediaListCollection(userName: "${username}",
+                            chunk:${chunk},
+                            perChunk:${maxAnimePerChunk},
+                            forceSingleCompletedList: true,
+                            type: ANIME) {
+                                hasNextChunk
+                                lists {
+                                    entries {
+                                        status
+                                        media {
+                                            id
+                                        }
+                                        score
                                     }
-                                    score
                                 }
                             }
                         }
-                    }
-                    `;
-                    // Request API
-                    $.ajax({
-                        type: 'POST',
-                        url: 'https://graphql.anilist.co',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'Cache-Control': 'max-age=31536000, immutable'
-                        },
-                        dataType: 'json',
-                        data: JSON.stringify({
-                            query: query
-                        }),
-                        success: (result)=> {
-                            var userList = result?.data?.MediaListCollection?.lists ?? []
-                            var hasNextChunk = (result?.data?.MediaListCollection?.hasNextChunk ?? (userList?.length??0)>0)
-                            for(let i=0; i<userList.length; i++){
-                                userEntries = userEntries.concat(userList[i]?.entries??[])
-                            }
-                            if(hasNextChunk){
-                                return recallAV(++chunk)
-                            } else {
-                                // Reset User List
-                                if(isDeepUpdate){
-                                    (async()=>{
-                                        savedUserList = await {}
-                                        await saveJSON(savedUserList,"savedUserList")
-                                        savedUserScores = await {}
-                                        await saveJSON(savedUserScores,"savedUserScores")
-                                    })();
+                        `;
+                        // Request API
+                        $.ajax({
+                            type: 'POST',
+                            url: 'https://graphql.anilist.co',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'Cache-Control': 'max-age=31536000, immutable'
+                            },
+                            dataType: 'json',
+                            data: JSON.stringify({
+                                query: query
+                            }),
+                            success: (result)=> {
+                                var userList = result?.data?.MediaListCollection?.lists ?? []
+                                var hasNextChunk = (result?.data?.MediaListCollection?.hasNextChunk ?? (userList?.length??0)>0)
+                                for(let i=0; i<userList.length; i++){
+                                    userEntries = userEntries.concat(userList[i]?.entries??[])
                                 }
-                                var worker2 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
-                                worker2.postMessage({savedUserList: savedUserList, userEntries: userEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
-                                worker2.onmessage = (message) => {
-                                    worker2.terminate()
-                                    const data = message.data
-                                    // Alert user if Scored List is 0
-                                    // to have a better recommendation
-                                    var userListCount = data.userListCount
-                                    if(userListCount===0){
-                                        Swal.fire({
-                                            heightAuto: false,
-                                            title: "Let us know you've liked...",
-                                            text: `To make your recommendations better, rate the anime you've already watched in your Anilist account for us to make an Analysis, you can also transfer your MAL List to Anilist.`,
-                                            showConfirmButton: true,
-                                            confirmButtonText: "Go to Anilist",
-                                            showDenyButton: true,
-                                            denyButtonText: "Import my MAL",
-                                            showCancelButton: true,
-                                            cancelButtonText: "Later",
-                                            confirmButtonColor: '#000',
-                                            denyButtonColor: '#2E51A2',
-                                            cancelButtonColor: '#e27d81',
-                                            icon: "info",
-                                            reverseButtons: true
-                                        })
-                                        .then(async(value) => {
-                                            if(value.isConfirmed){
-                                                window.open('https://anilist.co/search/anime', '_blank')
-                                                Swal.fire({
-                                                    heightAuto: false,
-                                                    title: "Let us know you've liked...",
-                                                    text: `If you're done rating an Anime, click update below or in the settings.`,
-                                                    showConfirmButton: true,
-                                                    confirmButtonText: "Update",
-                                                    showDenyButton: true,
-                                                    denyButtonText: "Cancel",
-                                                    confirmButtonColor: '#000',
-                                                    denyButtonColor: '#e27d81',
-                                                    icon: "info",
-                                                    reverseButtons: true
-                                                })
-                                                .then(async(value)=>{
-                                                    if(value.isConfirmed){
-                                                        Update(false)
-                                                    }
-                                                })
-                                            } else if(value.isDenied) {
-                                                malanilistImportExport()
-                                            }
-                                        })
-                                    } else if(userListCount>0&&userListCount<100) {
-                                        Swal.fire({
-                                            heightAuto: false,
-                                            title: "Let us know you've liked...",
-                                            text: `You currently rated ≤${userListCount} unique anime in your Anilist account, a minimum of 30-100 will suffice the recommendation analysis.`,
-                                            showConfirmButton: true,
-                                            confirmButtonText: "Sure, Later",
-                                            showDenyButton: true,
-                                            denyButtonText: "Go to Anilist",
-                                            confirmButtonColor: '#e27d81',
-                                            denyButtonColor: '#000',
-                                            icon: "info",
-                                            reverseButtons: true
-                                        })
-                                        .then(async(value) => {
-                                            if(value.isDenied){
-                                                window.open('https://anilist.co/search/anime', '_blank');
-                                                Swal.fire({
-                                                    heightAuto: false,
-                                                    title: "Let us know you've liked...",
-                                                    text: `If you're done rating an Anime, click update below or in the settings.`,
-                                                    showConfirmButton: true,
-                                                    confirmButtonText: "Update",
-                                                    showDenyButton: true,
-                                                    denyButtonText: "Cancel",
-                                                    confirmButtonColor: '#000',
-                                                    denyButtonColor: '#e27d81',
-                                                    icon: "info",
-                                                    reverseButtons: true
-                                                })
-                                                .then(async(value)=>{
-                                                    if(value.isConfirmed){
-                                                        Update(false)
-                                                    }
-                                                })
-                                            }
-                                        })
+                                if(hasNextChunk){
+                                    return recallAV(++chunk)
+                                } else {
+                                    // Reset User List
+                                    if(isDeepUpdate){
+                                        (async()=>{
+                                            savedUserList = await {}
+                                            await saveJSON(savedUserList,"savedUserList")
+                                            savedUserScores = await {}
+                                            await saveJSON(savedUserScores,"savedUserScores")
+                                        })();
                                     }
-                                    (async()=>{
-                                        savedUserList = data.savedUserList
-                                        const varScheme = data.varScheme
-                                        const userListStatus = data.userListStatus
-                                        const alteredVariables = data.alteredVariables
-                                        var timeInterval = await (new Date).getTime()-AnalyzeVariableStartTime.getTime()
-                                        if(savedAnalyzeVariableTime.length<33){
-                                            await savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
-                                            await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
-                                        } else {
-                                            await savedAnalyzeVariableTime.shift()
-                                            await savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
-                                            await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
+                                    worker2.postMessage({savedUserList: savedUserList, userEntries: userEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
+                                    worker2.onmessage = (message) => {
+                                        worker2.terminate()
+                                        const data = message.data
+                                        // Alert user if Scored List is 0
+                                        // to have a better recommendation
+                                        var userListCount = data.userListCount
+                                        if(userListCount===0){
+                                            Swal.fire({
+                                                heightAuto: false,
+                                                title: "Let us know you've liked...",
+                                                text: `To make your recommendations better, rate the anime you've already watched in your Anilist account for us to make an Analysis, you can also transfer your MAL List to Anilist.`,
+                                                showConfirmButton: true,
+                                                confirmButtonText: "Go to Anilist",
+                                                showDenyButton: true,
+                                                denyButtonText: "Import my MAL",
+                                                showCancelButton: true,
+                                                cancelButtonText: "Later",
+                                                confirmButtonColor: '#000',
+                                                denyButtonColor: '#2E51A2',
+                                                cancelButtonColor: '#e27d81',
+                                                icon: "info",
+                                                reverseButtons: true
+                                            })
+                                            .then(async(value) => {
+                                                if(value.isConfirmed){
+                                                    window.open('https://anilist.co/search/anime', '_blank')
+                                                    Swal.fire({
+                                                        heightAuto: false,
+                                                        title: "Let us know you've liked...",
+                                                        text: `If you're done rating an Anime, click update below or in the settings.`,
+                                                        showConfirmButton: true,
+                                                        confirmButtonText: "Update",
+                                                        showDenyButton: true,
+                                                        denyButtonText: "Cancel",
+                                                        confirmButtonColor: '#000',
+                                                        denyButtonColor: '#e27d81',
+                                                        icon: "info",
+                                                        reverseButtons: true
+                                                    })
+                                                    .then(async(value)=>{
+                                                        if(value.isConfirmed){
+                                                            Update(false)
+                                                        }
+                                                    })
+                                                } else if(value.isDenied) {
+                                                    malanilistImportExport()
+                                                }
+                                            })
+                                        } else if(userListCount>0&&userListCount<100) {
+                                            Swal.fire({
+                                                heightAuto: false,
+                                                title: "Let us know you've liked...",
+                                                text: `You currently rated ≤${userListCount} unique anime in your Anilist account, a minimum of 30-100 will suffice the recommendation analysis.`,
+                                                showConfirmButton: true,
+                                                confirmButtonText: "Sure, Later",
+                                                showDenyButton: true,
+                                                denyButtonText: "Go to Anilist",
+                                                confirmButtonColor: '#e27d81',
+                                                denyButtonColor: '#000',
+                                                icon: "info",
+                                                reverseButtons: true
+                                            })
+                                            .then(async(value) => {
+                                                if(value.isDenied){
+                                                    window.open('https://anilist.co/search/anime', '_blank');
+                                                    Swal.fire({
+                                                        heightAuto: false,
+                                                        title: "Let us know you've liked...",
+                                                        text: `If you're done rating an Anime, click update below or in the settings.`,
+                                                        showConfirmButton: true,
+                                                        confirmButtonText: "Update",
+                                                        showDenyButton: true,
+                                                        denyButtonText: "Cancel",
+                                                        confirmButtonColor: '#000',
+                                                        denyButtonColor: '#e27d81',
+                                                        icon: "info",
+                                                        reverseButtons: true
+                                                    })
+                                                    .then(async(value)=>{
+                                                        if(value.isConfirmed){
+                                                            Update(false)
+                                                        }
+                                                    })
+                                                }
+                                            })
                                         }
-                                        if(!jsonIsEmpty(savedAnimeEntries)){
+                                        (async()=>{
+                                            savedUserList = data.savedUserList
+                                            const varScheme = data.varScheme
+                                            const userListStatus = data.userListStatus
+                                            const alteredVariables = data.alteredVariables
+                                            const hasNewAnime = data.hasNewAnime
+                                            var timeInterval = await (new Date).getTime()-AnalyzeVariableStartTime.getTime()
+                                            if(savedAnalyzeVariableTime.length<33){
+                                                await savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
+                                                await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
+                                            } else {
+                                                await savedAnalyzeVariableTime.shift()
+                                                await savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
+                                                await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
+                                            }
                                             savedUserList = await savedUserList || {}
                                             await saveJSON(savedUserList,"savedUserList")
                                             savedUserScores = await savedUserScores || {}
                                             await saveJSON(savedUserScores,"savedUserScores")
-                                            await analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, true)
-                                        } else {
-                                            await updateAllAnimeList(updateID, username, varScheme, userListStatus, alteredVariables, savedUserList)
-                                        }
-                                    })();
+                                            analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, true, userEntries)
+                                        })();
+                                    }
+                                    worker2.onerror = async (message) => {
+                                        worker2.terminate()
+                                        worker2 = null
+                                        dataStatusEl
+                                            .empty()
+                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                        console.error("Error 115: Oops...Something went wrong! Please try again...")
+                                        Swal.fire({
+                                            heightAuto: false,
+                                            text: "Error 115: Oops...Something went wrong! Please try again...",
+                                            icon: "error",
+                                            confirmButtonColor: "#000"
+                                        })
+                                        requestIsRunning = false
+                                        return
+                                    }
                                 }
-                            }
-                        },
-                        error: function(xhr) {
-                            var err = xhr?.responseJSON?.errors?.[0]?.message || xhr
-                            try {
-                                if(!window.navigator.onLine){
-                                    throw "Unable to connect to the Internet!"
-                                } else if(err==='Not Found.'){
+                            },
+                            error: function(xhr) {
+                                var err = xhr?.responseJSON?.errors?.[0]?.message || xhr
+                                try {
+                                    if(!window.navigator.onLine){
+                                        throw "Unable to connect to the Internet!"
+                                    } else if(err==='Not Found.'){
+                                        (async()=>{
+                                            for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
+                                            dataStatusSpinnerHomeEl.hide()
+                                            dataStatusEl
+                                                .empty()
+                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                        })();
+                                        requestIsRunning = false
+                                        Swal.fire({
+                                            heightAuto: false,
+                                            text: `Username '${username}' was not found in Anilist. Do you want to create another Anilist account?`,
+                                            showConfirmButton: true,
+                                            confirmButtonText: "Yes, Signup",
+                                            showDenyButton: true,
+                                            denyButtonText: "No, Change it Back",
+                                            confirmButtonColor: '#000',
+                                            denyButtonColor: '#e27d81',
+                                            icon: "question",
+                                            reverseButtons: true
+                                        }).then(async(value)=>{
+                                            if(value.isConfirmed){
+                                                await window.open('https://anilist.co/signup', '_blank');
+                                                if(!requestIsRunning){
+                                                    const { value: xusername} = await Swal.fire({
+                                                        heightAuto: false,
+                                                        text: "Done signing-up your new account with Anilist? Update with your new username or Return to the old username.",
+                                                        input: 'text',
+                                                        inputLabel: 'Enter your Anilist Username:',
+                                                        inputValue: username,
+                                                        customClass: {
+                                                            icon: 'no-border'
+                                                        },
+                                                        allowOutsideClick: false,
+                                                        allowEscapeKey: false,
+                                                        showConfirmButton: true,
+                                                        confirmButtonText: "Update",
+                                                        confirmButtonColor: '#000',
+                                                        showDenyButton: true,
+                                                        denyButtonColor: '#e27d81',
+                                                        denyButtonText: "Change it Back",
+                                                        reverseButtons: true,
+                                                        inputValidator: async(value) => {
+                                                            return await new Promise(async(resolve) => {
+                                                                var UsernameValidationEl = await $("#UsernameValidation")
+                                                                if(savedTheme==="darkMode"){
+                                                                    $(".swal2-validation-message").addClass('darkMode')
+                                                                }
+                                                                if(!value) {
+                                                                    resolve("You need to write Something...")
+                                                                } else {
+                                                                    $.ajax({
+                                                                        type: 'POST',
+                                                                        url: 'https://graphql.anilist.co',
+                                                                        headers: {
+                                                                            'Content-Type': 'application/json',
+                                                                            'Accept': 'application/json',
+                                                                            'Cache-Control': 'max-age=31536000, immutable'
+                                                                        },
+                                                                        dataType: 'json',
+                                                                        data: JSON.stringify({
+                                                                            query: `{User(name:"${value}"){name}}`
+                                                                        }),
+                                                                        beforeSend: () => {
+                                                                            $(".swal2-validation-message")
+                                                                                .addClass("no-before")
+                                                                                .css({display:"flex"})
+                                                                                .html(
+                                                                                    `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                                                                        <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
+                                                                                        <div>Checking Username...</div>
+                                                                                    </div>`
+                                                                                )
+                                                                        },
+                                                                        success: (data) => {
+                                                                            (async()=>{
+                                                                                initStartTime = await undefined
+                                                                                await saveJSON(initStartTime,"initStartTime")
+                                                                                UsernameValidationEl.fadeOut(1000,()=>{
+                                                                                    UsernameValidationEl.remove()
+                                                                                    $(".swal2-validation-message")
+                                                                                        .addClass("no-before").removeClass("no-before")
+                                                                                        .addClass("success-before")
+                                                                                        .html("Username Found")
+                                                                                    setTimeout(()=>{
+                                                                                        // Reset Custom Validation
+                                                                                        filterAlgoValidationEl.html("").hide()
+                                                                                        resolve()
+                                                                                    },1000)
+                                                                                })
+                                                                            })();
+                                                                        },
+                                                                        error: (xhr) =>{
+                                                                            if(!window.navigator.onLine){
+                                                                                if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
+                                                                                    (async()=>{
+                                                                                        initStartTime = await new Date()
+                                                                                        await saveJSON(initStartTime,"initStartTime")
+                                                                                    })();
+                                                                                }
+                                                                                UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
+                                                                                resolve("Unable to connect to the Internet")
+                                                                            } else if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
+                                                                                (async()=>{
+                                                                                    initStartTime = await undefined
+                                                                                    await saveJSON(initStartTime,"initStartTime")
+                                                                                    UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
+                                                                                    resolve("Username not Found, Please Try Again...")
+                                                                                })();
+                                                                            } else {
+                                                                                if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
+                                                                                    (async()=>{
+                                                                                        initStartTime = await new Date()
+                                                                                        await saveJSON(initStartTime,"initStartTime")
+                                                                                    })();
+                                                                                }
+                                                                                UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
+                                                                                resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
+                                                                            }
+                                                                        }
+                                                                    })
+                                                                }
+                                                            })
+                                                        }
+                                                    })
+                                                    if(xusername){
+                                                        await usernameEl.val(xusername)
+                                                        Update(false)
+                                                    } else {
+                                                        usernameEl.val(savedUsername)
+                                                    }
+                                                }
+                                            } else if(value.isDenied){
+                                                usernameEl.val(savedUsername)
+                                            }
+                                        })
+                                    } else {
+                                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                                        for(let i=60; i>=0; i--){
+                                            var timeout = setTimeout(()=>{
+                                                    dataStatusSpinnerHomeEl.show()
+                                                if(i<1){
+                                                    dataStatusEl
+                                                        .empty()
+                                                        .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment...`)
+                                                } else {
+                                                    dataStatusEl
+                                                        .empty()
+                                                        .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}`)
+                                                }
+                                            },(60-i)*1000)
+                                            updateStateText.push(timeout)
+                                        }
+                                        setTimeout(()=>{
+                                            analyzeVariableTime = Math.ceil(Math.max(analyzeVariableTime-Math.ceil(((new Date).getTime()-AnalyzeVariableStartTime.getTime())/1000),1))
+                                            for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                                            for(let i=analyzeVariableTime; i>=0; i--){
+                                                var timeout = setTimeout(()=>{
+                                                    dataStatusSpinnerHomeEl.show()
+                                                    if(i<1){
+                                                        dataStatusEl
+                                                            .empty()
+                                                            .append(`<span style="white-space:nowrap;">Analyzing your List... Please Wait a Moment...`)
+                                                    } else {
+                                                        dataStatusEl
+                                                            .empty()
+                                                            .append(`<span style="white-space:nowrap;">Analyzing your List...⠀</span><span style="white-space:nowrap;">Estimated Time: ${msToTime(i*1000)}</span>`)
+                                                    }
+                                                },(analyzeVariableTime-i)*1000)
+                                                updateStateText.push(timeout)
+                                            }
+                                            return recallAV(chunk)
+                                        },60000)
+                                    }
+                                } catch(ex) {
+                                    requestIsRunning = false;
                                     (async()=>{
                                         for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                         dataStatusSpinnerHomeEl.hide()
@@ -4168,208 +4662,46 @@
                                             .empty()
                                             .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                                     })();
-                                    requestIsRunning = false
+                                    console.error("Error 101: ",ex)
                                     Swal.fire({
                                         heightAuto: false,
-                                        text: `Username '${username}' was not found in Anilist. Do you want to create another Anilist account?`,
-                                        showConfirmButton: true,
-                                        confirmButtonText: "Yes, Signup",
-                                        showDenyButton: true,
-                                        denyButtonText: "No, Change it Back",
-                                        confirmButtonColor: '#000',
-                                        denyButtonColor: '#e27d81',
-                                        icon: "question",
-                                        reverseButtons: true
-                                    }).then(async(value)=>{
-                                        if(value.isConfirmed){
-                                            await window.open('https://anilist.co/signup', '_blank');
-                                            if(!requestIsRunning){
-                                                const { value: xusername} = await Swal.fire({
-                                                    heightAuto: false,
-                                                    text: "Done signing-up your new account with Anilist? Update with your new username or Return to the old username.",
-                                                    input: 'text',
-                                                    inputLabel: 'Enter your Anilist Username:',
-                                                    inputValue: username,
-                                                    customClass: {
-                                                        icon: 'no-border'
-                                                    },
-                                                    allowOutsideClick: false,
-                                                    allowEscapeKey: false,
-                                                    showConfirmButton: true,
-                                                    confirmButtonText: "Update",
-                                                    confirmButtonColor: '#000',
-                                                    showDenyButton: true,
-                                                    denyButtonColor: '#e27d81',
-                                                    denyButtonText: "Change it Back",
-                                                    reverseButtons: true,
-                                                    inputValidator: async(value) => {
-                                                        return await new Promise(async(resolve) => {
-                                                            var UsernameValidationEl = await $("#UsernameValidation")
-                                                            if(savedTheme==="darkMode"){
-                                                                $(".swal2-validation-message").addClass('darkMode')
-                                                            }
-                                                            if(!value) {
-                                                                resolve("You need to write Something...")
-                                                            } else {
-                                                                $.ajax({
-                                                                    type: 'POST',
-                                                                    url: 'https://graphql.anilist.co',
-                                                                    headers: {
-                                                                        'Content-Type': 'application/json',
-                                                                        'Accept': 'application/json',
-                                                                        'Cache-Control': 'max-age=31536000, immutable'
-                                                                    },
-                                                                    dataType: 'json',
-                                                                    data: JSON.stringify({
-                                                                        query: `{User(name:"${value}"){name}}`
-                                                                    }),
-                                                                    beforeSend: () => {
-                                                                        $(".swal2-validation-message")
-                                                                            .addClass("no-before")
-                                                                            .css({display:"flex"})
-                                                                            .html(
-                                                                                `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
-                                                                                    <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
-                                                                                    <div>Checking Username...</div>
-                                                                                </div>`
-                                                                            )
-                                                                    },
-                                                                    success: (data) => {
-                                                                        (async()=>{
-                                                                            initStartTime = await undefined
-                                                                            await saveJSON(initStartTime,"initStartTime")
-                                                                            UsernameValidationEl.fadeOut(1000,()=>{
-                                                                                UsernameValidationEl.remove()
-                                                                                $(".swal2-validation-message")
-                                                                                    .addClass("no-before").removeClass("no-before")
-                                                                                    .addClass("success-before")
-                                                                                    .html("Username Found")
-                                                                                setTimeout(()=>{
-                                                                                    // Reset Custom Validation
-                                                                                    filterAlgoValidationEl.html("").hide()
-                                                                                    resolve()
-                                                                                },1000)
-                                                                            })
-                                                                        })();
-                                                                    },
-                                                                    error: (xhr) =>{
-                                                                        if(!window.navigator.onLine){
-                                                                            if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                                                                (async()=>{
-                                                                                    initStartTime = await new Date()
-                                                                                    await saveJSON(initStartTime,"initStartTime")
-                                                                                })();
-                                                                            }
-                                                                            UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                                                            resolve("Unable to connect to the Internet")
-                                                                        } else if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
-                                                                            (async()=>{
-                                                                                initStartTime = await undefined
-                                                                                await saveJSON(initStartTime,"initStartTime")
-                                                                                UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                                                                resolve("Username not Found, Please Try Again...")
-                                                                            })();
-                                                                        } else {
-                                                                            if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                                                                (async()=>{
-                                                                                    initStartTime = await new Date()
-                                                                                    await saveJSON(initStartTime,"initStartTime")
-                                                                                })();
-                                                                            }
-                                                                            UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                                                            resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
-                                                                        }
-                                                                    }
-                                                                })
-                                                            }
-                                                        })
-                                                    }
-                                                })
-                                                if(xusername){
-                                                    await usernameEl.val(xusername)
-                                                    Update(false)
-                                                } else {
-                                                    usernameEl.val(savedUsername)
-                                                }
-                                            }
-                                        } else if(value.isDenied){
-                                            usernameEl.val(savedUsername)
-                                        }
-                                    })
-                                } else {
-                                    for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
-                                    for(let i=60; i>=0; i--){
-                                        var timeout = setTimeout(()=>{
-                                            dataStatusSpinnerHomeEl.show()
-                                            if(i<1){
-                                                dataStatusEl
-                                                    .empty()
-                                                    .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment...`)
-                                            } else {
-                                                dataStatusEl
-                                                    .empty()
-                                                    .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}`)
-                                            }
-                                        },(60-i)*1000)
-                                        updateStateText.push(timeout)
+                                        text: "Error 101: "+ ex || "Oops...Something went wrong! Please try again...",
+                                        icon: "error",
+                                        confirmButtonColor: "#000"
+                                    });
+                                    (async()=>{
+                                        await LoadData(savedRecScheme)
+                                    })();
+                                    console.log("WebtoApp: Update Error")
+                                    if(jsonIsEmpty(savedRecScheme)){
+                                        animeRecommendationListEl.empty()
+                                        animeRecommendationListEl.append(`
+                                            <tr class="item ${savedTheme}" role="row">
+                                                <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
+                                                    <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                                    No Data
+                                                </td>
+                                            </tr>
+                                        `)
                                     }
-                                    setTimeout(()=>{
-                                        analyzeVariableTime = Math.ceil(Math.max(analyzeVariableTime-Math.ceil(((new Date).getTime()-AnalyzeVariableStartTime.getTime())/1000),1))
-                                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
-                                        for(let i=analyzeVariableTime; i>=0; i--){
-                                            var timeout = setTimeout(()=>{
-                                                dataStatusSpinnerHomeEl.show()
-                                                if(i<1){
-                                                    dataStatusEl
-                                                        .empty()
-                                                        .append(`<span style="white-space:nowrap;">Analyzing your List... Please Wait a Moment...`)
-                                                } else {
-                                                    dataStatusEl
-                                                        .empty()
-                                                        .append(`<span style="white-space:nowrap;">Analyzing your List...⠀</span><span style="white-space:nowrap;">Estimated Time: ${msToTime(i*1000)}</span>`)
-                                                }
-                                            },(analyzeVariableTime-i)*1000)
-                                            updateStateText.push(timeout)
-                                        }
-                                        return recallAV(chunk)
-                                    },60000)
-                                }
-                            } catch(ex) {
-                                requestIsRunning = false;
-                                (async()=>{
-                                    for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
-                                    dataStatusSpinnerHomeEl.hide()
-                                    dataStatusEl
-                                        .empty()
-                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                                })();
-                                console.error("Error 101: ",ex)
-                                Swal.fire({
-                                    heightAuto: false,
-                                    text: "Error 101: "+ ex || "Oops...Something went wrong! Please try again...",
-                                    icon: "error",
-                                    confirmButtonColor: "#000"
-                                });
-                                (async()=>{
-                                    await LoadData(savedRecScheme)
-                                })();
-                                console.log("WebtoApp: Update Error")
-                                if(jsonIsEmpty(savedRecScheme)){
-                                    animeRecommendationListEl.empty()
-                                    animeRecommendationListEl.append(`
-                                        <tr class="item ${savedTheme}" role="row">
-                                            <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
-                                                <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                                                No Data
-                                            </td>
-                                        </tr>
-                                    `)
                                 }
                             }
-                        }
+                        })
+                    }
+                    recallAV(1) // first chunk
+                }
+            } else {
+                if(jsonIsEmpty(savedAnimeEntries)&&!returned){
+                    await updateAllAnimeList(updateID, username, true, undefined, undefined, undefined, undefined, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                } else {
+                    console.error("Error 100: Can't connect to Anilist, you may not be able to use this until the app is updated...")
+                    Swal.fire({
+                        heightAuto: false,
+                        text: "Error 100: Can't connect to Anilist, you may not be able to use this until the app is updated...",
+                        icon: "error",
+                        confirmButtonColor: "#000"
                     })
                 }
-                recallAV(1) // first chunk
             }
         } else {
             var savedUserListValues = Object.values(savedUserList)
@@ -4379,9 +4711,22 @@
                 worker7.onmessage = (message) => {
                     worker7.terminate()
                     const data = message.data
-                    analyzeAnime(updateID, savedAnimeEntries, data.varScheme, data.userListStatus, data.alteredVariables, username, false, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                    analyzeAnime(updateID, savedAnimeEntries, data.varScheme, data.userListStatus, data.alteredVariables, username, false, false, undefined, false, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
                 }
                 worker7.onerror = async (message) => {
+                    worker7.terminate()
+                    worker7 = null
+                    requestIsRunning = false
+                    dataStatusEl
+                        .empty()
+                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                    console.error("Error 107: Oops...Something went wrong! Please try again...")
+                    Swal.fire({
+                        heightAuto: false,
+                        text: "Error 107: Oops...Something went wrong! Please try again...",
+                        icon: "error",
+                        confirmButtonColor: "#000"
+                    })
                     return
                 }
             } else {
@@ -4396,7 +4741,7 @@
         }
     }
 
-    async function updateAllAnimeList(updateID, username, varScheme, userListStatus, alteredVariables, savedUserList){
+    async function updateAllAnimeList(updateID, username, noSavedEntries, varScheme, userListStatus, alteredVariables, savedUserList, notAnUpdate, filterAlgo, doHideUnwatchedSeq){
         var tempLastSavedUpdateTime = lastSavedUpdateTime
         var animeEntries = {}
         var page = 1
@@ -4490,9 +4835,11 @@
                 }),
                 beforeSend: ()=> {
                     for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                    var usDn = lastAnilistPage>page?lastAnilistPage:page+1
+                    var usUp = page
                     dataStatusEl
                         .empty()
-                        .append(`<span style="white-space:nowrap;">Getting Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${page}" max="${lastAnilistPage>page?lastAnilistPage:page+1}"></progress>⠀${Math.min(99.99,(page/(lastAnilistPage>page?lastAnilistPage:page+1)*100)).toFixed(2)}%</span>`);
+                        .append(`<span style="white-space:nowrap;">Getting Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${usUp}" max="${usDn}"></progress>⠀${Math.min(99.99,(usUp/usDn)*100).toFixed(2)}%</span>`);
                     if(dataStatusSpinnerHomeEl.css("display")!=="none") {
                         dataStatusSpinnerHomeEl.hide()
                     }
@@ -4545,7 +4892,11 @@
                                 savedUserScores = await savedUserScores || {}
                                 await saveJSON(savedUserScores,"savedUserScores")
                             }
-                            analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false)
+                            if(noSavedEntries){
+                                analyzeVariables(updateID, username, undefined, notAnUpdate, filterAlgo, doHideUnwatchedSeq, true)
+                            } else {
+                                analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
+                            }
                         })();
                     }
                 },
@@ -4613,6 +4964,270 @@
         }
         recalluAAL(1,1) // First Page
     }
+    async function getNewAnime(updateID, username, userListIDs, notAnUpdate, filterAlgo, doHideUnwatchedSeq){
+        if(lastSavedUpdateTime!==0&&!jsonIsEmpty(savedAnimeEntries)&&!isDeepUpdate){
+            var tempLastSavedUpdateTime = lastSavedUpdateTime
+            var pastDateUpdated = lastSavedUpdateTime
+            var currentDateAnilist = ((new Date).getTime())/1000
+            var currentDateUpdating = currentDateAnilist
+            var updatedAnimeEntries = {}
+            var staffPage = 1
+            var maxAnimePerPage = 50
+            var page = 1
+            var maxStaffPerPage = 25
+            var staffHasNextPage = false
+            var worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
+            async function recallgNA(page, staffPage){
+                // Allow Single Instance of Update
+                if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+                    updateIDs = updateIDs.filter((id)=>id!==updateID) // one line
+                    return
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: 'https://graphql.anilist.co',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Cache-Control': 'max-age=31536000, immutable'
+                    },
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        query: `
+                        {
+                            Page(page: ${page}, perPage: ${maxAnimePerPage}) {
+                                pageInfo{
+                                    hasNextPage
+                                }
+                                media(
+                                    type: ANIME,
+                                    genre_not_in: ["Hentai"],
+                                    format_not_in:[MUSIC,MANGA,NOVEL,ONE_SHOT],
+                                    id_not_in: [
+                                        ${Object.keys(savedAnimeEntries??{}).reduce((result,e)=>{
+                                            if(isInt(e)){
+                                                result.push(parseInt(e))
+                                            }
+                                            return result
+                                        },[]).join(", ")}]
+                                    ) {
+                                    id
+                                    updatedAt
+                                    ${staffHasNextPage?'':`
+                                    title {
+                                        userPreferred
+                                    }
+                                    relations {
+                                        edges {
+                                            relationType
+                                            node{
+                                                id
+                                                popularity
+                                            }
+                                        }
+                                    }
+                                    siteUrl
+                                    averageScore
+                                    episodes
+                                    duration
+                                    trending
+                                    popularity
+                                    favourites
+                                    format
+                                    genres
+                                    status
+                                    tags {
+                                        name
+                                        rank
+                                        category
+                                    }
+                                    studios {
+                                        nodes {
+                                            name
+                                            siteUrl
+                                            isAnimationStudio
+                                        }
+                                    }
+                                    seasonYear
+                                    season`}
+                                    staff(perPage:${maxStaffPerPage}, page:${staffPage}) {
+                                        pageInfo{
+                                            hasNextPage
+                                        }
+                                        edges {
+                                            node {
+                                                name {
+                                                    userPreferred
+                                                }
+                                                siteUrl
+                                            }
+                                            role
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        `
+                    }),
+                    beforeSend: ()=> {
+                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                        var usDn = lastAnilistPage>page?lastAnilistPage:page+1
+                        var usUp = page
+                        dataStatusEl
+                            .empty()
+                            .append(`<span style="white-space:nowrap;">Getting New Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${(Math.min(99.99,(usUp/usDn)*100)).toFixed(2)}%</span>`);
+                        if(dataStatusSpinnerHomeEl.css("display")!=="none") {
+                            dataStatusSpinnerHomeEl.hide()
+                        }
+                    },
+                    success: (result)=>{
+                        var tempUpdatedAnimeEntries = result?.data?.Page?.media ?? []
+                        var hasNextPage = result?.data?.Page?.hasNextPage ?? (tempUpdatedAnimeEntries?.length??0)>0
+                        if(jsonIsEmpty(updatedAnimeEntries)||!staffHasNextPage){
+                            for(let i=0; i<tempUpdatedAnimeEntries.length;i++){
+                                var anime = tempUpdatedAnimeEntries[i]
+                                if(anime.id){
+                                    updatedAnimeEntries[anime.id] = anime
+                                }
+                            }
+                        } else if(staffHasNextPage&&!jsonIsEmpty(updatedAnimeEntries)){
+                            for(let i=0; i<tempUpdatedAnimeEntries.length;i++){
+                                var anime = tempUpdatedAnimeEntries[i]
+                                if(anime?.id&&updatedAnimeEntries[anime?.id]?.staff?.edges?.length&&anime?.staff?.edges?.length){
+                                    updatedAnimeEntries[anime.id].staff.edges = updatedAnimeEntries[anime.id].staff.edges.concat(anime.staff.edges)
+                                }
+                            }
+                        }
+                        // Check Staff
+                        staffHasNextPage = tempUpdatedAnimeEntries?.some((anime)=>anime?.staff?.pageInfo?.hasNextPage??false)??false
+                        if(staffHasNextPage){
+                            return recallgNA(page,++staffPage)
+                        } else if(hasNextPage){
+                            if(!jsonIsEmpty(updatedAnimeEntries)&&!staffHasNextPage){
+                                worker3.terminate()
+                                worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
+                                worker3.postMessage({
+                                    updatedAnimeEntries: updatedAnimeEntries,
+                                    savedAnimeEntries: savedAnimeEntries
+                                })
+                                worker3.onmessage = (message) => {
+                                    (async()=>{
+                                        savedAnimeEntries = await message.data.savedAnimeEntries ?? {}
+                                        await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                    })();
+                                }
+                                worker3.onerror = async (message) => {
+                                    console.error("Error 116: Oops...Something went wrong! Please try again...")
+                                }
+                            }
+                            return recallgNA(++page,1)
+                        } else {
+                            worker3.terminate()
+                            worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
+                            worker3.postMessage({
+                                updatedAnimeEntries: updatedAnimeEntries,
+                                savedAnimeEntries: savedAnimeEntries
+                            })
+                            worker3.onmessage = (message) => {
+                                (async()=>{
+                                    worker3.terminate()
+                                    dataStatusEl
+                                        .empty()
+                                        .append(`<span style="white-space:nowrap;">Getting New Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
+                                    savedAnimeEntries = message.data.savedAnimeEntries ?? {}
+                                    await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                    lastSavedUpdateTime = tempLastSavedUpdateTime || 0
+                                    await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                    analyzeVariables(updateID, username, userListIDs, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                                })();
+                            }
+                            worker3.onerror = async (message) => {
+                                worker3.terminate()
+                                worker3 = null
+                                dataStatusEl
+                                    .empty()
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                console.error("Error 104: Oops...Something went wrong! Please try again...")
+                                Swal.fire({
+                                    heightAuto: false,
+                                    text: "Error 104: Oops...Something went wrong! Please try again...",
+                                    icon: "error",
+                                    confirmButtonColor: "#000"
+                                })
+                                requestIsRunning = false
+                                return
+                            }
+                        }
+                    },
+                    error: function(xhr) {
+                        var err = xhr
+                        try {
+                            if(!window.navigator.onLine){
+                                throw "Unable to connect to the Internet!"
+                            }
+                            err = xhr?.responseText?.errors?.[0]?.message || xhr
+                            console.error(err)
+                            var usDn = lastAnilistPage>page?lastAnilistPage:page+1
+                            var usUp = page
+                            for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                            for(let i=60; i>=0; i--){
+                                var timeout = setTimeout(()=>{
+                                    dataStatusSpinnerHomeEl.hide()
+                                    if(i<1){
+                                        dataStatusEl
+                                        .empty()
+                                        .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${(Math.min(99.99,(usUp/usDn)*100)).toFixed(2)}%</span>`)
+                                    } else {
+                                        dataStatusEl
+                                        .empty()
+                                        .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${(Math.min(99.99,(usUp/usDn)*100)).toFixed(2)}%</span>`)
+                                    }
+                                },(60-i)*1000)
+                                updateStateText.push(timeout)
+                            }
+                            setTimeout(()=>{
+                                return recallgNA(page,staffPage)
+                            },60000)
+                        } catch(ex) {
+                            requestIsRunning = false
+                            console.error("Error 111: ",ex)
+                            Swal.fire({
+                                heightAuto: false,
+                                text: "Error 111: "+ ex || "Oops...Something went wrong! Please try again...",
+                                icon: "error",
+                                confirmButtonColor: "#000"
+                            });
+                            (async()=>{
+                                await LoadData(savedRecScheme)
+                            })();
+                            (async()=>{
+                                for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
+                                dataStatusSpinnerHomeEl.hide()
+                                dataStatusEl
+                                    .empty()
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                            })();
+                            console.log("WebtoApp: Update Error")
+                            if(jsonIsEmpty(savedRecScheme)){
+                                animeRecommendationListEl.empty()
+                                animeRecommendationListEl.append(`
+                                    <tr class="item ${savedTheme}" role="row">
+                                        <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
+                                            <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
+                                            No Data
+                                        </td>
+                                    </tr>
+                                `)
+                            }
+                        }
+                    }
+                })
+            }
+            recallgNA(1,1) // First Page
+        } else {
+            updateAllAnimeList(updateID, username, false, varScheme, userListStatus, alteredVariables)
+        }
+    }
 
     async function updateAnimeList(updateID, username, varScheme, userListStatus, alteredVariables){
         if(lastSavedUpdateTime!==0&&!jsonIsEmpty(savedAnimeEntries)&&!isDeepUpdate){
@@ -4626,7 +5241,7 @@
             var page = 1
             var maxStaffPerPage = 25
             var staffHasNextPage = false
-            var worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
+            var worker9 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
             async function recalluAL(page, staffPage){
                 // Allow Single Instance of Update
                 if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
@@ -4714,21 +5329,11 @@
                     }),
                     beforeSend: ()=> {
                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
-                        var sAEL = Object.keys(savedAnimeEntries).length
-                        var uAEL = Object.keys(updatedAnimeEntries).length
-                        var uDR = currentDateAnilist-pastDateUpdated
-                        var uDC = currentDateAnilist-currentDateUpdating
-                        var usUP, usDN;
-                        if((uAEL/sAEL)>=(uDC/uDR)){
-                            usUP = uAEL
-                            usDN = sAEL
-                        } else {
-                            usUP = uDC
-                            usDN = uDR
-                        }
+                        var usDn = lastAnilistPage>page?lastAnilistPage:page+1
+                        var usUp = page
                         dataStatusEl
                             .empty()
-                            .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="${usUP}" max="${usDN}"></progress>⠀${(Math.min(99.99,(usUP/usDN)*100)).toFixed(2)}%</span>`);
+                            .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${(Math.min(99.99,(usUp/usDn)*100)).toFixed(2)}%</span>`);
                         if(dataStatusSpinnerHomeEl.css("display")!=="none") {
                             dataStatusSpinnerHomeEl.hide()
                         }
@@ -4757,38 +5362,51 @@
                             }
                         }
                         if(tempUpdatedAnimeEntries?.at(-1)?.updatedAt){
-                            currentDateUpdating = tempUpdatedAnimeEntries.at(-1).updatedAt || 0
+                            currentDateUpdating = tempUpdatedAnimeEntries.at(-1).updatedAt
+                        } else {
+                            currentDateUpdating = lastSavedUpdateTime-1
                         }
                         // Check Staff
-                        staffHasNextPage = tempUpdatedAnimeEntries?.some((userEntry)=>userEntry?.staff?.pageInfo?.hasNextPage??false)??false
+                        staffHasNextPage = tempUpdatedAnimeEntries?.some((anime)=>{
+                            if(!anime?.updatedAt){
+                                return false
+                            } else if((anime?.updatedAt??0)<lastSavedUpdateTime){
+                                return false
+                            } else {
+                                return anime?.staff?.pageInfo?.hasNextPage??false
+                            }
+                        })??false
                         if(staffHasNextPage){
                             return recalluAL(page,++staffPage)
-                        } else if((hasNextPage&&currentDateUpdating>=lastSavedUpdateTime)||(tempUpdatedAnimeEntries?.at(-1)?.updatedAt??true)){
-                            if(!isLoading&&!jsonIsEmpty(updatedAnimeEntries)&&!staffHasNextPage){
-                                worker3.terminate()
-                                worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
-                                worker3.postMessage({
+                        } else if(hasNextPage&&currentDateUpdating>=lastSavedUpdateTime){
+                            if(!jsonIsEmpty(updatedAnimeEntries)&&!staffHasNextPage){
+                                worker9.terminate()
+                                worker9 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
+                                worker9.postMessage({
                                     updatedAnimeEntries: updatedAnimeEntries,
                                     savedAnimeEntries: savedAnimeEntries
                                 })
-                                worker3.onmessage = (message) => {
+                                worker9.onmessage = (message) => {
                                     (async()=>{
                                         savedAnimeEntries = await message.data.savedAnimeEntries ?? {}
                                         await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                                     })();
                                 }
+                                worker9.onerror = async (message) => {
+                                    console.error("Error 115: Oops...Something went wrong! Please try again...")
+                                }
                             }
                             return recalluAL(++page,1)
                         } else {
-                            worker3.terminate()
-                            worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
-                            worker3.postMessage({
+                            worker9.terminate()
+                            worker9 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
+                            worker9.postMessage({
                                 updatedAnimeEntries: updatedAnimeEntries,
                                 savedAnimeEntries: savedAnimeEntries
                             })
-                            worker3.onmessage = (message) => {
+                            worker9.onmessage = (message) => {
                                 (async()=>{
-                                    worker3.terminate()
+                                    worker9.terminate()
                                     dataStatusEl
                                         .empty()
                                         .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
@@ -4796,10 +5414,23 @@
                                     await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                                     lastSavedUpdateTime = tempLastSavedUpdateTime || 0
                                     await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
-                                    analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false)
+                                    analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
                                 })();
                             }
-                            worker3.onerror = async (message) => {
+                            worker9.onerror = async (message) => {
+                                worker9.terminate()
+                                worker9 = null
+                                dataStatusEl
+                                    .empty()
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                console.error("Error 109: Oops...Something went wrong! Please try again...")
+                                Swal.fire({
+                                    heightAuto: false,
+                                    text: "Error 109: Oops...Something went wrong! Please try again...",
+                                    icon: "error",
+                                    confirmButtonColor: "#000"
+                                })
+                                requestIsRunning = false
                                 return
                             }
                         }
@@ -4812,18 +5443,8 @@
                             }
                             err = xhr?.responseText?.errors?.[0]?.message || xhr
                             console.error(err)
-                            var sAEL = Object.keys(savedAnimeEntries).length
-                            var uAEL = Object.keys(updatedAnimeEntries).length
-                            var uDR = currentDateAnilist-pastDateUpdated
-                            var uDC = currentDateAnilist-currentDateUpdating
-                            var usUP, usDN;
-                            if((uAEL/sAEL)>=(uDC/uDR)){
-                                usUP = uAEL
-                                usDN = sAEL
-                            } else {
-                                usUP = uDC
-                                usDN = uDR
-                            }
+                            var usDn = lastAnilistPage>page?lastAnilistPage:page+1
+                            var usUp = page
                             for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                             for(let i=60; i>=0; i--){
                                 var timeout = setTimeout(()=>{
@@ -4831,11 +5452,11 @@
                                     if(i<1){
                                         dataStatusEl
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress value="${usUP}" max="${usDN}"></progress>⠀${(Math.min(99.99,(usUP/usDN)*100)).toFixed(2)}%</span>`)
+                                        .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${(Math.min(99.99,(usUp/usDn)*100)).toFixed(2)}%</span>`)
                                     } else {
                                         dataStatusEl
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress value="${usUP}" max="${usDN}"></progress>⠀${(Math.min(99.99,(usUP/usDN)*100)).toFixed(2)}%</span>`)
+                                        .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${(Math.min(99.99,(usUp/usDn)*100)).toFixed(2)}%</span>`)
                                     }
                                 },(60-i)*1000)
                                 updateStateText.push(timeout)
@@ -4880,11 +5501,11 @@
             }
             recalluAL(1,1) // First Page
         } else {
-            updateAllAnimeList(updateID, username, varScheme, userListStatus, alteredVariables)
+            updateAllAnimeList(updateID, username, false, varScheme, userListStatus, alteredVariables)
         }
     }
 
-    async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser=false, notAnUpdate, filterAlgo, doHideUnwatchedSeq){
+    async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser=false, haveNewAnime=false, userListIDs, savedAnimeUpdated=false, notAnUpdate, filterAlgo, doHideUnwatchedSeq){
         return await new Promise(async(resolve)=>{
             var UpdateAnalyzeAnimeStartTime = await new Date()
             var updateAnalyzeAnimeTime = await Math.ceil(arrayMean(savedUpdateAnalyzeAnimeTime))
@@ -4951,7 +5572,7 @@
                     allFilterInfo = await data.allFilterInfo || {}
                     await saveJSON(allFilterInfo,"allFilterInfo")
                     // Save New anime Franchises
-                    if(!alertUser){
+                    if(!alertUser||savedAnimeUpdated){
                         savedAnimeFranchises = await data.animeFranchises || []
                         saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
                     }
@@ -4990,7 +5611,7 @@
                     worker5.terminate()
                     const data = message.data
                     var filtersHasFocus = await false
-                    if(!notAnUpdate||versionUpdate){
+                    if(!notAnUpdate||versionUpdate||savedAnimeUpdated){
                         // Save and Reload Filters
                         savedFilterOptionsJson = await data.savedFilterOptionsJson || []
                         await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
@@ -5144,6 +5765,9 @@
                         dataStatusEl
                             .empty()
                             .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                    } else if(haveNewAnime){
+                        // Get New Anime and Re-Update
+                        getNewAnime(updateID, username, userListIDs, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
                     } else if(alertUser){
                         console.log("WebtoApp: List is Updated")
                         if(!swal.isVisible()
@@ -5218,21 +5842,49 @@
                     }
                 }
                 worker5.onerror = async (message) => {
-                    return
+                    worker5.terminate()
+                    worker5 = null
+                    requestIsRunning = false
+                    dataStatusEl
+                        .empty()
+                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                    console.error("Error 110: Oops...Something went wrong! Please try again...")
+                    Swal.fire({
+                        heightAuto: false,
+                        text: "Error 110: Oops...Something went wrong! Please try again...",
+                        icon: "error",
+                        confirmButtonColor: "#000"
+                    })
+                    resolve()
                 }
             }
             worker4.onerror = async (message) => {
-                requestIsRunning = false
+                worker4.terminate()
+                worker4 = null
                 dataStatusEl
                     .empty()
                     .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                console.error("Error 105: Oops...Something went wrong! Please try again...")
+                Swal.fire({
+                    heightAuto: false,
+                    text: "Error 105: Oops...Something went wrong! Please try again...",
+                    icon: "error",
+                    confirmButtonColor: "#000"
+                })
+                requestIsRunning = false
                 resolve()
             }
         })
     }
 
-    async function LoadData(savedRecScheme){
-        if(!isLoading) isLoading = await true
+    async function LoadData(savedRecScheme, cont){
+        if(!isLoading) {
+            isLoading = await true
+        }
+        $("#first, #prev, #next, #last").addClass("disabled")
+        await pageNumberOptionsEl.css('pointer-events','none')
+        await animeTableEl.addClass("display-none")
+        await tableSkeleton.removeClass("display-none")
         return await new Promise(async(resolve) => {
             var recList = await Object.values(savedRecScheme)
             if((recList.length>0)) {
@@ -5268,14 +5920,29 @@
                     animeRecommendationListEl.css({
                         "display":""
                     })
+                    await tableSkeleton.addClass("display-none")
+                    await animeTableEl.removeClass("display-none")
                     // idk why savedUnhiddenTable Page sets to (page - 1) in SecondTolast and Last
                     animeTableEl.trigger("pageSet",(savedTableStatus==="Unhidden"? savedUnhiddenTablePage:savedHiddenTablePage))
                     // Rename Pager Options Text
                     pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
+                    pageNumberOptionsEl.css('pointer-events','')
                     isLoading = false
                     resolve()
                 }
                 worker6.onerror = () => {
+                    worker6.terminate()
+                    worker6 = null
+                    pageNumberOptionsEl.css('pointer-events','')
+                    tableSkeleton.addClass("display-none")
+                    animeTableEl.removeClass("display-none")
+                    console.error("Error 108: Oops...Something went wrong! Please try again...")
+                    Swal.fire({
+                        heightAuto: false,
+                        text: "Error 108: Oops...Something went wrong! Please try again...",
+                        icon: "error",
+                        confirmButtonColor: "#000"
+                    })
                     isLoading = false
                     resolve()
                 }
@@ -5505,18 +6172,23 @@
                     .flexdatalist-alias,
                     .flexdatalist-results,
                     .flexdatalist-multiple > .value,
-                    #table-responsive,
                     #anime-table,
-                    #anime-table > thead,
-                    #anime-table > thead > tr,
-                    #anime-table > thead > tr > th,
+                    #anime-table thead,
+                    #anime-table tr,
+                    #anime-table th,
                     #animeRecommendationList,
-                    #animeRecommendationList > tr,
-                    #animeRecommendationList > tr > td,
-                    #animeRecommendationList > tr > td > a,
+                    #animeRecommendationList tr,
+                    #animeRecommendationList td,
+                    .td-container,
+                    #animeRecommendationList a,
                     #pager,
                     #pageNumberOptions,
-                    #pageNumberOptions>option.darkMode
+                    #pageNumberOptions>option.darkMode,
+                    #table-skeleton,
+                    #table-skeleton tr,
+                    #table-skeleton th,
+                    #table-skeleton td,
+                    #table-skeleton span,
                     .swal2-popup,
                     .swal2-popup-custom,
                     .swal2-validation-message,
@@ -5543,18 +6215,23 @@
                     .flexdatalist-alias,
                     .flexdatalist-results,
                     .flexdatalist-multiple > .value,
-                    #table-responsive,
                     #anime-table,
-                    #anime-table > thead,
-                    #anime-table > thead > tr,
-                    #anime-table > thead > tr > th,
+                    #anime-table thead,
+                    #anime-table tr,
+                    #anime-table th,
                     #animeRecommendationList,
-                    #animeRecommendationList > tr,
-                    #animeRecommendationList > tr > td,
-                    #animeRecommendationList > tr > td > a,
+                    #animeRecommendationList tr,
+                    #animeRecommendationList td,
+                    .td-container,
+                    #animeRecommendationList a,
                     #pager,
                     #pageNumberOptions,
-                    #pageNumberOptions>option.darkMode
+                    #pageNumberOptions>option.darkMode,
+                    #table-skeleton,
+                    #table-skeleton tr,
+                    #table-skeleton th,
+                    #table-skeleton td,
+                    #table-skeleton span,
                     .swal2-popup,
                     .swal2-popup-custom,
                     .swal2-validation-message,
@@ -5580,18 +6257,23 @@
                 .flexdatalist-alias,
                 .flexdatalist-results,
                 .flexdatalist-multiple > .value,
-                #table-responsive,
                 #anime-table,
-                #anime-table > thead,
-                #anime-table > thead > tr,
-                #anime-table > thead > tr > th,
+                #anime-table thead,
+                #anime-table tr,
+                #anime-table th,
                 #animeRecommendationList,
-                #animeRecommendationList > tr,
-                #animeRecommendationList > tr > td,
-                #animeRecommendationList > tr > td > a,
+                #animeRecommendationList tr,
+                #animeRecommendationList td,
+                .td-container,
+                #animeRecommendationList a,
                 #pager,
                 #pageNumberOptions,
-                #pageNumberOptions>option.darkMode
+                #pageNumberOptions>option.darkMode,
+                #table-skeleton,
+                #table-skeleton tr,
+                #table-skeleton th,
+                #table-skeleton td,
+                #table-skeleton span,
                 .swal2-popup,
                 .swal2-popup-custom,
                 .swal2-validation-message,
@@ -5685,6 +6367,14 @@
             for(var i in obj) return false
         }
         return true
+    }
+    function isInt(num) {
+        var num;
+        if (isNaN(num)) {
+            return false;
+        }
+        x = parseFloat(num);
+        return (x | 0) === x;
     }
     function parseJson(obj){
         try{return JSON.parse(obj)}catch(ex){return {}}

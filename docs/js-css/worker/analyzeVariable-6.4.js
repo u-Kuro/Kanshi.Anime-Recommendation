@@ -241,7 +241,6 @@ self.onmessage = (message) => {
     // For Alert user if Scored List is 0
     // to have a better recommendation
     var userListCount = 0
-
     if(!notAnUpdate){
         if(jsonIsEmpty(savedAnimeEntries)){
             userListCount = 1000 // Stop User Alert

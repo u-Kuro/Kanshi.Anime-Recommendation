@@ -12,7 +12,7 @@
   3. Sort by Scores/Status/Popularity/etc. to the desired order.  
   4. Auto Recommendation updates and Exports every hour are available in the settings.  
   5. Dark/Light Theme in the settings (If this lags rendering, follow the suggestion below to have better performance).   
-  6. Update button in the settings to update your recommendation list (Used when you change an anime in your list in anilist).
+  6. Update button in the settings to update your recommendation list (Used when you change an anime in your list in anilist), ctrl+s shortcut for keyboard.
   7. Deep Update button in the settings to reset all data in the app (This will take a longer time to finish).
   8. Import/Export your user data recommendation in the settings (This is recommended, a backup will be useful when Anilist is Down or the API had a problem with the Tool).
   9. Hide Unwatched Sequel button in the settings will only show the first season for each anime franchise or the very first unwatched sequel (For example it shows standalone movies / specials / etc., or if you already completed / currently rewatching an anime season only the next unwatched sequel will show [If there's a case where {prequel-popularity<sequel-popularity} the sequel will also be included in the list]).

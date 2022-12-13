@@ -649,65 +649,132 @@ self.onmessage = (message) => {
         }
         var hasWarn = hasWarnR||hasWarnY||hasWarnP
         if(isHiddenTable){
-            animeData += `
+            animeData.push(`
             <tr class="item ${savedTheme}" role="row" style="height:65px;">
                 <td class="hide-anime-column ${savedTheme}">
-                    <button
-                        class="show-anime ${savedTheme}"
-                        style="margin:auto; padding: 5px 13px;" 
-                        type="button" 
-                        title="Hide this Anime">Show</button>
+                    <div class="td-container ${savedTheme}">
+                        <button
+                            class="show-anime ${savedTheme}"
+                            style="margin:auto; padding: 5px 13px;" 
+                            type="button" 
+                            title="Hide this Anime">Show</button>
+                    </div>
                 </td>
                 <td class="anime-score ${savedTheme}" title="${nFormatter((weightedScore||0),2)}">
-                    <div>
+                    <div class="td-container ${savedTheme}">
                         ${hasWarn?`<div title="${warns.join(', ')}"><i class="${savedTheme} fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':hasWarnP?'iris':''}"></i></div>`:''}
                         ${weightedScore||0}
                     </div>
                 </td>
                 <td class="animeTitle ${savedTheme}">
-                    <a class="${savedTheme}" target="_blank" rel="noopener noreferrer" href="${value?.animeUrl||'javascript:;'}" data-value="${value?.id||''}">${value?.title||'Title: N/A'}</a>
+                    <div class="td-container ${savedTheme}">
+                        <a class="${savedTheme}" target="_blank" rel="noopener noreferrer" href="${value?.animeUrl||'javascript:;'}" data-value="${value?.id||''}">${value?.title||'Title: N/A'}</a>
+                    </div>
                 </td>
-                <td class="${savedTheme}">${value?.format||'Format: N/A'}</td>
-                <td class="${savedTheme}">`
-                    animeData += similarities.length>0 ? similarities.join(', ') : 'Top Similarities: N/A'
-                    animeData += `
+                <td class="${savedTheme}">
+                    <div class="td-container ${savedTheme}">
+                        ${value?.format||'Format: N/A'}
+                    </div>
                 </td>
-                <td class="anime-score ${savedTheme}" title="${nFormatter((score||0),2)}">${score||0}</td>
-                <td class="anime-score ${savedTheme}" title="${userScore||0}">${userScore||0}</td>
-                <td class="anime-score ${savedTheme}" title="${averageScore||0}">${averageScore||0}</td>
-                <td class="anime-score ${savedTheme}" title="${popularity||0}">${popularity||0}</td>
-                <td class="${savedTheme}">${value?.userStatus||'User Status: N/A'}</td>
-                <td class="${savedTheme}">${value?.status||'Status: N/A'}</td>
-            </tr>`
+                <td class="${savedTheme}">
+                    <div class="td-container ${savedTheme}">
+                        ${similarities.length>0 ? similarities.join(', ') : 'Top Similarities: N/A'}
+                    </div>
+                </td>
+                <td class="anime-score ${savedTheme}" title="${nFormatter((score||0),2)}">
+                    <div class="td-container ${savedTheme}">
+                        ${score||0}
+                    </div>
+                </td>
+                <td class="txt-center ${savedTheme}" title="${userScore||0}">
+                    <div class="td-container txt-center ${savedTheme}">
+                        ${userScore||0}
+                    </div>
+                </td>
+                <td class="txt-center ${savedTheme}" title="${averageScore||0}">
+                    <div class="td-container txt-center ${savedTheme}">
+                        ${averageScore||0}
+                    </div>
+                </td>
+                <td class="txt-center ${savedTheme}" title="${popularity||0}">
+                    <div class="td-container txt-center ${savedTheme}">
+                        ${popularity||0}
+                    </div>
+                </td>
+                <td class="${savedTheme}">
+                    <div class="td-container ${savedTheme}">
+                        ${value?.userStatus||'User Status: N/A'}
+                    </div>
+                </td>
+                <td class="${savedTheme}">
+                    <div class="td-container ${savedTheme}">
+                        ${value?.status||'Status: N/A'}
+                    </div>
+                </td>
+            </tr>`)
         } else {
             animeData.push(`
             <tr class="item ${savedTheme}" role="row">
                 <td class="hide-anime-column ${savedTheme}">
-                    <button
-                        class="hide-anime ${savedTheme}"
-                        style="margin:auto; padding: 5px 13px;" 
-                        type="button" 
-                        title="Hide this Anime">Hide</button>
+                    <div class="td-container ${savedTheme}">
+                        <button
+                            class="hide-anime ${savedTheme}"
+                            style="margin:auto; padding: 5px 13px;" 
+                            type="button" 
+                            title="Hide this Anime">Hide</button>
+                    </div>
                 </td>
                 <td class="anime-score ${savedTheme}" title="${nFormatter((weightedScore||0),2)}">
-                    <div>
-                        ${hasWarn?`<div title="${warns.join(', ')}"><i class="fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':hasWarnP?'iris':''}"></i></div>`:''}
+                    <div class="td-container ${savedTheme}">
+                        ${hasWarn?`<div title="${warns.join(', ')}"><i class="${savedTheme} fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':hasWarnP?'iris':''}"></i></div>`:''}
                         ${weightedScore||0}
                     </div>
                 </td>
                 <td class="animeTitle ${savedTheme}">
-                    <a class="${savedTheme}" target="_blank" rel="noopener noreferrer" href="${value?.animeUrl||'javascript:;'}" data-value="${value?.id||''}">${value?.title||'Title: N/A'}</a>
+                    <div class="td-container ${savedTheme}">
+                        <a class="${savedTheme}" target="_blank" rel="noopener noreferrer" href="${value?.animeUrl||'javascript:;'}" data-value="${value?.id||''}">${value?.title||'Title: N/A'}</a>
+                    </div>
                 </td>
-                <td class="${savedTheme}">${value?.format||'Format: N/A'}</td>
                 <td class="${savedTheme}">
-                    ${similarities.length>0 ? similarities.join(', ') : 'Similarities: N/A'}
+                    <div class="td-container ${savedTheme}">
+                        ${value?.format||'Format: N/A'}
+                    </div>
                 </td>
-                <td class="anime-score ${savedTheme}" title="${nFormatter((score||0),2)}">${score||0}</td>
-                <td class="anime-score ${savedTheme}" title="${userScore||0}">${userScore||0}</td>
-                <td class="anime-score ${savedTheme}" title="${averageScore||0}">${averageScore||0}</td>
-                <td class="anime-score ${savedTheme}" title="${popularity||0}">${popularity||0}</td>
-                <td class="${savedTheme}">${value?.userStatus||'User Status: N/A'}</td>
-                <td class="${savedTheme}">${value?.status||'Status: N/A'}</td>
+                <td class="${savedTheme}">
+                    <div class="td-container ${savedTheme}">
+                        ${similarities.length>0 ? similarities.join(', ') : 'Top Similarities: N/A'}
+                    </div>
+                </td>
+                <td class="anime-score ${savedTheme}" title="${nFormatter((score||0),2)}">
+                    <div class="td-container ${savedTheme}">
+                        ${score||0}
+                    </div>
+                </td>
+                <td class="txt-center ${savedTheme}" title="${userScore||0}">
+                    <div class="td-container txt-center ${savedTheme}">
+                        ${userScore||0}
+                    </div>
+                </td>
+                <td class="txt-center ${savedTheme}" title="${averageScore||0}">
+                    <div class="td-container txt-center ${savedTheme}">
+                        ${averageScore||0}
+                    </div>
+                </td>
+                <td class="txt-center ${savedTheme}" title="${popularity||0}">
+                    <div class="td-container txt-center ${savedTheme}">
+                        ${popularity||0}
+                    </div>
+                </td>
+                <td class="${savedTheme}">
+                    <div class="td-container ${savedTheme}">
+                        ${value?.userStatus||'User Status: N/A'}
+                    </div>
+                </td>
+                <td class="${savedTheme}">
+                    <div class="td-container ${savedTheme}">
+                        ${value?.status||'Status: N/A'}
+                    </div>
+                </td>
             </tr>`)
         }
     })
