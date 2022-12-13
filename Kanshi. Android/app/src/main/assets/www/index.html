@@ -1426,7 +1426,7 @@
     filterAlgoContainerEl, filterAlgoModalEl, filterAlgoValidationEl,
     dataStatusEl, dataStatusSpinnerHomeEl,
     searchBtnEl, updateBtnEl, importBtnEl, importFileEl, exportIntervalBtnEl, updateIntervalBtnEl,
-    hiddenUnhiddenBtnEl, showAllAnimeBtnEl, hideUnwatchedSequelsBtnEl, themeBtnEl
+    hiddenUnhiddenBtnEl, showAllAnimeBtnEl, hideKidsAnimeBtnEl, hideUnwatchedSequelsBtnEl, themeBtnEl
 
     window.onload = async () => {
         // Check Client Height
@@ -1715,7 +1715,7 @@
                         menuContainerEl.fadeOut(250)
                     }
                 })
-                $("#pager, #menu-container>div>button").on('click', (e)=>{
+                $("#pager, #menu-container>div>button, #menu-container>div>input").on('click', (e)=>{
                     e.stopPropagation()
                 })
                 dataStatusEl.on('click',async (e) =>{
@@ -2226,9 +2226,9 @@
                                 }
                             })
                             hiddenUnhiddenBtnEl.text("Unhidden")
+                            savedTableStatus = await "Unhidden"
                             await animeTableEl.trigger("pageSet",savedUnhiddenTablePage)
                             pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
-                            savedTableStatus = await "Unhidden"
                             showAllAnimeBtnEl.hide()
                             menuContainerEl.fadeOut(500)
                             await LoadData(savedRecScheme)
@@ -3033,6 +3033,7 @@
                     setTimeout(()=>{
                         warnAnimeContainerEl.hide()
                     },300)
+                    menuContainerEl.fadeOut(250)
                     await LoadData(savedRecScheme)
                 })
                 $("#warnAnimeContainer, #cancelWarnAnime").on("click",async()=>{
@@ -3278,11 +3279,12 @@
                             reverseButtons: true
                         }).then(async(value)=>{
                             if(value.isConfirmed){
-                                var newTheme = "lightMode"
-                                themeBtnEl.removeClass("selected")
+                                var prevThem = await savedTheme
+                                savedTheme = await "lightMode"
+                                themeBtnEl.addClass("selected")
+                                menuContainerEl.fadeOut(250)
                                 await LoadData(savedRecScheme)
-                                await loadTheme(newTheme,savedTheme)
-                                savedTheme = await newTheme
+                                await loadTheme(savedTheme,prevThem)
                                 await saveJSON(savedTheme,"savedTheme")
                             }
                         })
@@ -3300,11 +3302,12 @@
                             reverseButtons: true
                         }).then(async(value)=>{
                             if(value.isConfirmed){
-                                var newTheme = "darkMode"
+                                var prevThem = await savedTheme
+                                savedTheme = await "darkMode"
                                 themeBtnEl.addClass("selected")
+                                menuContainerEl.fadeOut(250)
                                 await LoadData(savedRecScheme)
-                                await loadTheme(newTheme,savedTheme)
-                                savedTheme = await newTheme
+                                await loadTheme(savedTheme,prevThem)
                                 await saveJSON(savedTheme,"savedTheme")
                             }
                         })
@@ -3329,6 +3332,7 @@
                                 kidsAnimeIsHidden = await false
                                 await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
                                 hideKidsAnimeBtnEl.removeClass("selected")
+                                menuContainerEl.fadeOut(250)
                                 LoadData(savedRecScheme)
                             }
                         })
@@ -3350,6 +3354,7 @@
                                 kidsAnimeIsHidden = await true
                                 await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
                                 hideKidsAnimeBtnEl.addClass("selected")
+                                menuContainerEl.fadeOut(250)
                                 LoadData(savedRecScheme)
                             }
                         })
@@ -3622,9 +3627,6 @@
                                 </tr>
                             `)
                             await hiddenRow.addClass("remove-me")
-                            animeTableEl.trigger("pagerUpdate")
-                            savedHiddenAnimeIDs[hiddenAnimeID] = await true
-                            saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
                             if(animeTableEl[0]?.config?.rowsCopy?.length===0){
                                 await animeRecommendationListEl.empty()
                                 await animeRecommendationListEl.append(`
@@ -3635,8 +3637,10 @@
                                         </td>
                                     </tr>
                                 `)
-                                await animeTableEl.trigger("pagerUpdate")
                             }
+                            savedHiddenAnimeIDs[hiddenAnimeID] = await true
+                            saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
+                            animeTableEl.trigger("pagerUpdate")
                             // Have a Hidden Anime
                             if(await !jsonIsEmpty(savedHiddenAnimeIDs)){
                                 await showAllAnimeBtnEl.show()
@@ -3684,13 +3688,13 @@
                     .bind('pageMoved', async() => {
                         await pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                         var page = await animeTableEl[0]?.config?.pager?.page
-                        ++page
+                        await ++page
                         if(savedTableStatus==="Unhidden"){
                             savedUnhiddenTablePage = await page || 1
                             await saveJSON(savedUnhiddenTablePage,"savedUnhiddenTablePage")
-                        } else {
-                            savedUnhiddenTablePage = await page || 1
-                            await saveJSON(savedUnhiddenTablePage,"savedHiddenTablePage")
+                        } else if(savedTableStatus==="Hidden"){
+                            savedHiddenTablePage = await page || 1
+                            await saveJSON(savedHiddenTablePage,"savedHiddenTablePage")
                         }
                     })
                 // Flex DataList
@@ -5900,19 +5904,24 @@
                     const data = await message.data
                     const animeData = await data.animeData
                     await animeRecommendationListEl.empty()
-                    animeRecommendationListEl.css({
+                    await animeRecommendationListEl.css({
                         "display":"none"
-                    }).append(animeData)
-                    await animeTableEl.trigger("update")
+                    })
+                    await animeRecommendationListEl.append(animeData)
+                    await animeTableEl.trigger("update").trigger('pagerUpdate')
                     animeRecommendationListEl.css({
                         "display":""
                     })
                     await tableSkeleton.addClass("display-none")
                     await animeTableEl.removeClass("display-none")
                     // idk why savedUnhiddenTable Page sets to (page - 1) in SecondTolast and Last
-                    animeTableEl.trigger("pageSet",(savedTableStatus==="Unhidden"? savedUnhiddenTablePage:savedHiddenTablePage))
+                    if(savedTableStatus==="Unhidden"){
+                        await animeTableEl.trigger("pageSet",(savedUnhiddenTablePage))
+                    } else {
+                        await animeTableEl.trigger("pageSet",(savedHiddenTablePage))
+                    }
                     // Rename Pager Options Text
-                    pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
+                    await pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                     pageNumberOptionsEl.css('pointer-events','')
                     isLoading = false
                     resolve()
