@@ -8,11 +8,11 @@
   
 #### ____Features/Usage Instructions (Mostly for VI)____
   1. Settings can be found by clicking the bar at the top.  
-  2. The list is paginated, click the next/prev/first/last below to see more recommendation. You can also click right arrow/left arrow/ctrl+left arrow/ctrl+right arrow respectively.  
+  2. The list is paginated, click the next/prev/first/last below to see more recommendation. You can also do shortcut [Right arrow/Left arrow/Ctrl+Left arrow/Ctrl+Right arrow] respectively.  
   3. Sort by Scores/Status/Popularity/etc. to the desired order.  
   4. Auto Recommendation updates and Exports every hour are available in the settings.  
   5. Dark/Light Theme in the settings (If this lags rendering, follow the suggestion below to have better performance).   
-  6. Update button in the settings to update your recommendation list (Used when you change an anime in your list in anilist), ctrl+s shortcut for keyboard.
+  6. Update button in the settings to update your recommendation list (Used when you change an anime in your list in anilist), [Ctrl + S] is the shortcut for keyboard.
   7. Deep Update button in the settings to reset all data in the app (This will take a longer time to finish).
   8. Import/Export your user data recommendation in the settings (This is recommended, a backup will be useful when Anilist is Down or the API had a problem with the Tool).
   9. Hide Unwatched Sequel button in the settings will only show the first season for each anime franchise or the very first unwatched sequel (For example it shows standalone movies / specials / etc., or if you already completed / currently rewatching an anime season only the next unwatched sequel will show [If there's a case where {prequel-popularity<sequel-popularity} the sequel will also be included in the list]).
@@ -73,20 +73,20 @@
 ### ____Website Preview____
 
 #### ____Dark Theme____
-[<img src="https://i.imgur.com/6AfKrZM.png">](https://i.imgur.com/6AfKrZM.png)
-[<img src="https://i.imgur.com/s0oUVO3.png">](https://i.imgur.com/s0oUVO3.png)
+[<img src="https://i.imgur.com/owu7Fbz.png">](https://i.imgur.com/owu7Fbz.png)
+[<img src="https://i.imgur.com/or5MTvE.png">](https://i.imgur.com/or5MTvE.png)
 
 ### ____Light Theme____
-[<img src="https://i.imgur.com/VrQkVYe.png">](https://i.imgur.com/VrQkVYe.png)
-[<img src="https://i.imgur.com/mxLBME4.png">](https://i.imgur.com/mxLBME4.png)
+[<img src="https://i.imgur.com/ifT5utD.png">](https://i.imgur.com/ifT5utD.png)
+[<img src="https://i.imgur.com/rorY1li.png">](https://i.imgur.com/rorY1li.png)
 
 ### ____Android Preview____
 
 #### ____Dark Theme____
-[<img src="https://i.imgur.com/pOH8ZsW.png" width="300">](https://i.imgur.com/pOH8ZsW.png) [<img src="https://i.imgur.com/EjTqgU1.png" width="300">](https://i.imgur.com/EjTqgU1.png)
+[<img src="https://i.imgur.com/H4c7ohu.png" width="300">](https://i.imgur.com/H4c7ohu.png) [<img src="https://i.imgur.com/FELR4HN.png" width="300">](https://i.imgur.com/FELR4HN.png)
 
 #### ____Light Theme____
-[<img src="https://i.imgur.com/y4cAEEo.png" width="300">](https://i.imgur.com/y4cAEEo.png) [<img src="https://i.imgur.com/gvthnlE.png" width="300">](https://i.imgur.com/gvthnlE.png)
+[<img src="https://i.imgur.com/36qXIfs.png" width="300">](https://i.imgur.com/36qXIfs.png) [<img src="https://i.imgur.com/I2YxVVX.png" width="300">](https://i.imgur.com/I2YxVVX.png)
 
 ## Kanshi.R
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Anime Recommendation App that also uses existing Anilist account analyzed based on three factors. The User Score to evaluate ones' Likability, the Amount of recommendations for a specific anime to Improve recommendation Accuracy, and the General ratings for a recommended anime to Identify a well-received Show.
