@@ -3807,34 +3807,12 @@
                     .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
 
                 // Load Table
-                if(!jsonIsEmpty(savedAnimeEntries)&&!jsonIsEmpty(savedRecScheme)) {
-                    await updateBtnEl.show()
-                    if(await !jsonIsEmpty(savedHiddenAnimeIDs)){
-                        await showAllAnimeBtnEl.show()
-                    }
-                    await LoadData(savedRecScheme)
-                    resolve()
-                } else if(!jsonIsEmpty(savedAnimeEntries)){
-                    await updateBtnEl.show()
-                    await tableSkeleton.addClass("display-none")
-                    await animeTableEl.removeClass("display-none")
-                    resolve()
-                } else {
-                    animeData = `
-                        <tr class="item ${savedTheme}" role="row">
-                            <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
-                                <i class="fa fa-solid fa-file fa-xl" style="padding-right: 1ch;"></i>
-                                No Data
-                            </td>
-                        </tr>
-                    `
-                    await animeRecommendationListEl.empty()
-                    await animeRecommendationListEl.append(animeData)
-                    await animeTableEl.trigger("update")
-                    await tableSkeleton.addClass("display-none")
-                    await animeTableEl.removeClass("display-none")
-                    resolve()
+                await updateBtnEl.show()
+                if(await !jsonIsEmpty(savedHiddenAnimeIDs)){
+                    await showAllAnimeBtnEl.show()
                 }
+                await LoadData(savedRecScheme)
+                resolve()
             })
         }).then(async()=>{
             // Update Saved DOM State
