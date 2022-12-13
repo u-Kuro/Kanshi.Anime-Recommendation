@@ -3876,6 +3876,7 @@
                     .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
 
                 // Load Table
+                // Load Table
                 if(!jsonIsEmpty(savedAnimeEntries)&&!jsonIsEmpty(savedRecScheme)) {
                     await updateBtnEl.show()
                     if(await !jsonIsEmpty(savedHiddenAnimeIDs)){
@@ -3885,6 +3886,8 @@
                     resolve()
                 } else if(!jsonIsEmpty(savedAnimeEntries)){
                     await updateBtnEl.show()
+                    await tableSkeleton.addClass("display-none")
+                    await animeTableEl.removeClass("display-none")
                     resolve()
                 } else {
                     animeData = `
@@ -3898,12 +3901,8 @@
                     await animeRecommendationListEl.empty()
                     await animeRecommendationListEl.append(animeData)
                     await animeTableEl.trigger("update")
-                    // Android
-                    // Export Path is Available
-                    if(await exportPathIsAvailable){
-                        await $("#chooseExportPathBtn").show()
-                    }
-                    // Android
+                    await tableSkeleton.addClass("display-none")
+                    await animeTableEl.removeClass("display-none")
                     resolve()
                 }
             })

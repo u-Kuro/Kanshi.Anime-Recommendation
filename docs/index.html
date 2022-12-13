@@ -3816,6 +3816,8 @@
                     resolve()
                 } else if(!jsonIsEmpty(savedAnimeEntries)){
                     await updateBtnEl.show()
+                    await tableSkeleton.addClass("display-none")
+                    await animeTableEl.removeClass("display-none")
                     resolve()
                 } else {
                     animeData = `
@@ -3829,6 +3831,8 @@
                     await animeRecommendationListEl.empty()
                     await animeRecommendationListEl.append(animeData)
                     await animeTableEl.trigger("update")
+                    await tableSkeleton.addClass("display-none")
+                    await animeTableEl.removeClass("display-none")
                     resolve()
                 }
             })
