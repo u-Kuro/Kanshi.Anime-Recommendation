@@ -2175,8 +2175,9 @@
                                 var filters = await $("ul.flex0>.value")
                                 await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
                                     if(e?.textContent?.toLowerCase()==="hidden"){
+                                        await $("#flex0").prop("disabled", true)
                                         await filters.eq(idx).children(".fdl-remove").trigger("click")
-                                        await $("#flex0").blur()
+                                        await $("#flex0").prop("disabled", false)
                                     }
                                 })
                                 await hiddenUnhiddenBtnEl.text("Unhidden")
@@ -2210,8 +2211,9 @@
                             var filters = await $("ul.flex0>.value")
                             await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
                                 if(e?.textContent?.toLowerCase()==="hidden"){
+                                    await $("#flex0").prop("disabled", true)
                                     await filters.eq(idx).children(".fdl-remove").trigger("click")
-                                    await $("#flex0").blur()
+                                    await $("#flex0").prop("disabled", false)
                                 }
                             })
                             hiddenUnhiddenBtnEl.text("Unhidden")
@@ -2413,8 +2415,9 @@
                                                 // Remove Current Filters
                                                 var warnInfo = await $("ul.flex1>.value")
                                                 await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                                    await $("#flex1").prop("disabled", true)
                                                     await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                                    await $("#flex1").blur()
+                                                    await $("#flex1").prop("disabled", false)
                                                 })
                                                 resolve()
                                             })
@@ -2437,8 +2440,9 @@
                                                 // Remove Current Filters
                                                 var filterInfo = await $("ul.flex2>.value")
                                                 await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                                    await $("#flex2").prop("disabled", true)
                                                     await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                                    await $("#flex2").blur()
+                                                    await $("#flex2").prop("disabled", false)
                                                 })
                                                 resolve()
                                             })
@@ -2651,8 +2655,9 @@
                                         // Remove Current Filters
                                         var warnInfo = await $("ul.flex1>.value")
                                         await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                            await $("#flex1").prop("disabled", true)
                                             await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                            await $("#flex1").blur()
+                                            await $("#flex1").prop("disabled", false)
                                         })
                                         resolve()
                                     })
@@ -2675,8 +2680,9 @@
                                         // Remove Current Filters
                                         var filterInfo = await $("ul.flex2>.value")
                                         await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                            await $("#flex2").prop("disabled", true)
                                             await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                            await $("#flex2").blur()
+                                            await $("#flex2").prop("disabled", false)
                                         })
                                         resolve()
                                     })
@@ -2986,8 +2992,9 @@
                             // Remove Current Filters
                             var warnInfo = await $("ul.flex1>.value")
                             await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                await $("#flex1").prop("disabled", true)
                                 await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                await $("#flex1").blur()
+                                await $("#flex1").prop("disabled", false)
                             })
                             resolve()
                         }).then(async()=>{
@@ -3065,8 +3072,9 @@
                         await new Promise(async(resolve)=>{
                             var filterInfo = await $("ul.flex2>.value")
                             await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                await $("#flex2").prop("disabled", true)
                                 await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                await $("#flex2").blur()
+                                await $("#flex2").prop("disabled", false)
                             })
                             resolve()
                         }).then(async()=>{
@@ -5565,8 +5573,9 @@
                                     var filters = await $("ul.flex0 > .value")
                                     await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
                                         if(e?.textContent?.toLowerCase()==="hidden"){
+                                            await $("#flex0").prop("disabled", true)
                                             await filters.eq(idx).children(".fdl-remove").trigger("click")
-                                            await $("#flex0").blur()
+                                            await $("#flex0").prop("disabled", false)
                                         }
                                     })
                                     resolve()
@@ -5593,8 +5602,9 @@
                                 await new Promise(async(resolve)=>{
                                     var filterInfo = await $("ul.flex2 > .value")
                                     await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                        await $("#flex2").prop("disabled", true)
                                         await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                        await $("#flex2").blur()
+                                        await $("#flex2").prop("disabled", false)
                                     })
                                     resolve()
                                 }).then(async()=>{
@@ -5616,16 +5626,16 @@
                                     await warnAnimeContainerEl.css({visibility:"hidden"}).show()
                                 }
                                 await new Promise(async(resolve)=>{
-                                    var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
-                                    for(let i=0; i<warnInfo.length; i++) {
-                                        await warnInfo.eq(i).children(".fdl-remove").trigger("click")
-                                        await $("#warnAnimeModal .flexdatalist-alias").blur()
-                                    }
+                                    var warnInfo = await $("ul.flex1>.value")
+                                    await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                        await $("#flex1").prop("disabled", true)
+                                        await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
+                                        await $("#flex1").prop("disabled", false)
+                                    })
                                     resolve()
                                 }).then(async()=>{
-                                    var warnAnimeInput
+                                    var warnAnimeInput = await $("#flex1")
                                     for(let i=0; i<savedWarnAnime.length; i++) {
-                                        warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                         await warnAnimeInput.val(savedWarnAnime[i])
                                         var e = await $.Event("keyup",{keyCode:13})
                                         await warnAnimeInput.trigger(e)
@@ -5659,8 +5669,9 @@
                         await new Promise(async(resolve)=>{
                             var filters = await $("ul.flex2 > .value")
                             await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                await $("#flex2").prop("disabled", true)
                                 await filters.eq(idx).children(".fdl-remove").trigger("click")
-                                await $("#flex2").blur()
+                                await $("#flex2").prop("disabled", false)
                             })
                             resolve()
                         }).then(async()=>{
@@ -6216,27 +6227,27 @@
                 write.onsuccess = (event) => {
                     const cursor = event.target.result;
                     if (cursor) {
-                        if(cursor.key===name){ 
-                            cursor.update(data) 
-                            resolve() 
-                        } 
-                        cursor.continue() 
-                    } else { 
-                        db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name) 
-                        resolve() 
-                    } 
-                } 
-            } catch(ex) { 
-                try{ 
-                    console.error(ex) 
-                    db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name) 
+                        if(cursor.key===name){
+                            cursor.update(data)
+                            resolve()
+                        }
+                        cursor.continue()
+                    } else {
+                        db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
+                        resolve()
+                    }
+                }
+            } catch(ex) {
+                try{
+                    console.error(ex)
+                    db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
                     resolve()
-                } catch(ex2) { 
+                } catch(ex2) {
                     console.error(ex2)
-                    resolve() 
-                } 
-            } 
-        }) 
+                    resolve()
+                }
+            }
+        })
     }
     async function retrieveJSON(name) {
         return new Promise((resolve)=>{
@@ -6254,21 +6265,21 @@
             }
         })
     }
-    async function deleteJSON(name) { 
-        return new Promise((resolve)=>{ 
-            try { 
-                var read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").delete(name) 
-                read.onsuccess = (event) => { 
-                    resolve() 
-                } 
+    async function deleteJSON(name) {
+        return new Promise((resolve)=>{
+            try {
+                var read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").delete(name)
+                read.onsuccess = (event) => {
+                    resolve()
+                }
                 read.onerror = (event) => {
-                    resolve() 
-                } 
-            } catch(ex) { 
-                console.error(ex) 
-                resolve() 
-            } 
-        }) 
+                    resolve()
+                }
+            } catch(ex) {
+                console.error(ex)
+                resolve()
+            }
+        })
     }
     function equalsNCS(str1, str2) {
         var s1 = str1

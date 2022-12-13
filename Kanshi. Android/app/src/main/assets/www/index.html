@@ -1364,14 +1364,14 @@
         <div class="swal2-html-container-custom" style="display: block;">
             <div class="filter-container-custom">
                 <input type="text"
-                       placeholder="Filter Algorithm Contents (Include: Content / Exclude: !Content / WScore>=N / etc.)"
-                       class="flexdatalistFilterAlgo"
-                       data-search-in="info"
-                       multiple="multiple"
-                       data-min-length="1"
-                       data-search-by-word="true"
-                       data-max-shown-results="7"
-                       name="filter">
+                    placeholder="Filter Algorithm Contents (Include: Content / Exclude: !Content / WScore>=N / etc.)"
+                    class="flexdatalistFilterAlgo"
+                    data-search-in="info"
+                    multiple="multiple"
+                    data-min-length="1"
+                    data-search-by-word="true"
+                    data-max-shown-results="7"
+                    name="filter">
             </div>
         </div>
         <div class="darkMode swal2-validation-message" id="filterAlgo-validation" style="display: none;">
@@ -2184,8 +2184,9 @@
                                 var filters = await $("ul.flex0>.value")
                                 await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
                                     if(e?.textContent?.toLowerCase()==="hidden"){
+                                        await $("#flex0").prop("disabled", true)
                                         await filters.eq(idx).children(".fdl-remove").trigger("click")
-                                        await $("#flex0").blur()
+                                        await $("#flex0").prop("disabled", false)
                                     }
                                 })
                                 await hiddenUnhiddenBtnEl.text("Unhidden")
@@ -2219,8 +2220,9 @@
                             var filters = await $("ul.flex0>.value")
                             await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
                                 if(e?.textContent?.toLowerCase()==="hidden"){
+                                    await $("#flex0").prop("disabled", true)
                                     await filters.eq(idx).children(".fdl-remove").trigger("click")
-                                    await $("#flex0").blur()
+                                    await $("#flex0").prop("disabled", false)
                                 }
                             })
                             hiddenUnhiddenBtnEl.text("Unhidden")
@@ -2422,8 +2424,9 @@
                                                 // Remove Current Filters
                                                 var warnInfo = await $("ul.flex1>.value")
                                                 await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                                    await $("#flex1").prop("disabled", true)
                                                     await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                                    await $("#flex1").blur()
+                                                    await $("#flex1").prop("disabled", false)
                                                 })
                                                 resolve()
                                             })
@@ -2446,8 +2449,9 @@
                                                 // Remove Current Filters
                                                 var filterInfo = await $("ul.flex2>.value")
                                                 await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                                    await $("#flex2").prop("disabled", true)
                                                     await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                                    await $("#flex2").blur()
+                                                    await $("#flex2").prop("disabled", false)
                                                 })
                                                 resolve()
                                             })
@@ -2660,8 +2664,9 @@
                                         // Remove Current Filters
                                         var warnInfo = await $("ul.flex1>.value")
                                         await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                            await $("#flex1").prop("disabled", true)
                                             await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                            await $("#flex1").blur()
+                                            await $("#flex1").prop("disabled", false)
                                         })
                                         resolve()
                                     })
@@ -2684,8 +2689,9 @@
                                         // Remove Current Filters
                                         var filterInfo = await $("ul.flex2>.value")
                                         await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                            await $("#flex2").prop("disabled", true)
                                             await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                            await $("#flex2").blur()
+                                            await $("#flex2").prop("disabled", false)
                                         })
                                         resolve()
                                     })
@@ -3037,8 +3043,9 @@
                             // Remove Current Filters
                             var warnInfo = await $("ul.flex1>.value")
                             await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                await $("#flex1").prop("disabled", true)
                                 await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                await $("#flex1").blur()
+                                await $("#flex1").prop("disabled", false)
                             })
                             resolve()
                         }).then(async()=>{
@@ -3116,8 +3123,9 @@
                         await new Promise(async(resolve)=>{
                             var filterInfo = await $("ul.flex2>.value")
                             await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                await $("#flex2").prop("disabled", true)
                                 await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                await $("#flex2").blur()
+                                await $("#flex2").prop("disabled", false)
                             })
                             resolve()
                         }).then(async()=>{
@@ -5622,8 +5630,9 @@
                                     var filters = await $("ul.flex0 > .value")
                                     await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
                                         if(e?.textContent?.toLowerCase()==="hidden"){
+                                            await $("#flex0").prop("disabled", true)
                                             await filters.eq(idx).children(".fdl-remove").trigger("click")
-                                            await $("#flex0").blur()
+                                            await $("#flex0").prop("disabled", false)
                                         }
                                     })
                                     resolve()
@@ -5650,8 +5659,9 @@
                                 await new Promise(async(resolve)=>{
                                     var filterInfo = await $("ul.flex2 > .value")
                                     await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                        await $("#flex2").prop("disabled", true)
                                         await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                        await $("#flex2").blur()
+                                        await $("#flex2").prop("disabled", false)
                                     })
                                     resolve()
                                 }).then(async()=>{
@@ -5673,16 +5683,16 @@
                                     await warnAnimeContainerEl.css({visibility:"hidden"}).show()
                                 }
                                 await new Promise(async(resolve)=>{
-                                    var warnInfo = await $("#warnAnimeModal .flexdatalist-multiple").children("li.value")
-                                    for(let i=0; i<warnInfo.length; i++) {
-                                        await warnInfo.eq(i).children(".fdl-remove").trigger("click")
-                                        await $("#warnAnimeModal .flexdatalist-alias").blur()
-                                    }
+                                    var warnInfo = await $("ul.flex1>.value")
+                                    await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                        await $("#flex1").prop("disabled", true)
+                                        await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
+                                        await $("#flex1").prop("disabled", false)
+                                    })
                                     resolve()
                                 }).then(async()=>{
-                                    var warnAnimeInput
+                                    var warnAnimeInput = await $("#flex1")
                                     for(let i=0; i<savedWarnAnime.length; i++) {
-                                        warnAnimeInput = await $("#warnAnimeModal .flexdatalist-multiple-value > .flexdatalist-alias")
                                         await warnAnimeInput.val(savedWarnAnime[i])
                                         var e = await $.Event("keyup",{keyCode:13})
                                         await warnAnimeInput.trigger(e)
@@ -5716,8 +5726,9 @@
                         await new Promise(async(resolve)=>{
                             var filters = await $("ul.flex2 > .value")
                             await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                await $("#flex2").prop("disabled", true)
                                 await filters.eq(idx).children(".fdl-remove").trigger("click")
-                                await $("#flex2").blur()
+                                await $("#flex2").prop("disabled", false)
                             })
                             resolve()
                         }).then(async()=>{
