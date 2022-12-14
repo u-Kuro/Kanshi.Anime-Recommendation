@@ -20,7 +20,7 @@
     <!-- Datalist Search Code -->
     <link rel="preload" href="./js-css/flexdatalist/jquery.flex-datalist-v1.0.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/flexdatalist/jquery.flex-datalist-v1.0.css"></noscript>
-    <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.5.js" defer></script>
+    <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.6.js" defer></script>
     <!-- Bootstrap -->
     <link rel="preload" href="./js-css/bootstrap-3.3.8.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/bootstrap-3.3.8.min.css"></noscript>
@@ -197,6 +197,7 @@
                 border-style: inset;
                 border-radius: 0px;
                 background-color: rgb(255, 255, 255);
+                cursor: text !important;
             }
             #loader {
                 position: fixed;
@@ -217,6 +218,9 @@
                 margin-top: 150px;
                 color: wheat;
                 text-align: center;
+            }
+            #loaderText{
+                user-select: none;
             }
             label{margin: 0}
             #searchData,
@@ -287,6 +291,7 @@
                 flex-grow: 1;
                 padding-left: 5px !important;
                 padding-right: 5px !important;
+                cursor: text !important;
             }
             .tableLoadingContainer{
                 display: flex;
@@ -313,6 +318,7 @@
                 padding: 1.75em;
                 color: #FFF;
                 background-image: linear-gradient( 135deg, #2B2D426b 10%, #2B2D426b 100%);
+                user-select: none;
             }
             #overlay>*{
                 padding-right: 50%;
@@ -334,6 +340,12 @@
             }
             .display-none{
                 display: none !important;
+            }
+            .anime-table-headers{
+                outline: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
             }
             #anime-table,
             #anime-table>thead,
@@ -417,17 +429,25 @@
                 background-color: #e7e7e7 !important;
             }            
             .flexdatalist-multiple>.value{
+                /* Android */
+                user-select: none !important;
+                /* Android */
                 background-color: #e7e7e7 !important;
             }
-            #animeRecommendationList>.item > td {
+            #animeRecommendationList > .item > td {
                 vertical-align: middle !important;
+                /* Android */
+                user-select: none !important;
+                /* Android */
             }
             .anime-score{
                 text-align: center !important;
                 max-width: 50px !important;
                 text-overflow: ellipsis !important;
                 overflow: hidden !important;
-                cursor: pointer;
+            }
+            .pointer{
+                cursor: pointer !important;
             }
             .anime-score > div {
                 display: flex;
@@ -992,7 +1012,8 @@
                 min-height: 100px !important;
             }
             #warnAnimeContainer,
-            #filterAlgoContainer{
+            #filterAlgoContainer,
+            .flexdatalist-results li{
                 -ms-user-select: none;
                 -webkit-user-select: none;
                 user-select: none;
@@ -1144,11 +1165,48 @@
                 }
             }
             /* Skeleton Table */
+            /* Toast */
+            #toast {
+                display: none;
+                padding: 8px;
+                min-width: 120px;
+                background-color: #919191;
+                color: #fff;
+                text-align: center;
+                border-radius: 100px;
+                position: fixed;
+                z-index: 999999;
+                left: 50%;
+                bottom: 50px;
+                transform: translate(-50%, 0%);
+            }
+            #toast.show-toast {
+                display: block;
+                -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+                animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            }
+            @-webkit-keyframes fadein {
+                from {opacity: 0;}
+                to {opacity: 1;}
+            }
+            @keyframes fadein {
+                from {opacity: 0;}
+                to {opacity: 1;}
+            }
+            @-webkit-keyframes fadeout {
+                from {opacity: 1;}
+                to {opacity: 0;}
+            }
+            @keyframes fadeout {
+                from {opacity: 1;}
+                to {opacity: 0;}
+            }
+            /* Toast */
         </style>
 </head>
 <body class="darkMode">
 <nav id="nav" class="nav darkMode">
-    <div><h1 id="menuTitle" class="textLogo">Kanshi.</h1></div>
+    <div><h1 id="menuTitle" class="textLogo copy-value" data-copy-value="Kanshi.">Kanshi.</h1></div>
     <div><img id="menuIcon" src="./public/logo.png" alt="menubar"></div>
 </nav>
 <div id="menu-container">
@@ -1176,7 +1234,7 @@
     </div>
 </div>
 <header id="header">
-    <div id="overlay" class="darkMode">
+    <div id="overlay" class="darkMode copy-value" data-copy-value="Kanshi. Anime - Anilist Recommendations">
         <h1 class="textLogo">Kanshi.</h1>
         <h3>Anime - Anilist</h3>
         <h3>Recommendations</h3>
@@ -1206,7 +1264,7 @@
         <div id="dataStatusContainer" class="data-status-container">
             <div id="dataStatusWrapper">
                 <div id="dataStatusSpinnerHome" style="display: inline-table;"><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner darkMode"></div></div>
-                <h6 id="dataStatus"><b class="darkMode" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A</h6>
+                <h6 id="dataStatus" class="copy-value" data-copy-value="Latest Anilist Update: N/A"><b class="darkMode" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A</h6>
             </div>
         </div>
     </div>
@@ -1290,21 +1348,21 @@
         <table id="anime-table" class="tablesorter table table-bordered table-striped display-none darkMode">
             <thead class="darkMode">
             <tr class="anime-table-headers darkMode">
-                <th id="hiddenUnhiddenBtn" class="trigger-btn sorter-false show-hidden-anime-btn darkMode">Unhidden</th>
-                <th class="darkMode">WScore</th>
-                <th class="darkMode">Title</th>
-                <th class="darkMode">Format</th>
-                <th class="darkMode">Top Similarities</th>
-                <th class="darkMode">Score</th>
-                <th class="darkMode">User Score</th>
-                <th class="darkMode">Average Score</th>
-                <th class="darkMode">Popularity</th>
-                <th class="darkMode">User Status</th>
-                <th class="darkMode">Status</th>
+                <th id="hiddenUnhiddenBtn" class="trigger-btn sorter-false show-hidden-anime-btn darkMode copy-value" data-copy-value="Unhidden">Unhidden</th>
+                <th class="darkMode copy-value" data-copy-value="WScore">WScore</th>
+                <th class="darkMode copy-value" data-copy-value="Title">Title</th>
+                <th class="darkMode copy-value" data-copy-value="Format">Format</th>
+                <th class="darkMode copy-value" data-copy-value="Top Similarities">Top Similarities</th>
+                <th class="darkMode copy-value" data-copy-value="Score">Score</th>
+                <th class="darkMode copy-value" data-copy-value="User Score">User Score</th>
+                <th class="darkMode copy-value" data-copy-value="Average Score">Average Score</th>
+                <th class="darkMode copy-value" data-copy-value="Popularity">Popularity</th>
+                <th class="darkMode copy-value" data-copy-value="User Status">User Status</th>
+                <th class="darkMode copy-value" data-copy-value="Status">Status</th>
             </tr>
             </thead>
             <tbody id="animeRecommendationList" class="darkMode">
-            <tr class="item darkMode" role="row">
+            <tr class="item darkMode copy-value" data-copy-value="No Data" role="row">
                 <td class="darkMode" style="padding: 1.5em !important;" colspan="11">
                     <i class="fa fa-solid fa-file fa-xl darkMode" style="padding-right: 1ch;"></i>
                     No Data
@@ -1392,10 +1450,12 @@
     <div><h1 id="loaderText">Loading...</h1></div>
 </div>
 
+<div id="toast">...</div>
+
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "6.4",
+    const version = "6.5",
           backUpVersion = 4.0
         // IndexDB
     var request, db,
@@ -1418,7 +1478,7 @@
     isDeepUpdate = false, willAutoUpdate = false, updateStateText = [], checkFiltersFocus = [],
         // Helper
     pageInits = true, enteredOnce = false, versionUpdate = false, exportWorker, initStartTime,
-    pageLoadStartDate = new Date().getTime(), maxClientHeight = window.outerHeight,
+    pageLoadStartDate = new Date().getTime(), maxClientHeight,
         // Jquery Elements
     bodyEl, usernameEl, pagerEl, menuContainerEl, pageNumberOptionsEl,
     animeTableEl, tableSkeleton, animeRecommendationListEl, filtersEl,
@@ -1426,10 +1486,11 @@
     filterAlgoContainerEl, filterAlgoModalEl, filterAlgoValidationEl,
     dataStatusEl, dataStatusSpinnerHomeEl,
     searchBtnEl, updateBtnEl, importBtnEl, importFileEl, exportIntervalBtnEl, updateIntervalBtnEl,
-    hiddenUnhiddenBtnEl, showAllAnimeBtnEl, hideKidsAnimeBtnEl, hideUnwatchedSequelsBtnEl, themeBtnEl
+    hiddenUnhiddenBtnEl, showAllAnimeBtnEl, hideKidsAnimeBtnEl, hideUnwatchedSequelsBtnEl, themeBtnEl,
+    toast, toastTimeout
 
     window.onload = async () => {
-        // Check Client Height
+        // Get Client Height
         maxClientHeight = window.outerHeight
         // Initialize Jquery Elements
         bodyEl = await $("body"),
@@ -1458,8 +1519,8 @@
         showAllAnimeBtnEl = await $("#showAllAnime"),
         hideUnwatchedSequelsBtnEl = await $("#hideUnwatchedSequelsBtn"),
         hideKidsAnimeBtnEl = await $("#hideKidsAnimeBtn"),
-        themeBtnEl = await $("#themeBtn")
-
+        themeBtnEl = await $("#themeBtn"),
+        toast = await $("#toast")
         // Init Page
         return await new Promise((resolve)=>{
             // Create/Load IndexedDB
@@ -2496,9 +2557,11 @@
                                             importFileEl.val(null)
                                             if(!requestIsRunning){
                                                 dataStatusSpinnerHomeEl.hide()
+                                                var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                                 dataStatusEl
                                                     .empty()
-                                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                                             }
                                             await Swal.fire({
                                                 heightAuto: false,
@@ -2734,9 +2797,11 @@
                                     return
                                 }).then(async()=>{
                                     dataStatusSpinnerHomeEl.hide()
+                                    var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                     dataStatusEl
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                        .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                                     importFileEl.val(null)
                                     await Swal.fire({
                                         heightAuto: false,
@@ -3095,9 +3160,11 @@
                                 menuContainerEl.fadeOut(250)
                                 for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                 dataStatusSpinnerHomeEl.hide()
+                                var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                 dataStatusEl
                                     .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                             }
                         })
                         return
@@ -3502,7 +3569,6 @@
                 })
                 $(window).on("keydown", (e) => {
                     if(!$("input").is(':focus')&&!isLoading){
-                        e.preventDefault()
                         var evtobj = window.event? event : e
                         var keyCode = evtobj.which || evtobj.keyCode || 0
                         if(keyCode===37){//left arrow
@@ -3518,19 +3584,32 @@
                                 $("#next").click()
                             }
                         } else if(keyCode===83&&evtobj.ctrlKey){
+                            e.preventDefault()
                             dataStatusEl.click()
                         }
                     }
                 })
                 $(window).on("resize", (e) => {
-                    // Hide Fixed Pager on Mobile
-                    if(maxClientHeight<window.outerHeight){
-                        maxClientHeight = window.outerHeight
-                    }
-                    if(screen.availHeight>screen.availWidth){
-                        if(window.outerHeight<maxClientHeight){
-                            pagerEl.css({position: "static"})
+                    if(screen.availHeight>=screen.availWidth){
+                        if(maxClientHeight<window.outerHeight){
+                            maxClientHeight = window.outerHeight
+                        }
+                        // Avoid unchanged resizes, and allow height gaps for other devices
+                        if(window.outerHeight>=maxClientHeight*0.75){
+                            setTimeout(()=>{
+                                pagerEl.css({position: "fixed"})
+                            },100)
                         } else {
+                            pagerEl.css({position: "static"})
+                        }
+                    }
+                })
+                $(document).scroll(()=>{
+                    if(screen.availHeight>=screen.availWidth&&window.outerHeight>=window.outerWidth){
+                        if(maxClientHeight<window.outerHeight){
+                            maxClientHeight = window.outerHeight
+                        }
+                        if(window.outerHeight>=maxClientHeight*0.75){ // Extra Space for Other Device
                             setTimeout(()=>{
                                 pagerEl.css({position: "fixed"})
                             },100)
@@ -3540,44 +3619,33 @@
                             pagerEl.css({position: "fixed"})
                         },100)
                     }
-                    // Hide Fixed Pager on Mobile
                 })
-                $(window).on("orientationchange", () => {
-                    // Hide Fixed Pager on Mobile
-                    if(maxClientHeight<window.outerHeight){
-                        maxClientHeight = window.outerHeight
-                    }
-                    if(screen.availHeight>screen.availWidth){
-                        if(window.outerHeight<maxClientHeight){
-                            pagerEl.css({position: "static"})
-                        } else {
-                            setTimeout(()=>{
-                                pagerEl.css({position: "fixed"})
-                            },100)
-                        }
-                    } else {
-                        setTimeout(()=>{
-                            pagerEl.css({position: "fixed"})
-                        },100)
-                    }
-                    // Hide Fixed Pager on Mobile
-                })
-                $("input").on("focusout",() => {
-                    if(maxClientHeight<window.outerHeight){
-                        maxClientHeight = window.outerHeight
-                    }
+                $("body").on("focusin","input",(e) => {
+                    e.stopPropagation()
+                    pagerEl.css({position: "static"})
+                }).on("focusout","input",() => {
                     setTimeout(()=>{
-                        pagerEl.css({position: "fixed"})
-                    },100)
-                }).on("focusin",() => {
-                    if(maxClientHeight<window.outerHeight){
-                        maxClientHeight = window.outerHeight
-                    }
-                    if(screen.availHeight>screen.availWidth){
-                        if(window.outerHeight<maxClientHeight){
-                            pagerEl.css({position: "static"}) // If input is Active
+                        if(!$("input").is(":focus")){
+                            pagerEl.css({position: "fixed"})
                         }
-                    }
+                    },100)
+                })
+                var timeoutId = 0
+                $(document).on('mousedown touchstart','.copy-value',(e)=> {
+                    timeoutId = setTimeout(()=>{
+                        var target = $(e.target)
+                        target.css('pointer-events','none')
+                        var text = target.data("copy-value")
+                        if((text??'')!==''){
+                            navigator.clipboard.writeText(text)
+                            showToast("Text Copied")
+                        }
+                    }, 1000)
+                }).on('mouseup mouseleave touchend touchcancel','.copy-value',(e)=>{
+                    setTimeout(()=>{
+                        $(e.target).css('pointer-events','')
+                    },750)
+                    clearTimeout(timeoutId)
                 })
                 resolve()
             })
@@ -3891,9 +3959,11 @@
 
                 // Load Last Saved Update
                 dataStatusSpinnerHomeEl.hide()
+                var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                 dataStatusEl
                     .empty()
-                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
 
                 // Load Table
                 await updateBtnEl.show()
@@ -4268,9 +4338,11 @@
                     worker2.onerror = async (message) => {
                         worker2.terminate()
                         worker2 = null
+                        var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                         dataStatusEl
                             .empty()
-                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                            .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                         console.error("Error 103: Oops...Something went wrong! Please try again...")
                         Swal.fire({
                             heightAuto: false,
@@ -4455,9 +4527,11 @@
                                     worker2.onerror = async (message) => {
                                         worker2.terminate()
                                         worker2 = null
+                                        var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                         dataStatusEl
                                             .empty()
-                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                            .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                                         console.error("Error 115: Oops...Something went wrong! Please try again...")
                                         Swal.fire({
                                             heightAuto: false,
@@ -4479,9 +4553,11 @@
                                         (async()=>{
                                             for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                             dataStatusSpinnerHomeEl.hide()
+                                            var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                             dataStatusEl
                                                 .empty()
-                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                                .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                                         })();
                                         requestIsRunning = false
                                         Swal.fire({
@@ -4615,7 +4691,7 @@
                                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                         for(let i=60; i>=0; i--){
                                             var timeout = setTimeout(()=>{
-                                                    dataStatusSpinnerHomeEl.show()
+                                                dataStatusSpinnerHomeEl.show()
                                                 if(i<1){
                                                     dataStatusEl
                                                         .empty()
@@ -4654,9 +4730,11 @@
                                     (async()=>{
                                         for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                         dataStatusSpinnerHomeEl.hide()
+                                        var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                         dataStatusEl
                                             .empty()
-                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                            .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                                     })();
                                     console.error("Error 101: ",ex)
                                     Swal.fire({
@@ -4713,9 +4791,11 @@
                     worker7.terminate()
                     worker7 = null
                     requestIsRunning = false
+                    var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                     dataStatusEl
                         .empty()
-                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                        .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                     console.error("Error 107: Oops...Something went wrong! Please try again...")
                     Swal.fire({
                         heightAuto: false,
@@ -4728,9 +4808,11 @@
             } else {
                 for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                 dataStatusSpinnerHomeEl.hide()
+                var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                 dataStatusEl
                     .empty()
-                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                 requestIsRunning = false
                 filterAlgoValidationEl.hide()
             }
@@ -4835,7 +4917,7 @@
                     var usUp = page
                     dataStatusEl
                         .empty()
-                        .append(`<span style="white-space:nowrap;">Getting Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${usUp}" max="${usDn}"></progress>⠀${Math.min(99.99,(usUp/usDn)*100).toFixed(2)}%</span>`);
+                        .append(`<span style="white-space:nowrap;">Getting Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${usUp}" max="${usDn}"></progress>⠀${Math.min(99.99,(usUp/usDn)*100).toFixed(2)}%</span>`)
                     if(dataStatusSpinnerHomeEl.css("display")!=="none") {
                         dataStatusSpinnerHomeEl.hide()
                     }
@@ -4908,14 +4990,17 @@
                         for(let i=60; i>=0; i--){
                             var timeout = setTimeout(()=>{
                                 dataStatusSpinnerHomeEl.hide()
+                                var usUp = page
+                                var usDn = lastAnilistPage>page?lastAnilistPage:page+1
+                                var loadPerc = Math.min(99.99,(usUp/usDn)*100).toFixed(2)
                                 if(i<1){
                                     dataStatusEl
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${page}" max="${lastAnilistPage>page?lastAnilistPage:page+1}"></progress>⠀${Math.min(99.99,(page/(lastAnilistPage>page?lastAnilistPage:page+1)*100)).toFixed(2)}%</span>`)
+                                        .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${usUp}" max="${usDn}"></progress>⠀${loadPerc}%</span>`)
                                 } else {
                                     dataStatusEl
                                         .empty()
-                                        .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${page}" max="${lastAnilistPage>page?lastAnilistPage:page+1}"></progress>⠀${Math.min(99.99,(page/(lastAnilistPage>page?lastAnilistPage:page+1)*100)).toFixed(2)}%</span>`)
+                                        .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${usUp}" max="${usDn}"></progress>⠀${loadPerc}%</span>`)
                                 }
                             },(60-i)*1000)
                             updateStateText.push(timeout)
@@ -4938,9 +5023,11 @@
                         (async()=>{
                             for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                             dataStatusSpinnerHomeEl.hide()
+                            var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                             dataStatusEl
                                 .empty()
-                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                         })();
                         console.log("WebtoApp: Update Error")
                         if(jsonIsEmpty(savedRecScheme)){
@@ -5140,9 +5227,11 @@
                             worker3.onerror = async (message) => {
                                 worker3.terminate()
                                 worker3 = null
+                                var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                 dataStatusEl
                                     .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                                 console.error("Error 104: Oops...Something went wrong! Please try again...")
                                 Swal.fire({
                                     heightAuto: false,
@@ -5169,14 +5258,15 @@
                             for(let i=60; i>=0; i--){
                                 var timeout = setTimeout(()=>{
                                     dataStatusSpinnerHomeEl.hide()
+                                    var loadPerc = (Math.min(99.99,(usUp/usDn)*100)).toFixed(2)
                                     if(i<1){
                                         dataStatusEl
-                                        .empty()
-                                        .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${(Math.min(99.99,(usUp/usDn)*100)).toFixed(2)}%</span>`)
+                                            .empty()
+                                            .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${loadPerc}%</span>`)
                                     } else {
                                         dataStatusEl
-                                        .empty()
-                                        .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${(Math.min(99.99,(usUp/usDn)*100)).toFixed(2)}%</span>`)
+                                            .empty()
+                                            .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${loadPerc}%</span>`)
                                     }
                                 },(60-i)*1000)
                                 updateStateText.push(timeout)
@@ -5199,9 +5289,11 @@
                             (async()=>{
                                 for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                 dataStatusSpinnerHomeEl.hide()
+                                var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                 dataStatusEl
                                     .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                             })();
                             console.log("WebtoApp: Update Error")
                             if(jsonIsEmpty(savedRecScheme)){
@@ -5418,7 +5510,8 @@
                                 worker9 = null
                                 dataStatusEl
                                     .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                                 console.error("Error 109: Oops...Something went wrong! Please try again...")
                                 Swal.fire({
                                     heightAuto: false,
@@ -5445,14 +5538,15 @@
                             for(let i=60; i>=0; i--){
                                 var timeout = setTimeout(()=>{
                                     dataStatusSpinnerHomeEl.hide()
+                                    var loadPerc = (Math.min(99.99,(usUp/usDn)*100)).toFixed(2)
                                     if(i<1){
                                         dataStatusEl
-                                        .empty()
-                                        .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${(Math.min(99.99,(usUp/usDn)*100)).toFixed(2)}%</span>`)
+                                            .empty()
+                                            .append(`<span style="white-space:nowrap;">Rate Limit, Please Wait a Moment:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${loadPerc}%</span>`)
                                     } else {
                                         dataStatusEl
-                                        .empty()
-                                        .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${(Math.min(99.99,(usUp/usDn)*100)).toFixed(2)}%</span>`)
+                                            .empty()
+                                            .append(`<span style="white-space:nowrap;">Rate Limit, Continuing in ${msToTime(i*1000)}:⠀</span><span style="white-space:nowrap;"><progress value="${usUp}" max="${usDn}"></progress>⠀${loadPerc}%</span>`)
                                     }
                                 },(60-i)*1000)
                                 updateStateText.push(timeout)
@@ -5475,9 +5569,11 @@
                             (async()=>{
                                 for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                                 dataStatusSpinnerHomeEl.hide()
+                                var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                 dataStatusEl
                                     .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                             })();
                             console.log("WebtoApp: Update Error")
                             if(jsonIsEmpty(savedRecScheme)){
@@ -5761,9 +5857,11 @@
                         },1000)
                         for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                         dataStatusSpinnerHomeEl.hide()
+                        var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                         dataStatusEl
                             .empty()
-                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                            .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                     } else if(haveNewAnime){
                         // Get New Anime and Re-Update
                         getNewAnime(updateID, username, userListIDs, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
@@ -5806,9 +5904,11 @@
                         }
                         for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                         dataStatusSpinnerHomeEl.hide()
+                        var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                         dataStatusEl
                             .empty()
-                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                            .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                     }
                     if(alertUser){
                         if(exportIntervalIsActive){
@@ -5846,7 +5946,8 @@
                     requestIsRunning = false
                     dataStatusEl
                         .empty()
-                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                        .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                     console.error("Error 110: Oops...Something went wrong! Please try again...")
                     Swal.fire({
                         heightAuto: false,
@@ -5860,9 +5961,11 @@
             worker4.onerror = async (message) => {
                 worker4.terminate()
                 worker4 = null
+                var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                 dataStatusEl
                     .empty()
-                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                 console.error("Error 105: Oops...Something went wrong! Please try again...")
                 Swal.fire({
                     heightAuto: false,
@@ -5994,9 +6097,11 @@
                 }
                 if(!requestIsRunning){
                     dataStatusSpinnerHomeEl.hide()
+                    var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                     dataStatusEl
                         .empty()
-                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+new Date(lastSavedUpdateTime*1000).toLocaleString():`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                        .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                 }
                 if(!swal.isVisible()
                  &&!usernameEl.is(":focus")
@@ -6294,6 +6399,14 @@
             `).addClass(newTheme)
             resolve()
         })
+    }
+
+    async function showToast(message) {
+        await toast.removeClass("show-toast")
+        await clearTimeout(toastTimeout)
+        await toast.text(message)
+        await toast.addClass("show-toast")
+        toastTimeout = await setTimeout(()=>{toast.removeClass("show-toast")},3000)
     }
 
     // Helper Function
