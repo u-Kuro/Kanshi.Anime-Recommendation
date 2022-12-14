@@ -3564,7 +3564,6 @@
                     }
                     // Hide Fixed Pager on Mobile
                 })
-                // Android
                 $("input").on("focusout",() => {
                     setTimeout(()=>{
                         pagerEl.css({position: "fixed"}) // If the pager didn't show back
@@ -3572,7 +3571,6 @@
                 }).on("focusin",() => {
                     pagerEl.css({position: "static"}) // If input is Active
                 })
-                // Android
                 resolve()
             })
         }).then(async()=>{
