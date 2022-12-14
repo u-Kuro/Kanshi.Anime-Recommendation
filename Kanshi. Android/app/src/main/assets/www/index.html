@@ -3549,23 +3549,30 @@
                     if(maxClientHeight<window.outerHeight){
                         maxClientHeight = window.outerHeight
                     }
-                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-                        if(screen.availHeight>screen.availWidth){
-                            if(window.outerHeight<maxClientHeight){
-                                pagerEl.css({position: "static"})
-                            } else {
-                                setTimeout(()=>{
-                                    pagerEl.css({position: "fixed"})
-                                },100)
-                            }
+                    if(screen.availHeight>screen.availWidth){
+                        if(window.outerHeight<maxClientHeight){
+                            pagerEl.css({position: "static"})
                         } else {
                             setTimeout(()=>{
                                 pagerEl.css({position: "fixed"})
                             },100)
                         }
+                    } else {
+                        setTimeout(()=>{
+                            pagerEl.css({position: "fixed"})
+                        },100)
                     }
                     // Hide Fixed Pager on Mobile
                 })
+                // Android
+                $("input").on("focusout",() => {
+                    setTimeout(()=>{
+                        pagerEl.css({position: "fixed"}) // If the pager didn't show back
+                    },100)
+                }).on("focusin",() => {
+                    pagerEl.css({position: "static"}) // If input is Active
+                })
+                // Android
                 resolve()
             })
         }).then(async()=>{
@@ -3696,7 +3703,6 @@
                 await $(".flexdatalist").flexdatalist({})
                 await $(".flexdatalistWarnAnime").flexdatalist({})
                 await $(".flexdatalistFilterAlgo").flexdatalist({})
-                await resetListener("input.focusin.focusout")
                 resolve()
             })
         }).then(async()=>{
@@ -3762,7 +3768,6 @@
                             searchIn: 'info',
                             data: savedFilterOptionsJson
                         })
-                        await resetListener("input.focusin.focusout")
                         resolve()
                     }
                     worker1.onerror = async (message) => {
@@ -3777,7 +3782,6 @@
                         searchIn: 'info',
                         data: savedFilterOptionsJson
                     })
-                    await resetListener("input.focusin.focusout")
                     resolve()
                 }
             })
@@ -5627,7 +5631,6 @@
                                 await $(".flexdatalist").flexdatalist({
                                     data: savedFilterOptionsJson
                                 })
-                                await resetListener("input.focusin.focusout")
                                 // Reload Saved Table Filters
                                 await new Promise(async(resolve)=>{
                                     var filters = await $("ul.flex0 > .value")
@@ -6283,31 +6286,6 @@
                 .swal2-confirm-custom,
                 .spinner
             `).addClass(newTheme)
-            resolve()
-        })
-    }
-
-    // Reset Some Event Listener
-    async function resetListener(elevListener) {
-        return await new Promise(async(resolve)=>{
-            var elementEVLI;
-            if(await elevListener==="input.focusin.focusout"){
-                elementEVLI = await $("input, .flexdatalist-alias")
-                await elementEVLI.off("focusout")
-                await elementEVLI.on("focusout",() => {
-                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-                        setTimeout(()=>{
-                            pagerEl.css({position: "fixed"}) // If the pager didn't show back
-                        },100)
-                    }
-                })
-                await elementEVLI.off("focusin")
-                await elementEVLI.on("focusin",() => {
-                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-                        pagerEl.css({position: "static"}) // If input is Active
-                    }
-                })
-            }
             resolve()
         })
     }

@@ -6233,12 +6233,13 @@
         })
     }
 
+    // Browser
     // Reset Some Event Listener
     async function resetListener(elevListener) {
         return await new Promise(async(resolve)=>{
             var elementEVLI;
             if(await elevListener==="input.focusin.focusout"){
-                elementEVLI = await $("input, .flexdatalist-alias")
+                elementEVLI = await $("input, .flexdatalist-alias") // Browser
                 await elementEVLI.off("focusout")
                 await elementEVLI.on("focusout",() => {
                     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
@@ -6257,6 +6258,7 @@
             resolve()
         })
     }
+    // Browser
 
     // Helper Function
     async function saveJSON(data, name) {
