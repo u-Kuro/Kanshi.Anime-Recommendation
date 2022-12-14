@@ -3452,10 +3452,10 @@
                 })
                 $(window).on("resize", (e) => {
                     // Hide Fixed Pager on Mobile
-                    if(maxClientHeight<window.outerHeight){
-                        maxClientHeight = window.outerHeight
-                    }
                     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+                        if(maxClientHeight<window.outerHeight){
+                            maxClientHeight = window.outerHeight
+                        }
                         if(screen.availHeight>screen.availWidth){
                             if(window.outerHeight<maxClientHeight){
                                 pagerEl.css({position: "static"})
@@ -3477,10 +3477,10 @@
                     bodyEl.animate({scrollTop: 0},1)
                     // Browser (Mobile)
                     // Hide Fixed Pager on Mobile
-                    if(maxClientHeight<window.outerHeight){
-                        maxClientHeight = window.outerHeight
-                    }
                     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+                        if(maxClientHeight<window.outerHeight){
+                            maxClientHeight = window.outerHeight
+                        }
                         if(screen.availHeight>screen.availWidth){
                             if(window.outerHeight<maxClientHeight){
                                 pagerEl.css({position: "static"})
@@ -3498,11 +3498,25 @@
                     // Hide Fixed Pager on Mobile
                 })
                 $("input").on("focusout",() => {
-                    setTimeout(()=>{
-                        pagerEl.css({position: "fixed"}) // If the pager didn't show back
-                    },100)
+                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+                        if(maxClientHeight<window.outerHeight){
+                            maxClientHeight = window.outerHeight
+                        }
+                        setTimeout(()=>{
+                            pagerEl.css({position: "fixed"})
+                        },100)
+                    }
                 }).on("focusin",() => {
-                    pagerEl.css({position: "static"}) // If input is Active
+                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+                        if(maxClientHeight<window.outerHeight){
+                            maxClientHeight = window.outerHeight
+                        }
+                        if(screen.availHeight>screen.availWidth){
+                            if(window.outerHeight<maxClientHeight){
+                                pagerEl.css({position: "static"}) // If input is Active
+                            }
+                        }
+                    }
                 })
                 resolve()
             })

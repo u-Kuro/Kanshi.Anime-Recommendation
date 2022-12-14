@@ -3527,20 +3527,18 @@
                     if(maxClientHeight<window.outerHeight){
                         maxClientHeight = window.outerHeight
                     }
-                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-                        if(screen.availHeight>screen.availWidth){
-                            if(window.outerHeight<maxClientHeight){
-                                pagerEl.css({position: "static"})
-                            } else {
-                                setTimeout(()=>{
-                                    pagerEl.css({position: "fixed"})
-                                },100)
-                            }
+                    if(screen.availHeight>screen.availWidth){
+                        if(window.outerHeight<maxClientHeight){
+                            pagerEl.css({position: "static"})
                         } else {
                             setTimeout(()=>{
                                 pagerEl.css({position: "fixed"})
                             },100)
                         }
+                    } else {
+                        setTimeout(()=>{
+                            pagerEl.css({position: "fixed"})
+                        },100)
                     }
                     // Hide Fixed Pager on Mobile
                 })
@@ -3565,11 +3563,21 @@
                     // Hide Fixed Pager on Mobile
                 })
                 $("input").on("focusout",() => {
+                    if(maxClientHeight<window.outerHeight){
+                        maxClientHeight = window.outerHeight
+                    }
                     setTimeout(()=>{
-                        pagerEl.css({position: "fixed"}) // If the pager didn't show back
+                        pagerEl.css({position: "fixed"})
                     },100)
                 }).on("focusin",() => {
-                    pagerEl.css({position: "static"}) // If input is Active
+                    if(maxClientHeight<window.outerHeight){
+                        maxClientHeight = window.outerHeight
+                    }
+                    if(screen.availHeight>screen.availWidth){
+                        if(window.outerHeight<maxClientHeight){
+                            pagerEl.css({position: "static"}) // If input is Active
+                        }
+                    }
                 })
                 resolve()
             })
