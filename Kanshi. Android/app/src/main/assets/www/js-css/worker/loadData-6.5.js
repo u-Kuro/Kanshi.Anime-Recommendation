@@ -604,7 +604,7 @@ self.onmessage = (message) => {
                     similarities.push(`<a class="${savedTheme} copy-value" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
                 })
             } else {
-                similarities.push(v)
+                similarities.push(`<span class="${savedTheme} copy-value" data-copy-value="${v}">${v}</span>`)
             }
         })
         similarities = similarities.splice(0,minTopSimilarities)

@@ -3588,8 +3588,10 @@
                         target.css('pointer-events','none')
                         var text = target.data("copy-value")
                         if((text??'')!==''){
+                            // Browser
                             navigator.clipboard.writeText(text)
-                            showToast("Text Copied")
+                            showToast("Copied to Clipboard")
+                            // Browser
                         }
                     }, 1000)
                 }).on('mouseup mouseleave touchend touchcancel','.copy-value',(e)=>{

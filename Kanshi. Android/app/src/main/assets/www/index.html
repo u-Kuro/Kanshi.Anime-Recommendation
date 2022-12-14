@@ -1165,43 +1165,6 @@
                 }
             }
             /* Skeleton Table */
-            /* Toast */
-            #toast {
-                display: none;
-                padding: 8px;
-                min-width: 120px;
-                background-color: #919191;
-                color: #fff;
-                text-align: center;
-                border-radius: 100px;
-                position: fixed;
-                z-index: 999999;
-                left: 50%;
-                bottom: 50px;
-                transform: translate(-50%, 0%);
-            }
-            #toast.show-toast {
-                display: block;
-                -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-                animation: fadein 0.5s, fadeout 0.5s 2.5s;
-            }
-            @-webkit-keyframes fadein {
-                from {opacity: 0;}
-                to {opacity: 1;}
-            }
-            @keyframes fadein {
-                from {opacity: 0;}
-                to {opacity: 1;}
-            }
-            @-webkit-keyframes fadeout {
-                from {opacity: 1;}
-                to {opacity: 0;}
-            }
-            @keyframes fadeout {
-                from {opacity: 1;}
-                to {opacity: 0;}
-            }
-            /* Toast */
         </style>
 </head>
 <body class="darkMode">
@@ -1450,8 +1413,6 @@
     <div><h1 id="loaderText">Loading...</h1></div>
 </div>
 
-<div id="toast">...</div>
-
 <script defer>
     // Declare Global Variables
         // Production Version
@@ -1486,8 +1447,7 @@
     filterAlgoContainerEl, filterAlgoModalEl, filterAlgoValidationEl,
     dataStatusEl, dataStatusSpinnerHomeEl,
     searchBtnEl, updateBtnEl, importBtnEl, importFileEl, exportIntervalBtnEl, updateIntervalBtnEl,
-    hiddenUnhiddenBtnEl, showAllAnimeBtnEl, hideKidsAnimeBtnEl, hideUnwatchedSequelsBtnEl, themeBtnEl,
-    toast, toastTimeout
+    hiddenUnhiddenBtnEl, showAllAnimeBtnEl, hideKidsAnimeBtnEl, hideUnwatchedSequelsBtnEl, themeBtnEl
 
     window.onload = async () => {
         // Get Client Height
@@ -1519,8 +1479,7 @@
         showAllAnimeBtnEl = await $("#showAllAnime"),
         hideUnwatchedSequelsBtnEl = await $("#hideUnwatchedSequelsBtn"),
         hideKidsAnimeBtnEl = await $("#hideKidsAnimeBtn"),
-        themeBtnEl = await $("#themeBtn"),
-        toast = await $("#toast")
+        themeBtnEl = await $("#themeBtn")
         // Init Page
         return await new Promise((resolve)=>{
             // Create/Load IndexedDB
@@ -3637,8 +3596,9 @@
                         target.css('pointer-events','none')
                         var text = target.data("copy-value")
                         if((text??'')!==''){
-                            navigator.clipboard.writeText(text)
-                            showToast("Text Copied")
+                            // Android
+                            copyToClipBoard(text)
+                            // Android
                         }
                     }, 1000)
                 }).on('mouseup mouseleave touchend touchcancel','.copy-value',(e)=>{
@@ -6401,14 +6361,6 @@
         })
     }
 
-    async function showToast(message) {
-        await toast.removeClass("show-toast")
-        await clearTimeout(toastTimeout)
-        await toast.text(message)
-        await toast.addClass("show-toast")
-        toastTimeout = await setTimeout(()=>{toast.removeClass("show-toast")},3000)
-    }
-
     // Helper Function
     async function saveJSON(data, name) {
         return new Promise((resolve)=>{
@@ -6535,6 +6487,9 @@
     // Android
     function exportJsonData(objStr, fileName) {
         JSBridge.exportJSON(objStr, fileName);
+    }
+    function copyToClipBoard(text) {
+        JSBridge.copyToClipBoard(text);
     }
     // Android
     function isJsonString(str) {
