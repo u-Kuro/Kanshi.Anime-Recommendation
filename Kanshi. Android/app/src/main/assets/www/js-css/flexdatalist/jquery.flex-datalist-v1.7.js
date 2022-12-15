@@ -837,7 +837,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     var options = _this.options.get();
                     return $('<li>')
                         .addClass('value' + (options.toggleSelected ? ' toggle' : ''))
-                        .append(`<span class="text copy-value" data-copy-value="${txt}">` + txt + '</span>')
+                        .append(`<span class="text copy-value user-select-all" data-copy-value="${txt}">` + txt + '</span>')
                         .append('<span class="fdl-remove">&times;</span>')
                         .data({
                             'text': txt,

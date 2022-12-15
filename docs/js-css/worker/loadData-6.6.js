@@ -601,10 +601,10 @@ self.onmessage = (message) => {
         value?.variablesIncluded?.forEach((v)=>{
             if(isJson(v)){
                 Object.entries(v).forEach(([name, url])=>{
-                    similarities.push(`<a class="${savedTheme} copy-value" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
+                    similarities.push(`<a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
                 })
             } else {
-                similarities.push(`<span class="${savedTheme} copy-value" data-copy-value="${v}">${v}</span>`)
+                similarities.push(`<span class="${savedTheme} copy-value user-select-all" data-copy-value="${v}">${v}</span>`)
             }
         })
         similarities = similarities.splice(0,minTopSimilarities)
@@ -661,53 +661,53 @@ self.onmessage = (message) => {
                     </div>
                 </td>
                 <td class="anime-score ${savedTheme} ${hasWarn?'pointer':''}">
-                    <div class="td-container ${savedTheme} copy-value" data-copy-value="${weightedScore||0}" title="${nFormatter((weightedScore||0),2)}">
+                    <div class="td-container ${savedTheme} copy-value  user-select-all" data-copy-value="${weightedScore||0}" title="${nFormatter((weightedScore||0),2)}">
                         ${hasWarn?`<div title="${warns.join(', ')}"><i class="${savedTheme} fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':hasWarnP?'iris':''}"></i></div>`:''}
                         ${weightedScore||0}
                     </div>
                 </td>
                 <td class="animeTitle ${savedTheme}">
                     <div class="td-container ${savedTheme}">
-                        <a class="${savedTheme} copy-value" target="_blank" rel="noopener noreferrer" href="${value?.animeUrl||'javascript:;'}" data-value="${value?.id||''}" data-copy-value="${value?.title||'Title: N/A'}">${value?.title||'Title: N/A'}</a>
+                        <a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href="${value?.animeUrl||'javascript:;'}" data-value="${value?.id||''}" data-copy-value="${value?.title||'Title: N/A'}">${value?.title||'Title: N/A'}</a>
                     </div>
                 </td>
                 <td class="${savedTheme}">
-                    <div class="td-container ${savedTheme} copy-value" data-copy-value="${value?.format||'Format: N/A'}">
+                    <div class="td-container ${savedTheme} copy-value user-select-all" data-copy-value="${value?.format||'Format: N/A'}">
                         ${value?.format||'Format: N/A'}
                     </div>
                 </td>
                 <td class="${savedTheme}">
-                    <div class="td-container ${savedTheme} ${similarities.length<=0?'copy-value':''}" ${similarities.length<=0?'data-copy-value="'+(value?.format||'Format: N/A')+'"':''}>
+                    <div class="td-container ${savedTheme} ${similarities.length<=0?'copy-value user-select-all':''}" ${similarities.length<=0?'data-copy-value="'+(value?.format||'Format: N/A')+'"':''}>
                         ${similarities.length>0 ? similarities.join(', ') : 'Top Similarities: N/A'}
                     </div>
                 </td>
                 <td class="anime-score ${savedTheme}" title="${nFormatter((score||0),2)}">
-                    <div class="td-container ${savedTheme} copy-value" data-copy-value="${score||0}">
+                    <div class="td-container ${savedTheme} copy-value user-select-all" data-copy-value="${score||0}">
                         ${score||0}
                     </div>
                 </td>
                 <td class="txt-center ${savedTheme}" title="${userScore||0}">
-                    <div class="td-container txt-center ${savedTheme} copy-value" data-copy-value="${userScore||0}">
+                    <div class="td-container txt-center ${savedTheme} copy-value user-select-all" data-copy-value="${userScore||0}">
                         ${userScore||0}
                     </div>
                 </td>
                 <td class="txt-center ${savedTheme}" title="${averageScore||0}">
-                    <div class="td-container txt-center ${savedTheme} copy-value" data-copy-value="${averageScore||0}">
+                    <div class="td-container txt-center ${savedTheme} copy-value user-select-all" data-copy-value="${averageScore||0}">
                         ${averageScore||0}
                     </div>
                 </td>
                 <td class="txt-center ${savedTheme}" title="${popularity||0}">
-                    <div class="td-container txt-center ${savedTheme} copy-value" data-copy-value="${popularity||0}">
+                    <div class="td-container txt-center ${savedTheme} copy-value user-select-all" data-copy-value="${popularity||0}">
                         ${popularity||0}
                     </div>
                 </td>
-                <td class="${savedTheme} copy-value">
-                    <div class="td-container ${savedTheme}" data-copy-value="${value?.userStatus||'User Status: N/A'}">
+                <td class="${savedTheme}">
+                    <div class="td-container ${savedTheme} copy-value user-select-all" data-copy-value="${value?.userStatus||'User Status: N/A'}">
                         ${value?.userStatus||'User Status: N/A'}
                     </div>
                 </td>
                 <td class="${savedTheme}">
-                    <div class="td-container ${savedTheme} copy-value" data-copy-value="${value?.status||'Status: N/A'}">
+                    <div class="td-container ${savedTheme} copy-value user-select-all" data-copy-value="${value?.status||'Status: N/A'}">
                         ${value?.status||'Status: N/A'}
                     </div>
                 </td>
@@ -725,53 +725,53 @@ self.onmessage = (message) => {
                     </div>
                 </td>
                 <td class="anime-score ${savedTheme} ${hasWarn?'pointer':''}">
-                    <div class="td-container ${savedTheme} copy-value" data-copy-value="${weightedScore||0}" title="${nFormatter((weightedScore||0),2)}">
+                    <div class="td-container ${savedTheme} copy-value  user-select-all" data-copy-value="${weightedScore||0}" title="${nFormatter((weightedScore||0),2)}">
                         ${hasWarn?`<div title="${warns.join(', ')}"><i class="${savedTheme} fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':hasWarnP?'iris':''}"></i></div>`:''}
                         ${weightedScore||0}
                     </div>
                 </td>
                 <td class="animeTitle ${savedTheme}">
                     <div class="td-container ${savedTheme}">
-                        <a class="${savedTheme} copy-value" target="_blank" rel="noopener noreferrer" href="${value?.animeUrl||'javascript:;'}" data-value="${value?.id||''}" data-copy-value="${value?.title||'Title: N/A'}">${value?.title||'Title: N/A'}</a>
+                        <a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href="${value?.animeUrl||'javascript:;'}" data-value="${value?.id||''}" data-copy-value="${value?.title||'Title: N/A'}">${value?.title||'Title: N/A'}</a>
                     </div>
                 </td>
                 <td class="${savedTheme}">
-                    <div class="td-container ${savedTheme} copy-value" data-copy-value="${value?.format||'Format: N/A'}">
+                    <div class="td-container ${savedTheme} copy-value user-select-all" data-copy-value="${value?.format||'Format: N/A'}">
                         ${value?.format||'Format: N/A'}
                     </div>
                 </td>
                 <td class="${savedTheme}">
-                    <div class="td-container ${savedTheme} ${similarities.length<=0?'copy-value':''}" ${similarities.length<=0?'data-copy-value="'+(value?.format||'Format: N/A')+'"':''}>
+                    <div class="td-container ${savedTheme} ${similarities.length<=0?'copy-value user-select-all':''}" ${similarities.length<=0?'data-copy-value="'+(value?.format||'Format: N/A')+'"':''}>
                         ${similarities.length>0 ? similarities.join(', ') : 'Top Similarities: N/A'}
                     </div>
                 </td>
                 <td class="anime-score ${savedTheme}" title="${nFormatter((score||0),2)}">
-                    <div class="td-container ${savedTheme} copy-value" data-copy-value="${score||0}">
+                    <div class="td-container ${savedTheme} copy-value user-select-all" data-copy-value="${score||0}">
                         ${score||0}
                     </div>
                 </td>
                 <td class="txt-center ${savedTheme}" title="${userScore||0}">
-                    <div class="td-container txt-center ${savedTheme} copy-value" data-copy-value="${userScore||0}">
+                    <div class="td-container txt-center ${savedTheme} copy-value user-select-all" data-copy-value="${userScore||0}">
                         ${userScore||0}
                     </div>
                 </td>
                 <td class="txt-center ${savedTheme}" title="${averageScore||0}">
-                    <div class="td-container txt-center ${savedTheme} copy-value" data-copy-value="${averageScore||0}">
+                    <div class="td-container txt-center ${savedTheme} copy-value user-select-all" data-copy-value="${averageScore||0}">
                         ${averageScore||0}
                     </div>
                 </td>
                 <td class="txt-center ${savedTheme}" title="${popularity||0}">
-                    <div class="td-container txt-center ${savedTheme} copy-value" data-copy-value="${popularity||0}">
+                    <div class="td-container txt-center ${savedTheme} copy-value user-select-all" data-copy-value="${popularity||0}">
                         ${popularity||0}
                     </div>
                 </td>
-                <td class="${savedTheme} copy-value">
-                    <div class="td-container ${savedTheme}" data-copy-value="${value?.userStatus||'User Status: N/A'}">
+                <td class="${savedTheme}">
+                    <div class="td-container ${savedTheme} copy-value user-select-all" data-copy-value="${value?.userStatus||'User Status: N/A'}">
                         ${value?.userStatus||'User Status: N/A'}
                     </div>
                 </td>
                 <td class="${savedTheme}">
-                    <div class="td-container ${savedTheme} copy-value" data-copy-value="${value?.status||'Status: N/A'}">
+                    <div class="td-container ${savedTheme} copy-value user-select-all" data-copy-value="${value?.status||'Status: N/A'}">
                         ${value?.status||'Status: N/A'}
                     </div>
                 </td>

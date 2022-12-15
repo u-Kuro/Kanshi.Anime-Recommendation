@@ -20,7 +20,7 @@
     <!-- Datalist Search Code -->
     <link rel="preload" href="./js-css/flexdatalist/jquery.flex-datalist-v1.0.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/flexdatalist/jquery.flex-datalist-v1.0.css"></noscript>
-    <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.6.js" defer></script>
+    <script src="./js-css/flexdatalist/jquery.flex-datalist-v1.7.js" defer></script>
     <!-- Bootstrap -->
     <link rel="preload" href="./js-css/bootstrap-3.3.8.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="./js-css/bootstrap-3.3.8.min.css"></noscript>
@@ -1416,7 +1416,7 @@
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "6.5",
+    const version = "6.6",
           backUpVersion = 4.0
         // IndexDB
     var request, db,
@@ -3590,7 +3590,7 @@
                     },100)
                 })
                 var timeoutId = 0
-                $(document).on('mousedown touchstart','.copy-value',(e)=> {
+                $(document).on('touchstart','.copy-value',(e)=> {
                     timeoutId = setTimeout(()=>{
                         var target = $(e.target)
                         target.css('pointer-events','none')
@@ -3601,7 +3601,7 @@
                             // Android
                         }
                     }, 1000)
-                }).on('mouseup mouseleave touchend touchcancel','.copy-value',(e)=>{
+                }).on('touchend touchcancel','.copy-value',(e)=>{
                     setTimeout(()=>{
                         $(e.target).css('pointer-events','')
                     },750)
