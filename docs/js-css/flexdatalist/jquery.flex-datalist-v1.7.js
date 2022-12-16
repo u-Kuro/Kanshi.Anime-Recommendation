@@ -1557,7 +1557,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                             'tabindex': '-1',
                             'aria-posinset': index + 1,
                             'aria-setsize': total,
-                            'data-copy-value': item
+                            'data-copy-value': item.info
                         })
                         .data('item', item)
                         .addClass('item')
