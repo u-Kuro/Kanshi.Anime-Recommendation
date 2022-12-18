@@ -3714,7 +3714,7 @@
             })
         }).then(async()=>{
             return await new Promise(async(resolve)=>{
-                if(savedBackUpVersion<backUpVersion){
+                if(jsonIsEmpty(savedAnimeEntries)||lastSavedUpdateTime===0||savedBackUpVersion<backUpVersion){
                     var worker0 = await new Worker(`./js-css/worker/getAnimeEntries-6.6.js`)// added temporarily ${version}.js`)
                     await worker0.postMessage("")
                     worker0.onmessage = async (message) => {
