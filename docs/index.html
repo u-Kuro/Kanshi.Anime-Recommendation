@@ -3720,7 +3720,7 @@
                     worker0.onmessage = async (message) => {
                         await worker0.terminate()
                         const data = await message.data
-                        if(data.lastSavedUpdateTime>lastSavedUpdateTime||jsonIsEmpty(savedAnimeEntries){
+                        if(data.lastSavedUpdateTime>lastSavedUpdateTime||jsonIsEmpty(savedAnimeEntries)){
                             savedAnimeEntries = await data.savedAnimeEntries || {}
                             await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                             lastSavedUpdateTime = await data.lastSavedUpdateTime || 0
