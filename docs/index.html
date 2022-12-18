@@ -1416,7 +1416,7 @@
     // Declare Global Variables
         // Production Version
     const version = "6.7",
-          backUpVersion = 4.1
+          backUpVersion = 4.2
         // IndexDB
     var request, db,
         // Saved Data
@@ -1538,7 +1538,7 @@
                 savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs") || {}
                 savedSort = await retrieveJSON("savedSort") || [1,1]
                 savedYscroll = await retrieveJSON("savedYscroll") || 0.0
-                savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || []
+                savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || ["minimum sample size: 2","include unknown variables: false","!staff: !all","!studio: !all"]
                 savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: !ecchi","!tag: !boys' love","tag: cgi","!tag: !ero guro","!tag: !female harem",
                                                                             "tag: full cgi","!tag: !male harem","!tag: !mixed gender harem",
                                                                             "!tag: !nudity","!tag: !slavery","!tag: !suicide","!tag: !yuri","!tag: !netorare", "!tag: !rape"
@@ -2428,7 +2428,7 @@
                                             await saveJSON(savedWarnAnime,"savedWarnAnime")
                                             return
                                         }).then(async()=>{
-                                            savedFilterAlgo = await fileContent.savedFilterAlgo || []
+                                            savedFilterAlgo = await fileContent.savedFilterAlgo || ["minimum sample size: 2","include unknown variables: false","!staff: !all","!studio: !all"]
                                             await saveJSON(savedFilterAlgo,"savedFilterAlgo")
                                             return
                                         }).then(async()=>{
@@ -2670,7 +2670,7 @@
                                     await saveJSON(savedWarnAnime,"savedWarnAnime")
                                     return
                                 }).then(async()=>{
-                                    savedFilterAlgo = await fileContent.savedFilterAlgo || []
+                                    savedFilterAlgo = await fileContent.savedFilterAlgo || ["minimum sample size: 2","include unknown variables: false","!staff: !all","!studio: !all"]
                                     await saveJSON(savedFilterAlgo,"savedFilterAlgo")
                                     return
                                 }).then(async()=>{
@@ -3714,16 +3714,18 @@
             })
         }).then(async()=>{
             return await new Promise(async(resolve)=>{
-                if(jsonIsEmpty(savedAnimeEntries)||lastSavedUpdateTime===0||savedBackUpVersion<backUpVersion){
+                if(savedBackUpVersion<backUpVersion){
                     var worker0 = await new Worker(`./js-css/worker/getAnimeEntries-6.6.js`)// added temporarily ${version}.js`)
                     await worker0.postMessage("")
                     worker0.onmessage = async (message) => {
                         await worker0.terminate()
                         const data = await message.data
-                        savedAnimeEntries = await data.savedAnimeEntries || {}
-                        await saveJSON(savedAnimeEntries,"savedAnimeEntries")
-                        lastSavedUpdateTime = await data.lastSavedUpdateTime || 0
-                        await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                        if(data.lastSavedUpdateTime>lastSavedUpdateTime||jsonIsEmpty(savedAnimeEntries){
+                            savedAnimeEntries = await data.savedAnimeEntries || {}
+                            await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                            lastSavedUpdateTime = await data.lastSavedUpdateTime || 0
+                            await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                        }
                         if(savedUsername){
                             versionUpdate = await true
                             await saveJSON(versionUpdate,"versionUpdate")
@@ -5601,7 +5603,7 @@
                 }
                 // Save Filtered Algorithm Contents
                 if(notAnUpdate&&filterAlgo){
-                    savedFilterAlgo = await filterAlgo || []
+                    savedFilterAlgo = await filterAlgo || ["minimum sample size: 2","include unknown variables: false","!staff: !all","!studio: !all"]
                     await saveJSON(savedFilterAlgo,"savedFilterAlgo")
                 }
                 // Save Table Filters
