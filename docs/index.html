@@ -1538,7 +1538,7 @@
                 savedHiddenAnimeIDs = await retrieveJSON("savedHiddenAnimeIDs") || {}
                 savedSort = await retrieveJSON("savedSort") || [1,1]
                 savedYscroll = await retrieveJSON("savedYscroll") || 0.0
-                savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || ["minimum sample size: 2","include unknown variables: false","!staff: !all","!studio: !all"]
+                savedFilterAlgo = await retrieveJSON("savedFilterAlgo") || ["minimum sample size: 2","include unknown variables: false"]
                 savedWarnAnime = await retrieveJSON("savedWarnAnime") || [ "!genre: !ecchi","!tag: !boys' love","tag: cgi","!tag: !ero guro","!tag: !female harem",
                                                                             "tag: full cgi","!tag: !male harem","!tag: !mixed gender harem",
                                                                             "!tag: !nudity","!tag: !slavery","!tag: !suicide","!tag: !yuri","!tag: !netorare", "!tag: !rape"
@@ -2428,7 +2428,7 @@
                                             await saveJSON(savedWarnAnime,"savedWarnAnime")
                                             return
                                         }).then(async()=>{
-                                            savedFilterAlgo = await fileContent.savedFilterAlgo || ["minimum sample size: 2","include unknown variables: false","!staff: !all","!studio: !all"]
+                                            savedFilterAlgo = await fileContent.savedFilterAlgo || ["minimum sample size: 2","include unknown variables: false"]
                                             await saveJSON(savedFilterAlgo,"savedFilterAlgo")
                                             return
                                         }).then(async()=>{
@@ -2670,7 +2670,7 @@
                                     await saveJSON(savedWarnAnime,"savedWarnAnime")
                                     return
                                 }).then(async()=>{
-                                    savedFilterAlgo = await fileContent.savedFilterAlgo || ["minimum sample size: 2","include unknown variables: false","!staff: !all","!studio: !all"]
+                                    savedFilterAlgo = await fileContent.savedFilterAlgo || ["minimum sample size: 2","include unknown variables: false"]
                                     await saveJSON(savedFilterAlgo,"savedFilterAlgo")
                                     return
                                 }).then(async()=>{
@@ -5603,7 +5603,7 @@
                 }
                 // Save Filtered Algorithm Contents
                 if(notAnUpdate&&filterAlgo){
-                    savedFilterAlgo = await filterAlgo || ["minimum sample size: 2","include unknown variables: false","!staff: !all","!studio: !all"]
+                    savedFilterAlgo = await filterAlgo || ["minimum sample size: 2","include unknown variables: false"]
                     await saveJSON(savedFilterAlgo,"savedFilterAlgo")
                 }
                 // Save Table Filters
