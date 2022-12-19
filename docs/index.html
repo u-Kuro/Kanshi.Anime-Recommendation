@@ -3719,35 +3719,61 @@
                     var worker0 = await new Worker(`./js-css/worker/getAnimeEntries-6.6.js`)// added temporarily ${version}.js`)
                     await worker0.postMessage("")
                     worker0.onmessage = async (message) => {
+                        console.log(1)
                         await worker0.terminate()
+                        console.log(2)
                         const data = await message.data
+                        console.log(3)
                         if(data.lastSavedUpdateTime>lastSavedUpdateTime||jsonIsEmpty(savedAnimeEntries)){
+                            console.log(4)
                             savedAnimeEntries = await data.savedAnimeEntries || {}
+                            console.log(5)
                             await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                            console.log(6)
                             lastSavedUpdateTime = await data.lastSavedUpdateTime || 0
+                            console.log(7)
                             await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                            console.log(8)
                         }
+                        console.log(9)
                         if(savedUsername){
+                            console.log(10)
                             versionUpdate = await true
+                            console.log(11)
                             await saveJSON(versionUpdate,"versionUpdate")
+                            console.log(12)
                             if(usernameEl.val()){
+                                console.log(13)
                                 Update(true)
+                                console.log(14)
                             }
+                            console.log(15)
                         }
+                        console.log(16)
                         resolve()
                     }
                     worker0.onerror = () => {
+                        console.log(17)
                         worker0.terminate()
+                        console.log(18)
                         worker0 = null
+                        console.log(19)
                         console.error("Error 112: Oops...Something went wrong! Please try again...")
+                        console.log(20)
                         resolve()
                     }
+                    console.log(21)
                 } else {
+                    console.log(22)
                     resolve()
                 }
+                console.log(23)
             })
+            console.log(24)
         }).then(async()=>{
+            console.log(25)
             return await new Promise(async(resolve)=>{
+                console.log(26)
                 if(await savedFilterOptionsJson.length<1||savedBackUpVersion<backUpVersion){
                     var worker1 = await new Worker(`./js-css/worker/getOptions-${version}.js`)
                     await worker1.postMessage("")
