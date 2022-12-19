@@ -199,11 +199,6 @@
                 background-color: rgb(255, 255, 255);
                 cursor: text !important;
             }
-            #loaderContainer{
-                width: 250%;
-                height: 250%;
-                background-color: black;
-            }
             #loader {
                 position: fixed;
                 left: 0px;
@@ -1414,11 +1409,11 @@
         <div class="swal2-timer-progress-bar-container-custom"></div>
     </div>
 </div>
-<div id="loaderContainer">
-    <div id="loader">
-        <div><h1 id="loaderText">Loading...</h1></div>
-    </div>
+
+<div id="loader">
+    <div><h1 id="loaderText">Loading...</h1></div>
 </div>
+    
 <script defer>
     // Declare Global Variables
         // Production Version
@@ -4068,20 +4063,24 @@
             })
         }).then(async()=>{
             // Re-moval if fadeout failed
-            setTimeout(async()=>{
-                var loader = await $("#loaderContainer")
+            setTimeout(()=>{
+                var loader = $("#loader")
                 if(loader.css("display")!=="none"){
                     loader.fadeOut(500)
-                    bodyEl.removeClass("noscroll")
+                    setTimeout(()=>{
+                        bodyEl.removeClass("noscroll")
+                    },500)
                     pageInits = false
                 }
             },5000)
             // Limit Page Load to 3s
             const minimumLoadTime = 3000//ms
             const splitMS = Math.max((minimumLoadTime-((new Date().getTime())-pageLoadStartDate))/2,0)
-            return await setTimeout(async()=>{
-                await $("#loaderContainer").fadeOut(splitMS)
-                bodyEl.removeClass("noscroll")
+            return await setTimeout(()=>{
+                $("#loader").fadeOut(splitMS)
+                setTimeout(()=>{
+                    bodyEl.removeClass("noscroll")
+                },splitMS)
                 pageInits = false
             },splitMS)
         })
