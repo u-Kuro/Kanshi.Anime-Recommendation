@@ -4258,6 +4258,8 @@
                     worker2.onerror = async (message) => {
                         worker2.terminate()
                         worker2 = null
+                        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
+                        dataStatusSpinnerHomeEl.hide()
                         var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                         dataStatusEl
                             .empty()
@@ -4447,6 +4449,8 @@
                                     worker2.onerror = async (message) => {
                                         worker2.terminate()
                                         worker2 = null
+                                        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
+                                        dataStatusSpinnerHomeEl.hide()
                                         var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                         dataStatusEl
                                             .empty()
@@ -4470,15 +4474,13 @@
                                     if(!window.navigator.onLine){
                                         throw "Unable to connect to the Internet!"
                                     } else if(err==='Not Found.'){
-                                        (async()=>{
-                                            for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
-                                            dataStatusSpinnerHomeEl.hide()
-                                            var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                                        dataStatusSpinnerHomeEl.hide()
+                                        var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                         dataStatusEl
                                             .empty()
                                             .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                                             .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                                        })();
                                         requestIsRunning = false
                                         Swal.fire({
                                             heightAuto: false,
@@ -4646,16 +4648,14 @@
                                         },60000)
                                     }
                                 } catch(ex) {
-                                    requestIsRunning = false;
-                                    (async()=>{
-                                        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
-                                        dataStatusSpinnerHomeEl.hide()
-                                        var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                                        dataStatusEl
-                                            .empty()
-                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                                            .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                                    })();
+                                    requestIsRunning = false
+                                    for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                                    dataStatusSpinnerHomeEl.hide()
+                                    var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                                    dataStatusEl
+                                        .empty()
+                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                        .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                                     console.error("Error 101: ",ex)
                                     Swal.fire({
                                         heightAuto: false,
@@ -4714,6 +4714,8 @@
                     worker7.terminate()
                     worker7 = null
                     requestIsRunning = false
+                    for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                    dataStatusSpinnerHomeEl.hide()
                     var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                     dataStatusEl
                         .empty()
@@ -4732,10 +4734,10 @@
                 for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
                 dataStatusSpinnerHomeEl.hide()
                 var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                    dataStatusEl
-                        .empty()
-                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                        .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
+                dataStatusEl
+                    .empty()
+                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                 requestIsRunning = false
                 filterAlgoValidationEl.hide()
             }
@@ -4946,15 +4948,13 @@
                         // Browser
                         showNotification(`Oops...Something went wrong! Please try again...`);
                         // Browser
-                        (async()=>{
-                            for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
-                            dataStatusSpinnerHomeEl.hide()
-                            var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                            dataStatusEl
-                                .empty()
-                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                                .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                        })();
+                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                        dataStatusSpinnerHomeEl.hide()
+                        var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                        dataStatusEl
+                            .empty()
+                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                            .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                         console.log("WebtoApp: Update Error")
                         if(jsonIsEmpty(savedRecScheme)){
                             animeRecommendationListEl.empty()
@@ -5153,6 +5153,8 @@
                             worker3.onerror = async (message) => {
                                 worker3.terminate()
                                 worker3 = null
+                                for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
+                                dataStatusSpinnerHomeEl.hide()
                                 var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                 dataStatusEl
                                     .empty()
@@ -5215,15 +5217,13 @@
                             // Browser
                             showNotification(`Oops...Something went wrong! Please try again...`);
                             // Browser
-                            (async()=>{
-                                for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
-                                dataStatusSpinnerHomeEl.hide()
-                                var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                                dataStatusEl
-                                    .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                            })();
+                            for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                            dataStatusSpinnerHomeEl.hide()
+                            var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                            dataStatusEl
+                                .empty()
+                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                             console.log("WebtoApp: Update Error")
                             if(jsonIsEmpty(savedRecScheme)){
                                 animeRecommendationListEl.empty()
@@ -5498,15 +5498,13 @@
                             // Browser
                             showNotification(`Oops...Something went wrong! Please try again...`);
                             // Browser
-                            (async()=>{
-                                for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
-                                dataStatusSpinnerHomeEl.hide()
-                                var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                                dataStatusEl
-                                    .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                            })();
+                            for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                            dataStatusSpinnerHomeEl.hide()
+                            var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                            dataStatusEl
+                                .empty()
+                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                             console.log("WebtoApp: Update Error")
                             if(jsonIsEmpty(savedRecScheme)){
                                 animeRecommendationListEl.empty()
@@ -5896,6 +5894,8 @@
             worker4.onerror = async (message) => {
                 worker4.terminate()
                 worker4 = null
+                for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                dataStatusSpinnerHomeEl.hide()
                 var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                 dataStatusEl
                     .empty()
