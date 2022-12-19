@@ -5576,11 +5576,16 @@
 
     async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser=false, haveNewAnime=false, userListIDs, savedAnimeUpdated=false, notAnUpdate, filterAlgo, doHideUnwatchedSeq){
         return await new Promise(async(resolve)=>{
+            console.log(1,1)
             var UpdateAnalyzeAnimeStartTime = await new Date()
+            console.log(1,2)
             var updateAnalyzeAnimeTime = await Math.ceil(arrayMean(savedUpdateAnalyzeAnimeTime))
+            console.log(1,3)
             if(doHideUnwatchedSeq){
+                console.log(1,4)
                 hideUnwatchedSequels = await doHideUnwatchedSeq
             }
+            console.log(1,5)
             if(notAnUpdate){
                 await filterAlgoValidationEl
                     .removeClass("success-before")
@@ -5593,6 +5598,7 @@
                         </div>`
                     )
             }
+            console.log(1,6)
             for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
             await dataStatusSpinnerHomeEl.show()
             for(let i=updateAnalyzeAnimeTime; i>=0; i--){
@@ -5610,15 +5616,18 @@
                 },(updateAnalyzeAnimeTime-i)*1000)
                 await updateStateText.push(timeout)
             }
+            console.log(1,7)
             // Normal Update
             if(jsonIsEmpty(animeEntries)) {
                 animeEntries = await savedAnimeEntries || {}
             }
+            console.log(1,8)
             // Reset if Username Changed || isDeepUpdate
             if(username!==savedUsername||isDeepUpdate||versionUpdate){
                 savedRecScheme = await {}
             // Normal Update
             }
+            console.log(1,9)
             var worker4 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
             worker4.postMessage({
                 animeEntries: animeEntries,
@@ -5630,57 +5639,72 @@
                 hideUnwatchedSequels: hideUnwatchedSequels,
                 savedUserScores: savedUserScores
             })
+            console.log(1,10)
             worker4.onmessage = async(message) => {
                 worker4.terminate()
                 const data = message.data
                 // Save Mean Score
+                console.log(1,11)
                 savedUserScores = data.savedUserScores || {}
                 saveJSON(savedUserScores,"savedUserScores")
+                console.log(1,12)
                 if(!notAnUpdate||versionUpdate){
+                    console.log(1,13)
                     // Save New Filter Options
                     allFilterInfo = await data.allFilterInfo || {}
                     await saveJSON(allFilterInfo,"allFilterInfo")
                     // Save New anime Franchises
                     if(!alertUser||savedAnimeUpdated){
+                        console.log(1,14)
                         savedAnimeFranchises = await data.animeFranchises || []
                         saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
-                    }
+                    }     
                 }
+                console.log(1,15)
                 // Save Filtered Algorithm Contents
                 if(notAnUpdate&&filterAlgo){
                     savedFilterAlgo = await filterAlgo || ["minimum sample size: 2","include unknown variables: false"]
                     await saveJSON(savedFilterAlgo,"savedFilterAlgo")
                 }
+                console.log(1,16)
                 // Save Table Filters
                 savedFilters = await $("ul.flex0 > .value > .text").toArray()?.map((e)=>e.textContent) || ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
                 await saveJSON(savedFilters, "savedFilters")
                 // Save Username
+                console.log(1,17)
                 savedUsername = await username || ""
                 await saveJSON(savedUsername,"savedUsername")
                 // Save new Recommendation List
                 savedRecScheme = await data.savedRecScheme || {}
                 await saveJSON(savedRecScheme, "savedRecScheme")
+                console.log(1,18)
                 if(versionUpdate){
                     versionUpdate = await false
                     await saveJSON(versionUpdate,"versionUpdate")
                 }
+               console.log(1,19) 
                 if(!jsonIsEmpty(savedRecScheme)){
                     updateBtnEl.show()
                     updateIntervalBtnEl.show()
                 }
+                console.log(1,20)
                 if(typeof doHideUnwatchedSeq==="boolean"){
                     hideUnwatchedSequels = await doHideUnwatchedSeq
                     await saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
                 }
+                console.log(1,21)
                 var worker5 = new Worker(`./js-css/worker/updateOptions-${version}.js`)
                 worker5.postMessage({
                     allFilterInfo: allFilterInfo
                 })
+                console.log(1,22)
                 worker5.onmessage = async(message) => {
                     worker5.terminate()
                     const data = message.data
+                    console.log(1,23)
                     var filtersHasFocus = await false
                     if(!notAnUpdate||versionUpdate||savedAnimeUpdated){
+                        console.log(1,24)
                         // Save and Reload Filters
                         savedFilterOptionsJson = await data.savedFilterOptionsJson || []
                         await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
@@ -5691,8 +5715,9 @@
                             ||warnAnimeContainerEl.css("display")!=="none"
                             ||filterAlgoContainerEl.css("display")!=="none"
                         ){
-                            filtersHasFocus = await true
+                            filtersHasFocus = await true      
                         }
+                        console.log(1,25)
                         // This Remove Current Filters in DOM so Check First
                         for(let i=0;i<checkFiltersFocus.length;i++) clearInterval(checkFiltersFocus[i])
                         var updateFiltersValid = setInterval(async()=>{
@@ -5795,6 +5820,7 @@
                         },250)
                         checkFiltersFocus.push(updateFiltersValid)
                     }
+                    console.log(1,26)
                     // Lastly Update Update Time
                     var timeInterval = (new Date).getTime()-UpdateAnalyzeAnimeStartTime.getTime()
                     if(savedUpdateAnalyzeAnimeTime.length<33){
@@ -5805,8 +5831,10 @@
                         await savedUpdateAnalyzeAnimeTime.push(Math.ceil(timeInterval/1000))
                         await saveJSON(savedUpdateAnalyzeAnimeTime, "savedUpdateAnalyzeAnimeTime")
                     }
+                    console.log(1,27) 
                     // Reload New Recommendation Data
                     await LoadData(savedRecScheme)
+                    console.log(1,28)
                     if(notAnUpdate){
                         await new Promise(async(resolve)=>{
                             var filters = await $("ul.flex2 > .value")
@@ -5965,6 +5993,7 @@
         if(!isLoading) {
             isLoading = await true
         }
+        console.log(1,27.5
         $("#first, #prev, #next, #last").addClass("disabled")
         await pageNumberOptionsEl.css('pointer-events','none')
         await animeTableEl.addClass("display-none")
