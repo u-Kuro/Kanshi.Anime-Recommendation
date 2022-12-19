@@ -6259,7 +6259,7 @@
                     .swal2-confirm,
                     .swal2-confirm-custom,
                     .spinner
-                `).removeClass("darkMode")
+                `).add(document.documentElement).removeClass("darkMode")
             }
             // Remove Previous
             if(prevTheme){
@@ -6302,7 +6302,7 @@
                     .swal2-confirm,
                     .swal2-confirm-custom,
                     .spinner
-                `).removeClass(prevTheme)
+                `).add(document.documentElement).removeClass(prevTheme)
             }
             // Apply New
             await $(` 
@@ -6344,7 +6344,7 @@
                 .swal2-confirm,
                 .swal2-confirm-custom,
                 .spinner
-            `).addClass(newTheme)
+            `).add(document.documentElement).addClass(newTheme)
             resolve()
         })
     }
