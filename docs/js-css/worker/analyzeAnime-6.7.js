@@ -775,17 +775,17 @@ self.onmessage = (message) => {
         }
         // Calculate Mean Score minus Standard Deviation
         if(!jsonIsEmpty(savedUserScores)){
-            var scoreSD = [];
+            //var scoreSD = [];
             meanScoreAll = Object.values(savedUserScores.all??{})
             meanScoreAbove = Object.values(savedUserScores.above??{})
-            for(let i=0;i<meanScoreAll.length-1;i++){
-                if(typeof meanScoreAll[i]==="number"&&typeof meanScoreAll[i+1]==="number"){
-                    scoreSD.push(Math.abs(meanScoreAll[i]-meanScoreAll[i+1]))
-                }
-            }
-            scoreSD = scoreSD.length? arrayMean(scoreSD.sort((a,b)=>b-a)) : 0
-            meanScoreAll = Math.max(Math.min(...meanScoreAbove),arrayMean(meanScoreAll))-scoreSD
-            meanScoreAbove = arrayMean(meanScoreAbove)-scoreSD
+            //for(let i=0;i<meanScoreAll.length-1;i++){
+            //    if(typeof meanScoreAll[i]==="number"&&typeof meanScoreAll[i+1]==="number"){
+            //        scoreSD.push(Math.abs(meanScoreAll[i]-meanScoreAll[i+1]))
+            //    }
+            //}
+            //scoreSD = scoreSD.length? arrayMean(scoreSD.sort((a,b)=>b-a)) : 0
+            meanScoreAll = Math.max(Math.min(...meanScoreAbove),arrayMean(meanScoreAll))//-scoreSD
+            meanScoreAbove = arrayMean(meanScoreAbove)//-scoreSD
         }
         // Add Weight to Scores
         var savedRecSchemeEntries = Object.keys(savedRecScheme)
