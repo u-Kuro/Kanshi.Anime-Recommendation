@@ -4482,11 +4482,11 @@
                                         console.log(chunk,15)
                                         savedUserList = savedUserList || {}
                                         console.log(chunk,16)
-                                        await saveJSON(savedUserList,"savedUserList")
+                                        saveJSON(savedUserList,"savedUserList")
                                         console.log(chunk,17)
                                         savedUserScores = savedUserScores || {}
                                         console.log(chunk,18)
-                                        await saveJSON(savedUserScores,"savedUserScores")
+                                        saveJSON(savedUserScores,"savedUserScores")
                                         console.log(chunk,19)
                                         analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, true, userEntries)
                                         console.log(chunk,20)
