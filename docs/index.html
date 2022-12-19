@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="darkMode">
+<html lang="en" class="darkMode noscroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1442,7 +1442,7 @@
     pageInits = true, enteredOnce = false, versionUpdate = false, exportWorker, initStartTime,
     pageLoadStartDate = new Date().getTime(), maxClientHeight,
         // Jquery Elements
-    bodyEl, usernameEl, pagerEl, menuContainerEl, pageNumberOptionsEl,
+    htmlEl, bodyEl, usernameEl, pagerEl, menuContainerEl, pageNumberOptionsEl,
     animeTableEl, tableSkeleton, animeRecommendationListEl, filtersEl,
     warnAnimeContainerEl, warnAnimeModalEl,
     filterAlgoContainerEl, filterAlgoModalEl, filterAlgoValidationEl,
@@ -1457,6 +1457,7 @@
         // Get Client Height
         maxClientHeight = window.outerHeight
         // Initialize Jquery Elements
+        htmlEl = await $(document.documentElement),
         bodyEl = await $("body"),
         usernameEl = await $("#username"),
         pagerEl = await $("#pager"),
@@ -4072,6 +4073,7 @@
                     loader.fadeOut(500)
                     setTimeout(()=>{
                         bodyEl.removeClass("noscroll")
+                        htmlEl.removeClass("noscroll")
                     },500)
                     pageInits = false
                 }
@@ -4083,6 +4085,7 @@
                 $("#loader").fadeOut(splitMS)
                 setTimeout(()=>{
                     bodyEl.removeClass("noscroll")
+                    htmlEl.removeClass("noscroll")
                 },splitMS)
                 pageInits = false
             },splitMS)
