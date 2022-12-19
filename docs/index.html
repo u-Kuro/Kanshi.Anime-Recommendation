@@ -4451,29 +4451,48 @@
                                                 }
                                             })
                                         }
-                                        (async()=>{
-                                            savedUserList = data.savedUserList
-                                            const varScheme = data.varScheme
-                                            const userListStatus = data.userListStatus
-                                            const alteredVariables = data.alteredVariables
-                                            const hasNewAnime = data.hasNewAnime
-                                            var timeInterval = await (new Date).getTime()-AnalyzeVariableStartTime.getTime()
-                                            if(savedAnalyzeVariableTime.length<33){
-                                                await savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
-                                                await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
-                                            } else {
-                                                await savedAnalyzeVariableTime.shift()
-                                                await savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
-                                                await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
-                                            }
-                                            savedUserList = await savedUserList || {}
-                                            await saveJSON(savedUserList,"savedUserList")
-                                            savedUserScores = await savedUserScores || {}
-                                            await saveJSON(savedUserScores,"savedUserScores")
-                                            analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, true, userEntries)
-                                        })();
+                                        console.log(chunk,1)
+                                        savedUserList = data.savedUserList
+                                        console.log(chunk,2)                                     
+                                        const varScheme = data.varScheme
+                                        console.log(chunk,3)                                    
+                                        const userListStatus = data.userListStatus
+                                        console.log(chunk,4)
+                                        const alteredVariables = data.alteredVariables
+                                        console.log(chunk,5)
+                                        const hasNewAnime = data.hasNewAnime
+                                        console.log(chunk,6)
+                                        var timeInterval = (new Date).getTime()-AnalyzeVariableStartTime.getTime()
+                                        console.log(chunk,7)
+                                        if(savedAnalyzeVariableTime.length<33){
+                                        console.log(chunk,8)
+                                            savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
+                                        console.log(chunk,9)
+                                            saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
+                                        console.log(chunk,10)
+                                        } else {
+                                        console.log(chunk,11)
+                                            savedAnalyzeVariableTime.shift()
+                                        console.log(chunk,12)
+                                            savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
+                                        console.log(chunk,13)
+                                            saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
+                                        console.log(chunk,14)
+                                        }
+                                        console.log(chunk,15)
+                                        savedUserList = savedUserList || {}
+                                        console.log(chunk,16)
+                                        await saveJSON(savedUserList,"savedUserList")
+                                        console.log(chunk,17)
+                                        savedUserScores = savedUserScores || {}
+                                        console.log(chunk,18)
+                                        await saveJSON(savedUserScores,"savedUserScores")
+                                        console.log(chunk,19)
+                                        analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, true, userEntries)
+                                        console.log(chunk,20)
                                     }
                                     worker2.onerror = async (message) => {
+                                        console.log(chunk,21)
                                         worker2.terminate()
                                         worker2 = null
                                         for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
@@ -4491,6 +4510,7 @@
                                             confirmButtonColor: "#000"
                                         })
                                         requestIsRunning = false
+                                        console.log(chunk,22)
                                         return
                                     }
                                 }
