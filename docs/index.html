@@ -199,6 +199,11 @@
                 background-color: rgb(255, 255, 255);
                 cursor: text !important;
             }
+            #loaderContainer{
+                width: 250%;
+                height: 250%;
+                background-color: black;
+            }
             #loader {
                 position: fixed;
                 left: 0px;
@@ -307,7 +312,9 @@
                 text-align: left;
                 width: 100%;
                 height: 165px;
-                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: right;
+                background-size: cover;
                 position: relative;
                 overflow: hidden;
                 border-radius: 0 0 50% 50% / 5%;
