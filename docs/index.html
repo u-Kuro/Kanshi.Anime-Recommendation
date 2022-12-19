@@ -1528,7 +1528,7 @@
                 savedUsername = await retrieveJSON("savedUsername") || ""
                 savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson") || []
                 allFilterInfo = await retrieveJSON("allFilterInfo") || {}
-                savedFilters = await retrieveJSON("savedFilters") || ["limit top wscore: 100", "user status: unwatched"]
+                savedFilters = await retrieveJSON("savedFilters") || ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
                 savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises") || []
                 savedBackUpVersion = await retrieveJSON(`backUpVersion`) || 0
                 kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden") ?? true
@@ -3782,7 +3782,7 @@
         }).then(async()=>{
             return await new Promise(async(resolve)=>{
                 if(savedBackUpVersion<backUpVersion){
-                    savedFilters = ["limit top wscore: 100", "user status: unwatched"]
+                    savedFilters = ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
                     await saveJSON(savedFilters,"savedFilters")
                     resolve()
                 } else {
@@ -5605,7 +5605,7 @@
                     await saveJSON(savedFilterAlgo,"savedFilterAlgo")
                 }
                 // Save Table Filters
-                savedFilters = await $("ul.flex0 > .value > .text").toArray()?.map((e)=>e.textContent) || ["limit top wscore: 100", "user status: unwatched"]
+                savedFilters = await $("ul.flex0 > .value > .text").toArray()?.map((e)=>e.textContent) || ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
                 await saveJSON(savedFilters, "savedFilters")
                 // Save Username
                 savedUsername = await username || ""
@@ -5934,7 +5934,7 @@
                         hiddenUnhiddenBtnEl.text("Unhidden")
                     }
                     return filter
-                }) || ["limit top wscore: 100", "user status: unwatched"]
+                }) || ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
                 saveJSON(savedFilters, "savedFilters")
                 var worker6 = new Worker(`./js-css/worker/loadData-${version}.js`)
                 worker6.postMessage({
