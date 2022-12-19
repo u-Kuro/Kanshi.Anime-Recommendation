@@ -3719,61 +3719,35 @@
                     var worker0 = await new Worker(`./js-css/worker/getAnimeEntries-6.6.js`)// added temporarily ${version}.js`)
                     await worker0.postMessage("")
                     worker0.onmessage = async (message) => {
-                        console.log(1)
                         await worker0.terminate()
-                        console.log(2)
                         const data = await message.data
-                        console.log(3)
                         if(data.lastSavedUpdateTime>lastSavedUpdateTime||jsonIsEmpty(savedAnimeEntries)){
-                            console.log(4)
                             savedAnimeEntries = await data.savedAnimeEntries || {}
-                            console.log(5)
                             await saveJSON(savedAnimeEntries,"savedAnimeEntries")
-                            console.log(6)
                             lastSavedUpdateTime = await data.lastSavedUpdateTime || 0
-                            console.log(7)
                             await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
-                            console.log(8)
                         }
-                        console.log(9)
                         if(savedUsername){
-                            console.log(10)
                             versionUpdate = await true
-                            console.log(11)
                             await saveJSON(versionUpdate,"versionUpdate")
-                            console.log(12)
                             if(usernameEl.val()){
-                                console.log(13)
                                 Update(true)
-                                console.log(14)
                             }
-                            console.log(15)
                         }
-                        console.log(16)
                         resolve()
                     }
                     worker0.onerror = () => {
-                        console.log(17)
                         worker0.terminate()
-                        console.log(18)
                         worker0 = null
-                        console.log(19)
                         console.error("Error 112: Oops...Something went wrong! Please try again...")
-                        console.log(20)
                         resolve()
                     }
-                    console.log(21)
                 } else {
-                    console.log(22)
                     resolve()
                 }
-                console.log(23)
             })
-            console.log(24)
         }).then(async()=>{
-            console.log(25)
             return await new Promise(async(resolve)=>{
-                console.log(26)
                 if(await savedFilterOptionsJson.length<1||savedBackUpVersion<backUpVersion){
                     var worker1 = await new Worker(`./js-css/worker/getOptions-${version}.js`)
                     await worker1.postMessage("")
@@ -4451,48 +4425,27 @@
                                                 }
                                             })
                                         }
-                                        console.log(chunk,1)
-                                        savedUserList = data.savedUserList
-                                        console.log(chunk,2)                                     
-                                        const varScheme = data.varScheme
-                                        console.log(chunk,3)                                    
+                                        savedUserList = data.savedUserList                                     
+                                        const varScheme = data.varScheme                                    
                                         const userListStatus = data.userListStatus
-                                        console.log(chunk,4)
                                         const alteredVariables = data.alteredVariables
-                                        console.log(chunk,5)
                                         const hasNewAnime = data.hasNewAnime
-                                        console.log(chunk,6)
                                         var timeInterval = (new Date).getTime()-AnalyzeVariableStartTime.getTime()
-                                        console.log(chunk,7)
                                         if(savedAnalyzeVariableTime.length<33){
-                                        console.log(chunk,8)
                                             savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
-                                        console.log(chunk,9)
                                             saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
-                                        console.log(chunk,10)
                                         } else {
-                                        console.log(chunk,11)
                                             savedAnalyzeVariableTime.shift()
-                                        console.log(chunk,12)
                                             savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
-                                        console.log(chunk,13)
                                             saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
-                                        console.log(chunk,14)
                                         }
-                                        console.log(chunk,15)
                                         savedUserList = savedUserList || {}
-                                        console.log(chunk,16)
                                         saveJSON(savedUserList,"savedUserList")
-                                        console.log(chunk,17)
                                         savedUserScores = savedUserScores || {}
-                                        console.log(chunk,18)
                                         saveJSON(savedUserScores,"savedUserScores")
-                                        console.log(chunk,19)
                                         analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, true, userEntries)
-                                        console.log(chunk,20)
                                     }
                                     worker2.onerror = async (message) => {
-                                        console.log(chunk,21)
                                         worker2.terminate()
                                         worker2 = null
                                         for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
@@ -4510,7 +4463,6 @@
                                             confirmButtonColor: "#000"
                                         })
                                         requestIsRunning = false
-                                        console.log(chunk,22)
                                         return
                                     }
                                 }
@@ -5576,16 +5528,11 @@
 
     async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser=false, haveNewAnime=false, userListIDs, savedAnimeUpdated=false, notAnUpdate, filterAlgo, doHideUnwatchedSeq){
         return await new Promise(async(resolve)=>{
-            console.log(1,1)
             var UpdateAnalyzeAnimeStartTime = await new Date()
-            console.log(1,2)
             var updateAnalyzeAnimeTime = await Math.ceil(arrayMean(savedUpdateAnalyzeAnimeTime))
-            console.log(1,3)
             if(doHideUnwatchedSeq){
-                console.log(1,4)
                 hideUnwatchedSequels = await doHideUnwatchedSeq
             }
-            console.log(1,5)
             if(notAnUpdate){
                 await filterAlgoValidationEl
                     .removeClass("success-before")
@@ -5598,7 +5545,6 @@
                         </div>`
                     )
             }
-            console.log(1,6)
             for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
             await dataStatusSpinnerHomeEl.show()
             for(let i=updateAnalyzeAnimeTime; i>=0; i--){
@@ -5616,18 +5562,15 @@
                 },(updateAnalyzeAnimeTime-i)*1000)
                 await updateStateText.push(timeout)
             }
-            console.log(1,7)
             // Normal Update
             if(jsonIsEmpty(animeEntries)) {
                 animeEntries = await savedAnimeEntries || {}
             }
-            console.log(1,8)
             // Reset if Username Changed || isDeepUpdate
             if(username!==savedUsername||isDeepUpdate||versionUpdate){
                 savedRecScheme = await {}
             // Normal Update
             }
-            console.log(1,9)
             var worker4 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
             worker4.postMessage({
                 animeEntries: animeEntries,
@@ -5639,72 +5582,57 @@
                 hideUnwatchedSequels: hideUnwatchedSequels,
                 savedUserScores: savedUserScores
             })
-            console.log(1,10)
             worker4.onmessage = async(message) => {
                 worker4.terminate()
                 const data = message.data
                 // Save Mean Score
-                console.log(1,11)
                 savedUserScores = data.savedUserScores || {}
                 saveJSON(savedUserScores,"savedUserScores")
-                console.log(1,12)
                 if(!notAnUpdate||versionUpdate){
-                    console.log(1,13)
                     // Save New Filter Options
                     allFilterInfo = await data.allFilterInfo || {}
                     await saveJSON(allFilterInfo,"allFilterInfo")
                     // Save New anime Franchises
                     if(!alertUser||savedAnimeUpdated){
-                        console.log(1,14)
                         savedAnimeFranchises = await data.animeFranchises || []
                         saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
                     }     
                 }
-                console.log(1,15)
                 // Save Filtered Algorithm Contents
                 if(notAnUpdate&&filterAlgo){
                     savedFilterAlgo = await filterAlgo || ["minimum sample size: 2","include unknown variables: false"]
                     await saveJSON(savedFilterAlgo,"savedFilterAlgo")
                 }
-                console.log(1,16)
                 // Save Table Filters
                 savedFilters = await $("ul.flex0 > .value > .text").toArray()?.map((e)=>e.textContent) || ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
-                await saveJSON(savedFilters, "savedFilters")
+                saveJSON(savedFilters, "savedFilters")
                 // Save Username
-                console.log(1,17)
                 savedUsername = await username || ""
-                await saveJSON(savedUsername,"savedUsername")
+                saveJSON(savedUsername,"savedUsername")
                 // Save new Recommendation List
                 savedRecScheme = await data.savedRecScheme || {}
-                await saveJSON(savedRecScheme, "savedRecScheme")
-                console.log(1,18)
+                saveJSON(savedRecScheme, "savedRecScheme")
                 if(versionUpdate){
                     versionUpdate = await false
-                    await saveJSON(versionUpdate,"versionUpdate")
-                }
-               console.log(1,19) 
+                    saveJSON(versionUpdate,"versionUpdate")
+                } 
                 if(!jsonIsEmpty(savedRecScheme)){
                     updateBtnEl.show()
                     updateIntervalBtnEl.show()
                 }
-                console.log(1,20)
                 if(typeof doHideUnwatchedSeq==="boolean"){
                     hideUnwatchedSequels = await doHideUnwatchedSeq
-                    await saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
+                    saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
                 }
-                console.log(1,21)
                 var worker5 = new Worker(`./js-css/worker/updateOptions-${version}.js`)
                 worker5.postMessage({
                     allFilterInfo: allFilterInfo
                 })
-                console.log(1,22)
                 worker5.onmessage = async(message) => {
                     worker5.terminate()
                     const data = message.data
-                    console.log(1,23)
                     var filtersHasFocus = await false
                     if(!notAnUpdate||versionUpdate||savedAnimeUpdated){
-                        console.log(1,24)
                         // Save and Reload Filters
                         savedFilterOptionsJson = await data.savedFilterOptionsJson || []
                         await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
@@ -5717,7 +5645,6 @@
                         ){
                             filtersHasFocus = await true      
                         }
-                        console.log(1,25)
                         // This Remove Current Filters in DOM so Check First
                         for(let i=0;i<checkFiltersFocus.length;i++) clearInterval(checkFiltersFocus[i])
                         var updateFiltersValid = setInterval(async()=>{
@@ -5820,7 +5747,6 @@
                         },250)
                         checkFiltersFocus.push(updateFiltersValid)
                     }
-                    console.log(1,26)
                     // Lastly Update Update Time
                     var timeInterval = (new Date).getTime()-UpdateAnalyzeAnimeStartTime.getTime()
                     if(savedUpdateAnalyzeAnimeTime.length<33){
@@ -5830,11 +5756,9 @@
                         await savedUpdateAnalyzeAnimeTime.shift()
                         await savedUpdateAnalyzeAnimeTime.push(Math.ceil(timeInterval/1000))
                         await saveJSON(savedUpdateAnalyzeAnimeTime, "savedUpdateAnalyzeAnimeTime")
-                    }
-                    console.log(1,27) 
+                    } 
                     // Reload New Recommendation Data
                     await LoadData(savedRecScheme)
-                    console.log(1,28)
                     if(notAnUpdate){
                         await new Promise(async(resolve)=>{
                             var filters = await $("ul.flex2 > .value")
@@ -5993,7 +5917,6 @@
         if(!isLoading) {
             isLoading = await true
         }
-        console.log(1,27.5)
         $("#first, #prev, #next, #last").addClass("disabled")
         await pageNumberOptionsEl.css('pointer-events','none')
         await animeTableEl.addClass("display-none")
@@ -6429,6 +6352,10 @@
                         db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
                         resolve()
                     }
+                }
+                write.onerror = (event) => {
+                    db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
+                    resolve()
                 }
             } catch(ex) {
                 try{
