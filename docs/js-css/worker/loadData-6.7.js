@@ -670,7 +670,7 @@ self.onmessage = (message) => {
                     </div>
                 </td>
                 <td class="anime-score ${savedTheme} ${hasWarn?'pointer':''}">
-                    <div class="td-container ${savedTheme} copy-value" data-copy-value="${weightedScore||0}" title="${nFormatter((weightedScore||0),2)}">
+                    <div class="td-container ${savedTheme} ${hasWarn?'':'user-select-all'} copy-value" data-copy-value="${weightedScore||0}" title="${nFormatter((weightedScore||0),2)}">
                         ${hasWarn?`<div title="${warns.join(', ')}"><i class="${savedTheme} fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':hasWarnP?'purple':hasWarnI?'iris':''}"></i></div>`:''}
                         ${weightedScore||0}
                     </div>
@@ -734,7 +734,7 @@ self.onmessage = (message) => {
                     </div>
                 </td>
                 <td class="anime-score ${savedTheme} ${hasWarn?'pointer':''}">
-                    <div class="td-container ${savedTheme} copy-value" data-copy-value="${weightedScore||0}" title="${nFormatter((weightedScore||0),2)}">
+                    <div class="td-container ${savedTheme} ${hasWarn?'':'user-select-all'} copy-value" data-copy-value="${weightedScore||0}" title="${nFormatter((weightedScore||0),2)}">
                         ${hasWarn?`<div title="${warns.join(', ')}"><i class="${savedTheme} fa-solid fa-circle-exclamation ${hasWarnR?'red':hasWarnY?'orange':hasWarnP?'purple':hasWarnI?'iris':''}"></i></div>`:''}
                         ${weightedScore||0}
                     </div>
