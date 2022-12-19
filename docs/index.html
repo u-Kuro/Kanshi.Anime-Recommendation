@@ -1179,7 +1179,7 @@
             /* Skeleton Table */
         </style>
 </head>
-<body class="darkMode">
+<body class="darkMode noscroll">
 <nav id="nav" class="nav darkMode">
     <div><h1 id="menuTitle" class="textLogo copy-value" data-copy-value="Kanshi.">Kanshi.</h1></div>
     <div><img id="menuIcon" src="./public/logo.png" alt="menubar"></div>
@@ -1414,11 +1414,11 @@
         <div class="swal2-timer-progress-bar-container-custom"></div>
     </div>
 </div>
-
-<div id="loader">
-    <div><h1 id="loaderText">Loading...</h1></div>
+<div id="loaderContainer">
+    <div id="loader">
+        <div><h1 id="loaderText">Loading...</h1></div>
+    </div>
 </div>
-
 <script defer>
     // Declare Global Variables
         // Production Version
@@ -4069,9 +4069,10 @@
         }).then(async()=>{
             // Re-moval if fadeout failed
             setTimeout(async()=>{
-                var loader = await $("#loader")
+                var loader = await $("#loaderContainer")
                 if(loader.css("display")!=="none"){
                     loader.fadeOut(500)
+                    bodyEl.removeClass("noscroll")
                     pageInits = false
                 }
             },5000)
@@ -4079,7 +4080,8 @@
             const minimumLoadTime = 3000//ms
             const splitMS = Math.max((minimumLoadTime-((new Date().getTime())-pageLoadStartDate))/2,0)
             return await setTimeout(async()=>{
-                await $("#loader").fadeOut(splitMS)
+                await $("#loaderContainer").fadeOut(splitMS)
+                bodyEl.removeClass("noscroll")
                 pageInits = false
             },splitMS)
         })
