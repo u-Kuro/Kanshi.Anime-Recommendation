@@ -6427,23 +6427,52 @@
     // Notification
     function showNotification(text) {
         if(document.hasFocus()) return
-        const notification = new Notification('Kanshi. Recommendation Update', {
-            body: text,
-            icon: './public/logo.png'
-        })
-        setTimeout(() => {
-            notification.close();
-        }, 10 * 1000)
-        notification.addEventListener('click', () => {
-            window.parent.parent.focus()
-        })
+        try{
+            const notification = new Notification('Kanshi. Recommendation Update', {
+                body: text,
+                icon: './public/logo.png'
+            })
+            setTimeout(() => {
+                notification.close();
+            }, 10 * 1000)
+            notification.addEventListener('click', () => {
+                window.parent.parent.focus()
+            })
+        } catch(ex){
+            console.error(ex)
+            try(ex){
+                Notification.requestPermission((result) => {
+                    if (result === "granted") {
+                        navigator.serviceWorker.ready.then((registration) => {
+                            registration.showNotification("Notification Vibration", {
+                            body: text,
+                            icon: "./public/logo.png",
+                            vibrate: [250, 250, 250],
+                            tag: "notification-vibration",
+                        })
+                    })
+                }
+            })
+            } catch(ex){
+                console.error(ex)
+            }
+        }
     }
     (async ()=>{
-        if (Notification.permission === 'granted') {
-            notificationGranted = true
-        } else if (Notification.permission !== 'denied') {
-            let permission = await Notification.requestPermission()
-            notificationGranted = permission === 'granted' ? true : false
+        try{
+            if (Notification.permission === 'granted') {
+                notificationGranted = true
+            } else if (Notification.permission !== 'denied') {
+                let permission = await Notification.requestPermission()
+                notificationGranted = permission === 'granted' ? true : false
+            }
+        } catch(ex){
+            console.error(ex)
+        }
+        try{
+            navigator.serviceWorker.register("./js-css/sw.js")
+        } catch(ex){
+            console.error(ex)
         }
     })();
     //Browser
