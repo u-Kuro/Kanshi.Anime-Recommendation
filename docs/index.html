@@ -1437,7 +1437,7 @@
     updateIDs = [], requestIntervalMS = 0,
     savedAnalyzeVariableTime, savedUpdateAnalyzeAnimeTime, savedDeepUpdateTime, lastSavedUpdateTime, lastAnilistPage,
     deepUpdateStartTime, updateStartTime,
-    isRunning = false, requestIsRunning = false, isLoading = false,
+    isRunning = false, requestIsRunning = false, isLoading = false, isScrolling = false, scrollTimeout,
     isDeepUpdate = false, willAutoUpdate = false, updateStateText = [], checkFiltersFocus = [],
         // Helper
     pageInits = true, enteredOnce = false, versionUpdate = false, exportWorker, initStartTime,
@@ -3510,7 +3510,12 @@
                     }
                     // Browser Mobile
                 })
-                $(document).scroll(()=>{
+                window.addEventListener('scroll',()=>{
+                    if(!isScrolling) isScrolling = true
+                    clearTimeout(scrollTimeout)
+                    scrollTimeout = setTimeout(()=>{
+                        isScrolling = false
+                    },500)
                     // Browser Mobile
                     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
                     // Browser Mobile
@@ -3531,7 +3536,7 @@
                     // Browser Mobile
                     }
                     // Browser Mobile
-                })
+                }, true)
                 $("body").on("focusin","input",(e) => {
                     // Browser Mobile
                     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
@@ -3560,10 +3565,8 @@
                         var target = $(e.target)
                         target.css('pointer-events','none')
                         var text = target.data("copy-value")
-                        if((text??'')!==''){
-                            // Android
+                        if((text??'')!==''&&!isScrolling){
                             navigator.clipboard.writeText(text)
-                            // Android
                         }
                     }, 1000)
                 }).on('touchend touchcancel','.copy-value',(e)=>{
