@@ -211,7 +211,9 @@
                 z-index: 9999;
                 background: url('./public/loading.gif')
                     50% 50% no-repeat
-                    rgb(0, 0, 0)
+                    rgb(0, 0, 0);
+                background-size: contain;
+                webkit-background-size: contain;
             }
             #loader > * {
                 justify-content: center;
@@ -600,9 +602,10 @@
                 user-select: none;
             }
             #menu-container>div{
-                margin-bottom: 63px;
-                padding: 1em;
-                margin-top: 50px;
+                padding-bottom: 79px;
+                padding-top: 66px;
+                padding-left: 1em;
+                padding-right: 1em;
                 display: flex;
                 flex-wrap: wrap;
                 gap: 1.5em;
