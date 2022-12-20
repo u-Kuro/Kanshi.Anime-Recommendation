@@ -6440,19 +6440,19 @@
             })
         } catch(ex){
             console.error(ex)
-            try(ex){
+            try{
                 Notification.requestPermission((result) => {
                     if (result === "granted") {
                         navigator.serviceWorker.ready.then((registration) => {
                             registration.showNotification("Notification Vibration", {
-                            body: text,
-                            icon: "./public/logo.png",
-                            vibrate: [250, 250, 250],
-                            tag: "notification-vibration",
+                                body: text,
+                                icon: "./public/logo.png",
+                                vibrate: [250, 250, 250],
+                                tag: "notification-vibration",
+                            })
                         })
-                    })
-                }
-            })
+                    }
+                })
             } catch(ex){
                 console.error(ex)
             }
