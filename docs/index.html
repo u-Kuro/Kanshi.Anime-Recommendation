@@ -5857,7 +5857,7 @@
                             .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                             .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                     }
-                    if(alertUser){
+                    if(alertUser||haveNewAnime){
                         if(exportIntervalIsActive){
                             await exportIntervalBtnEl.css({background: "#F0F0F0",color:"black"})
                             // Don't Save At First Analysis
@@ -5874,8 +5874,6 @@
                         // Check Auto Export After Update
                         if(exportIntervalIsActive){
                             await exportIntervalBtnEl.css({background: "#F0F0F0",color:"black"})
-                            exportIntervalStartDate = await exportIntervalStartDate || new Date()
-                            await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                             if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
                                 dataStatusSpinnerHomeEl.show()
                                 dataStatusEl
@@ -6219,10 +6217,8 @@
 
     async function loadTheme(newTheme,prevTheme){
         return await new Promise(async(resolve)=>{
-            // Remove default
-            if(newTheme!=="dakMode"&&!prevTheme){
-                await $(` 
-                    html
+            var allElement = await $(` 
+                    html,
                     body,
                     #nav,
                     #Home,
@@ -6260,92 +6256,17 @@
                     .swal2-confirm,
                     .swal2-confirm-custom,
                     .spinner
-                `).add(document.documentElement).removeClass("darkMode")
+                `)
+            // Remove default
+            if(newTheme!=="dakMode"&&!prevTheme){
+                await allElement.removeClass("darkMode")
             }
             // Remove Previous
             if(prevTheme){
-                await $(` 
-                    html
-                    body,
-                    #nav,
-                    #Home,
-                    #searchData,
-                    button,
-                    #overlay,
-                    #username, 
-                    #dataStatusHolder,
-                    #dataStatusUpdate,
-                    .flexdatalist-multiple,
-                    .flexdatalist-alias,
-                    .flexdatalist-results,
-                    .flexdatalist-multiple > .value,
-                    #anime-table,
-                    #anime-table thead,
-                    #anime-table tr,
-                    #anime-table th,
-                    #animeRecommendationList,
-                    #animeRecommendationList tr,
-                    #animeRecommendationList td,
-                    .td-container,
-                    #animeRecommendationList a,
-                    #pager,
-                    #pageNumberOptions,
-                    #pageNumberOptions>option.darkMode,
-                    #table-skeleton,
-                    #table-skeleton tr,
-                    #table-skeleton th,
-                    #table-skeleton td,
-                    #table-skeleton span,
-                    .swal2-popup,
-                    .swal2-popup-custom,
-                    .swal2-validation-message,
-                    .swal2-footer > a,
-                    .swal2-confirm,
-                    .swal2-confirm-custom,
-                    .spinner
-                `).add(document.documentElement).removeClass(prevTheme)
+                await allElement.removeClass(prevTheme)
             }
             // Apply New
-            await $(` 
-                html
-                body,
-                #nav,
-                #Home,
-                #searchData,
-                button,
-                #overlay,
-                #username, 
-                #dataStatusHolder,
-                #dataStatusUpdate,
-                .flexdatalist-multiple,
-                .flexdatalist-alias,
-                .flexdatalist-results,
-                .flexdatalist-multiple > .value,
-                #anime-table,
-                #anime-table thead,
-                #anime-table tr,
-                #anime-table th,
-                #animeRecommendationList,
-                #animeRecommendationList tr,
-                #animeRecommendationList td,
-                .td-container,
-                #animeRecommendationList a,
-                #pager,
-                #pageNumberOptions,
-                #pageNumberOptions>option.darkMode,
-                #table-skeleton,
-                #table-skeleton tr,
-                #table-skeleton th,
-                #table-skeleton td,
-                #table-skeleton span,
-                .swal2-popup,
-                .swal2-popup-custom,
-                .swal2-validation-message,
-                .swal2-footer > a,
-                .swal2-confirm,
-                .swal2-confirm-custom,
-                .spinner
-            `).add(document.documentElement).addClass(newTheme)
+            await allElement.addClass(newTheme)
             resolve()
         })
     }
