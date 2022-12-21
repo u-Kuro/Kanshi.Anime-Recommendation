@@ -3072,7 +3072,7 @@
                             denyButtonColor: '#e27d81',
                             icon: "info",
                             reverseButtons: true
-                        }).then(async(value)=>{
+                        }).then((value)=>{
                             if(value.isConfirmed){
                                 filterAlgoModalEl.removeClass("swal2-show-custom").addClass("swal2-hide-custom")
                                 setTimeout(()=>{
@@ -3080,7 +3080,7 @@
                                 },300)
                                 Update(false)
                                 menuContainerEl.fadeOut(250)
-                                for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
+                                for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                 dataStatusSpinnerHomeEl.hide()
                                 var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                 dataStatusEl
@@ -4131,7 +4131,7 @@
             savedFilterAlgo = filterAlgo
         }
         //
-        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
         for(let i=analyzeVariableTime; i>=0; i--){
             var timeout = setTimeout(()=>{
                 dataStatusSpinnerHomeEl.show()
@@ -4275,10 +4275,10 @@
                             await analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, true, false)
                         })();
                     }
-                    worker2.onerror = async (message) => {
+                    worker2.onerror = (message) => {
                         worker2.terminate()
                         worker2 = null
-                        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
+                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                         dataStatusSpinnerHomeEl.hide()
                         var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                         dataStatusEl
@@ -4464,10 +4464,10 @@
                                         saveJSON(savedUserScores,"savedUserScores")
                                         analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, true, userEntries)
                                     }
-                                    worker2.onerror = async (message) => {
+                                    worker2.onerror = (message) => {
                                         worker2.terminate()
                                         worker2 = null
-                                        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
+                                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                         dataStatusSpinnerHomeEl.hide()
                                         var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                                         dataStatusEl
@@ -4728,7 +4728,7 @@
                     const data = message.data
                     analyzeAnime(updateID, savedAnimeEntries, data.varScheme, data.userListStatus, data.alteredVariables, username, false, false, undefined, false, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
                 }
-                worker7.onerror = async (message) => {
+                worker7.onerror = (message) => {
                     worker7.terminate()
                     worker7 = null
                     requestIsRunning = false
@@ -5849,7 +5849,7 @@
                     resolve()
                 }
             }
-            worker4.onerror = async (message) => {
+            worker4.onerror = (message) => {
                 worker4.terminate()
                 worker4 = null
                 for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
