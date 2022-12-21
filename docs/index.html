@@ -4902,16 +4902,16 @@
                             .append(`<span style="white-space:nowrap;">Getting Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="100" max="100"></progress>⠀100%</span>`);
                         (async()=>{
                             savedAnimeEntries = await animeEntries || {}
-                            await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                            saveJSON(savedAnimeEntries,"savedAnimeEntries")
                             lastSavedUpdateTime = await tempLastSavedUpdateTime || 0
-                            await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                            saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
                             lastAnilistPage = await page || 284
-                            await saveJSON(lastAnilistPage, "lastAnilistPage")
+                            saveJSON(lastAnilistPage, "lastAnilistPage")
                             if(savedUserList){
                                 savedUserList = await savedUserList || {}
-                                await saveJSON(savedUserList,"savedUserList")
+                                saveJSON(savedUserList,"savedUserList")
                                 savedUserScores = await savedUserScores || {}
-                                await saveJSON(savedUserScores,"savedUserScores")
+                                saveJSON(savedUserScores,"savedUserScores")
                             }
                             if(noSavedEntries){
                                 analyzeVariables(updateID, username, undefined, notAnUpdate, filterAlgo, doHideUnwatchedSeq, true)
@@ -5129,7 +5129,7 @@
                         staffHasNextPage = tempUpdatedAnimeEntries?.some((anime)=>anime?.staff?.pageInfo?.hasNextPage??false)??false
                         if(staffHasNextPage){
                             return recallgNA(page,++staffPage)
-                        } else if(hasNextPage){
+                        } else {
                             if(!jsonIsEmpty(updatedAnimeEntries)&&!staffHasNextPage){
                                 worker3.terminate()
                                 worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
@@ -5138,55 +5138,26 @@
                                     savedAnimeEntries: savedAnimeEntries
                                 })
                                 worker3.onmessage = (message) => {
-                                    (async()=>{
-                                        savedAnimeEntries = await message.data.savedAnimeEntries ?? {}
-                                        await saveJSON(savedAnimeEntries,"savedAnimeEntries")
-                                    })();
+                                    savedAnimeEntries = message.data.savedAnimeEntries ?? {}
+                                    saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                    if(!hasNextPage){
+                                        worker3.terminate()
+                                        dataStatusEl
+                                            .empty()
+                                            .append(`<span style="white-space:nowrap;">Getting New Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
+                                        savedAnimeEntries = message.data.savedAnimeEntries ?? {}
+                                        saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                        lastSavedUpdateTime = tempLastSavedUpdateTime || 0
+                                        saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                        analyzeVariables(updateID, username, userListIDs, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                                    }
                                 }
-                                worker3.onerror = async (message) => {
+                                worker3.onerror = (message) => {
                                     console.error("Error 116: Oops...Something went wrong! Please try again...")
                                 }
                             }
-                            return recallgNA(++page,1)
-                        } else {
-                            worker3.terminate()
-                            worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
-                            worker3.postMessage({
-                                updatedAnimeEntries: updatedAnimeEntries,
-                                savedAnimeEntries: savedAnimeEntries
-                            })
-                            worker3.onmessage = (message) => {
-                                (async()=>{
-                                    worker3.terminate()
-                                    dataStatusEl
-                                        .empty()
-                                        .append(`<span style="white-space:nowrap;">Getting New Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
-                                    savedAnimeEntries = message.data.savedAnimeEntries ?? {}
-                                    await saveJSON(savedAnimeEntries,"savedAnimeEntries")
-                                    lastSavedUpdateTime = tempLastSavedUpdateTime || 0
-                                    await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
-                                    analyzeVariables(updateID, username, userListIDs, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
-                                })();
-                            }
-                            worker3.onerror = async (message) => {
-                                worker3.terminate()
-                                worker3 = null
-                                for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
-                                dataStatusSpinnerHomeEl.hide()
-                                var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                                dataStatusEl
-                                    .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                                console.error("Error 104: Oops...Something went wrong! Please try again...")
-                                Swal.fire({
-                                    heightAuto: false,
-                                    text: "Error 104: Oops...Something went wrong! Please try again...",
-                                    icon: "error",
-                                    confirmButtonColor: "#000"
-                                })
-                                requestIsRunning = false
-                                return
+                            if(hasNextPage){
+                                return recallgNA(++page,1)
                             }
                         }
                     },
@@ -5413,61 +5384,32 @@
                         })??false
                         if(staffHasNextPage){
                             return recalluAL(page,++staffPage)
-                        } else if(hasNextPage&&currentDateUpdating>=lastSavedUpdateTime){
+                        } else {
                             if(!jsonIsEmpty(updatedAnimeEntries)&&!staffHasNextPage){
-                                worker9.terminate()
-                                worker9 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
                                 worker9.postMessage({
                                     updatedAnimeEntries: updatedAnimeEntries,
                                     savedAnimeEntries: savedAnimeEntries
                                 })
                                 worker9.onmessage = (message) => {
-                                    (async()=>{
-                                        savedAnimeEntries = await message.data.savedAnimeEntries ?? {}
-                                        await saveJSON(savedAnimeEntries,"savedAnimeEntries")
-                                    })();
+                                    savedAnimeEntries = message.data.savedAnimeEntries ?? {}
+                                    saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                    if(!(hasNextPage&&currentDateUpdating>=lastSavedUpdateTime)){
+                                        worker9.terminate()
+                                        dataStatusEl
+                                            .empty()
+                                            .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
+                                        lastSavedUpdateTime = tempLastSavedUpdateTime || 0
+                                        saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                        analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
+                                    }
                                 }
-                                worker9.onerror = async (message) => {
+                                worker9.onerror = (message) => {
                                     console.error("Error 115: Oops...Something went wrong! Please try again...")
                                 }
+                                updatedAnimeEntries = {}
                             }
-                            return recalluAL(++page,1)
-                        } else {
-                            worker9.terminate()
-                            worker9 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
-                            worker9.postMessage({
-                                updatedAnimeEntries: updatedAnimeEntries,
-                                savedAnimeEntries: savedAnimeEntries
-                            })
-                            worker9.onmessage = (message) => {
-                                (async()=>{
-                                    worker9.terminate()
-                                    dataStatusEl
-                                        .empty()
-                                        .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
-                                    savedAnimeEntries = message.data.savedAnimeEntries ?? {}
-                                    await saveJSON(savedAnimeEntries,"savedAnimeEntries")
-                                    lastSavedUpdateTime = tempLastSavedUpdateTime || 0
-                                    await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
-                                    analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
-                                })();
-                            }
-                            worker9.onerror = async (message) => {
-                                worker9.terminate()
-                                worker9 = null
-                                dataStatusEl
-                                    .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                                console.error("Error 109: Oops...Something went wrong! Please try again...")
-                                Swal.fire({
-                                    heightAuto: false,
-                                    text: "Error 109: Oops...Something went wrong! Please try again...",
-                                    icon: "error",
-                                    confirmButtonColor: "#000"
-                                })
-                                requestIsRunning = false
-                                return
+                            if(hasNextPage&&currentDateUpdating>=lastSavedUpdateTime){
+                                return recalluAL(++page,1)
                             }
                         }
                     },
