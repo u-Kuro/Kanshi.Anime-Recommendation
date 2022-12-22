@@ -5232,7 +5232,7 @@
                         if(staffHasNextPage){
                             return recallgNA(page,++staffPage)
                         } else {
-                            if(!jsonIsEmpty(updatedAnimeEntries)&&!staffHasNextPage){
+                            if(!staffHasNextPage){
                                 worker3.terminate()
                                 worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
                                 worker3.postMessage({
@@ -5491,7 +5491,7 @@
                         if(staffHasNextPage){
                             return recalluAL(page,++staffPage)
                         } else {
-                            if(!jsonIsEmpty(updatedAnimeEntries)&&!staffHasNextPage){
+                            if(!staffHasNextPage){
                                 worker9.postMessage({
                                     updatedAnimeEntries: updatedAnimeEntries,
                                     savedAnimeEntries: savedAnimeEntries
