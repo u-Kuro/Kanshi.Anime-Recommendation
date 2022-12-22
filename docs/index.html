@@ -3249,29 +3249,27 @@
                                                             )
                                                     },
                                                     success: (data) => {
-                                                        (async()=>{
-                                                            initStartTime = await undefined
+                                                        initStartTime = undefined
+                                                        setTimeout(()=>{
+                                                            saveJSON(initStartTime,"initStartTime")
+                                                        },0)
+                                                        UsernameValidationEl.fadeOut(1000,()=>{
+                                                            UsernameValidationEl.remove()
+                                                            $(".swal2-validation-message")
+                                                                .addClass("no-before").removeClass("no-before")
+                                                                .addClass("success-before")
+                                                                .html("User has been Found")
                                                             setTimeout(()=>{
-                                                                saveJSON(initStartTime,"initStartTime")
-                                                            },0)
-                                                            UsernameValidationEl.fadeOut(1000,()=>{
-                                                                UsernameValidationEl.remove()
-                                                                $(".swal2-validation-message")
-                                                                    .addClass("no-before").removeClass("no-before")
-                                                                    .addClass("success-before")
-                                                                    .html("User has been Found")
-                                                                setTimeout(()=>{
-                                                                    // Reset Custom Validation
-                                                                    filterAlgoValidationEl.html("").hide()
-                                                                    resolve()
-                                                                },1000)
-                                                            })
-                                                        })();
+                                                                // Reset Custom Validation
+                                                                filterAlgoValidationEl.html("").hide()
+                                                                resolve()
+                                                            },1000)
+                                                        })
                                                     },
                                                     error: (xhr) =>{
                                                         if(!window.navigator.onLine){
                                                             if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                                                initStartTime = await new Date()
+                                                                initStartTime = new Date()
                                                                 setTimeout(()=>{
                                                                     saveJSON(initStartTime,"initStartTime")
                                                                 },0)
@@ -3279,7 +3277,7 @@
                                                             UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                                             resolve("Unable to connect to the Internet")
                                                         } else if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
-                                                                initStartTime = await undefined
+                                                                initStartTime = undefined
                                                                 UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                                                 setTimeout(()=>{
                                                                     saveJSON(initStartTime,"initStartTime")
@@ -3287,7 +3285,7 @@
                                                                 resolve("Username not Found, Please Try Again...")
                                                         } else {
                                                             if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                                                initStartTime = await new Date()
+                                                                initStartTime = new Date()
                                                                 setTimeout(()=>{
                                                                     saveJSON(initStartTime,"initStartTime")
                                                                 },0)
@@ -3376,9 +3374,9 @@
                             icon: "question",
                             reverseButtons: true
                         })
-                        .then(async(value)=>{
+                        .then((value)=>{
                             if(value.isConfirmed){
-                                kidsAnimeIsHidden = await false
+                                kidsAnimeIsHidden = false
                                 hideKidsAnimeBtnEl.removeClass("selected")
                                 setTimeout(()=>{
                                     saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
@@ -3400,9 +3398,9 @@
                             icon: "question",
                             reverseButtons: true
                         })
-                        .then(async(value)=>{
+                        .then((value)=>{
                             if(value.isConfirmed){
-                                kidsAnimeIsHidden = await true
+                                kidsAnimeIsHidden = true
                                 hideKidsAnimeBtnEl.addClass("selected")
                                 setTimeout(()=>{
                                     saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
@@ -3427,7 +3425,7 @@
                             icon: "question",
                             reverseButtons: true
                         })
-                        .then(async(value)=>{
+                        .then((value)=>{
                             if(value.isConfirmed){
                                 hideUnwatchedSequelsBtnEl.removeClass("selected")
                                 Update(true, undefined, false)
@@ -3447,7 +3445,7 @@
                             icon: "question",
                             reverseButtons: true
                         })
-                        .then(async(value)=>{
+                        .then((value)=>{
                             if(value.isConfirmed){
                                 hideUnwatchedSequelsBtnEl.addClass("selected")
                                 Update(true, undefined, true)
@@ -3899,7 +3897,7 @@
                         },0)
                         resolve()
                     }
-                    worker8.onerror = async (message) => {
+                    worker8.onerror = (message) => {
                         worker8.terminate()
                         worker8 = null
                         console.error("Error 114: Oops...Something went wrong! Please try again...")
@@ -5624,7 +5622,7 @@
                 for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                 dataStatusSpinnerHomeEl.show()
                 for(let i=updateAnalyzeAnimeTime; i>=0; i--){
-                    var timeout = await setTimeout(async()=>{
+                    var timeout = setTimeout(async()=>{
                         if(i<1){
                             await dataStatusSpinnerHomeEl.show()
                             await dataStatusEl
@@ -5636,7 +5634,7 @@
                                 .append(`<span style="white-space:nowrap;">Updating Recommendations List,⠀</span><span style="white-space:nowrap;">Estimated Time: ${msToTime(i*1000)}</span>`)
                         }
                     },(updateAnalyzeAnimeTime-i)*1000)
-                    await updateStateText.push(timeout)
+                    updateStateText.push(timeout)
                 }
             })();
             // Normal Update
@@ -5963,7 +5961,7 @@
                         resolve()
                     }
                 }
-                worker5.onerror = async (message) => {
+                worker5.onerror = (message) => {
                     worker5.terminate()
                     worker5 = null
                     requestIsRunning = false
@@ -6205,24 +6203,22 @@
                                     )
                             },
                             success: (data) => {
-                                (async()=>{
-                                    initStartTime = await undefined
+                                initStartTime = await undefined
+                                setTimeout(()=>{
+                                    saveJSON(initStartTime,"initStartTime")
+                                },0)
+                                UsernameValidationEl.fadeOut(1000,()=>{
+                                    UsernameValidationEl.remove()
+                                    $(".swal2-validation-message")
+                                        .addClass("no-before").removeClass("no-before")
+                                        .addClass("success-before")
+                                        .html("User has been Found")
                                     setTimeout(()=>{
-                                        saveJSON(initStartTime,"initStartTime")
-                                    },0)
-                                    UsernameValidationEl.fadeOut(1000,()=>{
-                                        UsernameValidationEl.remove()
-                                        $(".swal2-validation-message")
-                                            .addClass("no-before").removeClass("no-before")
-                                            .addClass("success-before")
-                                            .html("User has been Found")
-                                        setTimeout(()=>{
-                                            // Reset Custom Validation
-                                            filterAlgoValidationEl.html("").hide()
-                                            resolve()
-                                        },1000)
-                                    })
-                                })();
+                                        // Reset Custom Validation
+                                        filterAlgoValidationEl.html("").hide()
+                                        resolve()
+                                    },1000)
+                                })
                             },
                             error: (xhr) =>{
                                 if(!window.navigator.onLine){
