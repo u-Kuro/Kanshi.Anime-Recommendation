@@ -5293,7 +5293,7 @@ self.onmessage = (message) => {
         {"info":"!season: !n/a"},
     ]
   }
-  var allFilterInfo = {}
+  const allFilterInfo = {}
   for(let e of postMessage.savedFilterOptionsJson){
     allFilterInfo[e.info] = true
   }
