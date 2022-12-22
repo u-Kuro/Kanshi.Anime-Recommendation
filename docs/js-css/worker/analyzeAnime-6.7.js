@@ -31,7 +31,6 @@ self.onmessage = (message) => {
     var alteredVariables = data.alteredVariables
     var animeFranchises = []
     const hideUnwatchedSequels = data.hideUnwatchedSequels?? true
-    console.log(data.hideUnwatchedSequels)
     //
     if(!jsonIsEmpty(varScheme)){
         var userScores = Object.values(userListStatus.userScore)
