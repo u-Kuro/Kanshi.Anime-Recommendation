@@ -2317,8 +2317,10 @@
                         menuContainerEl.hide()
                     }
                 })
-                importFileEl.on("change",(event)=>{
-                    if((importFileEl.val()??null)!==null&&importFileEl?.[0]?.files?.[0]){
+                importFileEl.on("change",async(event)=>{
+                    const fullpath = await importFileEl.val()
+                    const importedFile = await importFileEl?.[0]?.files?.[0]
+                    if(fullpath&&importedFile){
                         if(!savedUsername){
                             await $(".swal2-validation-message")
                                 .addClass("no-before")
@@ -2330,12 +2332,10 @@
                                 </div>`
                             )
                         }
-                        const importedFile = importFileEl[0].files[0]
                         const reader = new FileReader()
                         reader.onload = async() => {
-                            const fullPath = importFileEl.val()
                             var filename
-                            if(typeof fullPath==="string"&&fullPath){
+                            if(typeof fullPath==="string"){
                                 const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
                                 filename = fullPath.substring(startIndex);
                                 if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
