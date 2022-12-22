@@ -5649,7 +5649,6 @@
                 savedRecScheme = await {}
             }
             var worker4 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
-            console.log(doHideUnwatchedSeq,"ee")
             worker4.postMessage({
                 animeEntries: animeEntries,
                 savedRecScheme: savedRecScheme,
@@ -5714,6 +5713,11 @@
                     setTimeout(()=>{
                         saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
                     },0)
+                }
+                if(hideUnwatchedSequels??true){
+                    hideUnwatchedSequelsBtnEl.addClass("selected")
+                } else {
+                    hideUnwatchedSequelsBtnEl.removeClass("selected")
                 }
                 var worker5 = new Worker(`./js-css/worker/updateOptions-${version}.js`)
                 worker5.postMessage({
@@ -5968,7 +5972,6 @@
                 worker5.onerror = (message) => {
                     worker5.terminate()
                     worker5 = null
-                    requestIsRunning = false
                     dataStatusEl
                         .empty()
                         .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
@@ -5980,6 +5983,7 @@
                         icon: "error",
                         confirmButtonColor: "#000"
                     })
+                    requestIsRunning = false
                     resolve()
                 }
             }
