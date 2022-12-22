@@ -5016,11 +5016,13 @@
                                 saveJSON(savedUserScores,"savedUserScores")
                             },0)
                         }
-                        if(noSavedEntries){
-                            analyzeVariables(updateID, username, undefined, notAnUpdate, filterAlgo, doHideUnwatchedSeq, true)
-                        } else {
-                            analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
-                        }
+                        setTimeout(()=>{
+                            if(noSavedEntries){
+                                analyzeVariables(updateID, username, undefined, notAnUpdate, filterAlgo, doHideUnwatchedSeq, true)
+                            } else {
+                                analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
+                            }
+                        },100)
                     }
                 },
                 error: function(xhr) {
@@ -5255,7 +5257,9 @@
                                             saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
                                             saveJSON(lastAnilistPage,"lastAnilistPage")
                                         },0)
-                                        analyzeVariables(updateID, username, userListIDs, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                                        setTimeout(()=>{
+                                            analyzeVariables(updateID, username, userListIDs, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                                        },100)
                                     }
                                 }
                                 worker3.onerror = (message) => {
@@ -5512,7 +5516,9 @@
                                             saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
                                             saveJSON(lastAnilistPage,"lastAnilistPage")
                                         },0)
-                                        analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
+                                        setTimeout(()=>{
+                                            analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
+                                        },100)
                                     }
                                 }
                                 worker9.onerror = (message) => {
