@@ -2351,8 +2351,8 @@
                                             try{
                                                 await importBtnEl.css({background: "black", color: "#F0F0F0"})
                                                 await menuContainerEl.fadeOut(250)
-                                                dataStatusSpinnerHomeEl.show()
-                                                dataStatusEl
+                                                await dataStatusSpinnerHomeEl.show()
+                                                await dataStatusEl
                                                     .empty()
                                                     .append(`<span style="white-space:nowrap;">Importing data, please wait...</span>`)
                                                 fileContent = await JSON.parse(reader.result);
