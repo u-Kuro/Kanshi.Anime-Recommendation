@@ -2318,9 +2318,8 @@
                     }
                 })
                 importFileEl.on("change",async(event)=>{
-                    const fullpath = await importFileEl.val()
                     const importedFile = await importFileEl?.[0]?.files?.[0]
-                    if(fullpath&&importedFile){
+                    if(importedFile){
                         if(!savedUsername){
                             await $(".swal2-validation-message")
                                 .addClass("no-before")
@@ -2334,6 +2333,7 @@
                         }
                         const reader = new FileReader()
                         reader.onload = async() => {
+                            const fullPath = importFileEl.val()
                             var filename
                             if(typeof fullPath==="string"){
                                 const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
