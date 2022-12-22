@@ -541,7 +541,7 @@ self.onmessage = (message) => {
                         &&typeof studioUrl==="string"){
                             var tmpscore = varScheme.studios[fullStudio]
                             studiosIncluded[fullStudio] = [
-                                {[studio+" ("+tmpscore.toFixed(2)+")"]: studioUrl},
+                                {["studio: "+studio+" ("+tmpscore.toFixed(2)+")"]: studioUrl},
                                 tmpscore
                             ]
                         }
