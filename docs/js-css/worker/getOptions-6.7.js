@@ -1,5 +1,6 @@
 self.onmessage = (message) => {
-    const savedFilterOptionsJson = [
+  const postMessage = {
+      savedFilterOptionsJson: [
         {"info":"limit top wscore: "},
         {"info":"limit top score: "},
         {"info":"wscore>="},
@@ -5291,12 +5292,11 @@ self.onmessage = (message) => {
         {"info":"season: n/a"},
         {"info":"!season: !n/a"},
     ]
-    var allFilterInfo = {}
-    for(let i=0;i<savedFilterOptionsJson.length;i++){
-        allFilterInfo[savedFilterOptionsJson[i].info] = true
-    }
-    self.postMessage({
-        savedFilterOptionsJson:  savedFilterOptionsJson,
-        allFilterInfo: allFilterInfo
-    })
+  }
+  var allFilterInfo = {}
+  for(let e of postMessage.savedFilterOptionsJson){
+    allFilterInfo[e.info] = true
+  }
+  postMessage.allFilterInfo = allFilterInfo
+  self.postMessage(postMessage)
 }
