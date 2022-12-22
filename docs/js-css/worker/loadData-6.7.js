@@ -7,6 +7,7 @@ self.onmessage = (message) => {
     var savedFilters = data.savedFilters??[]
     var savedWarnAnime = data.savedWarnAnime??[]
     const availableFilterTypes = {topscore:true,topscores:true,limittopscore:true,limittopscores:true,topwscore:true,limittopwscores:true,limittopwscore:true,topwscores:true,format:true,formats:true,genre:true,genres:true,tagcategory:true,tagcategories:true,tag:true,tags:true,studio:true,studios:true,staffrole:true,staffroles:true,staff:true,staffs:true,measure:true,measures:true,average:true,averages:true,includeunknownvariables:true,unknownvariables:true,unknownvariable:true,includeunknown:true,unknown:true,samplesizes:true,samplesize:true,samples:true,sample:true,size:true,minimumpopularity:true,minpopularity:true,popularity:true,minimumaveragescores:true,minimumaveragescore:true,minimumaverages:true,minimumaverage:true,minimumscores:true,minimumscore:true,averagescores:true,averagescore:true,scores:true,score:true,minaveragescores:true,minaveragescore:true,minaverages:true,minaverage:true,minscores:true,minscore:true,minimumavescores:true,minimumavescore:true,minimumave:true,avescores:true,avescore:true,limittopsimilarity:true,limittopsimilarities:true,limitsimilarity:true,limitsimilarities:true,topsimilarities:true,topsimilarity:true,similarities:true,similarity:true,userscore:true,userscores:true,wscore:true,wscores:true,year:true,years:true,season:true,seasons:true,userstatus:true,status:true,title:true,titles:true}
+    const topSimilarities = {include:{},exclude:{}}
     var minTopSimilarities = 5
     // Arrange Filters
       // Table/List Filters
@@ -90,7 +91,7 @@ self.onmessage = (message) => {
          ||type===("topwscores")
          ||type===("topwscore")){
                 continue
-            }
+        }
         if(type===("limittopscores")
          ||type===("limittopscore")
          ||type===("topscores")
@@ -101,15 +102,30 @@ self.onmessage = (message) => {
           ||type===("limittopsimilarities")
           ||type===("limitsimilarity")
           ||type===("limitsimilarities")
-          ||type===("topsimilarities")
-          ||type===("topsimilarity")
-          ||type===("similarities")
-          ||type===("similarity")
           )&&seperator===":"){
             if(isaN(filter)){
                 minTopSimilarities = parseFloat(filter)
             }
             continue
+        }
+        if((type===("topsimilarities")
+          ||type===("topsimilarity")
+          ||type===("similarities")
+          ||type===("similarity")
+          )&&seperator===":"){
+            var tmpfilter = filter.replace(/\s|-|_/g,"")
+            if(tmpfilter===("content")||tmpfilter===("contents")){
+                topSimilarities.include.contents = true
+                continue
+            }
+            if(tmpfilter===("studio")||tmpfilter===("studios")){
+                topSimilarities.include.studios = true
+                continue
+            }
+            if(tmpfilter===("staff")||tmpfilter===("staffs")){
+                topSimilarities.include.staffs = true
+                continue
+            }
         }
         if(equalsNCS("hidden",filter)){
             isHiddenTable = true
@@ -362,6 +378,25 @@ self.onmessage = (message) => {
             seperator = excluded[1]?.trim()??null
             filter = (excluded[2]??type).trim()
         }
+        if((type===("topsimilarities")
+          ||type===("topsimilarity")
+          ||type===("similarities")
+          ||type===("similarity")
+          )&&seperator===":"){
+            var tmpfilter = filter.replace(/\s|-|_/g,"")
+            if(tmpfilter===("content")||tmpfilter===("contents")){
+                topSimilarities.exclude.contents = true
+                continue
+            }
+            if(tmpfilter===("studio")||tmpfilter===("studios")){
+                topSimilarities.exclude.studios = true
+                continue
+            }
+            if(tmpfilter===("staff")||tmpfilter===("staffs")){
+                topSimilarities.exclude.staffs = true
+                continue
+            }
+        }
         for(let j=0; j<recList.length; j++){
             if((type===("averagescore")||type===("averagescores"))&&seperator===":"){
                 if(isaN(filter)) if(recList[j]?.averageScore===parseFloat(filter)) continue
@@ -602,11 +637,24 @@ self.onmessage = (message) => {
         var similarities = []
         value?.variablesIncluded?.forEach((v)=>{
             if(isJson(v)){
-                Object.entries(v).forEach(([name, url])=>{
-                    similarities.push(`<a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
-                })
-            } else {
-                similarities.push(`<span class="${savedTheme} copy-value user-select-all" data-copy-value="${v}">${v}</span>`)
+                if(!topSimilarities.exclude.contents
+                  ||topSimilarities.include.contents)){
+                    Object.entries(v).forEach(([name, url])=>{
+                        similarities.push(`<a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
+                    })
+                }
+            } else if(typeof v==='string'){
+                if(v.slice(0,8)==='studio: '){
+                    if(!topSimilarities.exclude.studios
+                      ||topSimilarities.include.studios){
+                        similarities.push(`<span class="${savedTheme} copy-value user-select-all" data-copy-value="${v}">${v}</span>`)
+                    }
+                } else {
+                    if(!topSimilarities.exclude.staffs
+                      ||topSimilarities.include.staffs){
+                        similarities.push(`<span class="${savedTheme} copy-value user-select-all" data-copy-value="${v}">${v}</span>`)
+                    }
+                }
             }
         })
         similarities = similarities.splice(0,minTopSimilarities)
