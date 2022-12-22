@@ -2348,33 +2348,20 @@
                                     if(value.isConfirmed){
                                         var fileContent, importedBackUpVersion;
                                         await new Promise(async(resolve,reject)=>{
-                                            await importBtnEl.css({background: "black", color: "#F0F0F0"})
                                             try{
-                                                fileContent = await JSON.parse(reader.result);
-                                            } catch(ex) {
-                                                importFileEl.val(null)
-                                                Swal.fire({
-                                                    heightAuto: false,
-                                                    text: "Error: Invalid Backup File",
-                                                    icon: "error",
-                                                    confirmButtonColor: "#000"
-                                                })
-                                            }
-                                            if(!fileContent.savedUsername){
-                                                importFileEl.val(null)
-                                                Swal.fire({
-                                                    heightAuto: false,
-                                                    text: "Error: Backup file does not Have a Username",
-                                                    icon: "error",
-                                                    confirmButtonColor: "#000"
-                                                })
-                                                reject()
-                                            } else {
+                                                await importBtnEl.css({background: "black", color: "#F0F0F0"})
                                                 await menuContainerEl.fadeOut(250)
                                                 dataStatusSpinnerHomeEl.show()
                                                 dataStatusEl
                                                     .empty()
                                                     .append(`<span style="white-space:nowrap;">Importing data, please wait...</span>`)
+                                                fileContent = await JSON.parse(reader.result);
+                                            } catch(ex) {
+                                                reject('Error: Invalid Backup File')
+                                            }
+                                            if(!fileContent.savedUsername){
+                                                reject('Error: Backup file does not Have a Username')
+                                            } else {
                                                 resolve()
                                             }
                                         }).then(async()=>{
@@ -2597,7 +2584,22 @@
                                             }
                                             return
                                         })
-                                        .catch(()=>{
+                                        .catch((message)=>{
+                                            importFileEl.val(null)
+                                            Swal.fire({
+                                                heightAuto: false,
+                                                text: message,
+                                                icon: "error",
+                                                confirmButtonColor: "#000"
+                                            })
+                                            if(!requestIsRunning){
+                                                dataStatusSpinnerHomeEl.hide()
+                                                var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                                                dataStatusEl
+                                                    .empty()
+                                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
+                                            }
                                             return
                                         })
                                     } else {
@@ -2608,32 +2610,9 @@
                             } else {
                                 var fileContent, importedBackUpVersion;
                                 await new Promise(async(resolve,reject)=>{
-                                    await importBtnEl.css({background: "black", color: "#F0F0F0"})
                                     try{
-                                        fileContent = await JSON.parse(reader.result)
-                                    } catch(ex) {
-                                        importFileEl.val(null)
-                                        $(".swal2-validation-message")
-                                            .addClass("no-before").removeClass("no-before")
-                                            .addClass("error-before")
-                                            .html(
-                                                `Error: Invalid Backup File`
-                                            )
-                                            .css({display:"flex"})
-                                        return
-                                    }
-                                    if(!fileContent.savedUsername){
-                                        importFileEl.val(null)
-                                        $(".swal2-validation-message")
-                                            .addClass("no-before").removeClass("no-before")
-                                            .addClass("error-before")
-                                            .html(
-                                                `Error: Backup file does not Have a Username`
-                                            )
-                                            .css({display:"flex"})
-                                        reject()
-                                    } else {
-                                        $(".swal2-validation-message")
+                                        await importBtnEl.css({background: "black", color: "#F0F0F0"})
+                                        await $(".swal2-validation-message")
                                             .addClass("no-before")
                                             .css({display:"flex"})
                                             .html(
@@ -2642,6 +2621,13 @@
                                                     <div>Importing Data...</div>
                                                 </div>`
                                             )
+                                        fileContent = await JSON.parse(reader.result)
+                                    } catch(ex) {
+                                        reject('Error: Invalid Backup File')
+                                    }
+                                    if(!fileContent.savedUsername){
+                                        reject('Error: Backup file does not Have a Username')
+                                    } else {
                                         resolve()
                                     }
                                 }).then(async()=>{
@@ -2869,7 +2855,13 @@
                                     }
                                     return
                                 })
-                                .catch(()=>{
+                                .catch((message)=>{
+                                    importFileEl.val(null)
+                                    $(".swal2-validation-message")
+                                        .addClass("no-before").removeClass("no-before")
+                                        .addClass("error-before")
+                                        .html(message)
+                                        .css({display:"flex"})
                                     return
                                 })
                             }
