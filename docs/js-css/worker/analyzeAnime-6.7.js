@@ -30,7 +30,8 @@ self.onmessage = (message) => {
     var allFilterInfo = data.allFilterInfo || {}
     var alteredVariables = data.alteredVariables
     var animeFranchises = []
-    const hideUnwatchedSequels = data.hideUnwatchedSequels
+    const hideUnwatchedSequels = data.hideUnwatchedSequels?? true
+    console.log(data.hideUnwatchedSequels)
     //
     if(!jsonIsEmpty(varScheme)){
         var userScores = Object.values(userListStatus.userScore)
@@ -279,14 +280,14 @@ self.onmessage = (message) => {
                 allFilterInfo["include unknown variables: false"] = true
             }
             if(!allFilterInfo["staff: "]
-             &&!allFilterInfo["!staff: !"]){
+             &&!allFilterInfo["!staff: "]){
                 allFilterInfo["staff: "] = true
-                allFilterInfo["!staff: !"] = true
+                allFilterInfo["!staff: "] = true
             }
             if(!allFilterInfo["studio: "]
-             &&!allFilterInfo["!studio: !"]){
+             &&!allFilterInfo["!studio: "]){
                 allFilterInfo["studio: "] = true
-                allFilterInfo["!studio: !"] = true
+                allFilterInfo["!studio: "] = true
             }
             // if(!allFilterInfo["format: all"]
             //  &&!allFilterInfo["!format: !all"]){
@@ -938,14 +939,14 @@ self.onmessage = (message) => {
                 allFilterInfo["include unknown variables: false"] = true
             }
             if(!allFilterInfo["staff: "]
-             &&!allFilterInfo["!staff: !"]){
+             &&!allFilterInfo["!staff: "]){
                 allFilterInfo["staff: "] = true
-                allFilterInfo["!staff: !"] = true
+                allFilterInfo["!staff: "] = true
             }
             if(!allFilterInfo["studio: "]
-             &&!allFilterInfo["!studio: !"]){
+             &&!allFilterInfo["!studio: "]){
                 allFilterInfo["studio: "] = true
-                allFilterInfo["!studio: !"] = true
+                allFilterInfo["!studio: "] = true
             }
             // if(!allFilterInfo["format: all"]
             //  &&!allFilterInfo["!format: !all"]){
