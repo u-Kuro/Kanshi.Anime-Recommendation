@@ -1565,12 +1565,12 @@
         }).then(async()=>{
             // Load Event Listeners
             return await new Promise((resolve)=>{
-                usernameEl.on('keypress',async (e) =>{
+                usernameEl.on('keypress', (e) =>{
                     if(e.which===13&&!isLoading) {
                         searchBtnEl.click()
                     }
                 })
-                filtersEl.on('keypress',async (e) =>{
+                filtersEl.on('keypress', (e) =>{
                     if( e.which===13
                         &&!pageInits
                         &&!isLoading
@@ -1581,12 +1581,12 @@
                         searchBtnEl.click()
                     }
                 })
-                searchBtnEl.on('click', async ()=>{
+                searchBtnEl.on('click', ()=>{
                     if(!jsonIsEmpty(savedRecScheme)) {
-                        var newUsername = await usernameEl.val()
+                        var newUsername = usernameEl.val()
                         if(!newUsername){
-                            await usernameEl[0]?.setCustomValidity("Anilist Username is Required!")
-                            await usernameEl[0]?.reportValidity()
+                            usernameEl[0]?.setCustomValidity("Anilist Username is Required!")
+                            usernameEl[0]?.reportValidity()
                         } else {
                             if(equalsNCS(newUsername,savedUsername)){
                                 LoadData(savedRecScheme)
@@ -1602,7 +1602,7 @@
                                     denyButtonColor: '#e27d81',
                                     icon: "question",
                                     reverseButtons: true
-                                }).then(async(value)=>{
+                                }).then((value)=>{
                                     if(value.isConfirmed){
                                         if(requestIsRunning){
                                             var updateTime = arrayMean(savedAnalyzeVariableTime) + arrayMean(savedUpdateAnalyzeAnimeTime)
@@ -1619,22 +1619,26 @@
                                                 denyButtonColor: '#e27d81',
                                                 icon: "question",
                                                 reverseButtons: true
-                                            }).then(async(value)=>{
+                                            }).then((value)=>{
                                                 if(value.isConfirmed){
                                                     // Reset User List
-                                                    savedUserList = await {}
-                                                    await saveJSON(savedUserList,"savedUserList")
-                                                    savedUserScores = await {}
-                                                    await saveJSON(savedUserScores,"savedUserScores")
+                                                    savedUserList = {}
+                                                    savedUserScores = {}
+                                                    setTimeout(()=>{
+                                                        saveJSON(savedUserList,"savedUserList")  
+                                                        saveJSON(savedUserScores,"savedUserScores")
+                                                    },0)
                                                     Update(false)
                                                 }
                                             })
                                         } else {
                                             // Reset User List
-                                            savedUserList = await {}
-                                            await saveJSON(savedUserList,"savedUserList")
-                                            savedUserScores = await {}
-                                            await saveJSON(savedUserScores,"savedUserScores")
+                                            savedUserList = {}
+                                            savedUserScores = {}
+                                            setTimeout(()=>
+                                                saveJSON(savedUserList,"savedUserList")
+                                                saveJSON(savedUserScores,"savedUserScores")
+                                            },0)
                                             Update(false)
                                         }
                                     } else {
@@ -1658,7 +1662,7 @@
                                 denyButtonColor: '#e27d81',
                                 icon: "question",
                                 reverseButtons: true
-                            }).then(async(value)=>{
+                            }).then((value)=>{
                                 if(value.isConfirmed){
                                     deepUpdateStartTime = new Date()
                                     isDeepUpdate = true
@@ -1702,7 +1706,7 @@
                                 denyButtonColor: '#e27d81',
                                 icon: "question",
                                 reverseButtons: true
-                            }).then(async(value)=>{
+                            }).then((value)=>{
                                 if(value.isConfirmed){
                                     deepUpdateStartTime = new Date()
                                     isDeepUpdate = true
@@ -1743,7 +1747,7 @@
                 $("#pager, #menu-container>div>button, #menu-container>div>input").on('click', (e)=>{
                     e.stopPropagation()
                 })
-                dataStatusEl.on('click',async (e) =>{
+                dataStatusEl.on('click',(e) =>{
                     var updateTime = arrayMean(savedAnalyzeVariableTime) + arrayMean(savedUpdateAnalyzeAnimeTime)
                     if(jsonIsEmpty(savedAnimeEntries)){
                         var deepUpdateTime = arrayMean(savedDeepUpdateTime)
@@ -1760,14 +1764,16 @@
                                 denyButtonColor: '#e27d81',
                                 icon: "question",
                                 reverseButtons: true
-                            }).then(async(value)=>{
+                            }).then((value)=>{
                                 if(value.isConfirmed){
-                                    savedUserList = await {}
-                                    await saveJSON(savedUserList,"savedUserList")
-                                    savedUserScores = await {}
-                                    await saveJSON(savedUserScores,"savedUserScores")
+                                    savedUserList = {}
+                                    savedUserScores = {}
                                     deepUpdateStartTime = new Date()
                                     isDeepUpdate = true
+                                    setTimeout(()=>{
+                                        saveJSON(savedUserList,"savedUserList")
+                                        saveJSON(savedUserScores,"savedUserScores")
+                                    },0)
                                     Update(false)
                                 }
                             })
@@ -1785,11 +1791,10 @@
                                 icon: "question",
                                 reverseButtons: true
                             })
-                            .then(async(value) => {
+                            .then((value) => {
                                 if(value.isConfirmed){
-                                    var newUsername = await usernameEl.val()
+                                    var newUsername = usernameEl.val()
                                     if(!newUsername){
-                                        menuContainerEl.fadeOut(250)
                                         usernameEl[0]?.setCustomValidity("Anilist Username is Required!")
                                         usernameEl[0]?.reportValidity()
                                     } else {
@@ -1805,27 +1810,31 @@
                                                 denyButtonColor: '#e27d81',
                                                 icon: "question",
                                                 reverseButtons: true
-                                            }).then(async(value)=>{
+                                            }).then((value)=>{
                                                 if(value.isConfirmed){
                                                     // Reset User List
-                                                    savedUserList = await {}
-                                                    await saveJSON(savedUserList,"savedUserList")
-                                                    savedUserScores = await {}
-                                                    await saveJSON(savedUserScores,"savedUserScores")
+                                                    savedUserList = {}                                                    
+                                                    savedUserScores = {}
                                                     deepUpdateStartTime = new Date()
                                                     isDeepUpdate = true
+                                                    setTimeout(()=>{
+                                                        saveJSON(savedUserList,"savedUserList")
+                                                        saveJSON(savedUserScores,"savedUserScores")
+                                                    },0)
                                                     Update(false)
                                                 } else {
                                                     usernameEl.focus()
                                                 }
                                             })
                                         } else {
-                                            savedUserList = await {}
-                                            await saveJSON(savedUserList,"savedUserList")
-                                            savedUserScores = await {}
-                                            await saveJSON(savedUserScores,"savedUserScores")
+                                            savedUserList = {}
+                                            savedUserScores = {}
                                             deepUpdateStartTime = new Date()
                                             isDeepUpdate = true
+                                            setTimeout(()=>{
+                                                saveJSON(savedUserList,"savedUserList")
+                                                saveJSON(savedUserScores,"savedUserScores")
+                                            },0)
                                             Update(false)
                                         }
                                     }
@@ -1845,11 +1854,10 @@
                             denyButtonColor: '#e27d81',
                             icon: "question",
                             reverseButtons: true
-                        }).then(async(value)=>{
+                        }).then((value)=>{
                             if(value.isConfirmed){
-                                var newUsername = await usernameEl.val()
+                                var newUsername = usernameEl.val()
                                 if(!newUsername){
-                                    menuContainerEl.fadeOut(250)
                                     usernameEl[0]?.setCustomValidity("Anilist Username is Required!")
                                     usernameEl[0]?.reportValidity()
                                 } else {
@@ -1865,13 +1873,15 @@
                                             denyButtonColor: '#e27d81',
                                             icon: "question",
                                             reverseButtons: true
-                                        }).then(async(value)=>{
+                                        }).then((value)=>{
                                             if(value.isConfirmed){
                                                 // Reset User List
-                                                savedUserList = await {}
-                                                await saveJSON(savedUserList,"savedUserList")
-                                                savedUserScores = await {}
-                                                await saveJSON(savedUserScores,"savedUserScores")
+                                                savedUserList = {} 
+                                                savedUserScores = {}
+                                                setTimeout(()=>{
+                                                    saveJSON(savedUserList,"savedUserList")
+                                                    saveJSON(savedUserScores,"savedUserScores")
+                                                },0)
                                                 Update(false)
                                             } else {
                                                 usernameEl.focus()
@@ -1897,11 +1907,10 @@
                             icon: "question",
                             reverseButtons: true
                         })
-                        .then(async(value) => {
+                        .then((value) => {
                             if(value.isConfirmed){
-                                var newUsername = await usernameEl.val()
+                                var newUsername = usernameEl.val()
                                 if(!newUsername){
-                                    menuContainerEl.fadeOut(250)
                                     usernameEl[0]?.setCustomValidity("Anilist Username is Required!")
                                     usernameEl[0]?.reportValidity()
                                 } else {
@@ -1917,14 +1926,15 @@
                                             denyButtonColor: '#e27d81',
                                             icon: "question",
                                             reverseButtons: true
-                                        }).then(async(value)=>{
-                                            menuContainerEl.fadeOut(250)
+                                        }).then((value)=>{
                                             if(value.isConfirmed){
                                                 // Reset User List
-                                                savedUserList = await {}
-                                                await saveJSON(savedUserList,"savedUserList")
-                                                savedUserScores = await {}
-                                                await saveJSON(savedUserScores,"savedUserScores")
+                                                savedUserList = {}
+                                                savedUserScores = {}
+                                                setTimeout(()=>{
+                                                    saveJSON(savedUserList,"savedUserList")
+                                                    saveJSON(savedUserScores,"savedUserScores")
+                                                },0)
                                                 Update(false)
                                             } else {
                                                 usernameEl.focus()
@@ -1932,14 +1942,13 @@
                                         })
                                     } else {
                                         Update(false)
-                                        menuContainerEl.fadeOut(250)
                                     }
                                 }
                             }
                         })
                     }
                 })
-                updateBtnEl.on('click', async ()=>{
+                updateBtnEl.on('click', ()=>{
                     var updateTime = arrayMean(savedAnalyzeVariableTime) + arrayMean(savedUpdateAnalyzeAnimeTime)
                     if(jsonIsEmpty(savedAnimeEntries)){
                         var deepUpdateTime = arrayMean(savedDeepUpdateTime)
@@ -1956,16 +1965,18 @@
                                 denyButtonColor: '#e27d81',
                                 icon: "question",
                                 reverseButtons: true
-                            }).then(async(value)=>{
+                            }).then((value)=>{
                                 if(value.isConfirmed){
-                                    savedUserList = await {}
-                                    await saveJSON(savedUserList,"savedUserList")
-                                    savedUserScores = await {}
-                                    await saveJSON(savedUserScores,"savedUserScores")
+                                    savedUserList = {}  
+                                    savedUserScores = {}
                                     deepUpdateStartTime = new Date()
                                     isDeepUpdate = true
-                                    Update(false)
+                                    setTimeout(()=>{
+                                        saveJSON(savedUserList,"savedUserList")
+                                        saveJSON(savedUserScores,"savedUserScores")
+                                    },0)
                                     menuContainerEl.fadeOut(250)
+                                    Update(false)
                                 }
                             })
                         } else {
@@ -1982,9 +1993,9 @@
                                 icon: "question",
                                 reverseButtons: true
                             })
-                            .then(async(value) => {
+                            .then((value) => {
                                 if(value.isConfirmed){
-                                    var newUsername = await usernameEl.val()
+                                    var newUsername = usernameEl.val()
                                     if(!newUsername){
                                         menuContainerEl.fadeOut(250)
                                         usernameEl[0]?.setCustomValidity("Anilist Username is Required!")
@@ -2002,29 +2013,34 @@
                                                 denyButtonColor: '#e27d81',
                                                 icon: "question",
                                                 reverseButtons: true
-                                            }).then(async(value)=>{
+                                            }).then((value)=>{
+                                                menuContainerEl.fadeOut(250)
                                                 if(value.isConfirmed){
                                                     // Reset User List
-                                                    savedUserList = await {}
-                                                    await saveJSON(savedUserList,"savedUserList")
-                                                    savedUserScores = await {}
-                                                    await saveJSON(savedUserScores,"savedUserScores")
+                                                    savedUserList = {}
+                                                    savedUserScores = {}
                                                     deepUpdateStartTime = new Date()
                                                     isDeepUpdate = true
+                                                    setTimeout(()=>{
+                                                        saveJSON(savedUserList,"savedUserList")
+                                                        saveJSON(savedUserScores,"savedUserScores")
+                                                    },0)
                                                     Update(false)
                                                 } else {
                                                     usernameEl.focus()
                                                 }
-                                                menuContainerEl.fadeOut(250)
                                             })
                                         } else {
                                             // Reset User List
-                                            savedUserList = await {}
-                                            await saveJSON(savedUserList,"savedUserList")
-                                            savedUserScores = await {}
-                                            await saveJSON(savedUserScores,"savedUserScores")
+                                            savedUserList = {}
+                                            savedUserScores = {}
                                             deepUpdateStartTime = new Date()
                                             isDeepUpdate = true
+                                            setTimeout(()=>{
+                                                saveJSON(savedUserList,"savedUserList")
+                                                saveJSON(savedUserScores,"savedUserScores")
+                                            },0)
+                                            menuContainerEl.fadeOut(250)
                                             Update(false)
                                         }
                                     }
@@ -2044,9 +2060,9 @@
                             denyButtonColor: '#e27d81',
                             icon: "question",
                             reverseButtons: true
-                        }).then(async(value)=>{
+                        }).then((value)=>{
                             if(value.isConfirmed){
-                                var newUsername = await usernameEl.val()
+                                var newUsername = usernameEl.val()
                                 if(!newUsername){
                                     menuContainerEl.fadeOut(250)
                                     usernameEl[0]?.setCustomValidity("Anilist Username is Required!")
@@ -2064,22 +2080,24 @@
                                             denyButtonColor: '#e27d81',
                                             icon: "question",
                                             reverseButtons: true
-                                        }).then(async(value)=>{
+                                        }).then((value)=>{
                                             menuContainerEl.fadeOut(250)
                                             if(value.isConfirmed){
                                                 // Reset User List
-                                                savedUserList = await {}
-                                                await saveJSON(savedUserList,"savedUserList")
-                                                savedUserScores = await {}
-                                                await saveJSON(savedUserScores,"savedUserScores")
+                                                savedUserList = {}
+                                                savedUserScores = {}
+                                                setTimeout(()=>{
+                                                    saveJSON(savedUserList,"savedUserList")
+                                                    saveJSON(savedUserScores,"savedUserScores")
+                                                },0)
                                                 Update(false)
                                             } else {
                                                 usernameEl.focus()
                                             }
                                         })
                                     } else {
-                                        Update(false)
                                         menuContainerEl.fadeOut(250)
+                                        Update(false)
                                     }
                                 }
                             }
@@ -2098,9 +2116,9 @@
                             icon: "question",
                             reverseButtons: true
                         })
-                        .then(async(value) => {
+                        .then((value) => {
                             if(value.isConfirmed){
-                                var newUsername = await usernameEl.val()
+                                var newUsername = usernameEl.val()
                                 if(!newUsername){
                                     menuContainerEl.fadeOut(250)
                                     usernameEl[0]?.setCustomValidity("Anilist Username is Required!")
@@ -2118,29 +2136,31 @@
                                             denyButtonColor: '#e27d81',
                                             icon: "question",
                                             reverseButtons: true
-                                        }).then(async(value)=>{
+                                        }).then((value)=>{
                                             menuContainerEl.fadeOut(250)
                                             if(value.isConfirmed){
                                                 // Reset User List
-                                                savedUserList = await {}
-                                                await saveJSON(savedUserList,"savedUserList")
-                                                savedUserScores = await {}
-                                                await saveJSON(savedUserScores,"savedUserScores")
+                                                savedUserList = {}
+                                                savedUserScores = {}
+                                                setTimeout(()=>{
+                                                    saveJSON(savedUserList,"savedUserList")
+                                                    saveJSON(savedUserScores,"savedUserScores")
+                                                },0)
                                                 Update(false)
                                             } else {
                                                 usernameEl.focus()
                                             }
                                         })
                                     } else {
-                                        Update(false)
                                         menuContainerEl.fadeOut(250)
+                                        Update(false)
                                     }
                                 }
                             }
                         })
                     }
                 })
-                $("#deepUpdateBtn").on("click", async ()=>{
+                $("#deepUpdateBtn").on("click", ()=>{
                     deepUpdateTime = arrayMean(savedDeepUpdateTime)
                     if(requestIsRunning){
                         Swal.fire({
@@ -2155,12 +2175,12 @@
                             denyButtonColor: '#e27d81',
                             icon: "question",
                             reverseButtons: true
-                        }).then(async(value)=>{
+                        }).then((value)=>{
                             if(value.isConfirmed){
                                 deepUpdateStartTime = new Date()
                                 isDeepUpdate = true
-                                Update(false)
                                 menuContainerEl.fadeOut(250)
+                                Update(false)
                             }
                         })
                     } else {
@@ -2177,12 +2197,12 @@
                             icon: "question",
                             reverseButtons: true
                         })
-                        .then(async(value) => {
+                        .then((value) => {
                             if(value.isConfirmed){
                                 deepUpdateStartTime = new Date()
                                 isDeepUpdate = true
-                                Update(false)
                                 menuContainerEl.fadeOut(250)
+                                Update(false)
                             }
                         })
                     }
@@ -2202,7 +2222,9 @@
                                 }
                                 hiddenUnhiddenBtnEl.text("Hidden")
                                 savedTableStatus = await "Hidden"
-                                saveJSON(savedTableStatus,"savedTableStatus")
+                                setTimeout(()=>{
+                                    saveJSON(savedTableStatus,"savedTableStatus")
+                                },0)
                                 await LoadData(savedRecScheme)
                                 pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                             } else {
@@ -2216,7 +2238,9 @@
                                 })
                                 await hiddenUnhiddenBtnEl.text("Unhidden")
                                 savedTableStatus = await "Unhidden"
-                                saveJSON(savedTableStatus,"savedTableStatus")
+                                setTimeout(()=>{
+                                    saveJSON(savedTableStatus,"savedTableStatus")
+                                },0)
                                 await LoadData(savedRecScheme)
                                 pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                             }
@@ -2241,7 +2265,6 @@
                         if(value.isConfirmed){
                             isLoading = true
                             savedHiddenAnimeIDs = await {}
-                            saveJSON(savedHiddenAnimeIDs, "savedHiddenAnimeIDs")
                             var filters = await $("ul.flex0>.value")
                             await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
                                 if(e?.textContent?.toLowerCase()==="hidden"){
@@ -2256,8 +2279,11 @@
                             pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                             showAllAnimeBtnEl.hide()
                             menuContainerEl.fadeOut(500)
+                            setTimeout(()=>{
+                                saveJSON(savedHiddenAnimeIDs, "savedHiddenAnimeIDs")
+                                saveJSON(savedTableStatus,"savedTableStatus")
+                            },0)
                             await LoadData(savedRecScheme)
-                            saveJSON(savedTableStatus,"savedTableStatus")
                             Swal.fire({
                                 heightAuto: false,
                                 text: "All hidden anime has now been successfully transferred to your List!",
@@ -2320,7 +2346,7 @@
                                 })
                                 .then(async(value) => {
                                     if(value.isConfirmed){
-                                        var fileContent
+                                        var fileContent, importedBackUpVersion;
                                         await new Promise(async(resolve,reject)=>{
                                             await importBtnEl.css({background: "black", color: "#F0F0F0"})
                                             try{
@@ -2352,93 +2378,117 @@
                                                 resolve()
                                             }
                                         }).then(async()=>{
-                                            var importedBackUpVersion = await fileContent.backUpVersion
+                                            importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
-                                                await saveJSON(importedBackUpVersion, "backUpVersion")
+                                                setTimeout(()=>{
+                                                    saveJSON(importedBackUpVersion, "backUpVersion")
+                                                },0)
                                             }
                                             return
                                         }).then(async()=>{
                                             savedUsername = await fileContent.savedUsername || ""
-                                            await saveJSON(savedUsername,"savedUsername")
                                             await usernameEl.val(savedUsername)
+                                            setTimeout(()=>
+                                                saveJSON(savedUsername,"savedUsername")
+                                            },0)
                                             return
                                         }).then(async()=>{
                                             savedHiddenAnimeIDs = await fileContent.savedHiddenAnimeIDs || {}
-                                            await saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
                                             if(jsonIsEmpty(savedHiddenAnimeIDs)) {
                                                 showAllAnimeBtnEl.hide()
                                             } else {
                                                 showAllAnimeBtnEl.show()
                                             }
+                                            setTimeout(()=>{
+                                                saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
+                                            },0)
                                             return
                                         }).then(async()=>{
                                             savedRecScheme = await fileContent.savedRecScheme || {}
-                                            await saveJSON(savedRecScheme,"savedRecScheme")
+                                            setTimeout(()=>{
+                                                saveJSON(savedRecScheme,"savedRecScheme")
+                                            },0)
                                             return
                                         }).then(async()=>{
-                                            var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
                                                 savedAnimeEntries = await fileContent.savedAnimeEntries || {}
-                                                await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                                setTimeout(()=>{
+                                                    saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                                },0)
                                             }
                                             return
                                         }).then(async()=>{
-                                            var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
                                                 lastSavedUpdateTime = await fileContent.lastSavedUpdateTime || 0
-                                                await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                                setTimeout(()=>{
+                                                    saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                                },0)
                                             }
                                             return
                                         }).then(async()=>{
-                                            var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
                                                 savedAnimeFranchises = await fileContent.savedAnimeFranchises || []
-                                                await saveJSON(savedAnimeFranchises,"savedAnimeFranchises") || []
+                                                setTimeout(()=>{
+                                                    saveJSON(savedAnimeFranchises,"savedAnimeFranchises") || []
+                                                },0)
                                             }
                                             return
                                         }).then(async()=>{
                                             savedUserList = await fileContent.savedUserList || {}
-                                            await saveJSON(savedUserList,"savedUserList")
+                                            setTimeout(()=>{
+                                                saveJSON(savedUserList,"savedUserList")
+                                            },0)
                                             return
                                         }).then(async()=>{
                                             savedUserScores = await fileContent.savedUserScores || {}
-                                            await saveJSON(savedUserScores,"savedUserScores")
+                                            setTimeout(()=>{
+                                                saveJSON(savedUserScores,"savedUserScores")
+                                            },0)
                                             return
                                         }).then(async()=>{
-                                            var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
                                                 savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || [15]
-                                                await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
+                                                setTimeout(()=>{
+                                                    saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
+                                                },0)
                                             }
                                             return
                                         }).then(async()=>{
-                                            var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
                                                 savedUpdateAnalyzeAnimeTime = await fileContent.savedUpdateAnalyzeAnimeTime || [15]
-                                                await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
+                                                setTimeout(()=>{
+                                                    saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
+                                                },0)
                                             }
                                             return
                                         }).then(async()=>{
-                                            var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion>=backUpVersion){
                                                 savedDeepUpdateTime = await fileContent.savedDeepUpdateTime || [6700]
-                                                await saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
+                                                setTimeout(()=>{
+                                                    saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
+                                                },0)
                                             }
                                             return
                                         }).then(async()=>{
                                             lastAnilistPage = await fileContent.lastAnilistPage || 284
-                                            await saveJSON(lastAnilistPage,"lastAnilistPage")
+                                            setTimeout(()=>{
+                                                saveJSON(lastAnilistPage,"lastAnilistPage")
+                                            },0)
                                             return
                                         }).then(async()=>{
                                             savedWarnAnime = await fileContent.savedWarnAnime || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
                                                                                                    "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
                                                                                                    "!tag: nudity","!tag: slavery","!tag: suicide","!tag: yuri","!tag: netorare", "!tag: rape"
                                                                                                  ]
-                                            await saveJSON(savedWarnAnime,"savedWarnAnime")
+                                            setTimeout(()=>{
+                                                saveJSON(savedWarnAnime,"savedWarnAnime")
+                                            },0)
                                             return
                                         }).then(async()=>{
                                             savedFilterAlgo = await fileContent.savedFilterAlgo || ["minimum sample size: 2","include unknown variables: false"]
-                                            await saveJSON(savedFilterAlgo,"savedFilterAlgo")
+                                            setTimeout(()=>{
+                                                saveJSON(savedFilterAlgo,"savedFilterAlgo")
+                                            },0)
                                             return
                                         }).then(async()=>{
                                             await usernameEl.val(savedUsername)
@@ -2536,10 +2586,11 @@
                                             return
                                         }).then(async()=>{
                                             // If version is lower, Update
-                                            var importedBackUpVersion = await fileContent.backUpVersion
                                             if(importedBackUpVersion<backUpVersion){
                                                 versionUpdate = await true
-                                                await saveJSON(versionUpdate,"versionUpdate")
+                                                setTimeout(()=>{
+                                                    saveJSON(versionUpdate,"versionUpdate")
+                                                },0)
                                                 if(usernameEl.val()){
                                                     Update(true)
                                                 }
@@ -2555,7 +2606,7 @@
                                     }
                                 })
                             } else {
-                                var fileContent
+                                var fileContent, importedBackUpVersion;
                                 await new Promise(async(resolve,reject)=>{
                                     await importBtnEl.css({background: "black", color: "#F0F0F0"})
                                     try{
@@ -2594,93 +2645,121 @@
                                         resolve()
                                     }
                                 }).then(async()=>{
-                                    var importedBackUpVersion = await fileContent.backUpVersion
+                                    importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
-                                        await saveJSON(importedBackUpVersion, "backUpVersion")
+                                        setTimeout(()=>{
+                                            saveJSON(importedBackUpVersion, "backUpVersion")
+                                        },0)
                                     }
                                     return
                                 }).then(async()=>{
                                     savedUsername = await fileContent.savedUsername || ""
-                                    await saveJSON(savedUsername,"savedUsername")
                                     await usernameEl.val(savedUsername)
+                                    setTimeout(()=>
+                                        saveJSON(savedUsername,"savedUsername")
+                                    },0)
                                     return
                                 }).then(async()=>{
                                     savedHiddenAnimeIDs = await fileContent.savedHiddenAnimeIDs || {}
-                                    await saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
                                     if(jsonIsEmpty(savedHiddenAnimeIDs)) {
                                         showAllAnimeBtnEl.hide()
                                     } else {
                                         showAllAnimeBtnEl.show()
                                     }
+                                    setTimeout(()=>{
+                                        saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
+                                    },0)
                                     return
                                 }).then(async()=>{
                                     savedRecScheme = await fileContent.savedRecScheme || {}
-                                    await saveJSON(savedRecScheme,"savedRecScheme")
+                                    setTimeout(()=>{
+                                        saveJSON(savedRecScheme,"savedRecScheme")
+                                    },0)
                                     return
                                 }).then(async()=>{
                                     var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
                                         savedAnimeEntries = await fileContent.savedAnimeEntries || {}
-                                        await saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                        setTimeout(()=>{
+                                            saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                        },0)
                                     }
                                     return
                                 }).then(async()=>{
-                                    var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
                                         lastSavedUpdateTime = await fileContent.lastSavedUpdateTime || 0
-                                        await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                        setTimeout(()=>{
+                                            saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                        },0)
                                     }
                                     return
                                 }).then(async()=>{
-                                    var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
                                         savedAnimeFranchises = await fileContent.savedAnimeFranchises || []
-                                        await saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
+                                        setTimeout(()=>{
+                                            saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
+                                        },0)
                                     }
                                     return
                                 }).then(async()=>{
                                     savedUserList = await fileContent.savedUserList || {}
-                                    await saveJSON(savedUserList,"savedUserList")
+                                    setTimeout(()=>{
+                                        saveJSON(savedUserList,"savedUserList")
+                                    },0)
                                     return
                                 }).then(async()=>{
                                     savedUserScores = await fileContent.savedUserScores || {}
-                                    await saveJSON(savedUserScores,"savedUserScores")
+                                    setTimeout(()=>{
+                                        saveJSON(savedUserScores,"savedUserScores")
+                                    },0)
                                     return
                                 }).then(async()=>{
                                     var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
                                         savedAnalyzeVariableTime = await fileContent.savedAnalyzeVariableTime || [15]
-                                        await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
+                                        setTimeout(()=>{
+                                            saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
+                                        },0)
                                     }
                                     return
                                 }).then(async()=>{
                                     var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
                                         savedUpdateAnalyzeAnimeTime = await fileContent.savedUpdateAnalyzeAnimeTime || [15]
-                                        await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
+                                        setTimeout(()=>{
+                                            saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
+                                        },0)
                                     }
                                     return
                                 }).then(async()=>{
                                     var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion>=backUpVersion){
                                         savedDeepUpdateTime = await fileContent.savedDeepUpdateTime || [6700]
-                                        await saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
+                                        setTimeout(()=>{
+                                            saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
+                                        },0)
                                     }
                                     return
                                 }).then(async()=>{
                                     lastAnilistPage = await fileContent.lastAnilistPage || 284
-                                    await saveJSON(lastAnilistPage,"lastAnilistPage")
+                                    setTimeout(()=>{
+                                        saveJSON(lastAnilistPage,"lastAnilistPage")
+                                    },0)
                                     return
                                 }).then(async()=>{
                                     savedWarnAnime = await fileContent.savedWarnAnime || [ "!genre: ecchi","tag: boys' love","tag: cgi","!tag: ero guro","!tag: female harem",
                                                                                            "tag: full cgi","!tag: male harem","!tag: mixed gender harem",
                                                                                            "!tag: nudity","!tag: slavery","!tag: suicide","!tag: yuri","!tag: netorare", "!tag: rape"
                                                                                          ]
-                                    await saveJSON(savedWarnAnime,"savedWarnAnime")
+                                    setTimeout(()=>{
+                                        saveJSON(savedWarnAnime,"savedWarnAnime")
+                                    },0)
                                     return
                                 }).then(async()=>{
                                     savedFilterAlgo = await fileContent.savedFilterAlgo || ["minimum sample size: 2","include unknown variables: false"]
-                                    await saveJSON(savedFilterAlgo,"savedFilterAlgo")
+                                    setTimeout(()=>{
+                                        saveJSON(savedFilterAlgo,"savedFilterAlgo")
+                                    },0)
                                     return
                                 }).then(async()=>{
                                     await usernameEl.val(savedUsername)
@@ -2781,7 +2860,9 @@
                                     var importedBackUpVersion = await fileContent.backUpVersion
                                     if(importedBackUpVersion<backUpVersion){
                                         versionUpdate = await true
-                                        await saveJSON(versionUpdate,"versionUpdate")
+                                        setTimeout(()=>{
+                                            saveJSON(versionUpdate,"versionUpdate")
+                                        },0)
                                         if(usernameEl.val()){
                                             Update(true)
                                         }
@@ -2839,7 +2920,9 @@
                             if(value.isConfirmed){
                                 updateIntervalBtnEl.removeClass("selected")
                                 updateIntervalIsActive = await false
-                                await saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
+                                setTimeout(()=>{
+                                    saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
+                                },0)
                             }
                         })
                     } else {
@@ -2859,9 +2942,7 @@
                             if(value.isConfirmed){
                                 updateIntervalBtnEl.addClass("selected")
                                 updateIntervalIsActive = await true
-                                await saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
                                 updateIntervalStartDate = await updateIntervalStartDate || new Date()
-                                await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                                 if((new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hrs
                                     if(!requestIsRunning){
                                         if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
@@ -2900,6 +2981,10 @@
                                         }
                                     },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                                 }
+                                setTimeout(()=>{
+                                    saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
+                                    saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                                },0)
                             }
                         })
                     }
@@ -2922,7 +3007,9 @@
                                 if(value.isConfirmed){
                                     exportIntervalBtnEl.removeClass("selected")
                                     exportIntervalIsActive = await false
-                                    await saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
+                                    setTimeout(()=>{
+                                        saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
+                                    },0)
                                 }
                             })
                         } else {
@@ -2942,9 +3029,7 @@
                                 if(value.isConfirmed){
                                     exportIntervalBtnEl.addClass("selected")
                                     exportIntervalIsActive = await true
-                                    await saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
                                     exportIntervalStartDate = await exportIntervalStartDate || new Date()
-                                    await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                                     if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
                                         await new Promise(async(resolve)=>{
                                             await menuContainerEl.fadeOut(250)
@@ -3002,6 +3087,10 @@
                                             },1000)
                                         },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
                                     }
+                                    setTimeout(()=>{
+                                        saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
+                                        saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                    },0)
                                 }
                             })
                         }
@@ -3015,11 +3104,13 @@
                 })
                 $("#submitWarnAnime").on("click",async()=>{
                     savedWarnAnime = await $("ul.flex1>.value>.text").toArray()?.map((e)=>e.textContent)??[]
-                    await saveJSON(savedWarnAnime,"savedWarnAnime")
                     await warnAnimeModalEl.removeClass("swal2-show-custom").addClass("swal2-hide-custom")
                     setTimeout(()=>{
                         warnAnimeContainerEl.hide()
                     },300)
+                    setTimeout(()=>{
+                        saveJSON(savedWarnAnime,"savedWarnAnime")
+                    },0)
                     menuContainerEl.fadeOut(250)
                     await LoadData(savedRecScheme)
                 })
@@ -3027,25 +3118,6 @@
                     warnAnimeModalEl.removeClass("swal2-show-custom").addClass("swal2-hide-custom")
                     setTimeout(async()=>{
                         warnAnimeContainerEl.hide()
-                        await new Promise(async(resolve)=>{
-                            // Remove Current Filters
-                            var warnInfo = await $("ul.flex1>.value")
-                            await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
-                                await $("#flex1").prop("disabled", true)
-                                await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                await $("#flex1").prop("disabled", false)
-                            })
-                            resolve()
-                        }).then(async()=>{
-                            // apply saved
-                            var warnAnimeInput = await $("#flex1")
-                            for(let i=0; i<savedWarnAnime.length; i++) {
-                                await warnAnimeInput.val(savedWarnAnime[i])
-                                var e = await $.Event("keyup",{keyCode:13})
-                                await warnAnimeInput.trigger(e)
-                                await warnAnimeInput.val("")
-                            }
-                        })
                     },300)
                 })
                 $("#warnAnimeContainer, .swal2-modal-custom").on("click",(e)=>{
@@ -3109,24 +3181,6 @@
                     filterAlgoModalEl.removeClass("swal2-show-custom").addClass("swal2-hide-custom")
                     setTimeout(async()=>{
                         filterAlgoContainerEl.hide()
-                        // Remove Current Filters
-                        await new Promise(async(resolve)=>{
-                            var filterInfo = await $("ul.flex2>.value")
-                            await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
-                                await $("#flex2").prop("disabled", true)
-                                await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                await $("#flex2").prop("disabled", false)
-                            })
-                            resolve()
-                        }).then(async()=>{
-                            var filterAlgoInput = await $("#flex2")
-                            for(let i=0; i<savedFilterAlgo.length; i++){
-                                await filterAlgoInput.val(savedFilterAlgo[i])
-                                var e = await $.Event("keyup",{keyCode:13})
-                                await filterAlgoInput.trigger(e)
-                                await filterAlgoInput.val("")
-                            }
-                        })
                     },300)
                 })
                 $("#filterAlgoContainer, .swal2-modal-custom").on("click",(e)=>{
@@ -3197,7 +3251,9 @@
                                                     success: (data) => {
                                                         (async()=>{
                                                             initStartTime = await undefined
-                                                            await saveJSON(initStartTime,"initStartTime")
+                                                            setTimeout(()=>{
+                                                                saveJSON(initStartTime,"initStartTime")
+                                                            },0)
                                                             UsernameValidationEl.fadeOut(1000,()=>{
                                                                 UsernameValidationEl.remove()
                                                                 $(".swal2-validation-message")
@@ -3215,26 +3271,26 @@
                                                     error: (xhr) =>{
                                                         if(!window.navigator.onLine){
                                                             if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                                                (async()=>{
-                                                                    initStartTime = await new Date()
-                                                                    await saveJSON(initStartTime,"initStartTime")
-                                                                })();
+                                                                initStartTime = await new Date()
+                                                                setTimeout(()=>{
+                                                                    saveJSON(initStartTime,"initStartTime")
+                                                                },0)
                                                             }
                                                             UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                                             resolve("Unable to connect to the Internet")
                                                         } else if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
-                                                            (async()=>{
                                                                 initStartTime = await undefined
-                                                                await saveJSON(initStartTime,"initStartTime")
                                                                 UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
+                                                                setTimeout(()=>{
+                                                                    saveJSON(initStartTime,"initStartTime")
+                                                                },0)
                                                                 resolve("Username not Found, Please Try Again...")
-                                                            })();
                                                         } else {
                                                             if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                                                (async()=>{
-                                                                    initStartTime = await new Date()
-                                                                    await saveJSON(initStartTime,"initStartTime")
-                                                                })();
+                                                                initStartTime = await new Date()
+                                                                setTimeout(()=>{
+                                                                    saveJSON(initStartTime,"initStartTime")
+                                                                },0)
                                                             }
                                                             UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                                             resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
@@ -3268,13 +3324,15 @@
                             reverseButtons: true
                         }).then(async(value)=>{
                             if(value.isConfirmed){
-                                var prevThem = await savedTheme
+                                var prevTheme = await savedTheme
                                 savedTheme = await "lightMode"
                                 themeBtnEl.removeClass("selected")
                                 menuContainerEl.fadeOut(250)
                                 await LoadData(savedRecScheme)
-                                await loadTheme(savedTheme,prevThem)
-                                await saveJSON(savedTheme,"savedTheme")
+                                await loadTheme(savedTheme,prevTheme)
+                                setTimeout(()=>{
+                                    saveJSON(savedTheme,"savedTheme")
+                                },0)
                             }
                         })
                     } else {
@@ -3291,13 +3349,15 @@
                             reverseButtons: true
                         }).then(async(value)=>{
                             if(value.isConfirmed){
-                                var prevThem = await savedTheme
+                                var prevTheme = await savedTheme
                                 savedTheme = await "darkMode"
                                 themeBtnEl.addClass("selected")
                                 menuContainerEl.fadeOut(250)
                                 await LoadData(savedRecScheme)
-                                await loadTheme(savedTheme,prevThem)
-                                await saveJSON(savedTheme,"savedTheme")
+                                await loadTheme(savedTheme,prevTheme)
+                                setTimeout(()=>{
+                                    saveJSON(savedTheme,"savedTheme")
+                                },0)
                             }
                         })
                     }
@@ -3319,8 +3379,10 @@
                         .then(async(value)=>{
                             if(value.isConfirmed){
                                 kidsAnimeIsHidden = await false
-                                await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
                                 hideKidsAnimeBtnEl.removeClass("selected")
+                                setTimeout(()=>{
+                                    saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
+                                },0)
                                 menuContainerEl.fadeOut(250)
                                 LoadData(savedRecScheme)
                             }
@@ -3341,8 +3403,10 @@
                         .then(async(value)=>{
                             if(value.isConfirmed){
                                 kidsAnimeIsHidden = await true
-                                await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
                                 hideKidsAnimeBtnEl.addClass("selected")
+                                setTimeout(()=>{
+                                    saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
+                                },0)
                                 menuContainerEl.fadeOut(250)
                                 LoadData(savedRecScheme)
                             }
@@ -3409,7 +3473,9 @@
                 $(".anime-table-headers").on('click', ()=>{
                     var savedSort = animeTableEl[0]?.config?.sortList?.[0]
                     if(savedSort instanceof Array){
-                        saveJSON(savedSort,"savedSort")
+                        setTimeout(()=>{
+                            saveJSON(savedSort,"savedSort")
+                        },0)
                     }
                     setTimeout(()=>{
                         pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
@@ -3465,7 +3531,7 @@
                 })
                 bodyEl.on('scroll', function () {
                     setTimeout(async()=>{
-                        await saveJSON(bodyEl.scrollTop()||0,"savedYscroll")
+                        saveJSON(bodyEl.scrollTop()||0,"savedYscroll")
                     },1)
                 })
                 $(window).on("keydown", (e) => {
@@ -3645,7 +3711,9 @@
                                 `)
                             }
                             savedHiddenAnimeIDs[hiddenAnimeID] = await true
-                            saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
+                            setTimeout(()=>{
+                                saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
+                            },0)
                             animeTableEl.trigger("pagerUpdate")
                             // Have a Hidden Anime
                             if(await !jsonIsEmpty(savedHiddenAnimeIDs)){
@@ -3673,7 +3741,9 @@
                             await hiddenRow.addClass("remove-me")
                             animeTableEl.trigger("pagerUpdate")
                             await delete savedHiddenAnimeIDs[hiddenAnimeID]
-                            saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
+                            setTimeout(()=>{
+                                saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
+                            },0)
                             // No Hidden Anime
                             if(await jsonIsEmpty(savedHiddenAnimeIDs)||animeTableEl[0]?.config?.rowsCopy?.length===0){
                                 await animeRecommendationListEl.empty()
@@ -3697,10 +3767,14 @@
                         await ++page
                         if(savedTableStatus==="Unhidden"){
                             savedUnhiddenTablePage = await page || 1
-                            await saveJSON(savedUnhiddenTablePage,"savedUnhiddenTablePage")
+                            setTimeout(()=>{
+                                saveJSON(savedUnhiddenTablePage,"savedUnhiddenTablePage")
+                            },0)
                         } else if(savedTableStatus==="Hidden"){
                             savedHiddenTablePage = await page || 1
-                            await saveJSON(savedHiddenTablePage,"savedHiddenTablePage")
+                            setTimeout(()=>{
+                                saveJSON(savedHiddenTablePage,"savedHiddenTablePage")
+                            },0)
                         }
                     })
                 // Flex DataList
@@ -3714,11 +3788,13 @@
             return await new Promise(async(resolve)=>{
                 if(savedBackUpVersion<backUpVersion){
                     savedAnalyzeVariableTime = await [15]
-                    await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
                     savedUpdateAnalyzeAnimeTime = await [15]
-                    await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
                     savedDeepUpdateTime = await [6700]
-                    await saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
+                    setTimeout(()=>{
+                        saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
+                        saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
+                        saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
+                    },0)
                     resolve()
                 } else {
                     resolve()
@@ -3734,13 +3810,17 @@
                         const data = await message.data
                         if(data.lastSavedUpdateTime>lastSavedUpdateTime||jsonIsEmpty(savedAnimeEntries)){
                             savedAnimeEntries = await data.savedAnimeEntries || {}
-                            await saveJSON(savedAnimeEntries,"savedAnimeEntries")
                             lastSavedUpdateTime = await data.lastSavedUpdateTime || 0
-                            await saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                            setTimeout(()=>{
+                                saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                            },0)
                         }
                         if(savedUsername){
                             versionUpdate = await true
-                            await saveJSON(versionUpdate,"versionUpdate")
+                            setTimeout(()=>{
+                                saveJSON(versionUpdate,"versionUpdate")
+                            },0)
                             if(usernameEl.val()){
                                 Update(true)
                             }
@@ -3766,14 +3846,16 @@
                         await worker1.terminate()
                         const data = await message.data
                         savedFilterOptionsJson = await data.savedFilterOptionsJson || []
-                        await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
                         allFilterInfo = await data.allFilterInfo || {}
-                        await saveJSON(allFilterInfo,"allFilterInfo")
                         await $(".flexdatalist").flexdatalist({
                             minLength: 0,
                             searchIn: 'info',
                             data: savedFilterOptionsJson
                         })
+                        setTimeout(()=>{
+                            saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
+                            saveJSON(allFilterInfo,"allFilterInfo")
+                        },0)
                         resolve()
                     }
                     worker1.onerror = async (message) => {
@@ -3795,7 +3877,9 @@
             return await new Promise(async(resolve)=>{
                 if(savedBackUpVersion<backUpVersion){
                     savedFilters = ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
-                    await saveJSON(savedFilters,"savedFilters")
+                    setTimeout(()=>{
+                        saveJSON(savedFilters,"savedFilters")
+                    },0)
                     resolve()
                 } else {
                     resolve()
@@ -3810,7 +3894,9 @@
                         await worker8.terminate()
                         const data = await message.data
                         savedAnimeFranchises = await data.savedAnimeFranchises || []
-                        await saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
+                        setTimeout(()=>{
+                            saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
+                        },0)
                         resolve()
                     }
                     worker8.onerror = async (message) => {
@@ -3832,9 +3918,11 @@
                     await updateIntervalBtnEl.show()
                 } else {
                     savedUserList = await {}
-                    await saveJSON(savedUserList,"savedUserList")
                     savedUserScores = await {}
-                    await saveJSON(savedUserScores,"savedUserScores")
+                    setTimeout(()=>{
+                        saveJSON(savedUserList,"savedUserList")
+                        saveJSON(savedUserScores,"savedUserScores")
+                    },0)
                 }
                 // Reload Table Filters/Identifiers
                     // Table Filters
@@ -3932,7 +4020,6 @@
                 if(await updateIntervalIsActive){
                     await updateIntervalBtnEl.css({background: "#F0F0F0",color:"black"})
                     updateIntervalStartDate = await updateIntervalStartDate || new Date()
-                    await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                     if(await (new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hr
                         if(!requestIsRunning&&usernameEl.val()){
                             if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
@@ -3973,6 +4060,9 @@
                         },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                         resolve()
                     }
+                    setTimeout(()=>{
+                        saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                    },0)
                 } else {
                     resolve()
                 }
@@ -3981,7 +4071,6 @@
                 if(exportIntervalIsActive){
                     await exportIntervalBtnEl.css({background: "#F0F0F0",color:"black"})
                     exportIntervalStartDate = await exportIntervalStartDate || new Date()
-                    await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
                         if(!willAutoUpdate){
                             dataStatusSpinnerHomeEl.show()
@@ -4036,6 +4125,9 @@
                         },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
                         return
                     }
+                    setTimeout(()=>{
+                        saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                    },0)
                 } else {
                     return
                 }
@@ -4047,7 +4139,9 @@
             }
             // Save Back-Up Data Version Updates
             if(savedBackUpVersion<backUpVersion){
-                await saveJSON(backUpVersion,"backUpVersion")
+                setTimeout(()=>
+                    saveJSON(backUpVersion,"backUpVersion")
+                },0)
                 return
             } else {
                 return
@@ -4131,21 +4225,23 @@
             savedFilterAlgo = filterAlgo
         }
         //
-        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
-        for(let i=analyzeVariableTime; i>=0; i--){
-            var timeout = setTimeout(()=>{
-                dataStatusSpinnerHomeEl.show()
-                if(i<1){
-                    dataStatusEl
-                        .empty()
-                        .append(`<span style="white-space:nowrap;">Analyzing your List... Please Wait a Moment...`)
-                } else {
-                    dataStatusEl
-                        .empty()
-                        .append(`<span style="white-space:nowrap;">Analyzing your List...⠀</span><span style="white-space:nowrap;">Estimated Time: ${msToTime(i*1000)}</span>`)
-                }
-            },(analyzeVariableTime-i)*1000)
-            updateStateText.push(timeout)
+        (()=>{
+            for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+            for(let i=analyzeVariableTime; i>=0; i--){
+                var timeout = setTimeout(()=>{
+                    dataStatusSpinnerHomeEl.show()
+                    if(i<1){
+                        dataStatusEl
+                            .empty()
+                            .append(`<span style="white-space:nowrap;">Analyzing your List... Please Wait a Moment...`)
+                     } else {
+                        dataStatusEl
+                            .empty()
+                            .append(`<span style="white-space:nowrap;">Analyzing your List...⠀</span><span style="white-space:nowrap;">Estimated Time: ${msToTime(i*1000)}</span>`)
+                    }
+                },(analyzeVariableTime-i)*1000)
+                updateStateText.push(timeout)
+            }
         }
         if(!notAnUpdate){
             var AnalyzeVariableStartTime = new Date()
@@ -4159,11 +4255,11 @@
                 if(pastUserEntries?.length){// After Getting new Anime
                     // Reset User List
                     if(isDeepUpdate){
-                        (async()=>{
-                            savedUserList = await {}
-                            await saveJSON(savedUserList,"savedUserList")
-                            savedUserScores = await {}
-                            await saveJSON(savedUserScores,"savedUserScores")
+                        (()=>{
+                            savedUserList = {}   
+                            savedUserScores = {}
+                            saveJSON(savedUserList,"savedUserList")
+                            saveJSON(savedUserScores,"savedUserScores")
                         })();
                     }
                     worker2.postMessage({savedUserList: savedUserList, userEntries: pastUserEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
@@ -4253,26 +4349,27 @@
                                 }
                             })
                         }
-                        (async()=>{
+                        (()=>{
                             savedUserList = data.savedUserList
                             const varScheme = data.varScheme
                             const userListStatus = data.userListStatus
                             const alteredVariables = data.alteredVariables
-                            var timeInterval = await (new Date).getTime()-AnalyzeVariableStartTime.getTime()
+                            var timeInterval = (new Date).getTime()-AnalyzeVariableStartTime.getTime()
                             if(savedAnalyzeVariableTime.length<33){
-                                await savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
-                                await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
+                                savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
                             } else {
-                                await savedAnalyzeVariableTime.shift()
-                                await savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
-                                await saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
+                                savedAnalyzeVariableTime.shift()
+                                savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
                             }
-                            savedUserList = await savedUserList || {}
-                            await saveJSON(savedUserList,"savedUserList")
-                            savedUserScores = await savedUserScores || {}
-                            await saveJSON(savedUserScores,"savedUserScores")
+                            savedUserList = savedUserList || {}
+                            savedUserScores = savedUserScores || {}
+                            setTimeout(()=>{
+                                saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
+                                saveJSON(savedUserList,"savedUserList")
+                                saveJSON(savedUserScores,"savedUserScores")
+                            },0)
                             // Don't Redo loop if its not found
-                            await analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, true, false)
+                            analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, true, false)
                         })();
                     }
                     worker2.onerror = (message) => {
@@ -4350,11 +4447,13 @@
                                 } else {
                                     // Reset User List
                                     if(isDeepUpdate){
-                                        (async()=>{
-                                            savedUserList = await {}
-                                            await saveJSON(savedUserList,"savedUserList")
-                                            savedUserScores = await {}
-                                            await saveJSON(savedUserScores,"savedUserScores")
+                                        (()=>{
+                                            savedUserList = {}
+                                            savedUserScores = {}
+                                            setTimeout(()=>{
+                                                saveJSON(savedUserList,"savedUserList")
+                                                saveJSON(savedUserScores,"savedUserScores")
+                                            },0)
                                         })();
                                     }
                                     worker2.postMessage({savedUserList: savedUserList, userEntries: userEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
@@ -4451,17 +4550,18 @@
                                         const hasNewAnime = data.hasNewAnime
                                         var timeInterval = (new Date).getTime()-AnalyzeVariableStartTime.getTime()
                                         if(savedAnalyzeVariableTime.length<33){
-                                            savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
-                                            saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
+                                            savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))    
                                         } else {
                                             savedAnalyzeVariableTime.shift()
                                             savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
-                                            saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
                                         }
                                         savedUserList = savedUserList || {}
-                                        saveJSON(savedUserList,"savedUserList")
                                         savedUserScores = savedUserScores || {}
-                                        saveJSON(savedUserScores,"savedUserScores")
+                                        setTimeout(()=>{
+                                            saveJSON(savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
+                                            saveJSON(savedUserList,"savedUserList")
+                                            saveJSON(savedUserScores,"savedUserScores")
+                                        },0)
                                         analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, true, userEntries)
                                     }
                                     worker2.onerror = (message) => {
@@ -4566,46 +4666,46 @@
                                                                                 )
                                                                         },
                                                                         success: (data) => {
-                                                                            (async()=>{
-                                                                                initStartTime = await undefined
-                                                                                await saveJSON(initStartTime,"initStartTime")
-                                                                                UsernameValidationEl.fadeOut(1000,()=>{
-                                                                                    UsernameValidationEl.remove()
-                                                                                    $(".swal2-validation-message")
-                                                                                        .addClass("no-before").removeClass("no-before")
-                                                                                        .addClass("success-before")
-                                                                                        .html("Username Found")
-                                                                                    setTimeout(()=>{
-                                                                                        // Reset Custom Validation
-                                                                                        filterAlgoValidationEl.html("").hide()
-                                                                                        resolve()
-                                                                                    },1000)
-                                                                                })
-                                                                            })();
+                                                                            initStartTime = await undefined
+                                                                            setTimeout(()=>{
+                                                                                saveJSON(initStartTime,"initStartTime")
+                                                                            },0)
+                                                                            UsernameValidationEl.fadeOut(1000,()=>{
+                                                                                UsernameValidationEl.remove()
+                                                                                $(".swal2-validation-message")
+                                                                                    .addClass("no-before").removeClass("no-before")
+                                                                                    .addClass("success-before")
+                                                                                    .html("Username Found")
+                                                                                setTimeout(()=>{
+                                                                                    // Reset Custom Validation
+                                                                                    filterAlgoValidationEl.html("").hide()
+                                                                                    resolve()
+                                                                                },1000)
+                                                                            })
                                                                         },
                                                                         error: (xhr) =>{
                                                                             if(!window.navigator.onLine){
                                                                                 if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                                                                    (async()=>{
-                                                                                        initStartTime = await new Date()
-                                                                                        await saveJSON(initStartTime,"initStartTime")
-                                                                                    })();
+                                                                                    initStartTime = new Date()
+                                                                                    setTimeout(()=>{
+                                                                                        saveJSON(initStartTime,"initStartTime")
+                                                                                    },0)
                                                                                 }
                                                                                 UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                                                                 resolve("Unable to connect to the Internet")
                                                                             } else if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
-                                                                                (async()=>{
-                                                                                    initStartTime = await undefined
-                                                                                    await saveJSON(initStartTime,"initStartTime")
-                                                                                    UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                                                                    resolve("Username not Found, Please Try Again...")
-                                                                                })();
+                                                                                initStartTime = undefined
+                                                                                setTimeout(()=>{
+                                                                                    saveJSON(initStartTime,"initStartTime")
+                                                                                },0)
+                                                                                UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
+                                                                                resolve("Username not Found, Please Try Again...")
                                                                             } else {
                                                                                 if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                                                                    (async()=>{
-                                                                                        initStartTime = await new Date()
-                                                                                        await saveJSON(initStartTime,"initStartTime")
-                                                                                    })();
+                                                                                    initStartTime = new Date()
+                                                                                    setTimeout(()=>{
+                                                                                        saveJSON(initStartTime,"initStartTime")
+                                                                                    },0)
                                                                                 }
                                                                                 UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                                                                 resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
@@ -4749,15 +4849,17 @@
                     return
                 }
             } else {
-                for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
-                dataStatusSpinnerHomeEl.hide()
-                var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                dataStatusEl
-                    .empty()
-                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                requestIsRunning = false
-                filterAlgoValidationEl.hide()
+                (()=>{
+                    for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                    dataStatusSpinnerHomeEl.hide()
+                    dataStatusEl
+                        .empty()
+                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                        .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
+                    filterAlgoValidationEl.hide()
+                    var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                    requestIsRunning = false
+                })();
             }
         }
     }
@@ -4770,6 +4872,7 @@
         var staffPage = 1
         var maxStaffPerPage = 25
         var staffHasNextPage = false
+        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
         async function recalluAAL(page, staffPage){
             // Allow Single Instance of Update
             if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
@@ -4855,7 +4958,6 @@
                     `
                 }),
                 beforeSend: ()=> {
-                    for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                     var usDn = lastAnilistPage>page?lastAnilistPage:page+1
                     var usUp = page
                     dataStatusEl
@@ -4900,25 +5002,27 @@
                         dataStatusEl
                             .empty()
                             .append(`<span style="white-space:nowrap;">Getting Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="100" max="100"></progress>⠀100%</span>`);
-                        (async()=>{
-                            savedAnimeEntries = await animeEntries || {}
+                        savedAnimeEntries = animeEntries || {}
+                        lastSavedUpdateTime = tempLastSavedUpdateTime || 0
+                        lastAnilistPage = page || 284
+                        setTimeout(()=>{
                             saveJSON(savedAnimeEntries,"savedAnimeEntries")
-                            lastSavedUpdateTime = await tempLastSavedUpdateTime || 0
                             saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
-                            lastAnilistPage = await page || 284
                             saveJSON(lastAnilistPage, "lastAnilistPage")
-                            if(savedUserList){
-                                savedUserList = await savedUserList || {}
+                        },0)
+                        if(savedUserList){
+                            savedUserList = savedUserList || {}
+                            savedUserScores = savedUserScores || {}
+                            setTimeout(()=>{
                                 saveJSON(savedUserList,"savedUserList")
-                                savedUserScores = await savedUserScores || {}
                                 saveJSON(savedUserScores,"savedUserScores")
-                            }
-                            if(noSavedEntries){
-                                analyzeVariables(updateID, username, undefined, notAnUpdate, filterAlgo, doHideUnwatchedSeq, true)
-                            } else {
-                                analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
-                            }
-                        })();
+                            },0)
+                        }
+                        if(noSavedEntries){
+                            analyzeVariables(updateID, username, undefined, notAnUpdate, filterAlgo, doHideUnwatchedSeq, true)
+                        } else {
+                            analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
+                        }
                     }
                 },
                 error: function(xhr) {
@@ -5003,6 +5107,7 @@
             var page = 1
             var maxStaffPerPage = 25
             var staffHasNextPage = false
+            for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
             var worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
             async function recallgNA(page, staffPage){
                 // Allow Single Instance of Update
@@ -5097,7 +5202,6 @@
                         `
                     }),
                     beforeSend: ()=> {
-                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                         var usDn = lastAnilistPage>page?lastAnilistPage:page+1
                         var usUp = page
                         dataStatusEl
@@ -5139,16 +5243,20 @@
                                 })
                                 worker3.onmessage = (message) => {
                                     savedAnimeEntries = message.data.savedAnimeEntries ?? {}
-                                    saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                    setTimeout(()=>{
+                                        saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                    },0)
                                     if(!hasNextPage){
                                         worker3.terminate()
                                         dataStatusEl
                                             .empty()
                                             .append(`<span style="white-space:nowrap;">Getting New Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
-                                        savedAnimeEntries = message.data.savedAnimeEntries ?? {}
-                                        saveJSON(savedAnimeEntries,"savedAnimeEntries")
                                         lastSavedUpdateTime = tempLastSavedUpdateTime || 0
-                                        saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                        lastAnilistPage = Math.ceil(Object.keys(savedAnimeEntries).length/50) || lastAnilistPage || 284
+                                        setTimeout(()=>{
+                                            saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                            saveJSON(lastAnilistPage,"lastAnilistPage")
+                                        },0)
                                         analyzeVariables(updateID, username, userListIDs, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
                                     }
                                 }
@@ -5247,6 +5355,7 @@
             var page = 1
             var maxStaffPerPage = 25
             var staffHasNextPage = false
+            for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
             var worker9 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
             async function recalluAL(page, staffPage){
                 // Allow Single Instance of Update
@@ -5334,7 +5443,6 @@
                         `
                     }),
                     beforeSend: ()=> {
-                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                         var usDn = lastAnilistPage>page?lastAnilistPage:page+1
                         var usUp = page
                         dataStatusEl
@@ -5392,14 +5500,20 @@
                                 })
                                 worker9.onmessage = (message) => {
                                     savedAnimeEntries = message.data.savedAnimeEntries ?? {}
-                                    saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                    setTimeout(()=>{
+                                        saveJSON(savedAnimeEntries,"savedAnimeEntries")
+                                    },0)
                                     if(!(hasNextPage&&currentDateUpdating>=lastSavedUpdateTime)){
                                         worker9.terminate()
                                         dataStatusEl
                                             .empty()
                                             .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
                                         lastSavedUpdateTime = tempLastSavedUpdateTime || 0
-                                        saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                        lastAnilistPage = Math.ceil(Object.keys(savedAnimeEntries).length/50) || lastAnilistPage || 284
+                                        setTimeout(()=>{
+                                            saveJSON(lastSavedUpdateTime,"lastSavedUpdateTime")
+                                            saveJSON(lastAnilistPage,"lastAnilistPage")
+                                        },0)
                                         analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
                                     }
                                 }
@@ -5506,23 +5620,25 @@
                         </div>`
                     )
             }
-            for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
-            await dataStatusSpinnerHomeEl.show()
-            for(let i=updateAnalyzeAnimeTime; i>=0; i--){
-                var timeout = await setTimeout(async()=>{
-                    if(i<1){
-                        await dataStatusSpinnerHomeEl.show()
-                        await dataStatusEl
-                            .empty()
-                            .append(`<span style="white-space:nowrap;">Updating Recommendations List, Please Wait a Moment...`)
-                    } else {
-                        await dataStatusEl
-                            .empty()
-                            .append(`<span style="white-space:nowrap;">Updating Recommendations List,⠀</span><span style="white-space:nowrap;">Estimated Time: ${msToTime(i*1000)}</span>`)
-                    }
-                },(updateAnalyzeAnimeTime-i)*1000)
-                await updateStateText.push(timeout)
-            }
+            (()=>{
+                for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                dataStatusSpinnerHomeEl.show()
+                for(let i=updateAnalyzeAnimeTime; i>=0; i--){
+                    var timeout = await setTimeout(async()=>{
+                        if(i<1){
+                            await dataStatusSpinnerHomeEl.show()
+                            await dataStatusEl
+                                .empty()
+                                .append(`<span style="white-space:nowrap;">Updating Recommendations List, Please Wait a Moment...`)
+                        } else {
+                            await dataStatusEl
+                                .empty()
+                                .append(`<span style="white-space:nowrap;">Updating Recommendations List,⠀</span><span style="white-space:nowrap;">Estimated Time: ${msToTime(i*1000)}</span>`)
+                        }
+                    },(updateAnalyzeAnimeTime-i)*1000)
+                    await updateStateText.push(timeout)
+                }
+            })();
             // Normal Update
             if(jsonIsEmpty(animeEntries)) {
                 animeEntries = await savedAnimeEntries || {}
@@ -5548,34 +5664,44 @@
                 const data = message.data
                 // Save Mean Score
                 savedUserScores = data.savedUserScores || {}
-                saveJSON(savedUserScores,"savedUserScores")
                 if(!notAnUpdate||versionUpdate){
                     // Save New Filter Options
                     allFilterInfo = await data.allFilterInfo || {}
-                    await saveJSON(allFilterInfo,"allFilterInfo")
+                    setTimeout(()=>{
+                        saveJSON(allFilterInfo,"allFilterInfo")
+                    },0)
                     // Save New anime Franchises
                     if(!alertUser||savedAnimeUpdated){
                         savedAnimeFranchises = await data.animeFranchises || []
-                        saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
+                        setTimeout(()=>{
+                            saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
+                        },0)
                     }     
                 }
                 // Save Filtered Algorithm Contents
                 if(notAnUpdate&&filterAlgo){
                     savedFilterAlgo = await filterAlgo || ["minimum sample size: 2","include unknown variables: false"]
-                    await saveJSON(savedFilterAlgo,"savedFilterAlgo")
+                    setTimeout(()=>{
+                        saveJSON(savedFilterAlgo,"savedFilterAlgo")
+                    },0)
                 }
                 // Save Table Filters
                 savedFilters = await $("ul.flex0 > .value > .text").toArray()?.map((e)=>e.textContent) || ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
-                saveJSON(savedFilters, "savedFilters")
                 // Save Username
                 savedUsername = await username || ""
-                saveJSON(savedUsername,"savedUsername")
                 // Save new Recommendation List
                 savedRecScheme = await data.savedRecScheme || {}
-                saveJSON(savedRecScheme, "savedRecScheme")
+                setTimeout(()=>{
+                    saveJSON(savedUserScores,"savedUserScores")
+                    saveJSON(savedFilters, "savedFilters")
+                    saveJSON(savedUsername,"savedUsername")
+                    saveJSON(savedRecScheme, "savedRecScheme")
+                },0)
                 if(versionUpdate){
                     versionUpdate = await false
-                    saveJSON(versionUpdate,"versionUpdate")
+                    setTimeout(()=>{
+                        saveJSON(versionUpdate,"versionUpdate")
+                    },0)
                 } 
                 if(!jsonIsEmpty(savedRecScheme)){
                     updateBtnEl.show()
@@ -5583,7 +5709,9 @@
                 }
                 if(typeof doHideUnwatchedSeq==="boolean"){
                     hideUnwatchedSequels = await doHideUnwatchedSeq
-                    saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
+                    setTimeout(()=>{
+                        saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
+                    },0)
                 }
                 var worker5 = new Worker(`./js-css/worker/updateOptions-${version}.js`)
                 worker5.postMessage({
@@ -5596,7 +5724,6 @@
                     if(!notAnUpdate||versionUpdate||savedAnimeUpdated){
                         // Save and Reload Filters
                         savedFilterOptionsJson = await data.savedFilterOptionsJson || []
-                        await saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
                         // Check input Focus before updating
                         if( $("#flex0").is(":focus")
                             ||$("#flex1").is(":focus")
@@ -5712,12 +5839,14 @@
                     var timeInterval = (new Date).getTime()-UpdateAnalyzeAnimeStartTime.getTime()
                     if(savedUpdateAnalyzeAnimeTime.length<33){
                         await savedUpdateAnalyzeAnimeTime.push(Math.ceil(timeInterval/1000))
-                        await saveJSON(savedUpdateAnalyzeAnimeTime, "savedUpdateAnalyzeAnimeTime")
                     } else {
                         await savedUpdateAnalyzeAnimeTime.shift()
                         await savedUpdateAnalyzeAnimeTime.push(Math.ceil(timeInterval/1000))
-                        await saveJSON(savedUpdateAnalyzeAnimeTime, "savedUpdateAnalyzeAnimeTime")
-                    } 
+                    }
+                    setTimeout(()=>{
+                        saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
+                        saveJSON(savedUpdateAnalyzeAnimeTime, "savedUpdateAnalyzeAnimeTime")
+                    },0)
                     // Reload New Recommendation Data
                     await LoadData(savedRecScheme)
                     if(notAnUpdate){
@@ -5744,14 +5873,16 @@
                             .html("Filters have been applied")
                         setTimeout(()=>{
                             filterAlgoValidationEl.fadeOut(1000)
-                        },1000)
-                        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
-                        dataStatusSpinnerHomeEl.hide()
-                        var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                        dataStatusEl
-                            .empty()
-                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                            .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
+                        },1000);
+                        (()=>{
+                            for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
+                            dataStatusSpinnerHomeEl.hide()
+                            var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                            dataStatusEl
+                                .empty()
+                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
+                        })();
                     } else if(haveNewAnime){
                         // Get New Anime and Re-Update
                         getNewAnime(updateID, username, userListIDs, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
@@ -5774,34 +5905,35 @@
                         // Continue Extra Updates
                         updateAnimeList(updateID, username, varScheme, userListStatus, alteredVariables)
                     } else {
-                        if(willAutoUpdate){
-                            (async()=>{
-                                updateIntervalStartDate = await new Date()
-                                await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                        (()=>{
+                            if(willAutoUpdate){
+                                updateIntervalStartDate = new Date()
                                 willAutoUpdate = false
-                            })();
-                        }
-                        if(isDeepUpdate){
-                            (async()=>{
+                                setTimeout(()=>{
+                                    saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                                },0)
+                            }
+                            if(isDeepUpdate){
                                 isDeepUpdate = false
                                 var timeInterval = (new Date).getTime()-deepUpdateStartTime.getTime()
                                 if(savedDeepUpdateTime.length<33){
-                                    await savedDeepUpdateTime.push(Math.ceil(timeInterval/1000))
-                                    await saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
+                                    savedDeepUpdateTime.push(Math.ceil(timeInterval/1000))
                                 } else {
-                                    await savedDeepUpdateTime.shift()
-                                    await savedDeepUpdateTime.push(Math.ceil(timeInterval/1000))
-                                    await saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
+                                    savedDeepUpdateTime.shift()
+                                    savedDeepUpdateTime.push(Math.ceil(timeInterval/1000))
                                 }
-                            })();
-                        }
-                        for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
-                        dataStatusSpinnerHomeEl.hide()
-                        var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                        dataStatusEl
-                            .empty()
-                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                            .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
+                                setTimeout(()=>{
+                                    saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
+                                },0)
+                            }
+                            for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                            dataStatusSpinnerHomeEl.hide()
+                            var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                            dataStatusEl
+                                .empty()
+                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
+                        })();
                     }
                     if(alertUser||haveNewAnime){
                         if(exportIntervalIsActive){
@@ -5893,7 +6025,9 @@
                     }
                     return filter
                 }) || ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
-                saveJSON(savedFilters, "savedFilters")
+                setTimeout(()=>{
+                    saveJSON(savedFilters, "savedFilters")
+                },0)
                 var worker6 = new Worker(`./js-css/worker/loadData-${version}.js`)
                 worker6.postMessage({
                     recList: recList,
@@ -5986,7 +6120,9 @@
                 // Browser
                 if(saveBackUpDate){
                     exportIntervalStartDate = await new Date()
-                    await saveJSON(exportIntervalStartDate, "exportIntervalStartDate")
+                    setTimeout(()=>{
+                        saveJSON(exportIntervalStartDate, "exportIntervalStartDate")
+                    },0)
                 }
                 if(!requestIsRunning){
                     dataStatusSpinnerHomeEl.hide()
@@ -6071,7 +6207,9 @@
                             success: (data) => {
                                 (async()=>{
                                     initStartTime = await undefined
-                                    await saveJSON(initStartTime,"initStartTime")
+                                    setTimeout(()=>{
+                                        saveJSON(initStartTime,"initStartTime")
+                                    },0)
                                     UsernameValidationEl.fadeOut(1000,()=>{
                                         UsernameValidationEl.remove()
                                         $(".swal2-validation-message")
@@ -6089,26 +6227,26 @@
                             error: (xhr) =>{
                                 if(!window.navigator.onLine){
                                     if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                        (async()=>{
-                                            initStartTime = await new Date()
-                                            await saveJSON(initStartTime,"initStartTime")
-                                        })();
+                                        initStartTime = new Date()
+                                        setTimeout(()=>{
+                                            saveJSON(initStartTime,"initStartTime")
+                                        },0)
                                     }
                                     UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                     resolve("Unable to connect to the Internet")
                                 } else if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
-                                    (async()=>{
-                                        initStartTime = await undefined
-                                        await saveJSON(initStartTime,"initStartTime")
-                                        UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                        resolve("Username not Found, Please Try Again...")
-                                    })();
+                                    initStartTime = undefined
+                                    setTimeout(()=>{
+                                        saveJSON(initStartTime,"initStartTime")
+                                    },0)
+                                    UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
+                                    resolve("Username not Found, Please Try Again...")
                                 } else {
                                     if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                        (async()=>{
-                                            initStartTime = await new Date()
-                                            await saveJSON(initStartTime,"initStartTime")
-                                        })();
+                                        initStartTime = await new Date()
+                                        setTimeout(()=>{
+                                            saveJSON(initStartTime,"initStartTime")
+                                        },0)
                                     }
                                     UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                     resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
