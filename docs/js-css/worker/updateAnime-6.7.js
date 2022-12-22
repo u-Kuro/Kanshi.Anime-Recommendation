@@ -1,12 +1,12 @@
 self.onmessage = (message) => {
     const data = message.data
-    var savedAnimeEntries = data.savedAnimeEntries??{}
-    var updatedAnimeEntries = data.updatedAnimeEntries??{}
-    Object.keys(updatedAnimeEntries).forEach((id)=>{
+    const savedAnimeEntries = data.savedAnimeEntries??{}
+    const updatedAnimeEntries = data.updatedAnimeEntries??{}
+    for(let id in updatedAnimeEntries){
         if(isaN(id)){
             savedAnimeEntries[id] = updatedAnimeEntries[id]             
         }
-    })
+    }
     self.postMessage({
         savedAnimeEntries: savedAnimeEntries
     })
