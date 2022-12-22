@@ -1,6 +1,7 @@
 self.onmessage = (message) => {
     const savedFilterOptionsJson = []
-    for(let key in message.data.allFilterInfo??{}){
+    const allFilterInfo = message.data.allFilterInfo??{}
+    for(let key in allFilterInfo){
         savedFilterOptionsJson.push({info: key})
     }
     self.postMessage({
