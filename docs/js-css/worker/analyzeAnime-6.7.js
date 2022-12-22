@@ -268,6 +268,21 @@ self.onmessage = (message) => {
             if(!allFilterInfo["limit top similarities: "]){
                 allFilterInfo["limit top similarities: "] = true
             }
+            if(!allFilterInfo["top similarities: contents"]
+              &&!allFilterInfo["!top similarities: !contents"]){
+                allFilterInfo["top similarities: contents"] = true
+                allFilterInfo["!top similarities: !contents"] = true
+            }
+            if(!allFilterInfo["top similarities: studios"]
+              &&!allFilterInfo["!top similarities: !studios"]){
+                allFilterInfo["top similarities: studios"] = true
+                allFilterInfo["!top similarities: !studios"] = true
+            }
+            if(!allFilterInfo["top similarities: staffs"]
+              &&!allFilterInfo["!top similarities: !staffs"]){
+                allFilterInfo["top similarities: staffs"] = true
+                allFilterInfo["!top similarities: !staffs"] = true
+            }
             if(!allFilterInfo["measure: mode"]
              &&!allFilterInfo["measure: mean"]){
                 allFilterInfo["measure: mode"] = true
