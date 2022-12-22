@@ -2349,7 +2349,7 @@
                                         var fileContent, importedBackUpVersion;
                                         await new Promise(async(resolve,reject)=>{
                                             try{
-                                                await importBtnEl.css({background: "black", color: "#F0F0F0"})
+                                                await importBtnEl.addClass('selected')
                                                 await menuContainerEl.fadeOut(250)
                                                 await dataStatusSpinnerHomeEl.show()
                                                 await dataStatusEl
@@ -2585,6 +2585,7 @@
                                             return
                                         })
                                         .catch((message)=>{
+                                            importBtnEl.removeClass('selected')
                                             importFileEl.val(null)
                                             Swal.fire({
                                                 heightAuto: false,
@@ -2604,14 +2605,14 @@
                                         })
                                     } else {
                                         importFileEl.val(null)
-                                        await importBtnEl.css({background: "black", color: "#F0F0F0"})
+                                        importBtnEl.removeClass('selected')
+                                        return
                                     }
                                 })
                             } else {
                                 var fileContent, importedBackUpVersion;
                                 await new Promise(async(resolve,reject)=>{
                                     try{
-                                        await importBtnEl.css({background: "black", color: "#F0F0F0"})
                                         await $(".swal2-validation-message")
                                             .addClass("no-before")
                                             .css({display:"flex"})
