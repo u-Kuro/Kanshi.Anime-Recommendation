@@ -5647,7 +5647,6 @@
             // Reset if Username Changed || isDeepUpdate
             if(username!==savedUsername||isDeepUpdate||versionUpdate){
                 savedRecScheme = await {}
-            // Normal Update
             }
             var worker4 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
             console.log(doHideUnwatchedSeq,"ee")
@@ -5658,7 +5657,7 @@
                 varScheme: varScheme,
                 allFilterInfo: allFilterInfo,
                 alteredVariables: alteredVariables,
-                hideUnwatchedSequels: doHideUnwatchedSeq,
+                hideUnwatchedSequels: doHideUnwatchedSeq??hideUnwatchedSequels,
                 savedUserScores: savedUserScores
             })
             worker4.onmessage = async(message) => {
@@ -5679,13 +5678,6 @@
                             saveJSON(savedAnimeFranchises,"savedAnimeFranchises")
                         },0)
                     }     
-                }
-                // Save Filtered Algorithm Contents
-                if(notAnUpdate&&filterAlgo){
-                    savedFilterAlgo = await filterAlgo || ["minimum sample size: 2","include unknown variables: false"]
-                    setTimeout(()=>{
-                        saveJSON(savedFilterAlgo,"savedFilterAlgo")
-                    },0)
                 }
                 // Save Table Filters
                 savedFilters = await $("ul.flex0 > .value > .text").toArray()?.map((e)=>e.textContent) || ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
@@ -5709,6 +5701,14 @@
                     updateBtnEl.show()
                     updateIntervalBtnEl.show()
                 }
+                // Save Filtered Algorithm Contents
+                if(notAnUpdate&&filterAlgo){
+                    savedFilterAlgo = await filterAlgo || ["minimum sample size: 2","include unknown variables: false"]
+                    setTimeout(()=>{
+                        saveJSON(savedFilterAlgo,"savedFilterAlgo")
+                    },0)
+                }
+                // Save unwatched sequels' visibility status
                 if(typeof doHideUnwatchedSeq==="boolean"){
                     hideUnwatchedSequels = await doHideUnwatchedSeq
                     setTimeout(()=>{
