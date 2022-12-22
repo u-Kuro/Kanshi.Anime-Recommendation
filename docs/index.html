@@ -5609,9 +5609,6 @@
         return await new Promise(async(resolve)=>{
             var UpdateAnalyzeAnimeStartTime = await new Date()
             var updateAnalyzeAnimeTime = await Math.ceil(arrayMean(savedUpdateAnalyzeAnimeTime))
-            if(doHideUnwatchedSeq){
-                hideUnwatchedSequels = await doHideUnwatchedSeq
-            }
             if(notAnUpdate){
                 await filterAlgoValidationEl
                     .removeClass("success-before")
@@ -5653,6 +5650,7 @@
             // Normal Update
             }
             var worker4 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
+            console.log(doHideUnwatchedSeq,"ee")
             worker4.postMessage({
                 animeEntries: animeEntries,
                 savedRecScheme: savedRecScheme,
@@ -5660,7 +5658,7 @@
                 varScheme: varScheme,
                 allFilterInfo: allFilterInfo,
                 alteredVariables: alteredVariables,
-                hideUnwatchedSequels: hideUnwatchedSequels,
+                hideUnwatchedSequels: doHideUnwatchedSeq,
                 savedUserScores: savedUserScores
             })
             worker4.onmessage = async(message) => {
@@ -6081,6 +6079,16 @@
                         icon: "error",
                         confirmButtonColor: "#000"
                     })
+                    if(requestIsRunning){
+                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                        dataStatusSpinnerHomeEl.hide()
+                        var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                        dataStatusEl
+                            .empty()
+                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                            .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
+                        requestIsRunning = false
+                    }
                     isLoading = false
                     resolve()
                 }
