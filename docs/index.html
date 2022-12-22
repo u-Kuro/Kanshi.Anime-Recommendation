@@ -5873,7 +5873,7 @@
                             filterAlgoValidationEl.fadeOut(1000)
                         },1000);
                         (()=>{
-                            for(let i=0;i<updateStateText.length;i++) await clearTimeout(updateStateText[i])
+                            for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                             dataStatusSpinnerHomeEl.hide()
                             var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
                             dataStatusEl
