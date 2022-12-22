@@ -638,7 +638,7 @@ self.onmessage = (message) => {
         value?.variablesIncluded?.forEach((v)=>{
             if(isJson(v)){
                 if(!topSimilarities.exclude.contents
-                  ||topSimilarities.include.contents)){
+                  ||topSimilarities.include.contents){
                     Object.entries(v).forEach(([name, url])=>{
                         similarities.push(`<a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
                     })
