@@ -1,15 +1,19 @@
 self.onmessage = (message) => {
-    var data = message.data
+    const data = message.data
     var savedAnimeEntries = data.savedAnimeEntries??{}
     var updatedAnimeEntries = data.updatedAnimeEntries??{}
-    var updatedAnimeEntriesIDs = Object.keys(updatedAnimeEntries)
-    for(let i=0;i<updatedAnimeEntriesIDs.length;i++){
-        var updatedAnilistId = updatedAnimeEntriesIDs[i]
-        if(updatedAnilistId&&updatedAnimeEntries[updatedAnilistId]){
-            savedAnimeEntries[updatedAnilistId] = updatedAnimeEntries[updatedAnilistId]
+    Object.keys(updatedAnimeEntries).forEach((id)=>{
+        if(isaN(id)){
+            savedAnimeEntries[id] = updatedAnimeEntries[id]             
         }
-    }
+    })
     self.postMessage({
         savedAnimeEntries: savedAnimeEntries
     })
+    function isaN(num){
+        if(!num&&num!==0){return false}
+        else if(typeof num==='string'){return num.split(' ').join('').length}
+        else if(typeof num==='boolean'){return false}
+        return !isNaN(num)
+    }
 }
