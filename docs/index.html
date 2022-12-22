@@ -4664,7 +4664,7 @@
                                                                                 )
                                                                         },
                                                                         success: (data) => {
-                                                                            initStartTime = await undefined
+                                                                            initStartTime = undefined
                                                                             setTimeout(()=>{
                                                                                 saveJSON(initStartTime,"initStartTime")
                                                                             },0)
@@ -6203,7 +6203,7 @@
                                     )
                             },
                             success: (data) => {
-                                initStartTime = await undefined
+                                initStartTime = undefined
                                 setTimeout(()=>{
                                     saveJSON(initStartTime,"initStartTime")
                                 },0)
@@ -6239,7 +6239,7 @@
                                     resolve("Username not Found, Please Try Again...")
                                 } else {
                                     if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
-                                        initStartTime = await new Date()
+                                        initStartTime = new Date()
                                         setTimeout(()=>{
                                             saveJSON(initStartTime,"initStartTime")
                                         },0)
