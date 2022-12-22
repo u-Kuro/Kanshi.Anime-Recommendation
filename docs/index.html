@@ -2319,6 +2319,17 @@
                 })
                 importFileEl.on("change",(event)=>{
                     if((importFileEl.val()??null)!==null&&importFileEl?.[0]?.files?.[0]){
+                        if(!savedUsername){
+                            await $(".swal2-validation-message")
+                                .addClass("no-before")
+                                .css({display:"flex"})
+                                .html(
+                                `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                    <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
+                                    <div>Importing Data...</div>
+                                </div>`
+                            )
+                        }
                         const importedFile = importFileEl[0].files[0]
                         const reader = new FileReader()
                         reader.onload = async() => {
@@ -2613,15 +2624,6 @@
                                 var fileContent, importedBackUpVersion;
                                 await new Promise(async(resolve,reject)=>{
                                     try{
-                                        await $(".swal2-validation-message")
-                                            .addClass("no-before")
-                                            .css({display:"flex"})
-                                            .html(
-                                                `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
-                                                    <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
-                                                    <div>Importing Data...</div>
-                                                </div>`
-                                            )
                                         fileContent = await JSON.parse(reader.result)
                                     } catch(ex) {
                                         reject('Error: Invalid Backup File')
@@ -2866,6 +2868,25 @@
                                     return
                                 })
                             }
+                        }
+                        reader.onerror = () => {
+                            const message = "Error: can't read the file"
+                            importFileEl.val(null)
+                            if(savedUsername){
+                                Swal.fire({
+                                    heightAuto: false,
+                                    text: message,
+                                    icon: "error",
+                                    confirmButtonColor: "#000"
+                                 })
+                            } else {
+                                $(".swal2-validation-message")
+                                    .addClass("no-before").removeClass("no-before")
+                                    .addClass("error-before")
+                                    .html(message)
+                                    .css({display:"flex"})
+                            }
+                            return
                         }
                         reader.readAsText(importedFile);
                     }
