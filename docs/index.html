@@ -1635,7 +1635,7 @@
                                             // Reset User List
                                             savedUserList = {}
                                             savedUserScores = {}
-                                            setTimeout(()=>
+                                            setTimeout(()=>{
                                                 saveJSON(savedUserList,"savedUserList")
                                                 saveJSON(savedUserScores,"savedUserScores")
                                             },0)
@@ -2388,7 +2388,7 @@
                                         }).then(async()=>{
                                             savedUsername = await fileContent.savedUsername || ""
                                             await usernameEl.val(savedUsername)
-                                            setTimeout(()=>
+                                            setTimeout(()=>{
                                                 saveJSON(savedUsername,"savedUsername")
                                             },0)
                                             return
@@ -2655,7 +2655,7 @@
                                 }).then(async()=>{
                                     savedUsername = await fileContent.savedUsername || ""
                                     await usernameEl.val(savedUsername)
-                                    setTimeout(()=>
+                                    setTimeout(()=>{
                                         saveJSON(savedUsername,"savedUsername")
                                     },0)
                                     return
@@ -4139,7 +4139,7 @@
             }
             // Save Back-Up Data Version Updates
             if(savedBackUpVersion<backUpVersion){
-                setTimeout(()=>
+                setTimeout(()=>{
                     saveJSON(backUpVersion,"backUpVersion")
                 },0)
                 return
