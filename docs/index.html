@@ -1537,7 +1537,7 @@
                 savedUsername = await retrieveJSON("savedUsername") || ""
                 savedFilterOptionsJson = await retrieveJSON("savedFilterOptionsJson") || []
                 allFilterInfo = await retrieveJSON("allFilterInfo") || {}
-                savedFilters = await retrieveJSON("savedFilters") || ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
+                savedFilters = await retrieveJSON("savedFilters") || ["limit top wscore: 100", "!top similarities: !staffs", "!user status: !completed", "!user status: !dropped"]
                 savedAnimeFranchises = await retrieveJSON("savedAnimeFranchises") || []
                 savedBackUpVersion = await retrieveJSON(`backUpVersion`) || 0
                 kidsAnimeIsHidden = await retrieveJSON("kidsAnimeIsHidden") ?? true
@@ -3888,7 +3888,7 @@
         }).then(async()=>{
             return await new Promise(async(resolve)=>{
                 if(savedBackUpVersion<backUpVersion){
-                    savedFilters = ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
+                    savedFilters = ["limit top wscore: 100", "!top similarities: !staffs", "!user status: !completed", "!user status: !dropped"]
                     setTimeout(()=>{
                         saveJSON(savedFilters,"savedFilters")
                     },0)
@@ -5693,7 +5693,7 @@
                     }     
                 }
                 // Save Table Filters
-                savedFilters = await $("ul.flex0 > .value > .text").toArray()?.map((e)=>e.textContent) || ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
+                savedFilters = await $("ul.flex0 > .value > .text").toArray()?.map((e)=>e.textContent) || ["limit top wscore: 100", "!top similarities: !staffs", "!user status: !completed", "!user status: !dropped"]
                 // Save Username
                 savedUsername = await username || ""
                 // Save new Recommendation List
@@ -6044,7 +6044,7 @@
                         hiddenUnhiddenBtnEl.text("Unhidden")
                     }
                     return filter
-                }) || ["limit top wscore: 100", "!user status: !completed", "!user status: !dropped"]
+                }) || ["limit top wscore: 100", "!top similarities: !staffs", "!user status: !completed", "!user status: !dropped"]
                 setTimeout(()=>{
                     saveJSON(savedFilters, "savedFilters")
                 },0)
