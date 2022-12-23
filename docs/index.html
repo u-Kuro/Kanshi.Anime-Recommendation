@@ -3177,7 +3177,7 @@
                         })
                         return
                     } else {
-                        var filterAlgo = await $("ul.flex2>.value>.text").toArray()?.map((e)=>e.textContent)??[]
+                        savedFilterAlgo = await $("ul.flex2>.value>.text").toArray()?.map((e)=>e.textContent)??[]
                         filterAlgoValidationEl
                             .removeClass("success-before")
                             .addClass("no-before")
@@ -3188,7 +3188,7 @@
                                     <div>Analyzing Variables...</div>
                                 </div>`
                             )
-                        Update(true, filterAlgo)
+                        Update(true)
                     }
                 })
                 $("#filterAlgoContainer, #cancelFilterAlgo").on("click",async()=>{
@@ -3441,8 +3441,9 @@
                         })
                         .then((value)=>{
                             if(value.isConfirmed){
+                                hideUnwatchedSequels = false
                                 hideUnwatchedSequelsBtnEl.removeClass("selected")
-                                Update(true, undefined, false)
+                                Update(true)
                                 menuContainerEl.fadeOut(250)
                             }
                         })
@@ -3461,8 +3462,9 @@
                         })
                         .then((value)=>{
                             if(value.isConfirmed){
+                                hideUnwatchedSequels = true
                                 hideUnwatchedSequelsBtnEl.addClass("selected")
-                                Update(true, undefined, true)
+                                Update(true)
                                 menuContainerEl.fadeOut(250)
                             }
                         })
@@ -4030,7 +4032,7 @@
             return await new Promise(async(resolve) => {
                 // Auto Update
                 if(await updateIntervalIsActive){
-                    await updateIntervalBtnEl.css({background: "#F0F0F0",color:"black"})
+                    await updateIntervalBtnEl.addClass("selected")
                     updateIntervalStartDate = await updateIntervalStartDate || new Date()
                     if(await (new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hr
                         if(!requestIsRunning&&usernameEl.val()){
@@ -4081,7 +4083,7 @@
             }).then(async()=>{
                 // Auto Export
                 if(exportIntervalIsActive){
-                    await exportIntervalBtnEl.css({background: "#F0F0F0",color:"black"})
+                    await exportIntervalBtnEl.css("selected")
                     exportIntervalStartDate = await exportIntervalStartDate || new Date()
                     if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
                         if(!willAutoUpdate){
@@ -4204,7 +4206,7 @@
     }
 
     // Main Functions
-    function Update(notAnUpdate, filterAlgo, doHideUnwatchedSeq){
+    function Update(notAnUpdate){
         updateStartTime = new Date()
         var username = usernameEl.val()
         // Check Input Validity
@@ -4223,19 +4225,16 @@
             updateIDs.push(updateID)
             if(updateIDs.length>1){
                 setTimeout(()=>{
-                    analyzeVariables(updateID, username, undefined, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                    analyzeVariables(updateID, username, undefined, notAnUpdate)
                 },requestIntervalMS)
             } else {
-                analyzeVariables(updateID, username, undefined, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                analyzeVariables(updateID, username, undefined, notAnUpdate)
             }
         }
     }
 
-    async function analyzeVariables(updateID, username, pastUserEntries, notAnUpdate, filterAlgo, doHideUnwatchedSeq, returned=false) {
+    async function analyzeVariables(updateID, username, pastUserEntries, notAnUpdate, filterAlgo, returned=false) {
         var analyzeVariableTime = Math.ceil(arrayMean(savedAnalyzeVariableTime))
-        if(filterAlgo?.length){
-            savedFilterAlgo = filterAlgo
-        }
         //
         (()=>{
             for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
@@ -4829,7 +4828,7 @@
                 }
             } else {
                 if(jsonIsEmpty(savedAnimeEntries)&&!returned){
-                    await updateAllAnimeList(updateID, username, true, undefined, undefined, undefined, undefined, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                    await updateAllAnimeList(updateID, username, true, undefined, undefined, undefined, undefined, notAnUpdate)
                 } else {
                     console.error("Error 100: Can't connect to Anilist, you may not be able to use this until the app is updated...")
                     Swal.fire({
@@ -4853,7 +4852,7 @@
                 worker7.onmessage = (message) => {
                     worker7.terminate()
                     const data = message.data
-                    analyzeAnime(updateID, savedAnimeEntries, data.varScheme, data.userListStatus, data.alteredVariables, username, false, false, undefined, false, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                    analyzeAnime(updateID, savedAnimeEntries, data.varScheme, data.userListStatus, data.alteredVariables, username, false, false, undefined, false, notAnUpdate)
                 }
                 worker7.onerror = (message) => {
                     worker7.terminate()
@@ -4891,7 +4890,7 @@
         }
     }
 
-    async function updateAllAnimeList(updateID, username, noSavedEntries, varScheme, userListStatus, alteredVariables, savedUserList, notAnUpdate, filterAlgo, doHideUnwatchedSeq){
+    async function updateAllAnimeList(updateID, username, noSavedEntries, varScheme, userListStatus, alteredVariables, savedUserList, notAnUpdate){
         var tempLastSavedUpdateTime = lastSavedUpdateTime
         var animeEntries = {}
         var page = 1
@@ -5047,7 +5046,7 @@
                         }
                         setTimeout(()=>{
                             if(noSavedEntries){
-                                analyzeVariables(updateID, username, undefined, notAnUpdate, filterAlgo, doHideUnwatchedSeq, true)
+                                analyzeVariables(updateID, username, undefined, notAnUpdate, true)
                             } else {
                                 analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
                             }
@@ -5124,7 +5123,7 @@
         }
         recalluAAL(1,1) // First Page
     }
-    async function getNewAnime(updateID, username, userListIDs, notAnUpdate, filterAlgo, doHideUnwatchedSeq){
+    async function getNewAnime(updateID, username, userListIDs, notAnUpdate){
         if(lastSavedUpdateTime!==0&&!jsonIsEmpty(savedAnimeEntries)&&!isDeepUpdate){
             var tempLastSavedUpdateTime = lastSavedUpdateTime
             var pastDateUpdated = lastSavedUpdateTime
@@ -5291,7 +5290,7 @@
                                             saveJSON(lastAnilistPage,"lastAnilistPage")
                                         },0)
                                         setTimeout(()=>{
-                                            analyzeVariables(updateID, username, userListIDs, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                                            analyzeVariables(updateID, username, userListIDs, notAnUpdate)
                                         },100)
                                     }
                                 }
@@ -5643,7 +5642,7 @@
         }
     }
 
-    async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser=false, haveNewAnime=false, userListIDs, savedAnimeUpdated=false, notAnUpdate, filterAlgo, doHideUnwatchedSeq){
+    async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser=false, haveNewAnime=false, userListIDs, savedAnimeUpdated=false, notAnUpdate){
         return await new Promise(async(resolve)=>{
             var UpdateAnalyzeAnimeStartTime = await new Date()
             var updateAnalyzeAnimeTime = await Math.ceil(arrayMean(savedUpdateAnalyzeAnimeTime))
@@ -5699,7 +5698,7 @@
                 varScheme: varScheme,
                 allFilterInfo: allFilterInfo,
                 alteredVariables: alteredVariables,
-                hideUnwatchedSequels: doHideUnwatchedSeq??hideUnwatchedSequels,
+                hideUnwatchedSequels: hideUnwatchedSequels,
                 savedUserScores: savedUserScores
             })
             worker4.onmessage = async(message) => {
@@ -5729,28 +5728,18 @@
                 savedRecScheme = await data.savedRecScheme || {}
                 setTimeout(()=>{
                     saveJSON(savedUserScores,"savedUserScores")
-                    saveJSON(savedFilters, "savedFilters")
                     saveJSON(savedUsername,"savedUsername")
+                    saveJSON(savedFilters, "savedFilters")
                     saveJSON(savedRecScheme, "savedRecScheme")
+                    saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
+                    if(notAnUpdate){
+                        saveJSON(savedFilterAlgo,"savedFilterAlgo")
+                    }
                 },0)
                 if(versionUpdate){
                     versionUpdate = await false
                     setTimeout(()=>{
                         saveJSON(versionUpdate,"versionUpdate")
-                    },0)
-                }
-                // Save Filtered Algorithm Contents
-                if(notAnUpdate&&filterAlgo){
-                    savedFilterAlgo = await filterAlgo || ["minimum sample size: 2","include unknown variables: false"]
-                    setTimeout(()=>{
-                        saveJSON(savedFilterAlgo,"savedFilterAlgo")
-                    },0)
-                }
-                // Save unwatched sequels' visibility status
-                if(typeof doHideUnwatchedSeq==="boolean"){
-                    hideUnwatchedSequels = await doHideUnwatchedSeq
-                    setTimeout(()=>{
-                        saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
                     },0)
                 }
                 // Before Long Task
@@ -5782,11 +5771,6 @@
                     if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
                         updateIDs = [updateIDs.at(-1)] // one line
                         return
-                    }
-                    if(doHideUnwatchedSeq??hideUnwatchedSequels??true){
-                        hideUnwatchedSequelsBtnEl.addClass("selected")
-                    } else {
-                        hideUnwatchedSequelsBtnEl.removeClass("selected")
                     }
                     if(!jsonIsEmpty(savedRecScheme)){
                         updateBtnEl.show()
@@ -5949,7 +5933,7 @@
                         })();
                     } else if(haveNewAnime){
                         // Get New Anime and Re-Update
-                        getNewAnime(updateID, username, userListIDs, notAnUpdate, filterAlgo, doHideUnwatchedSeq)
+                        getNewAnime(updateID, username, userListIDs, notAnUpdate)
                     } else if(alertUser){
                         console.log("WebtoApp: List is Updated")
                         if(!swal.isVisible()
@@ -6001,7 +5985,6 @@
                     }
                     if(alertUser||haveNewAnime){
                         if(exportIntervalIsActive){
-                            await exportIntervalBtnEl.css({background: "#F0F0F0",color:"black"})
                             // Don't Save At First Analysis
                             if(await ((new Date).getTime()-((await exportIntervalStartDate || new Date()).getTime())>3600000)){// 1hr
                                 dataStatusSpinnerHomeEl.show()
@@ -6015,7 +5998,6 @@
                         requestIsRunning = false // Before backUpData
                         // Check Auto Export After Update
                         if(exportIntervalIsActive){
-                            await exportIntervalBtnEl.css({background: "#F0F0F0",color:"black"})
                             if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
                                 dataStatusSpinnerHomeEl.show()
                                 dataStatusEl
