@@ -6466,8 +6466,24 @@
     function jsonIsEmpty(obj){
         if(isJson(obj)){
             for(var i in obj) return false
-        }
-        return true
+            return true
+        } else {console.error(`Error: Expected Object Constructor (reading '${obj.constructor.name}' - ${JSON.stringify(obj)})`)}
+    }
+    function isJsonString(str) {
+        try {return isJson(JSON.parse(str));}
+        catch (e) {return false;}
+        return true;
+    }
+    function parseJson(obj){
+        try{return JSON.parse(obj)}catch(ex){return {}}
+    }
+    async function parseJsonFile(file) {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader()
+            fileReader.onload = event => resolve(JSON.parse(event.target.result))
+            fileReader.onerror = error => reject(error)
+            fileReader.readAsText(file)
+        })
     }
     function isInt(num) {
         var num;
@@ -6476,9 +6492,6 @@
         }
         x = parseFloat(num);
         return (x | 0) === x;
-    }
-    function parseJson(obj){
-        try{return JSON.parse(obj)}catch(ex){return {}}
     }
     function arraySum(obj) {
         return obj.reduce((a, b) => a + b, 0)
@@ -6517,22 +6530,6 @@
         a.download = fileName;
         a.click();
     }
-    // Browser
-    function isJsonString(str) {
-        try {JSON.parse(str);}
-        catch (e) {return false;}
-        return true;
-    }
-    async function parseJsonFile(file) {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader()
-            fileReader.onload = event => resolve(JSON.parse(event.target.result))
-            fileReader.onerror = error => reject(error)
-            fileReader.readAsText(file)
-        })
-    }
-    // Browser
-    // Notification
     function showNotification(text) {
         if(document.hasFocus()) return
         try{
