@@ -4234,7 +4234,7 @@
     }
 
     async function analyzeVariables(updateID, username, pastUserEntries, notAnUpdate, returned=false) {
-        var analyzeVariableTime = Math.ceil(arrayMean(savedAnalyzeVariableTime))
+        var analyzeVariableTime = Math.ceil(arrayMean(savedAnalyzeVariableTime));
         //
         (()=>{
             for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
