@@ -5771,8 +5771,10 @@
                         return
                     }
                     if(hideUnwatchedSequels){
+                        console.log(true)
                         hideUnwatchedSequelsBtnEl.addClass("selected")
                     } else {
+                        console.log(false)
                         hideUnwatchedSequelsBtnEl.removeClass("selected")
                     }
                     if(!jsonIsEmpty(savedRecScheme)){
