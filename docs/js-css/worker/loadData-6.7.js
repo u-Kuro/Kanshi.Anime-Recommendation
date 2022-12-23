@@ -636,23 +636,41 @@ self.onmessage = (message) => {
         var meanScoreAbove = parseFloat(value?.meanScoreAbove??0)
         var similarities = []
         value?.variablesIncluded?.forEach((v)=>{
-            if(isJson(v)){
-                Object.entries(v).forEach(([name, url])=>{
-                    if(name.slice(0,8)==='studio: '){
-                        if(!topSimilarities.exclude.studios
-                         ||topSimilarities.include.studios){
-                            similarities.push(`<a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
+            if(!jsonIsEmpty(topSimilarities.include)){
+                if(isJson(v)){
+                    Object.entries(v).forEach(([name, url])=>{
+                        if(name.slice(0,8)==='studio: '){
+                            if(topSimilarities.include.studios
+                              &&!topSimilarities.exclude.studios){
+                                similarities.push(`<a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
+                            }
+                        } else {
+                           if(topSimilarities.include.staffs
+                             &&!topSimilarities.exclude.staffs){
+                                similarities.push(`<a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
+                            }
                         }
-                    } else {
-                       if(!topSimilarities.exclude.staffs
-                         ||topSimilarities.include.staffs){
-                            similarities.push(`<a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
+                    })
+                } else if(topSimilarities.include.contents
+                   &&!topSimilarities.exclude.contents){
+                    similarities.push(`<span class="${savedTheme} copy-value user-select-all" data-copy-value="${v}">${v}</span>`)
+                }
+            } else {
+                if(isJson(v)){
+                    Object.entries(v).forEach(([name, url])=>{
+                        if(name.slice(0,8)==='studio: '){
+                            if(!topSimilarities.exclude.studios){
+                                similarities.push(`<a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
+                            }
+                        } else {
+                           if(!topSimilarities.exclude.staffs){
+                                similarities.push(`<a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
+                            }
                         }
-                    }
-                })
-            } else if(!topSimilarities.exclude.contents
-               ||topSimilarities.include.contents){
-                similarities.push(`<span class="${savedTheme} copy-value user-select-all" data-copy-value="${v}">${v}</span>`)
+                    })
+                } else if(!topSimilarities.exclude.contents){
+                    similarities.push(`<span class="${savedTheme} copy-value user-select-all" data-copy-value="${v}">${v}</span>`)
+                }
             }
         })
         similarities = similarities.splice(0,minTopSimilarities)
@@ -867,11 +885,15 @@ self.onmessage = (message) => {
         else if(typeof num==='boolean'){return false}
         return !isNaN(num)
     }
-    function isJson(data) { 
-        if(data instanceof Array) {return false;}
-        if(typeof data==="string") {return false;}
-        try {return Object.entries(data).length>0;} 
-        catch (e) {return false;}
+    function isJson(j){ 
+        try{return(j.constructor.name==='Object'&&`${j}`==='[object Object]')}
+        catch(e){return false}  
+    }
+    function jsonIsEmpty(obj){
+        if(isJson(obj)){
+            for(var i in obj) return false
+        }
+        return true
     }
     function nFormatter(num, digits) {
         const lookup = [
