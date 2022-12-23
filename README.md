@@ -17,12 +17,14 @@
   8. Import/Export your user data recommendation in the settings (This is recommended, a backup will be useful when Anilist is Down or the API had a problem with the Tool).
   9. Hide Unwatched Sequel button in the settings will only show the first season for each anime franchise or the very first unwatched sequel (For example it shows standalone movies / specials / etc., or if you already completed / currently rewatching an anime season only the next unwatched sequel will show [If there's a case where {prequel-popularity<sequel-popularity} the sequel will also be included in the list]).
   10. Table/List Filter Anime is used to filter the list shown in the table by adding Title/Genres/Tags/User Status/Anime Status/Format/Year/Season/Studios/Staff to include and/or exclude an anime in your recommendation list. Numeric Filters >,<,>=,<= for numeric columns including WScore, Score, User Score, Average Score in anilist, Popularity, and Year.   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) limit the amount of recommendations by highest wscore, type [limit top wscore: N], (This filter limit by scores is recommended for faster loading).  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To limit the amount of recommendations by highest score, type [limit top score: N]  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) To only see the Unwatched Anime, type [user status: unwatched] or [unwatched] in the filter  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) To remove the Completed or Dropped anime, type [!user status: completed] or [!user status: !dropped] or just type [!dropped] (Type what you want to, the first two variations are more specific than the last).  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e) To only allow Weighted SCORES of 7-10, type wscore>=7.  
-  11. Hidden/Unhidden List to hide an Anime in the apps list or show to bring it back.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) limit the amount of recommendations by highest wscore or score, type [limit top wscore: N] or [limit top score: N], (This filter limit by scores is recommended for faster loading).    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) To only see the Unwatched Anime, type [user status: unwatched] or [unwatched] in the filter  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) To remove the Completed or Dropped anime, type [!user status: completed] or [!user status: !dropped] or just type [!dropped] (Type what you want to, the first two variations are more specific than the last).  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) To only allow Weighted SCORES of 7-10, type wscore>=7.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e) To remove staffs shown in top similarities (Staffs will still be included in the algorithm), type [!top similarities: !staffs] or [!top similarities: staff] or [!similarities: staff] (Available Filters: staffs, studios, contents).  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f) To only include genre and tags shown in top similarities (Genres and Tags will still be included in the algorithm), type [top similarities: contents] or [similarities: contents] (Available Filters: staffs, studios, contents).  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g) To change the maximum variables shown in top similarities, type [limit top similarities: N] or [limit similarities: N] (Default Limit is 5).  
+  11. Hidden/Unhidden List to hide an Anime in the apps list or show to bring it back.    
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) Click the black button named Unhidden or Hidden on the left side of the Wscore table header to change the list to Hidden or Unhidden respectively (you can also type hidden in the filters).  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) Click the Hide or Show button to transfer an Anime to the Hidden list or Unhidden list respectively.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) In the settings, the 'Show All' button can be used to Unhide all your Hidden Anime in the app, it transfers all Hidden anime to Unhidden list.  
