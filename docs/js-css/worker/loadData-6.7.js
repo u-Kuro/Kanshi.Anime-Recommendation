@@ -887,13 +887,15 @@ self.onmessage = (message) => {
     }
     function isJson(j){ 
         try{return(j.constructor.name==='Object'&&`${j}`==='[object Object]')}
-        catch(e){return false}  
+        catch(e){return false}
     }
     function jsonIsEmpty(obj){
         if(isJson(obj)){
             for(var i in obj) return false
+            return true
         }
-        return true
+        console.error(`Error: Expected Object Constructor (reading '${obj.constructor.name}' - ${JSON.stringify(obj)})`)
+        return true // Temporarily Added for Past Conditions to Work
     }
     function nFormatter(num, digits) {
         const lookup = [
