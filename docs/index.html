@@ -5731,10 +5731,8 @@
                     saveJSON(savedUsername,"savedUsername")
                     saveJSON(savedFilters, "savedFilters")
                     saveJSON(savedRecScheme, "savedRecScheme")
-                    if(notAnUpdate){
-                        saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
-                        saveJSON(savedFilterAlgo,"savedFilterAlgo")
-                    }
+                    saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
+                    saveJSON(savedFilterAlgo,"savedFilterAlgo")
                 },0)
                 if(versionUpdate){
                     versionUpdate = await false
@@ -5771,6 +5769,11 @@
                     if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
                         updateIDs = [updateIDs.at(-1)] // one line
                         return
+                    }
+                    if(hideUnwatchedSequels){
+                        hideUnwatchedSequelsBtnEl.addClass("selected")
+                    } else {
+                        hideUnwatchedSequelsBtnEl.removeClass("selected")
                     }
                     if(!jsonIsEmpty(savedRecScheme)){
                         updateBtnEl.show()
