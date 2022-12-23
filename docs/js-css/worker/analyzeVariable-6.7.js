@@ -1180,8 +1180,10 @@ self.onmessage = (message) => {
     function jsonIsEmpty(obj){
         if(isJson(obj)){
             for(var i in obj) return false
+            return true
         }
-        return true
+        console.error(`Error: Expected Object Constructor (reading '${obj.constructor.name}' - ${JSON.stringify(obj)})`)
+        return true // Temporarily Added for Past Conditions to Work
     }
     function parseJson(obj){
         try{return JSON.parse(obj)}catch(ex){return {}}
