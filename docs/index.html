@@ -2414,6 +2414,7 @@
                                             if(!fileContent.savedUsername){
                                                 reject('Error: Backup file does not Have a Username')
                                             } else {
+                                                importBtnEl.removeClass('selected')
                                                 resolve()
                                             }
                                         }).then(async()=>{
