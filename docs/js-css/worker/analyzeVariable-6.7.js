@@ -1173,10 +1173,9 @@ self.onmessage = (message) => {
         else if(typeof num==='boolean'){return false}
         return !isNaN(num)
     }
-    function isJson(j){
-        if(j instanceof Array||typeof j==="string") return false
-        for(e in j) return true
-        return false
+    function isJson(j){ 
+        try{return(j.constructor.name==='Object'&&`${j}`==='[object Object]')}
+        catch(e){return false}
     }
     function jsonIsEmpty(obj){
         if(isJson(obj)){
