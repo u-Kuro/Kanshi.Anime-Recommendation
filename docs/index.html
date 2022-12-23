@@ -6458,19 +6458,17 @@
         if(typeof s2==="string") s2 = s2.trim().toLowerCase()
         return s1 === s2
     }
-    function isJson(j){
-        if(j instanceof Array||typeof j==="string") return false
-        for(e in j) return true
-        return false
+    function isJson(j){ 
+        try{return(j.constructor.name==='Object'&&`${j}`==='[object Object]')}
+        catch(e){return false}
     }
     function jsonIsEmpty(obj){
         if(isJson(obj)){
             for(var i in obj) return false
             return true
-        } else {
-            console.error(`Error: Expected Object Constructor (reading '${obj.constructor.name}' - ${JSON.stringify(obj)})`)
-            return true // Temporarily Added for Past Conditions to Work
         }
+        console.error(`Error: Expected Object Constructor (reading '${obj.constructor.name}' - ${JSON.stringify(obj)})`)
+        return true // Temporarily Added for Past Conditions to Work
     }
     function isJsonString(str) {
         try {return isJson(JSON.parse(str));}
