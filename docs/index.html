@@ -4233,7 +4233,7 @@
         }
     }
 
-    async function analyzeVariables(updateID, username, pastUserEntries, notAnUpdate, filterAlgo, returned=false) {
+    async function analyzeVariables(updateID, username, pastUserEntries, notAnUpdate, returned=false) {
         var analyzeVariableTime = Math.ceil(arrayMean(savedAnalyzeVariableTime))
         //
         (()=>{
@@ -5731,8 +5731,8 @@
                     saveJSON(savedUsername,"savedUsername")
                     saveJSON(savedFilters, "savedFilters")
                     saveJSON(savedRecScheme, "savedRecScheme")
-                    saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
                     if(notAnUpdate){
+                        saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
                         saveJSON(savedFilterAlgo,"savedFilterAlgo")
                     }
                 },0)
