@@ -4288,7 +4288,7 @@
                     }
                     worker2.postMessage({savedUserList: savedUserList, userEntries: pastUserEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
                     worker2.onmessage = (message) => {
-                        worker2.terminate()
+                        //worker2.terminate()
                         const data = message.data
                         // Alert user if Scored List is 0
                         // to have a better recommendation
@@ -4397,7 +4397,7 @@
                         })();
                     }
                     worker2.onerror = (message) => {
-                        worker2.terminate()
+                        //worker2.terminate()
                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                         dataStatusSpinnerHomeEl.hide()
                         var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
@@ -4486,7 +4486,7 @@
                                     }
                                     worker2.postMessage({savedUserList: savedUserList, userEntries: userEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
                                     worker2.onmessage = (message) => {
-                                        worker2.terminate()
+                                        //worker2.terminate()
                                         const data = message.data
                                         // Alert user if Scored List is 0
                                         // to have a better recommendation
@@ -4593,7 +4593,7 @@
                                         analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, true, userEntries)
                                     }
                                     worker2.onerror = (message) => {
-                                        worker2.terminate()
+                                        //worker2.terminate()
                                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                         dataStatusSpinnerHomeEl.hide()
                                         var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
@@ -4855,12 +4855,12 @@
             if(isJson(savedUserList)&&isJson(savedUserListValues[0])&&!jsonIsEmpty(savedUserList)){
                 worker2.postMessage({savedUserList: savedUserList, savedAnimeFranchises: savedAnimeFranchises, notAnUpdate: notAnUpdate, savedFilterAlgo: savedFilterAlgo})
                 worker2.onmessage = (message) => {
-                    worker2.terminate()
+                    //worker2.terminate()
                     const data = message.data
                     analyzeAnime(updateID, savedAnimeEntries, data.varScheme, data.userListStatus, data.alteredVariables, username, false, false, undefined, false, notAnUpdate)
                 }
                 worker2.onerror = (message) => {
-                    worker2.terminate()
+                    //worker2.terminate()
                     requestIsRunning = false
                     for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                     dataStatusSpinnerHomeEl.hide()
@@ -5281,7 +5281,7 @@
                                         saveJSON(savedAnimeEntries,"savedAnimeEntries")
                                     },0)
                                     if(!hasNextPage){
-                                        worker3.terminate()
+                                        //worker3.terminate()
                                         dataStatusEl
                                             .empty()
                                             .append(`<span style="white-space:nowrap;">Getting New Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
@@ -5297,6 +5297,7 @@
                                     }
                                 }
                                 worker3.onerror = (message) => {
+                                    //worker3.terminate()
                                     console.error("Error 116: Oops...Something went wrong! Please try again...")
                                 }
                             }
@@ -5544,7 +5545,7 @@
                                         saveJSON(savedAnimeEntries,"savedAnimeEntries")
                                     },0)
                                     if(!(hasNextPage&&currentDateUpdating>=lastSavedUpdateTime)){
-                                        worker3.terminate()
+                                        //worker3.terminate()
                                         dataStatusEl
                                             .empty()
                                             .append(`<span style="white-space:nowrap;">Updating Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`)
@@ -5560,6 +5561,7 @@
                                     }
                                 }
                                 worker3.onerror = (message) => {
+                                    //worker3.terminate()
                                     console.error("Error 115: Oops...Something went wrong! Please try again...")
                                 }
                                 updatedAnimeEntries = {}
@@ -5702,7 +5704,7 @@
                 savedUserScores: savedUserScores
             })
             worker4.onmessage = async(message) => {
-                worker4.terminate()
+                //worker4.terminate()
                 const data = message.data
                 // Save Mean Score
                 savedUserScores = data.savedUserScores || {}
@@ -5749,7 +5751,7 @@
                     allFilterInfo: allFilterInfo
                 })
                 worker5.onmessage = async(message) => {
-                    worker5.terminate()
+                    //worker5.terminate()
                     const data = message.data
                     var filtersHasFocus = await false
                     // Update Time
@@ -6007,7 +6009,7 @@
                     }
                 }
                 worker5.onerror = (message) => {
-                    worker5.terminate()
+                    //worker5.terminate()
                     dataStatusEl
                         .empty()
                         .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
@@ -6024,7 +6026,7 @@
                 }
             }
             worker4.onerror = (message) => {
-                worker4.terminate()
+                //worker4.terminate()
                 for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                 dataStatusSpinnerHomeEl.hide()
                 var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
@@ -6078,7 +6080,7 @@
                     savedTheme: savedTheme
                 })
                 worker6.onmessage = async (message) => {
-                    worker6.terminate()
+                    //worker6.terminate()
                     const data = await message.data
                     const animeData = await data.animeData
                     await animeRecommendationListEl.empty()
@@ -6105,7 +6107,7 @@
                     resolve()
                 }
                 worker6.onerror = () => {
-                    worker6.terminate()
+                    //worker6.terminate()
                     pageNumberOptionsEl.css('pointer-events','')
                     tableSkeleton.addClass("display-none")
                     animeTableEl.removeClass("display-none")
@@ -6141,7 +6143,7 @@
 
     async function backUpData(saveBackUpDate = true){
         return await new Promise(async(resolve)=>{
-            worker8.terminate()
+            //worker8.terminate()
             worker8.postMessage({
                 savedUsername: savedUsername,
                 savedWarnAnime: savedWarnAnime,
@@ -6160,7 +6162,7 @@
                 backUpVersion: savedBackUpVersion
             })
             worker8.onmessage = async(message) => {
-                worker8.terminate()
+                //worker8.terminate()
                 // Browser
                 await downloadObjectAsJson(message.data.backupStr, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                 // Browser
@@ -6195,7 +6197,7 @@
                 resolve()
             }
             worker8.onerror = () => {
-                worker8.terminate()
+                //worker8.terminate()
                 if(!requestIsRunning){
                     dataStatusSpinnerHomeEl.hide()
                     var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
