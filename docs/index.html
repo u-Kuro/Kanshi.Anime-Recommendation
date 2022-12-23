@@ -5690,7 +5690,6 @@
                 updateIDs = [updateIDs.at(-1)] // one line
                 return
             }
-            console.log('e',hideUnwatchedSequels)
             var worker4 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
             worker4.postMessage({
                 animeEntries: animeEntries,
@@ -5770,13 +5769,6 @@
                     if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
                         updateIDs = [updateIDs.at(-1)] // one line
                         return
-                    }
-                    if(hideUnwatchedSequels){
-                        console.log(true,hideUnwatchedSequels)
-                        hideUnwatchedSequelsBtnEl.addClass("selected")
-                    } else {
-                        console.log(false,hideUnwatchedSequels)
-                        hideUnwatchedSequelsBtnEl.removeClass("selected")
                     }
                     if(!jsonIsEmpty(savedRecScheme)){
                         updateBtnEl.show()
