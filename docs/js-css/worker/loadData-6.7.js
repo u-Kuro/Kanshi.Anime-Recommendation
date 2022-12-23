@@ -637,24 +637,22 @@ self.onmessage = (message) => {
         var similarities = []
         value?.variablesIncluded?.forEach((v)=>{
             if(isJson(v)){
-                if(!topSimilarities.exclude.contents
-                  ||topSimilarities.include.contents){
-                    Object.entries(v).forEach(([name, url])=>{
-                        similarities.push(`<a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
-                    })
-                }
-            } else if(typeof v==='string'){
-                if(v.slice(0,8)==='studio: '){
-                    if(!topSimilarities.exclude.studios
-                      ||topSimilarities.include.studios){
-                        similarities.push(`<span class="${savedTheme} copy-value user-select-all" data-copy-value="${v}">${v}</span>`)
+                Object.entries(v).forEach(([name, url])=>{
+                    if(name.slice(0,8)==='studio: '){
+                        if(!topSimilarities.exclude.studios
+                         ||topSimilarities.include.studios){
+                            similarities.push(`<a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
+                        }
+                    } else {
+                       if(!topSimilarities.exclude.staffs
+                         ||topSimilarities.include.staffs){
+                            similarities.push(`<a class="${savedTheme} copy-value user-select-all" target="_blank" rel="noopener noreferrer" href=${url||"javascript:;"} data-copy-value="${name}">${name}</a>`)
+                        }
                     }
-                } else {
-                    if(!topSimilarities.exclude.staffs
-                      ||topSimilarities.include.staffs){
-                        similarities.push(`<span class="${savedTheme} copy-value user-select-all" data-copy-value="${v}">${v}</span>`)
-                    }
-                }
+                })
+            } else if(!topSimilarities.exclude.contents
+               ||topSimilarities.include.contents)){
+                similarities.push(`<span class="${savedTheme} copy-value user-select-all" data-copy-value="${v}">${v}</span>`)
             }
         })
         similarities = similarities.splice(0,minTopSimilarities)
