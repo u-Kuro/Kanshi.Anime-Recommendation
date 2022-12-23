@@ -5690,6 +5690,7 @@
                 updateIDs = [updateIDs.at(-1)] // one line
                 return
             }
+            console.log('e',hideUnwatchedSequels)
             var worker4 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
             worker4.postMessage({
                 animeEntries: animeEntries,
