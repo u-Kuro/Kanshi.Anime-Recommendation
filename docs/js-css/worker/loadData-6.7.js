@@ -651,7 +651,7 @@ self.onmessage = (message) => {
                     }
                 })
             } else if(!topSimilarities.exclude.contents
-               ||topSimilarities.include.contents)){
+               ||topSimilarities.include.contents){
                 similarities.push(`<span class="${savedTheme} copy-value user-select-all" data-copy-value="${v}">${v}</span>`)
             }
         })
