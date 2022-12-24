@@ -4280,6 +4280,10 @@
     }
 
     async function analyzeVariables(updateID, username, pastUserEntries, notAnUpdate, returned=false) {
+        if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+            updateIDs = [updateIDs.at(-1)] // one line
+            return
+        }
         var analyzeVariableTime = Math.ceil(arrayMean(savedAnalyzeVariableTime));
         //
         (()=>{
@@ -4300,6 +4304,8 @@
                 updateStateText.push(timeout)
             }
         })();
+        worker2.terminate()
+        worker2 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
         if(!notAnUpdate){
             var AnalyzeVariableStartTime = new Date()
             if(lastSavedUpdateTime===0){
@@ -4308,7 +4314,6 @@
             }
             // Check Parameters
             if(username.length>0&&!jsonIsEmpty(savedAnimeEntries)) {
-                var worker2 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
                 if(pastUserEntries?.length){// After Getting new Anime
                     // Before Long Task
                     if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
@@ -4316,16 +4321,12 @@
                         return
                     }
                     // Reset User List
-                    if(isDeepUpdate){
-                        (()=>{
-                            savedUserList = {}   
-                            savedUserScores = {}
-                            saveJSON(savedUserList,"savedUserList")
-                            saveJSON(savedUserScores,"savedUserScores")
-                        })();
-                    }
-                    worker2.postMessage({savedUserList: savedUserList, userEntries: pastUserEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
+                    worker2.postMessage({savedUserList: isDeepUpdate?{}:savedUserList, userEntries: pastUserEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
                     worker2.onmessage = (message) => {
+                        if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+                            updateIDs = [updateIDs.at(-1)] // one line
+                            return
+                        }
                         worker2.terminate()
                         const data = message.data
                         // Alert user if Scored List is 0
@@ -4436,7 +4437,6 @@
                     }
                     worker2.onerror = (message) => {
                         worker2.terminate()
-                        worker2 = null
                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                         dataStatusSpinnerHomeEl.hide()
                         var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
@@ -4513,18 +4513,12 @@
                                        return
                                     }
                                     // Reset User List
-                                    if(isDeepUpdate){
-                                        (()=>{
-                                            savedUserList = {}
-                                            savedUserScores = {}
-                                            setTimeout(()=>{
-                                                saveJSON(savedUserList,"savedUserList")
-                                                saveJSON(savedUserScores,"savedUserScores")
-                                            },0)
-                                        })();
-                                    }
-                                    worker2.postMessage({savedUserList: savedUserList, userEntries: userEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
+                                    worker2.postMessage({savedUserList: isDeepUpdate?{}:savedUserList, userEntries: userEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
                                     worker2.onmessage = (message) => {
+                                        if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+                                            updateIDs = [updateIDs.at(-1)] // one line
+                                            return
+                                        }
                                         worker2.terminate()
                                         const data = message.data
                                         // Alert user if Scored List is 0
@@ -4633,7 +4627,6 @@
                                     }
                                     worker2.onerror = (message) => {
                                         worker2.terminate()
-                                        worker2 = null
                                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                         dataStatusSpinnerHomeEl.hide()
                                         var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
@@ -4659,6 +4652,7 @@
                                     if(!window.navigator.onLine){
                                         throw "Unable to connect to the Internet!"
                                     } else if(err==='Not Found.'){
+                                        worker2.terminate()
                                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                         dataStatusSpinnerHomeEl.hide()
                                         var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
@@ -4833,6 +4827,7 @@
                                         },60000)
                                     }
                                 } catch(ex) {
+                                    worker2.terminate()
                                     requestIsRunning = false
                                     for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                     dataStatusSpinnerHomeEl.hide()
@@ -4873,6 +4868,7 @@
                     recallAV(1) // first chunk
                 }
             } else {
+                worker2.terminate()
                 if(jsonIsEmpty(savedAnimeEntries)&&!returned){
                     await updateAllAnimeList(updateID, username, true, undefined, undefined, undefined, undefined, notAnUpdate)
                 } else {
@@ -4893,16 +4889,18 @@
             }
             var savedUserListValues = Object.values(savedUserList)
             if(isJson(savedUserList)&&isJson(savedUserListValues[0])&&!jsonIsEmpty(savedUserList)){
-                var worker7 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
-                worker7.postMessage({savedUserList: savedUserList, savedAnimeFranchises: savedAnimeFranchises, notAnUpdate: notAnUpdate, savedFilterAlgo: savedFilterAlgo})
-                worker7.onmessage = (message) => {
-                    worker7.terminate()
+                worker2.postMessage({savedUserList: savedUserList, savedAnimeFranchises: savedAnimeFranchises, notAnUpdate: notAnUpdate, savedFilterAlgo: savedFilterAlgo})
+                worker2.onmessage = (message) => {
+                    if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+                        updateIDs = [updateIDs.at(-1)] // one line
+                        return
+                    }
+                    worker2.terminate()
                     const data = message.data
                     analyzeAnime(updateID, savedAnimeEntries, data.varScheme, data.userListStatus, data.alteredVariables, username, false, false, undefined, false, notAnUpdate)
                 }
-                worker7.onerror = (message) => {
-                    worker7.terminate()
-                    worker7 = null
+                worker2.onerror = (message) => {
+                    worker2.terminate()
                     requestIsRunning = false
                     for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                     dataStatusSpinnerHomeEl.hide()
@@ -4922,6 +4920,7 @@
                 }
             } else {
                 (()=>{
+                    worker2.terminate()
                     for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                     dataStatusSpinnerHomeEl.hide()
                     dataStatusEl
@@ -4937,6 +4936,10 @@
     }
 
     async function updateAllAnimeList(updateID, username, noSavedEntries, varScheme, userListStatus, alteredVariables, savedUserList, notAnUpdate){
+        if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+            updateIDs = [updateIDs.at(-1)] // one line
+            return
+        }
         var tempLastSavedUpdateTime = lastSavedUpdateTime
         var animeEntries = {}
         var page = 1
@@ -5071,6 +5074,10 @@
                     if(hasNextPage){
                         return recalluAAL(++page,1)
                     } else {
+                        if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+                            updateIDs = [updateIDs.at(-1)] // one line
+                            return
+                        }
                         dataStatusEl
                             .empty()
                             .append(`<span style="white-space:nowrap;">Getting Anime from Anilist:⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="100" max="100"></progress>⠀100%</span>`);
@@ -5090,13 +5097,18 @@
                                 saveJSON(savedUserScores,"savedUserScores")
                             },0)
                         }
-                        setTimeout(()=>{
-                            if(noSavedEntries){
-                                analyzeVariables(updateID, username, undefined, notAnUpdate, true)
-                            } else {
-                                analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
-                            }
-                        },100)
+                        if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+                            updateIDs = [updateIDs.at(-1)] // one line
+                            return
+                        } else {
+                            setTimeout(()=>{
+                                if(noSavedEntries){
+                                    analyzeVariables(updateID, username, undefined, notAnUpdate, true)
+                                } else {
+                                    analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, false, undefined, true)
+                                }
+                            },100)
+                        }
                     }
                 },
                 error: function(xhr) {
@@ -5170,6 +5182,10 @@
         recalluAAL(1,1) // First Page
     }
     async function getNewAnime(updateID, username, userListIDs, notAnUpdate){
+        if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+             updateIDs = [updateIDs.at(-1)] // one line
+             return
+        }
         if(lastSavedUpdateTime!==0&&!jsonIsEmpty(savedAnimeEntries)&&!isDeepUpdate){
             var tempLastSavedUpdateTime = lastSavedUpdateTime
             var pastDateUpdated = lastSavedUpdateTime
@@ -5182,7 +5198,8 @@
             var maxStaffPerPage = 25
             var staffHasNextPage = false
             for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
-            var worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
+            worker3.terminate()
+            worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
             async function recallgNA(page, staffPage){
                 // Before Request
                 if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
@@ -5314,7 +5331,6 @@
                                     updateIDs = [updateIDs.at(-1)] // one line
                                     return
                                 }
-                                worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
                                 worker3.postMessage({
                                     updatedAnimeEntries: updatedAnimeEntries,
                                     savedAnimeEntries: savedAnimeEntries
@@ -5324,6 +5340,10 @@
                                     setTimeout(()=>{
                                         saveJSON(savedAnimeEntries,"savedAnimeEntries")
                                     },0)
+                                    if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+                                        updateIDs = [updateIDs.at(-1)] // one line
+                                        return
+                                    }
                                     if(!hasNextPage){
                                         worker3.terminate()
                                         dataStatusEl
@@ -5380,6 +5400,7 @@
                                 return recallgNA(page,staffPage)
                             },60000)
                         } catch(ex) {
+                            worker3.terminate()
                             requestIsRunning = false
                             console.error("Error 111: ",ex)
                             Swal.fire({
@@ -5424,6 +5445,10 @@
     }
 
     async function updateAnimeList(updateID, username, varScheme, userListStatus, alteredVariables){
+        if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+            updateIDs = [updateIDs.at(-1)] // one line
+            return
+        }
         if(lastSavedUpdateTime!==0&&!jsonIsEmpty(savedAnimeEntries)&&!isDeepUpdate){
             var tempLastSavedUpdateTime = lastSavedUpdateTime
             var pastDateUpdated = lastSavedUpdateTime
@@ -5436,7 +5461,8 @@
             var maxStaffPerPage = 25
             var staffHasNextPage = false
             for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
-            var worker9 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
+            worker9.terminate()
+            worker9 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
             async function recalluAL(page, staffPage){
                 // Before Request
                 if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
@@ -5588,6 +5614,10 @@
                                     setTimeout(()=>{
                                         saveJSON(savedAnimeEntries,"savedAnimeEntries")
                                     },0)
+                                    if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+                                        updateIDs = [updateIDs.at(-1)] // one line
+                                        return
+                                    }
                                     if(!(hasNextPage&&currentDateUpdating>=lastSavedUpdateTime)){
                                         worker9.terminate()
                                         dataStatusEl
@@ -5645,6 +5675,7 @@
                                 return recalluAL(page,staffPage)
                             },60000)
                         } catch(ex) {
+                            worker9.terminate()
                             requestIsRunning = false
                             console.error("Error 106: ",ex)
                             Swal.fire({
@@ -5689,6 +5720,10 @@
     }
 
     async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser=false, haveNewAnime=false, userListIDs, savedAnimeUpdated=false, notAnUpdate){
+        if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+            updateIDs = [updateIDs.at(-1)] // one line
+            return
+        }
         return await new Promise(async(resolve)=>{
             var UpdateAnalyzeAnimeStartTime = await new Date()
             var updateAnalyzeAnimeTime = await Math.ceil(arrayMean(savedUpdateAnalyzeAnimeTime))
@@ -5736,7 +5771,8 @@
                 updateIDs = [updateIDs.at(-1)] // one line
                 return
             }
-            var worker4 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
+            worker4.terminate()
+            worker4 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
             worker4.postMessage({
                 animeEntries: animeEntries,
                 savedRecScheme: savedRecScheme,
@@ -5748,6 +5784,10 @@
                 savedUserScores: savedUserScores
             })
             worker4.onmessage = async(message) => {
+                if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+                    updateIDs = [updateIDs.at(-1)] // one line
+                    return
+                }
                 worker4.terminate()
                 const data = message.data
                 // Save Mean Score
@@ -5791,11 +5831,16 @@
                     updateIDs = [updateIDs.at(-1)] // one line
                     return
                 }
-                var worker5 = new Worker(`./js-css/worker/updateOptions-${version}.js`)
+                worker5.terminate()
+                worker5 = new Worker(`./js-css/worker/updateOptions-${version}.js`)
                 worker5.postMessage({
                     allFilterInfo: allFilterInfo
                 })
                 worker5.onmessage = async(message) => {
+                    if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
+                        updateIDs = [updateIDs.at(-1)] // one line
+                        return
+                    }
                     worker5.terminate()
                     const data = message.data
                     var filtersHasFocus = await false
@@ -6055,7 +6100,6 @@
                 }
                 worker5.onerror = (message) => {
                     worker5.terminate()
-                    worker5 = null
                     dataStatusEl
                         .empty()
                         .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
@@ -6073,7 +6117,6 @@
             }
             worker4.onerror = (message) => {
                 worker4.terminate()
-                worker4 = null
                 for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                 dataStatusSpinnerHomeEl.hide()
                 var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
@@ -6118,7 +6161,8 @@
                 setTimeout(()=>{
                     saveJSON(savedFilters, "savedFilters")
                 },0)
-                var worker6 = new Worker(`./js-css/worker/loadData-${version}.js`)
+                worker6.terminate()
+                worker6 = new Worker(`./js-css/worker/loadData-${version}.js`)
                 worker6.postMessage({
                     recList: recList,
                     savedHiddenAnimeIDs: savedHiddenAnimeIDs,
@@ -6156,7 +6200,6 @@
                 }
                 worker6.onerror = () => {
                     worker6.terminate()
-                    worker6 = null
                     pageNumberOptionsEl.css('pointer-events','')
                     tableSkeleton.addClass("display-none")
                     animeTableEl.removeClass("display-none")
@@ -6192,7 +6235,8 @@
 
     async function backUpData(saveBackUpDate = true){
         return await new Promise(async(resolve)=>{
-            var worker10 = new Worker(`./js-css/worker/export-${version}.js`)
+            worker10.terminate()
+            worker10 = new Worker(`./js-css/worker/export-${version}.js`)
             worker10.postMessage({
                 savedUsername: savedUsername,
                 savedWarnAnime: savedWarnAnime,
