@@ -5722,11 +5722,13 @@
     }
 
     async function analyzeAnime(updateID, animeEntries, varScheme, userListStatus, alteredVariables, username, alertUser=false, haveNewAnime=false, userListIDs, savedAnimeUpdated=false, notAnUpdate){
+        console.log(1)
         if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
             updateIDs = [updateIDs.at(-1)] // one line
             return
         }
         return await new Promise(async(resolve)=>{
+            console.log(2)
             var UpdateAnalyzeAnimeStartTime = await new Date()
             var updateAnalyzeAnimeTime = await Math.ceil(arrayMean(savedUpdateAnalyzeAnimeTime))
             if(notAnUpdate){
@@ -5760,6 +5762,7 @@
                     updateStateText.push(timeout)
                 }
             })();
+            console.log(3)
             // Normal Update
             if(jsonIsEmpty(animeEntries)) {
                 animeEntries = await savedAnimeEntries || {}
@@ -5773,6 +5776,7 @@
                 updateIDs = [updateIDs.at(-1)] // one line
                 return
             }
+            console.log(4)
             if(worker4) worker4.terminate()
             worker4 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
             worker4.postMessage({
@@ -5783,9 +5787,11 @@
                 allFilterInfo: allFilterInfo,
                 alteredVariables: alteredVariables,
                 hideUnwatchedSequels: hideUnwatchedSequels,
-                savedUserScores: savedUserScores
+                savedUserScores: isDeepUpdate?{}:savedUserScores
             })
+            console.log(5)
             worker4.onmessage = async(message) => {
+                console.log(6)
                 if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
                     updateIDs = [updateIDs.at(-1)] // one line
                     return
@@ -5808,6 +5814,7 @@
                         },0)
                     }     
                 }
+                console.log(7)
                 // Save Table Filters
                 savedFilters = await $("ul.flex0 > .value > .text").toArray()?.map((e)=>e.textContent) || ["limit top wscore: 100", "!top similarities: !staffs", "!user status: !completed", "!user status: !dropped"]
                 // Save Username
@@ -5822,6 +5829,7 @@
                     saveJSON(hideUnwatchedSequels,"hideUnwatchedSequels")
                     saveJSON(savedFilterAlgo,"savedFilterAlgo")
                 },0)
+                console.log(8)
                 if(versionUpdate){
                     versionUpdate = await false
                     setTimeout(()=>{
@@ -5838,6 +5846,7 @@
                 worker5.postMessage({
                     allFilterInfo: allFilterInfo
                 })
+                console.log(9)
                 worker5.onmessage = async(message) => {
                     if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
                         updateIDs = [updateIDs.at(-1)] // one line
@@ -5854,6 +5863,7 @@
                         await savedUpdateAnalyzeAnimeTime.shift()
                         await savedUpdateAnalyzeAnimeTime.push(Math.ceil(timeInterval/1000))
                     }
+                    console.log(10)
                     setTimeout(()=>{
                         saveJSON(savedFilterOptionsJson,"savedFilterOptionsJson")
                         saveJSON(savedUpdateAnalyzeAnimeTime, "savedUpdateAnalyzeAnimeTime")
@@ -5986,6 +5996,7 @@
                         updateIDs = [updateIDs.at(-1)] // one line
                         return
                     }
+                    console.log(11)
                     // Reload New Recommendation Data
                     await LoadData(savedRecScheme)
                     if(notAnUpdate){
