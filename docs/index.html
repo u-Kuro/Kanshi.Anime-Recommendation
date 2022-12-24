@@ -1494,7 +1494,7 @@
     searchBtnEl, updateBtnEl, importBtnEl, importFileEl, exportIntervalBtnEl, updateIntervalBtnEl,
     hiddenUnhiddenBtnEl, showAllAnimeBtnEl, hideKidsAnimeBtnEl, hideUnwatchedSequelsBtnEl, themeBtnEl,
         // Workers
-    worker2, worker3, worker4, worker5, worker6, worker9, worker10
+    worker3, worker4, worker5, worker6, worker7, worker9, worker10
         // Browser
     ,notificationGranted = false
         // Browser
@@ -3950,10 +3950,10 @@
         }).then(async()=>{
             return await new Promise(async(resolve)=>{
                 if(await savedAnimeFranchises.length<1||savedBackUpVersion<backUpVersion){
-                    var worker8 = await new Worker(`./js-css/worker/getAnimeFranchises-${version}.js`)
-                    await worker8.postMessage("")
-                    worker8.onmessage = async (message) => {
-                        await worker8.terminate()
+                    var worker2 = await new Worker(`./js-css/worker/getAnimeFranchises-${version}.js`)
+                    await worker2.postMessage("")
+                    worker2.onmessage = async (message) => {
+                        await worker2.terminate()
                         const data = await message.data
                         savedAnimeFranchises = await data.savedAnimeFranchises || []
                         setTimeout(()=>{
@@ -3961,9 +3961,9 @@
                         },0)
                         resolve()
                     }
-                    worker8.onerror = (message) => {
-                        worker8.terminate()
-                        worker8 = null
+                    worker2.onerror = (message) => {
+                        worker2.terminate()
+                        worker2 = null
                         console.error("Error 114: Oops...Something went wrong! Please try again...")
                         resolve()
                     }
@@ -4306,8 +4306,8 @@
                 updateStateText.push(timeout)
             }
         })();
-        worker2.terminate()
-        worker2 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
+        if(worker7) worker7.terminate()
+        worker7 = new Worker(`./js-css/worker/analyzeVariable-${version}.js`)
         if(!notAnUpdate){
             var AnalyzeVariableStartTime = new Date()
             if(lastSavedUpdateTime===0){
@@ -4323,13 +4323,13 @@
                         return
                     }
                     // Reset User List
-                    worker2.postMessage({savedUserList: isDeepUpdate?{}:savedUserList, userEntries: pastUserEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
-                    worker2.onmessage = (message) => {
+                    worker7.postMessage({savedUserList: isDeepUpdate?{}:savedUserList, userEntries: pastUserEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
+                    worker7.onmessage = (message) => {
                         if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
                             updateIDs = [updateIDs.at(-1)] // one line
                             return
                         }
-                        worker2.terminate()
+                        worker7.terminate()
                         const data = message.data
                         // Alert user if Scored List is 0
                         // to have a better recommendation
@@ -4437,8 +4437,8 @@
                             analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, true, false)
                         })();
                     }
-                    worker2.onerror = (message) => {
-                        worker2.terminate()
+                    worker7.onerror = (message) => {
+                        worker7.terminate()
                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                         dataStatusSpinnerHomeEl.hide()
                         var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
@@ -4515,13 +4515,13 @@
                                        return
                                     }
                                     // Reset User List
-                                    worker2.postMessage({savedUserList: isDeepUpdate?{}:savedUserList, userEntries: userEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
-                                    worker2.onmessage = (message) => {
+                                    worker7.postMessage({savedUserList: isDeepUpdate?{}:savedUserList, userEntries: userEntries, savedAnimeEntries: savedAnimeEntries, savedAnimeFranchises: savedAnimeFranchises, savedFilterAlgo: savedFilterAlgo})
+                                    worker7.onmessage = (message) => {
                                         if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
                                             updateIDs = [updateIDs.at(-1)] // one line
                                             return
                                         }
-                                        worker2.terminate()
+                                        worker7.terminate()
                                         const data = message.data
                                         // Alert user if Scored List is 0
                                         // to have a better recommendation
@@ -4627,8 +4627,8 @@
                                         },0)
                                         analyzeAnime(updateID, savedAnimeEntries, varScheme, userListStatus, alteredVariables, username, false, true, userEntries)
                                     }
-                                    worker2.onerror = (message) => {
-                                        worker2.terminate()
+                                    worker7.onerror = (message) => {
+                                        worker7.terminate()
                                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                         dataStatusSpinnerHomeEl.hide()
                                         var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
@@ -4654,7 +4654,7 @@
                                     if(!window.navigator.onLine){
                                         throw "Unable to connect to the Internet!"
                                     } else if(err==='Not Found.'){
-                                        worker2.terminate()
+                                        worker7.terminate()
                                         for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                         dataStatusSpinnerHomeEl.hide()
                                         var localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
@@ -4829,7 +4829,7 @@
                                         },60000)
                                     }
                                 } catch(ex) {
-                                    worker2.terminate()
+                                    worker7.terminate()
                                     requestIsRunning = false
                                     for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                     dataStatusSpinnerHomeEl.hide()
@@ -4870,7 +4870,7 @@
                     recallAV(1) // first chunk
                 }
             } else {
-                worker2.terminate()
+                worker7.terminate()
                 if(jsonIsEmpty(savedAnimeEntries)&&!returned){
                     await updateAllAnimeList(updateID, username, true, undefined, undefined, undefined, undefined, notAnUpdate)
                 } else {
@@ -4891,18 +4891,18 @@
             }
             var savedUserListValues = Object.values(savedUserList)
             if(isJson(savedUserList)&&isJson(savedUserListValues[0])&&!jsonIsEmpty(savedUserList)){
-                worker2.postMessage({savedUserList: savedUserList, savedAnimeFranchises: savedAnimeFranchises, notAnUpdate: notAnUpdate, savedFilterAlgo: savedFilterAlgo})
-                worker2.onmessage = (message) => {
+                worker7.postMessage({savedUserList: savedUserList, savedAnimeFranchises: savedAnimeFranchises, notAnUpdate: notAnUpdate, savedFilterAlgo: savedFilterAlgo})
+                worker7.onmessage = (message) => {
                     if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
                         updateIDs = [updateIDs.at(-1)] // one line
                         return
                     }
-                    worker2.terminate()
+                    worker7.terminate()
                     const data = message.data
                     analyzeAnime(updateID, savedAnimeEntries, data.varScheme, data.userListStatus, data.alteredVariables, username, false, false, undefined, false, notAnUpdate)
                 }
-                worker2.onerror = (message) => {
-                    worker2.terminate()
+                worker7.onerror = (message) => {
+                    worker7.terminate()
                     requestIsRunning = false
                     for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                     dataStatusSpinnerHomeEl.hide()
@@ -4922,7 +4922,7 @@
                 }
             } else {
                 (()=>{
-                    worker2.terminate()
+                    worker7.terminate()
                     for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                     dataStatusSpinnerHomeEl.hide()
                     dataStatusEl
@@ -5200,7 +5200,7 @@
             var maxStaffPerPage = 25
             var staffHasNextPage = false
             for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
-            worker3.terminate()
+            if(worker3) worker3.terminate()
             worker3 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
             async function recallgNA(page, staffPage){
                 // Before Request
@@ -5463,7 +5463,7 @@
             var maxStaffPerPage = 25
             var staffHasNextPage = false
             for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
-            worker9.terminate()
+            if(worker9) worker9.terminate()
             worker9 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
             async function recalluAL(page, staffPage){
                 // Before Request
@@ -5773,7 +5773,7 @@
                 updateIDs = [updateIDs.at(-1)] // one line
                 return
             }
-            worker4.terminate()
+            if(worker4) worker4.terminate()
             worker4 = new Worker(`./js-css/worker/analyzeAnime-${version}.js`)
             worker4.postMessage({
                 animeEntries: animeEntries,
@@ -5833,7 +5833,7 @@
                     updateIDs = [updateIDs.at(-1)] // one line
                     return
                 }
-                worker5.terminate()
+                if(worker5) worker5.terminate()
                 worker5 = new Worker(`./js-css/worker/updateOptions-${version}.js`)
                 worker5.postMessage({
                     allFilterInfo: allFilterInfo
@@ -6163,7 +6163,7 @@
                 setTimeout(()=>{
                     saveJSON(savedFilters, "savedFilters")
                 },0)
-                worker6.terminate()
+                if(worker6) worker6.terminate()
                 worker6 = new Worker(`./js-css/worker/loadData-${version}.js`)
                 worker6.postMessage({
                     recList: recList,
@@ -6237,7 +6237,7 @@
 
     async function backUpData(saveBackUpDate = true){
         return await new Promise(async(resolve)=>{
-            worker10.terminate()
+            if(worker10) worker10.terminate()
             worker10 = new Worker(`./js-css/worker/export-${version}.js`)
             worker10.postMessage({
                 savedUsername: savedUsername,
