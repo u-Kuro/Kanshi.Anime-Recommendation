@@ -112,7 +112,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
         searchEqual: false,
         searchByWord: false,
         searchDisabled: false,
-        searchDelay: 500,
+        searchDelay: 100,
         normalizeString: null,
         multiple: null,
         disabled: null,
@@ -235,7 +235,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                 if (!key || ((key < 9 || key > 45) && (key < 91 || key > 93) && (key < 112 || key > 145))) {
                     if(key){
                         if(key!==-1){ // Mouse Custom Code -1
-                            if(keyPressed.length<5){
+                            if(keyPressed.length<3){
                                 keyPressed.push(key)
                             } else {
                                 keyPressed.shift()
@@ -243,7 +243,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                             }
                         }
 
-                        if(keyPressed.every((e,i,a)=>e===a[0])){
+                        if(keyPressed.some((e,i,a)=>e!==a[0])){
                             _searchTimeout = setTimeout(function () {
                                 if ((options.minLength === 0 && length > 0) || (options.minLength > 0 && length >= options.minLength)) {
                                     _this.data.load(function (data) {
@@ -252,7 +252,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                                         });
                                     });
                                 }
-                            },options.searchDelay);
+                            },0)
                         } else {
                             _searchTimeout = setTimeout(function () {
                                 if ((options.minLength === 0 && length > 0) || (options.minLength > 0 && length >= options.minLength)) {
@@ -262,7 +262,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                                         });
                                     });
                                 }
-                            },0);
+                            },options.searchDelay);
                         }
                     }
                 }

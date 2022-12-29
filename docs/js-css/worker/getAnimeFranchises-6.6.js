@@ -1,6 +1,6 @@
-self.onmessage = (message) => {
-    self.postMessage({
-        savedAnimeFranchises: [
+self.onmessage = async(message) => {
+    await IDBinit()
+    saveJSON([
             [20469],
             [20468],
             [20471],
@@ -8873,5 +8873,57 @@ self.onmessage = (message) => {
             [129545, 129546],
             [18843]
         ]
+    ,'savedAnimeFranchises')
+    self.postMessage('')
+}
+async function IDBinit(){
+    return await new Promise((resolve)=>{
+        request = indexedDB.open("Kanshi.Anime.Recommendations.Anilist.W~uPtWCq=vG$TR:Zl^#t<vdS]I~N70", 1)
+        request.onerror = (error) => {
+            console.error(error)
+        }
+        request.onsuccess = (event) => {
+            db = event.target.result
+            resolve()
+        }
+        request.onupgradeneeded = (event) => {
+            db = event.target.result
+            db.createObjectStore("MyObjectStore")
+            resolve()
+        }
+    })
+}
+async function saveJSON(data, name) {
+    return new Promise(async(resolve)=>{
+        try {
+            let write = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").openCursor()
+            write.onsuccess = async(event) => {
+                const cursor = event.target.result;
+                if (cursor) {
+                    if(cursor.key===name){
+                        await cursor.update(data)
+                        resolve()
+                    }
+                    await cursor.continue()
+                } else {
+                    await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
+                    resolve()
+                }
+            }
+            write.onerror = async(error) => {
+                console.error(error)
+                await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
+                resolve()
+            }
+        } catch(ex) {
+            try{
+                console.error(ex)
+                await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
+                resolve()
+            } catch(ex2) {
+                console.error(ex2)
+                resolve()
+            }
+        }
     })
 }
