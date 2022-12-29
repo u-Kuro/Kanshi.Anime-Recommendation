@@ -132,7 +132,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
         valuesSeparator: ',',
         debug: true
     }, _option);
-    
+
     return this.each(function (id) {
         var $this = $(this),
             _this = this,
@@ -201,7 +201,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
     /**
      * Handle user actions.
      */ 
-        var keyPressed = [1,2,3,4,5]
+        var keyPressed = [1,2,3]
         this.action = {
         /**
          * Add value on comma or enter keypress.
@@ -230,10 +230,11 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     keyword = $alias.val(),
                     length = keyword.length,
                     options = _this.options.get();
-                
+
                 clearTimeout(_searchTimeout);
                 if (!key || ((key < 9 || key > 45) && (key < 91 || key > 93) && (key < 112 || key > 145))) {
                     if(key){
+                        
                         if(key!==-1){ // Mouse Custom Code -1
                             if(keyPressed.length<3){
                                 keyPressed.push(key)
@@ -241,8 +242,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                                 keyPressed.shift()
                                 keyPressed.push(key)
                             }
-                        }
-
+                        }///
                         if(keyPressed.some((e,i,a)=>e!==a[0])){
                             _searchTimeout = setTimeout(function () {
                                 if ((options.minLength === 0 && length > 0) || (options.minLength > 0 && length >= options.minLength)) {
@@ -1320,7 +1320,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                                 if (item) {
                                     matches.push(item);
                                     // Added by Me
-                                    if(++counter>=7){
+                                    if(++counter>=3){
                                         break
                                     }
                                     // Added by Me
@@ -1331,7 +1331,6 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                         $this.trigger('after:flexdatalist.search', [keywords, data, matches]);
                     }
                 }
-
                 callback(matches);
             },
         /**
@@ -1396,6 +1395,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
             find: function (keyword, splitted) {
                 var options = _this.options.get();
                 for (var index = 0; index < splitted.length; index++) {
+                    if(_this._isTyping) return
                     var text = splitted[index];
                     text = this.normalizeString(text),
                     keyword = this.normalizeString(keyword);

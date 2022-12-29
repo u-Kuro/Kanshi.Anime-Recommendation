@@ -16,6 +16,13 @@ self.onmessage = async({data}) => {
 
 async function mainWorker(){
     return await new Promise(async(resolve)=>{
+        // Delete Old
+        await deleteJSON('varScheme')
+        await deleteJSON('userListStatus')
+        await deleteJSON('alteredVariables')
+        await deleteJSON('userEntries')
+        await deleteJSON('deepUpdateStartTime')
+        // Update New
         const reader = new FileReader()
         reader.onload = async() => {
             await new Promise(async(resolve,reject)=>{
@@ -199,6 +206,40 @@ async function saveJSON(data, name) {
                 console.error(ex2)
                 resolve()
             }
+        }
+    })
+}
+async function retrieveJSON(name) {
+    return new Promise((resolve)=>{
+        try {
+            let read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").get(name)
+            read.onsuccess = () => {
+                resolve(read.result)
+            }
+            read.onerror = (error) => {
+                console.error(error)
+                resolve()
+            }
+        } catch(ex){
+            console.error(ex)
+            resolve()
+        }
+    })
+}
+async function deleteJSON(name) {
+    return new Promise((resolve)=>{
+        try {
+            let read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").delete(name)
+            read.onsuccess = (event) => {
+                resolve()
+            }
+            read.onerror = (error) => {
+                console.error(error)
+                resolve()
+            }
+        } catch(ex) {
+            console.error(ex)
+            resolve()
         }
     })
 }

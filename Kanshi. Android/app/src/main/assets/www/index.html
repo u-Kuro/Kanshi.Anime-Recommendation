@@ -1788,14 +1788,12 @@
                                     } else if(data.doneImporting ?? false){
                                         importFileEl.val(null)
                                         dataStatusPrio = false
-                                        if(!requestIsRunning){
-                                            dataStatusSpinnerHomeEl.hide()
-                                            let localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                                            dataStatusEl
-                                                .empty()
-                                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                                                .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                                        }
+                                        dataStatusSpinnerHomeEl.hide()
+                                        let localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                                        dataStatusEl
+                                            .empty()
+                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                            .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                                         Swal.fire({
                                             heightAuto: false,
                                             text: "Data has been updated!",
@@ -1905,14 +1903,12 @@
                                             .css({display:"flex"})
                                     }
                                     dataStatusPrio = false
-                                    if(!requestIsRunning){
-                                        dataStatusSpinnerHomeEl.hide()
-                                        let localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                                        dataStatusEl
-                                            .empty()
-                                            .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                                            .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                                    }
+                                    dataStatusSpinnerHomeEl.hide()
+                                    let localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                                    dataStatusEl
+                                        .empty()
+                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                        .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                                     return
                                 }
                             }
@@ -1929,14 +1925,12 @@
                                     })
                                 }
                                 dataStatusPrio = false
-                                if(!requestIsRunning){
-                                    dataStatusSpinnerHomeEl.hide()
-                                    let localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                                    dataStatusEl
-                                        .empty()
-                                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                                        .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                                }
+                                dataStatusSpinnerHomeEl.hide()
+                                let localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                                dataStatusEl
+                                    .empty()
+                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                                 return
                             }
                         }).catch((error)=>{
@@ -4287,7 +4281,9 @@
                         })
                     }
                     resolve()
+                // Android
                 }
+                // Android
             }
             worker7.onerror = (error) => {
                 worker7.terminate()

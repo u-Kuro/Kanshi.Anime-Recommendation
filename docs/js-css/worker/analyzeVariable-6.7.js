@@ -44,9 +44,11 @@ async function preWorker(){
             g.savedUserList = {}
         } else {
             g.savedUserList = await retrieveJSON('savedUserList') ?? {}
-            g.userEntries = await retrieveJSON('userEntries') ?? []
-            if(g.userEntries.length>0&&g.returnInfo!=='init'){
+            if(g.returnInfo==="getNewAnime"){
+                g.userEntries = await retrieveJSON('userEntries') ?? []
                 deleteJSON('userEntries')
+            } else {
+                g.userEntries = []
             }
         }
         // Temporarily Saved

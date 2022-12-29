@@ -44,9 +44,11 @@ async function preWorker(){
             g.savedUserList = {}
         } else {
             g.savedUserList = await retrieveJSON('savedUserList') ?? {}
-            g.userEntries = await retrieveJSON('userEntries') ?? []
-            if(g.userEntries.length>0&&g.returnInfo!=='init'){
+            if(g.returnInfo==="getNewAnime"){
+                g.userEntries = await retrieveJSON('userEntries') ?? []
                 deleteJSON('userEntries')
+            } else {
+                g.userEntries = []
             }
         }
         // Temporarily Saved
@@ -103,7 +105,7 @@ async function preWorker(){
                                     } else {
                                         g.analyzeVariableTime = Math.ceil(Math.max(g.analyzeVariableTime-Math.ceil(((new Date).getTime()-g.analyzeVariableStartTime.getTime())/1000),1))
                                         self.postMessage({
-                                            status:'notify',
+                                            status:'notify', 
                                             updateStatus: {
                                                 analyzeVariableTime: g.analyzeVariableTime,
                                                 info: 'rateLimit'
@@ -129,7 +131,7 @@ async function preWorker(){
                                         } else {
                                             g.analyzeVariableTime = Math.ceil(Math.max(g.analyzeVariableTime-Math.ceil(((new Date).getTime()-g.analyzeVariableStartTime.getTime())/1000),1))
                                             self.postMessage({
-                                                status:'notify',
+                                                status:'notify', 
                                                 updateStatus: {
                                                     analyzeVariableTime: g.analyzeVariableTime,
                                                     info: 'rateLimit'
