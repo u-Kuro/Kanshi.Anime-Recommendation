@@ -262,7 +262,6 @@ async function mainWorker(){
                             const usDn = g.requestCount>g.newRequestCount?g.requestCount:g.newRequestCount+1
                             const usUp = g.newRequestCount
                             const loadPerc = (Math.min(99.99,(usUp/usDn)*100)).toFixed(2)
-                            console.log(loadPerc,usDn,usUp)
                             self.postMessage({
                                 status:'notify', 
                                 updateStatus: {
