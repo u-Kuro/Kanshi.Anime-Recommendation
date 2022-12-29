@@ -269,7 +269,7 @@ async function mainWorker(){
                                     message: {
                                         loadPerc: loadPerc,
                                         usDn: usDn,
-                                        usUp: usDn
+                                        usUp: usUp
                                     },
                                     info: 'rateLimit'
                                 }
