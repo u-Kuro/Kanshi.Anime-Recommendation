@@ -1296,7 +1296,7 @@ async function postWorker(){
             self.postMessage({status:'update',savedFilterOptionsJson: g.savedFilterOptionsJson}) // Notify User for the Filter Update
         }
         //
-        if(g.deepUpdateStartTime&&returnID==="here"){
+        if(g.deepUpdateStartTime&&g.returnID==="here"){
             timeInterval = (new Date).getTime()-g.deepUpdateStartTime.getTime()
             if(g.savedDeepUpdateTime.length<33){
                 await g.savedDeepUpdateTime.push(Math.ceil(timeInterval/1000))
