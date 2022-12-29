@@ -1443,9 +1443,8 @@
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "6.6",
-          backUpVersion = 4.3,
-          reader = new FileReader()
+    const version = "6.7",
+          backUpVersion = 4.5
         // IndexDB
     let request, db,
         // Saved Data
@@ -4204,7 +4203,7 @@
         return await new Promise(async(resolve)=>{
             if(worker7) worker7.terminate()
             worker7 = new Worker(`./js-css/worker/export-${version}.js`)
-            worker7.postMessage('')
+            worker7.postMessage('browser')
             worker7.onmessage = async({data}) => {
                 // Browser
                 await downloadLink(data, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
