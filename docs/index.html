@@ -1443,7 +1443,7 @@
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "6.7",
+    const version = "6.8",
           backUpVersion = 4.5;
         // IndexDB
     let request, db,
@@ -2164,9 +2164,7 @@
                     setTimeout(()=>{
                         warnAnimeContainerEl.hide()
                     },300)
-                    setTimeout(()=>{
-                        saveJSON(savedWarnAnime,"savedWarnAnime")
-                    },0)
+                    await saveJSON(savedWarnAnime,"savedWarnAnime")
                     menuContainerEl.fadeOut(250)
                     await LoadData()
                 })
@@ -2688,7 +2686,9 @@
                         target.css('pointer-events','none')
                         let text = target.data("copy-value")
                         if((text??'')!==''&&!isScrolling){
+                            // Browser
                             navigator.clipboard.writeText(text)
+                            // Browser
                         }
                     }, 1000)
                 }).on('touchend touchcancel','.copy-value',(e)=>{
@@ -2844,11 +2844,9 @@
                     savedAnalyzeVariableTime = await [15]
                     savedUpdateAnalyzeAnimeTime = await [15]
                     savedDeepUpdateTime = await [6700]
-                    setTimeout(()=>{
-                        saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
-                        saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
-                        saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
-                    },0)
+                    await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
+                    await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
+                    await saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
                     resolve()
                 } else {
                     resolve()
@@ -2867,9 +2865,7 @@
                         }
                         if(savedUsername){
                             versionUpdate = await true
-                            setTimeout(()=>{
-                                saveJSON(versionUpdate,"versionUpdate")
-                            },0)
+                            await saveJSON(versionUpdate,"versionUpdate")
                             if(usernameEl.val()){
                                 Update(false)
                             }
@@ -2918,9 +2914,7 @@
             return await new Promise(async(resolve)=>{
                 if(savedBackUpVersion<backUpVersion){
                     savedFilters = ["limit top wscore: 100", "!top similarities: !staffs", "!user status: !completed", "!user status: !dropped"]
-                    setTimeout(()=>{
-                        saveJSON(savedFilters,"savedFilters")
-                    },0)
+                    await saveJSON(savedFilters,"savedFilters")
                     resolve()
                 } else {
                     resolve()
@@ -3449,12 +3443,22 @@
                                 .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                         }
                     })
+                } else if(data.hideUnwatchedSequelsBtn!==undefined) {
+                    if(hideUnwatchedSequelsBtn){
+                        hideUnwatchedSequelsBtnEl.addClass("selected")
+                    } else {
+                        hideUnwatchedSequelsBtnEl.removeClass("selected")
+                    }
                 }
             } else if(status==='update'){
                 if(data.savedAnalyzeVariableTime ?? false){
                     savedAnalyzeVariableTime = data.savedAnalyzeVariableTime
                 } else if(data.haveSavedUserList!==undefined) {
                     haveSavedUserList = data.haveSavedUserList
+                } else if(data.savedFilterAlgo ?? false) {
+                    savedFilterAlgo = data.savedFilterAlgo
+                } else if(data.hideUnwatchedSequels!==undefined) {
+                    hideUnwatchedSequels = data.hideUnwatchedSequels
                 }
             } else if(status==='analyzeAnime') {
                 analyzeAnime(updateID, username, anUpdate, versionUpdate, returnInfo)
@@ -3810,7 +3814,8 @@
             username: username,
             anUpdate: anUpdate,
             returnInfo: returnInfo,
-            versionUpdate: versionUpdate
+            versionUpdate: versionUpdate,
+            hideUnwatchedSequels: hideUnwatchedSequels
         })
         worker5.onmessage = async({data}) => {
             if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
@@ -4100,9 +4105,7 @@
     }
 
     async function LoadData(){
-        if(!isLoading) {
-            isLoading = await true
-        }
+        if(!isLoading) { isLoading = true }
         $("#first, #prev, #next, #last").addClass("disabled")
         await pageNumberOptionsEl.css('pointer-events','none')
         await animeTableEl.addClass("display-none")
@@ -4191,7 +4194,9 @@
         return await new Promise(async(resolve)=>{
             if(worker7) worker7.terminate()
             worker7 = new Worker(`./js-css/worker/export-${version}.js`)
+            // Browser
             worker7.postMessage('browser')
+            // Browser
             worker7.onmessage = async({data}) => {
                 // Browser
                 await downloadLink(data, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
@@ -4667,12 +4672,6 @@
         return time.join(" ")
     }
     // Browser
-    // async function downloadObjectAsJson(objStr, fileName) {
-    //     const a = document.createElement('a');
-    //     a.href = URL.createObjectURL(new Blob([objStr], { type:`text/json` }));
-    //     a.download = fileName;
-    //     a.click();
-    // }
     async function downloadLink(url, fileName){
         const a = document.createElement('a');
         a.href = url;
@@ -4724,12 +4723,13 @@
             console.error(ex)
         }
         try{
-            navigator.serviceWorker.register("./js-css/worker/sw.js")
+            navigator.serviceWorker.register("./js-css/sw.js")
         } catch(ex){
             console.error(ex)
         }
     })();
     //Browser
+    // Debug
     // let fpsMean = []
     // let fps = document.getElementById("fps");
     // let startTime = Date.now();
@@ -4752,6 +4752,7 @@
     //   window.requestAnimationFrame(tick);
     // }
     // tick();
+    // Debug
     </script>
 </body>
 </html>

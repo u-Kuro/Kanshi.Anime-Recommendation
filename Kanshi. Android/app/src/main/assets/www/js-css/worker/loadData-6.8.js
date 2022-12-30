@@ -19,10 +19,10 @@ async function preWorker(){
         g.savedHiddenAnimeIDs = await retrieveJSON('savedHiddenAnimeIDs') ?? {}
         g.savedTheme = await retrieveJSON('savedTheme') ?? 'darkMode'
         g.kidsAnimeIsHidden = await retrieveJSON('kidsAnimeIsHidden') ?? true
-        g.savedWarnAnime = await retrieveJSON('savedFilters') ?? [ "!genre: !ecchi","!tag: !boys' love","tag: cgi","!tag: !ero guro","!tag: !female harem",
+        g.savedWarnAnime = await retrieveJSON('savedWarnAnime') ?? [ "!genre: !ecchi","!tag: !boys' love","tag: cgi","!tag: !ero guro","!tag: !female harem",
                                                                     "tag: full cgi","!tag: !male harem","!tag: !mixed gender harem",
                                                                     "!tag: !nudity","!tag: !slavery","!tag: !suicide","!tag: !yuri","!tag: !netorare", "!tag: !rape"
-                                                                ]
+                                                                 ]
         resolve()
     })
 }
@@ -887,7 +887,9 @@ async function mainWorker(){
 }
 async function postWorker(){
     return await new Promise(async(resolve)=>{
-        await saveJSON(g.savedFilters,"savedFilters")
+        if(g.savedFilters){
+            await saveJSON(g.savedFilters,"savedFilters")
+        }
         const maxStrLength = 1000000
         const postMessage = chunkString(g.animeData,maxStrLength)
         const pmLen = postMessage.length

@@ -46,7 +46,9 @@ async function preWorker(){
         g.animeEntries = Object.values(await retrieveJSON('savedAnimeEntries') ?? {})
         g.savedUsername = await retrieveJSON('savedUsername') ?? ''
         g.allFilterInfo = await retrieveJSON('allFilterInfo') ?? {}
-        g.hideUnwatchedSequels = await retrieveJSON('hideUnwatchedSequels') ?? true
+        if(g.hideUnwatchedSequels===undefined){
+            g.hideUnwatchedSequels = await retrieveJSON('hideUnwatchedSequels') ?? true
+        }
         // Temporarily Saved
         g.deepUpdateStartTime = await retrieveJSON('deepUpdateStartTime') ?? false
         g.userListStatus = await retrieveJSON('userListStatus') ?? false
@@ -759,7 +761,7 @@ async function mainWorker(){
                 // Anime Type
                 let animeType = []
                 let seasonYear = anime?.seasonYear
-                let yearModel = g.varScheme.yearModel
+                let yearModel = g.varScheme.yearModel ?? {}
                 if(isaN(seasonYear)&&!jsonIsEmpty(yearModel)){
                     if(typeof seasonYear==="string"){
                         seasonYear = parseFloat(seasonYear)
@@ -769,7 +771,7 @@ async function mainWorker(){
                     animeType.push(1)
                 }
                 let averageScore = anime?.averageScore
-                let averageScoreModel = g.varScheme.averageScoreModel
+                let averageScoreModel = g.varScheme.averageScoreModel ?? {}
                 if(isaN(averageScore)&&!jsonIsEmpty(averageScoreModel)){
                     if(typeof averageScore==="string"){
                         averageScore = parseFloat(averageScore)
@@ -1261,6 +1263,9 @@ async function postWorker(){
     return await new Promise(async(resolve)=>{
         //
         await saveJSON(g.savedUserScores,"savedUserScores")
+        await saveJSON(g.hideUnwatchedSequels,'hideUnwatchedSequels')
+        self.postMessage({status:'update', hideUnwatchedSequels: g.hideUnwatchedSequels})
+        self.postMessage({status:'notify', hideUnwatchedSequelsBtn: g.hideUnwatchedSequels})
         // self.postMessage({status:'update',dataName: 'savedUserScores'})
         //
         if(g.anUpdate||g.versionUpdate){

@@ -30,7 +30,7 @@ async function preWorker(){
         g.savedAnimeEntries = await retrieveJSON('savedAnimeEntries') ?? {}
         g.savedAnimeFranchises = await retrieveJSON('savedAnimeFranchises') ?? []
         if(!g.savedFilterAlgo){
-            g.savedFilterAlgo = await retrieveJSON('savedFilterAlgo') ?? []
+            g.savedFilterAlgo = await retrieveJSON('savedFilterAlgo') ?? ["minimum sample size: 2","include unknown variables: false"]
         }
         g.lastSavedUpdateTime = await retrieveJSON('lastSavedUpdateTime') ?? 0
         // Temporarily Saved
@@ -682,8 +682,9 @@ async function mainWorker(){
                 if(typeof genre==="string"){
                     let fullGenre = "genre: "+genre.trim().toLowerCase()
                     if(!jsonIsEmpty(include.genres)){
-                        if((include.genres[fullGenre]&&!exclude.genres[fullGenre]
-                            &&!exclude.genres["genre: all"])||include.genres["genre: all"]){
+                        if(((include.genres[fullGenre]&&!exclude.genres[fullGenre])
+                            ||include.genres["genre: all"])
+                            &&!exclude.genres["genre: all"]){
                             if(varScheme.genres[fullGenre]){
                                 varScheme.genres[fullGenre].userScore.push(userScore)
                                 ++varScheme.genres[fullGenre].count
@@ -697,8 +698,8 @@ async function mainWorker(){
                             }
                         }
                     } else {
-                        if((!exclude.genres[fullGenre]
-                            &&!exclude.genres["genre: all"])||include.genres["genre: all"]){
+                        if((!exclude.genres[fullGenre]||include.genres["genre: all"])
+                            &&!exclude.genres["genre: all"]){
                             if(varScheme.genres[fullGenre]){
                                 varScheme.genres[fullGenre].userScore.push(userScore)
                                 ++varScheme.genres[fullGenre].count
@@ -722,11 +723,13 @@ async function mainWorker(){
                     let fullTag = "tag: "+tag.trim().toLowerCase()
                     let fullTagCategory = "tag category: "+tagCategory.trim().toLowerCase()
                     if(!jsonIsEmpty(include.categories)){
-                        if((include.categories[fullTagCategory]&&!exclude.tags[fullTagCategory]
-                            &&!exclude.categories["tag category: all"])||include.categories["tag category: all"]){
+                        if(((include.categories[fullTagCategory]&&!exclude.categories[fullTagCategory])
+                            ||include.categories["tag category: all"])
+                            &&!exclude.categories["tag category: all"]){
                             if(!jsonIsEmpty(include.tags)){
-                                if((include.tags[fullTag]&&!exclude.tags[fullTag]
-                                    &&!exclude.tags["tag: all"])||include.tags["tag: all"]){
+                                if(((include.tags[fullTag]&&!exclude.tags[fullTag])
+                                    ||include.tags["tag: all"])
+                                    &&!exclude.tags["tag: all"]){
                                     if(varScheme.tags[fullTag]){
                                         varScheme.tags[fullTag].userScore.push(userScore)
                                         ++varScheme.tags[fullTag].count
@@ -740,8 +743,8 @@ async function mainWorker(){
                                     }
                                 }
                             } else {
-                                if((!exclude.tags[fullTag]
-                                    &&!exclude.tags["tag: all"])||include.tags["tag: all"]){
+                                if((!exclude.tags[fullTag]||include.tags["tag: all"])
+                                    &&!exclude.tags["tag: all"]){
                                     if(varScheme.tags[fullTag]){
                                         varScheme.tags[fullTag].userScore.push(userScore)
                                         ++varScheme.tags[fullTag].count
@@ -757,11 +760,12 @@ async function mainWorker(){
                             }
                         }
                     } else {
-                        if((!exclude.tags[fullTagCategory]
-                            &&!exclude.categories["tag category: all"])||include.categories["tag category: all"]){
+                        if((!exclude.categories[fullTagCategory]||include.categories["tag category: all"])
+                            &&!exclude.categories["tag category: all"]){
                             if(!jsonIsEmpty(include.tags)){
-                                if((include.tags[fullTag]&&!exclude.tags[fullTag]
-                                    &&!exclude.tags["tag: all"])||include.tags["tag: all"]){
+                                if(((include.tags[fullTag]&&!exclude.tags[fullTag])
+                                    ||include.tags["tag: all"])
+                                    &&!exclude.tags["tag: all"]){
                                     if(varScheme.tags[fullTag]){
                                         varScheme.tags[fullTag].userScore.push(userScore)
                                         ++varScheme.tags[fullTag].count
@@ -775,8 +779,8 @@ async function mainWorker(){
                                     }
                                 }
                             } else {
-                                if((!exclude.tags[fullTag]
-                                    &&!exclude.tags["tag: all"])||include.tags["tag: all"]){
+                                if((!exclude.tags[fullTag]||include.tags["tag: all"])
+                                    &&!exclude.tags["tag: all"]){
                                     if(varScheme.tags[fullTag]){
                                         varScheme.tags[fullTag].userScore.push(userScore)
                                         ++varScheme.tags[fullTag].count
@@ -804,8 +808,9 @@ async function mainWorker(){
                     includedStudios[studio] = true
                     let fullStudio = "studio: "+studio.trim().toLowerCase()
                     if(!jsonIsEmpty(include.studios)){
-                        if((include.studios[fullStudio]&&!exclude.studios[fullStudio]
-                            &&!exclude.studios["studio: all"])||include.studios["studio: all"]){
+                        if(((include.studios[fullStudio]&&!exclude.studios[fullStudio])
+                            ||include.studios["studio: all"])
+                            &&!exclude.studios["studio: all"]){
                             if(varScheme.studios[fullStudio]){
                                 varScheme.studios[fullStudio].userScore.push(userScore)
                                 ++varScheme.studios[fullStudio].count
@@ -819,8 +824,8 @@ async function mainWorker(){
                             }
                         }
                     } else {
-                        if((!exclude.studios[fullStudio]
-                            &&!exclude.studios["studio: all"])||include.studios["studio: all"]){
+                        if((!exclude.studios[fullStudio]||include.studios["studio: all"])
+                            &&!exclude.studios["studio: all"]){
                             if(varScheme.studios[fullStudio]){
                                 varScheme.studios[fullStudio].userScore.push(userScore)
                                 ++varScheme.studios[fullStudio].count
@@ -847,11 +852,13 @@ async function mainWorker(){
                     let fullStaff = "staff: "+staff.trim().toLowerCase()
                     let fullStaffRole = "staff role: "+staffRole.trim().toLowerCase()
                     if(!jsonIsEmpty(include.roles)){
-                        if((include.roles[fullStaffRole]&&!exclude.roles[fullStaffRole]
-                            &&!exclude.roles["staff role: all"])||include.roles["staff role: all"]){
+                        if(((include.roles[fullStaffRole]&&!exclude.roles[fullStaffRole])
+                            ||include.roles["staff role: all"])
+                            &&!exclude.roles["staff role: all"]){
                             if(!jsonIsEmpty(include.staffs)){
-                                if((include.staffs[fullStaff]&&!exclude.staffs[fullStaff]
-                                    &&!exclude.staffs["staff: all"])||include.staffs["staff: all"]){
+                                if(((include.staffs[fullStaff]&&!exclude.staffs[fullStaff])
+                                    ||include.staffs["staff: all"])
+                                    &&!exclude.staffs["staff: all"]){
                                     if(varScheme.staff[fullStaff]){
                                         varScheme.staff[fullStaff].userScore.push(userScore)
                                         ++varScheme.staff[fullStaff].count
@@ -865,8 +872,8 @@ async function mainWorker(){
                                     }
                                 }
                             } else {
-                                if((!exclude.staffs[fullStaff]
-                                    &&!exclude.staffs["staff: all"])||include.staffs["staff: all"]){
+                                if((!exclude.staffs[fullStaff]||include.staffs["staff: all"])
+                                    &&!exclude.staffs["staff: all"]){
                                     if(varScheme.staff[fullStaff]){
                                         varScheme.staff[fullStaff].userScore.push(userScore)
                                         ++varScheme.staff[fullStaff].count
@@ -882,11 +889,12 @@ async function mainWorker(){
                             }
                         }
                     } else {
-                        if((!exclude.roles[fullStaffRole]
-                            &&!exclude.roles["staff role: all"])||include.roles["staff role: all"]){
+                        if((!exclude.roles[fullStaffRole]||include.roles["staff role: all"])
+                            &&!exclude.roles["staff role: all"]){
                             if(!jsonIsEmpty(include.staffs)){
-                                if((include.staffs[fullStaff]&&!exclude.staffs[fullStaff]
-                                    &&!exclude.staffs["staff: all"])||include.staffs["staff: all"]){
+                                if(((include.staffs[fullStaff]&&!exclude.staffs[fullStaff])
+                                    ||include.staffs["staff: all"])
+                                    &&!exclude.staffs["staff: all"]){
                                     if(varScheme.staff[fullStaff]){
                                         varScheme.staff[fullStaff].userScore.push(userScore)
                                         ++varScheme.staff[fullStaff].count
@@ -900,8 +908,8 @@ async function mainWorker(){
                                     }
                                 }
                             } else {
-                                if((!exclude.staffs[fullStaff]
-                                    &&!exclude.staffs["staff: all"])||include.staffs["staff: all"]){
+                                if((!exclude.staffs[fullStaff]||include.staffs["staff: all"])
+                                    &&!exclude.staffs["staff: all"]){
                                     if(varScheme.staff[fullStaff]){
                                         varScheme.staff[fullStaff].userScore.push(userScore)
                                         ++varScheme.staff[fullStaff].count
@@ -1333,7 +1341,6 @@ async function postWorker(){
     return await new Promise(async(resolve)=>{
         // Alert user if Scored List is 0
         // self.postMessage({status:'notify',userListCount: g.userListCount})
-        await saveJSON(g.savedUserList,"savedUserList")
         if( jsonIsEmpty(g.savedAnimeEntries)
             ||g.lastSavedUpdateTime===0
             ||!g.anUpdate
@@ -1342,6 +1349,11 @@ async function postWorker(){
         ){
             await saveJSON({},"savedUserScores")
             await saveJSON({},"savedRecScheme")
+        }
+        await saveJSON(g.savedUserList,"savedUserList")
+        if(!g.anUpdate){
+            await saveJSON(g.savedFilterAlgo,"savedFilterAlgo")
+            self.postMessage({status:'update', savedFilterAlgo: g.savedFilterAlgo})
         }
         self.postMessage({
             status:'update', 
@@ -1531,21 +1543,21 @@ function arrayMode(obj){
     return modLowLim+(((modFreq-modPreFreq)/((2*modFreq)-modPreFreq-modSucFreq))*classW)
 }
     // Linear Regression
-function linearRegression(data){
+function linearRegression(XY){
     let lr = {};
-    let n = g.length;
+    let n = XY.length;
     let sum_x = 0;
     let sum_y = 0;
     let sum_xy = 0;
     let sum_xx = 0;
     let sum_yy = 0;
-    for (let i = 0; i < g.length; i++) {
-        sum_x += data[i][0];
-        sum_y += data[i][1];
-        sum_xy += (data[i][0]*data[i][1]);
-        sum_xx += (data[i][0]*data[i][0]);
-        sum_yy += (data[i][1]*data[i][1]);
-    } 
+    for (let i = 0; i < XY.length; i++) {
+        sum_x += XY[i][0];
+        sum_y += XY[i][1];
+        sum_xy += (XY[i][0]*XY[i][1]);
+        sum_xx += (XY[i][0]*XY[i][0]);
+        sum_yy += (XY[i][1]*XY[i][1]);
+    }
     lr['slope'] = (n * sum_xy - sum_x * sum_y) / (n*sum_xx - sum_x * sum_x);
     lr['intercept'] = (sum_y - lr.slope * sum_x)/n;
     lr['r2'] = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
