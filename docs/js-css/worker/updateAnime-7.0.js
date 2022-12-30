@@ -44,6 +44,7 @@ async function mainWorker(){
         const animeEntries = {}
         const maxAnimePerPage = 50
         const maxStaffPerPage = 25
+        const savedAnimeIDs = g.savedAnimeIDs
         g.newRequestCount = 0
         async function recallUPAN(page, staffPage, staffHasNextPage){
             $.ajax({
@@ -67,7 +68,7 @@ async function mainWorker(){
                                 genre_not_in: ["Hentai"],
                                 format_not_in:[MUSIC,MANGA,NOVEL,ONE_SHOT],
                                 ${  g.returnInfo==='updateNewAnime'? 'sort: [UPDATED_AT_DESC]'
-                                    : `id_not_in: [${g.savedAnimeIDs}]`
+                                    : `id_not_in: [${savedAnimeIDs}]`
                                 }
                                 ) {
                                 id
@@ -240,7 +241,9 @@ async function mainWorker(){
                                     info: 'normal'
                                 }
                             })
-                            return resolve()
+                            setTimeout(()=>{
+                                return resolve()
+                            },100)
                         }
                     }
                 },
@@ -284,9 +287,9 @@ async function postWorker(){
             status:'update', 
             haveSavedAnimeEntries: !jsonIsEmpty(g.savedAnimeEntries)
         })
-        saveJSON(g.lastSavedUpdateTime,"lastSavedUpdateTime")
+        await saveJSON(g.lastSavedUpdateTime,"lastSavedUpdateTime")
         self.postMessage({status:'update', lastSavedUpdateTime: g.lastSavedUpdateTime})
-        saveJSON(Math.max(g.requestCount,g.newRequestCount),"requestCount")
+        await saveJSON(Math.max(g.requestCount,g.newRequestCount),"requestCount")
         return resolve()
     })
 }

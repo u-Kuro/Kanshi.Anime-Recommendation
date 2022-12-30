@@ -45,9 +45,8 @@ async function preWorker(){
             g.savedUserList = {}
         } else {
             g.savedUserList = await retrieveJSON('savedUserList') ?? {}
-            if(g.returnInfo==="getNewAnime"){
+            if(g.returnInfo==="getNewAnime"||g.returnInfo==="updateNewAnime"){
                 g.userEntries = await retrieveJSON('userEntries') ?? []
-                deleteJSON('userEntries')
             } else {
                 g.userEntries = []
             }
@@ -57,7 +56,6 @@ async function preWorker(){
             if(g.anUpdate){
                 if(g.userEntries.length<=0){
                     const maxAnimePerChunk = 500
-                    g.userEntries = []
                     async function recallAV(chunk){
                         // Initialize Anilist Graphql Data
                         let query = `

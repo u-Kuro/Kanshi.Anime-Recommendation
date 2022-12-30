@@ -1605,6 +1605,8 @@
                         if(savedUsername&&haveSavedRecScheme){
                             let state = await hiddenUnhiddenBtnEl.text()
                             if(state==="Unhidden"){
+                                savedTableStatus = await "Hidden"
+                                await saveJSON(savedTableStatus,"savedTableStatus")
                                 let filterInput = await $("#flex0")
                                 if(filterInput.length){
                                     await filterInput.val("hidden")
@@ -1613,13 +1615,11 @@
                                     await filterInput.val("")
                                 }
                                 hiddenUnhiddenBtnEl.text("Hidden")
-                                savedTableStatus = await "Hidden"
-                                setTimeout(()=>{
-                                    saveJSON(savedTableStatus,"savedTableStatus")
-                                },0)
                                 await LoadData()
                                 pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                             } else {
+                                savedTableStatus = await "Unhidden"
+                                await saveJSON(savedTableStatus,"savedTableStatus")
                                 let filters = await $("ul.flex0>.value")
                                 await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
                                     if(e?.textContent?.toLowerCase()==="hidden"){
@@ -1629,10 +1629,6 @@
                                     }
                                 })
                                 await hiddenUnhiddenBtnEl.text("Unhidden")
-                                savedTableStatus = await "Unhidden"
-                                setTimeout(()=>{
-                                    saveJSON(savedTableStatus,"savedTableStatus")
-                                },0)
                                 await LoadData()
                                 pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                             }
@@ -1656,6 +1652,7 @@
                         if(value.isConfirmed){
                             isLoading = true
                             savedHiddenAnimeIDs = await {}
+                            await saveJSON(savedHiddenAnimeIDs, "savedHiddenAnimeIDs")
                             let filters = await $("ul.flex0>.value")
                             await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
                                 if(e?.textContent?.toLowerCase()==="hidden"){
@@ -1666,14 +1663,11 @@
                             })
                             hiddenUnhiddenBtnEl.text("Unhidden")
                             savedTableStatus = await "Unhidden"
+                            await saveJSON(savedTableStatus,"savedTableStatus")
                             await animeTableEl.trigger("pageSet",savedUnhiddenTablePage)
                             pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                             showAllAnimeBtnEl.hide()
                             menuContainerEl.fadeOut(500)
-                            setTimeout(()=>{
-                                saveJSON(savedHiddenAnimeIDs, "savedHiddenAnimeIDs")
-                                saveJSON(savedTableStatus,"savedTableStatus")
-                            },0)
                             await LoadData()
                             Swal.fire({
                                 heightAuto: false,
@@ -1968,11 +1962,9 @@
                         })
                         .then(async(value) => {
                             if(value.isConfirmed){
-                                updateIntervalBtnEl.removeClass("selected")
                                 updateIntervalIsActive = await false
-                                setTimeout(()=>{
-                                    saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
-                                },0)
+                                await saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
+                                updateIntervalBtnEl.removeClass("selected")
                             }
                         })
                     } else {
@@ -1992,8 +1984,10 @@
                             if(value.isConfirmed){
                                 updateIntervalBtnEl.addClass("selected")
                                 updateIntervalIsActive = await true
+                                await saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
                                 updateIntervalStartDate = await updateIntervalStartDate || new Date()
-                                if((new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hrs
+                                await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                                if((new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hr
                                     if(!requestIsRunning){
                                         if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
                                         willAutoUpdate = true
@@ -2031,10 +2025,6 @@
                                         }
                                     },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                                 }
-                                setTimeout(()=>{
-                                    saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
-                                    saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                                },0)
                             }
                         })
                     }
@@ -2055,11 +2045,9 @@
                         })
                         .then(async(value) => {
                             if(value.isConfirmed){
-                                exportIntervalBtnEl.removeClass("selected")
                                 exportIntervalIsActive = await false
-                                setTimeout(()=>{
-                                    saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
-                                },0)
+                                await saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
+                                exportIntervalBtnEl.removeClass("selected")
                             }
                         })
                     } else {
@@ -2079,8 +2067,10 @@
                             if(value.isConfirmed){
                                 exportIntervalBtnEl.addClass("selected")
                                 exportIntervalIsActive = await true
+                                saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
                                 exportIntervalStartDate = await exportIntervalStartDate || new Date()
-                                if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
+                                saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
+                                if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hr
                                     await new Promise(async(resolve)=>{
                                         await menuContainerEl.fadeOut(250)
                                         return resolve()
@@ -2141,10 +2131,6 @@
                                         },1000)
                                     },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
                                 }
-                                setTimeout(()=>{
-                                    saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
-                                    saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                                },0)
                             }
                         })
                     }
@@ -2158,11 +2144,11 @@
                 })
                 $("#submitWarnAnime").on("click",async()=>{
                     savedWarnAnime = await $("ul.flex1>.value>.text").toArray()?.map((e)=>e.textContent)??[]
+                    await saveJSON(savedWarnAnime,"savedWarnAnime")
                     await warnAnimeModalEl.removeClass("swal2-show-custom").addClass("swal2-hide-custom")
                     setTimeout(()=>{
                         warnAnimeContainerEl.hide()
                     },300)
-                    await saveJSON(savedWarnAnime,"savedWarnAnime")
                     menuContainerEl.fadeOut(250)
                     await LoadData()
                 })
@@ -2270,9 +2256,7 @@
                                                     },
                                                     success: (data) => {
                                                         initStartTime = undefined
-                                                        setTimeout(()=>{
-                                                            saveJSON(initStartTime,"initStartTime")
-                                                        },0)
+                                                        saveJSON(initStartTime,"initStartTime")
                                                         UsernameValidationEl.fadeOut(1000,()=>{
                                                             UsernameValidationEl.remove()
                                                             $(".swal2-validation-message")
@@ -2290,25 +2274,19 @@
                                                         if(!window.navigator.onLine){
                                                             if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
                                                                 initStartTime = new Date()
-                                                                setTimeout(()=>{
-                                                                    saveJSON(initStartTime,"initStartTime")
-                                                                },0)
+                                                                saveJSON(initStartTime,"initStartTime")
                                                             }
                                                             UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                                             return resolve("Unable to connect to the Internet")
                                                         } else if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
                                                                 initStartTime = undefined
+                                                                saveJSON(initStartTime,"initStartTime")
                                                                 UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                                                setTimeout(()=>{
-                                                                    saveJSON(initStartTime,"initStartTime")
-                                                                },0)
                                                                 return resolve("Username not Found, Please Try Again...")
                                                         } else {
                                                             if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
                                                                 initStartTime = new Date()
-                                                                setTimeout(()=>{
-                                                                    saveJSON(initStartTime,"initStartTime")
-                                                                },0)
+                                                                saveJSON(initStartTime,"initStartTime")
                                                             }
                                                             UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                                             return resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
@@ -2344,13 +2322,11 @@
                             if(value.isConfirmed){
                                 let prevTheme = await savedTheme
                                 savedTheme = await "lightMode"
+                                await saveJSON(savedTheme,"savedTheme")
                                 themeBtnEl.removeClass("selected")
                                 menuContainerEl.fadeOut(250)
                                 await LoadData()
                                 await loadTheme(savedTheme,prevTheme)
-                                setTimeout(()=>{
-                                    saveJSON(savedTheme,"savedTheme")
-                                },0)
                             }
                         })
                     } else {
@@ -2369,13 +2345,11 @@
                             if(value.isConfirmed){
                                 let prevTheme = await savedTheme
                                 savedTheme = await "darkMode"
+                                await saveJSON(savedTheme,"savedTheme")
                                 themeBtnEl.addClass("selected")
                                 menuContainerEl.fadeOut(250)
                                 await LoadData()
                                 await loadTheme(savedTheme,prevTheme)
-                                setTimeout(()=>{
-                                    saveJSON(savedTheme,"savedTheme")
-                                },0)
                             }
                         })
                     }
@@ -2394,13 +2368,11 @@
                             icon: "question",
                             reverseButtons: true
                         })
-                        .then((value)=>{
+                        .then(async(value)=>{
                             if(value.isConfirmed){
-                                kidsAnimeIsHidden = false
+                                kidsAnimeIsHidden = await false
+                                await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
                                 hideKidsAnimeBtnEl.removeClass("selected")
-                                setTimeout(()=>{
-                                    saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
-                                },0)
                                 menuContainerEl.fadeOut(250)
                                 LoadData()
                             }
@@ -2418,13 +2390,11 @@
                             icon: "question",
                             reverseButtons: true
                         })
-                        .then((value)=>{
+                        .then(async(value)=>{
                             if(value.isConfirmed){
                                 kidsAnimeIsHidden = true
+                                await saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
                                 hideKidsAnimeBtnEl.addClass("selected")
-                                setTimeout(()=>{
-                                    saveJSON(kidsAnimeIsHidden,"kidsAnimeIsHidden")
-                                },0)
                                 menuContainerEl.fadeOut(250)
                                 LoadData()
                             }
@@ -2493,9 +2463,7 @@
                 $(".anime-table-headers").on('click', ()=>{
                     let savedSort = animeTableEl[0]?.config?.sortList?.[0]
                     if(savedSort instanceof Array){
-                        setTimeout(()=>{
-                            saveJSON(savedSort,"savedSort")
-                        },0)
+                        saveJSON(savedSort,"savedSort")
                     }
                     setTimeout(()=>{
                         pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
@@ -2550,9 +2518,7 @@
                     }
                 })
                 bodyEl.on('scroll', function () {
-                    setTimeout(async()=>{
-                        saveJSON(bodyEl.scrollTop()||0,"savedYscroll")
-                    },1)
+                    saveJSON(bodyEl.scrollTop()||0,"savedYscroll")
                 })
                 $(window).on("keydown", (e) => {
                     if(!$("input").is(':focus')&&!isLoading){
@@ -2709,6 +2675,8 @@
                             isRunning = true
                             let hiddenRow = await $(e.currentTarget).closest('tr') || $(e.target).closest('tr')
                             let hiddenAnimeID = await hiddenRow.children(".animeTitle").children(".td-container").children("a").attr("data-value")
+                            savedHiddenAnimeIDs[hiddenAnimeID] = await true
+                            await saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
                             await hiddenRow.html(`
                                 <tr class="item ${savedTheme}" role="row">
                                     <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
@@ -2731,10 +2699,6 @@
                                     </tr>
                                 `)
                             }
-                            savedHiddenAnimeIDs[hiddenAnimeID] = await true
-                            setTimeout(()=>{
-                                saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
-                            },0)
                             animeTableEl.trigger("pagerUpdate")
                             // Have a Hidden Anime
                             if(await !jsonIsEmpty(savedHiddenAnimeIDs)){
@@ -2749,6 +2713,8 @@
                             isRunning = true
                             let hiddenRow = await $(e.currentTarget).closest('tr') || $(e.target).closest('tr')
                             let hiddenAnimeID = await hiddenRow.children(".animeTitle").children(".td-container").children("a").attr("data-value")
+                            await delete savedHiddenAnimeIDs[hiddenAnimeID]
+                            await saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
                             await hiddenRow.html(`
                                 <tr class="item ${savedTheme}" role="row">
                                     <td class="${savedTheme}" style="padding: 1.5em !important;" colspan="11">
@@ -2761,10 +2727,6 @@
                             `)
                             await hiddenRow.addClass("remove-me")
                             animeTableEl.trigger("pagerUpdate")
-                            await delete savedHiddenAnimeIDs[hiddenAnimeID]
-                            setTimeout(()=>{
-                                saveJSON(savedHiddenAnimeIDs,"savedHiddenAnimeIDs")
-                            },0)
                             // No Hidden Anime
                             if(await jsonIsEmpty(savedHiddenAnimeIDs)||animeTableEl[0]?.config?.rowsCopy?.length===0){
                                 await animeRecommendationListEl.empty()
@@ -2788,14 +2750,10 @@
                         await ++page
                         if(savedTableStatus==="Unhidden"){
                             savedUnhiddenTablePage = await page || 1
-                            setTimeout(()=>{
-                                saveJSON(savedUnhiddenTablePage,"savedUnhiddenTablePage")
-                            },0)
+                            await saveJSON(savedUnhiddenTablePage,"savedUnhiddenTablePage")
                         } else if(savedTableStatus==="Hidden"){
                             savedHiddenTablePage = await page || 1
-                            setTimeout(()=>{
-                                saveJSON(savedHiddenTablePage,"savedHiddenTablePage")
-                            },0)
+                            await saveJSON(savedHiddenTablePage,"savedHiddenTablePage")
                         }
                     })
                 // Flex DataList
@@ -2809,10 +2767,10 @@
             return await new Promise(async(resolve)=>{
                 if(savedBackUpVersion<backUpVersion){
                     savedAnalyzeVariableTime = await [15]
-                    savedUpdateAnalyzeAnimeTime = await [15]
-                    savedDeepUpdateTime = await [6700]
                     await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
+                    savedUpdateAnalyzeAnimeTime = await [15]
                     await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
+                    savedDeepUpdateTime = await [6700]
                     await saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
                     return resolve()
                 } else {
@@ -2915,10 +2873,8 @@
                     await usernameEl.val(savedUsername)
                     await updateIntervalBtnEl.show()
                 } else {
-                    setTimeout(()=>{
-                        saveJSON({},"savedUserList")
-                        saveJSON({},"savedUserScores")
-                    },0)
+                    await saveJSON({},"savedUserList")
+                    await saveJSON({},"savedUserScores")
                 }
                 // Reload Table Filters/Identifiers
                     // Table Filters
@@ -3015,6 +2971,7 @@
                 if(await updateIntervalIsActive){
                     await updateIntervalBtnEl.addClass("selected")
                     updateIntervalStartDate = await updateIntervalStartDate || new Date()
+                    await saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                     if(await (new Date).getTime()-(updateIntervalStartDate.getTime())>3600000){// 1hr
                         if(!requestIsRunning&&usernameEl.val()){
                             if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
@@ -3055,9 +3012,6 @@
                         },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                         return resolve()
                     }
-                    setTimeout(()=>{
-                        saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                    },0)
                 } else {
                     return resolve()
                 }
@@ -3066,6 +3020,7 @@
                 if(exportIntervalIsActive){
                     await exportIntervalBtnEl.css("selected")
                     exportIntervalStartDate = await exportIntervalStartDate || new Date()
+                    await saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
                     if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
                         if(!willAutoUpdate){
                             dataStatusPrio = true
@@ -3124,9 +3079,6 @@
                         },3600000-((new Date).getTime()-(exportIntervalStartDate.getTime())))
                         return
                     }
-                    setTimeout(()=>{
-                        saveJSON(exportIntervalStartDate,"exportIntervalStartDate")
-                    },0)
                 } else {
                     return
                 }
@@ -3138,9 +3090,7 @@
             }
             // Save Back-Up Data Version Updates
             if(savedBackUpVersion<backUpVersion){
-                setTimeout(()=>{
-                    saveJSON(backUpVersion,"backUpVersion")
-                },0)
+                await saveJSON(backUpVersion,"backUpVersion")
                 return
             } else {
                 return
@@ -3442,6 +3392,7 @@
                 return updateAnime(updateID, username, anUpdate, versionUpdate, data.returnInfo)
             } else {// Errors
                 worker3.terminate()
+                requestIsRunning = false
                 let error = data.error
                 for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                 dataStatusSpinnerHomeEl.hide()
@@ -3518,9 +3469,7 @@
                                                     },
                                                     success: (data) => {
                                                         initStartTime = undefined
-                                                        setTimeout(()=>{
-                                                            saveJSON(initStartTime,"initStartTime")
-                                                        },0)
+                                                        saveJSON(initStartTime,"initStartTime")
                                                         UsernameValidationEl.fadeOut(1000,()=>{
                                                             UsernameValidationEl.remove()
                                                             $(".swal2-validation-message")
@@ -3538,25 +3487,19 @@
                                                         if(!window.navigator.onLine){
                                                             if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
                                                                 initStartTime = new Date()
-                                                                setTimeout(()=>{
-                                                                    saveJSON(initStartTime,"initStartTime")
-                                                                },0)
+                                                                saveJSON(initStartTime,"initStartTime")
                                                             }
                                                             UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                                             return resolve("Unable to connect to the Internet")
                                                         } else if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
                                                             initStartTime = undefined
-                                                            setTimeout(()=>{
-                                                                saveJSON(initStartTime,"initStartTime")
-                                                            },0)
+                                                            saveJSON(initStartTime,"initStartTime")
                                                             UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                                             return resolve("Username not Found, Please Try Again...")
                                                         } else {
                                                             if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
                                                                 initStartTime = new Date()
-                                                                setTimeout(()=>{
-                                                                    saveJSON(initStartTime,"initStartTime")
-                                                                },0)
+                                                                saveJSON(initStartTime,"initStartTime")
                                                             }
                                                             UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                                             return resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
@@ -3590,6 +3533,7 @@
                         confirmButtonColor: "#000"
                     })
                 }
+                requestIsRunning = false
                 console.error(error)
                 LoadData()
                 // Browser
@@ -3607,7 +3551,6 @@
                         </tr>
                     `)
                 }
-                requestIsRunning = false
             }
         }
         worker3.onerror = (error) => {
@@ -3620,12 +3563,17 @@
                 .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                 .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
             console.error(error)
+            LoadData()
+            // Browser
+            showNotification(`Oops...Something went wrong! Please try again...`)
+            // Browser
             Swal.fire({
                 heightAuto: false,
                 text: "Error 115: Oops...Something went wrong! Please try again...",
                 icon: "error",
                 confirmButtonColor: "#000"
             })
+            console.log("WebtoApp: Update Error")
         }
     }
 
@@ -3696,19 +3644,13 @@
                 return analyzeAnime(updateID, username, anUpdate, versionUpdate, data.returnInfo)
             } else if(status==='error'){
                 worker4.terminate()
+                requestIsRunning = false
                 let error;
                 if(!window.navigator.onLine){
                     error = "Error 100: Unable to connect to the Internet!"
                 } else {
                     error = data.error
                 }
-                Swal.fire({
-                    heightAuto: false,
-                    text: error,
-                    icon: "error",
-                    confirmButtonColor: "#000"
-                })
-                requestIsRunning = false
                 console.error(error)
                 Swal.fire({
                     heightAuto: false,
@@ -3720,6 +3662,7 @@
                 // Browser
                 showNotification(`Oops...Something went wrong! Please try again...`);
                 // Browser
+                console.log("WebtoApp: Update Error")
                 for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                 dataStatusSpinnerHomeEl.hide()
                 let localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
@@ -3727,7 +3670,6 @@
                     .empty()
                     .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                     .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                console.log("WebtoApp: Update Error")
                 if(!haveSavedRecScheme){
                     animeRecommendationListEl.empty()
                     animeRecommendationListEl.append(`
@@ -3755,6 +3697,7 @@
             // Browser
             showNotification(`Oops...Something went wrong! Please try again...`);
             // Browser
+            console.log("WebtoApp: Update Error")
             for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
             dataStatusSpinnerHomeEl.hide()
             let localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
@@ -3762,7 +3705,6 @@
                 .empty()
                 .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                 .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-            console.log("WebtoApp: Update Error")
             if(!haveSavedRecScheme){
                 animeRecommendationListEl.empty()
                 animeRecommendationListEl.append(`
@@ -3852,6 +3794,11 @@
                         .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                         .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                 } else if(alertUser = data.alertUser ?? false){
+                    if(willAutoUpdate){
+                        updateIntervalStartDate = new Date()
+                        saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
+                        willAutoUpdate = false
+                    }
                     let filtersHasFocus = false
                     // Check input Focus before updating
                     if( $("#flex0").is(":focus")
@@ -3877,13 +3824,6 @@
                     // Browser
                     showNotification("List has been updated!")
                     // Browser
-                    if(willAutoUpdate){
-                        updateIntervalStartDate = new Date()
-                        willAutoUpdate = false
-                        setTimeout(()=>{
-                            saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
-                        },0)
-                    }
                 }
             } else if(status==='update') {
                 if(data.savedFilterOptionsJson ?? false) {
@@ -4013,7 +3953,7 @@
             } else if(status==='loadData'){
                 LoadData()
             } else if(status==='updateAnime'){
-                worker5.terminate()
+                if(returnInfo!=='init'&&data.returnInfo!=='getNewAnime'){ worker5.terminate() }
                 return updateAnime(updateID, username, anUpdate, versionUpdate, data.returnInfo)
             } else if(status==='notAnUpdate'){
                 worker5.terminate()
@@ -4050,6 +3990,7 @@
                 requestIsRunning = false
             } else {// Errors
                 worker5.terminate()
+                requestIsRunning = false
                 dataStatusEl
                     .empty()
                     .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
@@ -4061,11 +4002,16 @@
                     icon: "error",
                     confirmButtonColor: "#000"
                 })
-                requestIsRunning = false
+                LoadData()
+                // Browser
+                showNotification(`Oops...Something went wrong! Please try again...`);
+                // Browser
+                console.log("WebtoApp: Update Error")
             }
         }
         worker5.onerror = (error) => {
             worker5.terminate()
+            requestIsRunning = false
             for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
             dataStatusSpinnerHomeEl.hide()
             let localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
@@ -4074,13 +4020,17 @@
                 .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                 .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
             console.error(error)
+            LoadData()
             Swal.fire({
                 heightAuto: false,
                 text: "Error 105: Oops...Something went wrong! Please try again...",
                 icon: "error",
                 confirmButtonColor: "#000"
             })
-            requestIsRunning = false
+            console.log("WebtoApp: Update Error")
+            // Browser
+            showNotification(`Oops...Something went wrong! Please try again...`);
+            // Browser
         }
     }
 
@@ -4185,9 +4135,7 @@
                 // Browser
                 if(saveBackUpDate){
                     exportIntervalStartDate = await new Date()
-                    setTimeout(()=>{
-                        saveJSON(exportIntervalStartDate, "exportIntervalStartDate")
-                    },0)
+                    saveJSON(exportIntervalStartDate, "exportIntervalStartDate")
                 }
                 dataStatusPrio = false
                 if(!requestIsRunning){
@@ -4340,9 +4288,7 @@
                             },
                             success: (data) => {
                                 initStartTime = undefined
-                                setTimeout(()=>{
-                                    saveJSON(initStartTime,"initStartTime")
-                                },0)
+                                saveJSON(initStartTime,"initStartTime")
                                 UsernameValidationEl.fadeOut(1000,()=>{
                                     UsernameValidationEl.remove()
                                     $(".swal2-validation-message")
@@ -4360,25 +4306,19 @@
                                 if(!window.navigator.onLine){
                                     if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
                                         initStartTime = new Date()
-                                        setTimeout(()=>{
-                                            saveJSON(initStartTime,"initStartTime")
-                                        },0)
+                                        saveJSON(initStartTime,"initStartTime")
                                     }
                                     UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                     return resolve("Unable to connect to the Internet")
                                 } else if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
                                     initStartTime = undefined
-                                    setTimeout(()=>{
-                                        saveJSON(initStartTime,"initStartTime")
-                                    },0)
+                                    saveJSON(initStartTime,"initStartTime")
                                     UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                     return resolve("Username not Found, Please Try Again...")
                                 } else {
                                     if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
                                         initStartTime = new Date()
-                                        setTimeout(()=>{
-                                            saveJSON(initStartTime,"initStartTime")
-                                        },0)
+                                        saveJSON(initStartTime,"initStartTime")
                                     }
                                     UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                     return resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)

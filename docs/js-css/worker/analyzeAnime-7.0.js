@@ -16,8 +16,8 @@ self.onmessage = async({data}) => {
             self.postMessage({status:'updateAnime',returnInfo:'getNewAnime'})
             self.postMessage({status:'backUpData',saveBackupDate:false})
         } else if(g.returnInfo==='getNewAnime'){
-            self.postMessage({status:'updateAnime',returnInfo:'updateNewAnime'})
             self.postMessage({status:'notify',alertUser:true})
+            self.postMessage({status:'updateAnime',returnInfo:'updateNewAnime'})
             self.postMessage({status:'backUpData',saveBackupDate:true})
         } else if(g.returnInfo==='updateNewAnime'){
             self.postMessage({status:'notify',clearUpdateStatus:true})
@@ -53,27 +53,21 @@ async function preWorker(){
         }
         // Temporarily Saved
         g.deepUpdateStartTime = await retrieveJSON('deepUpdateStartTime') ?? false
-        g.userListStatus = await retrieveJSON('userListStatus') ?? false
-        g.varScheme = await retrieveJSON('varScheme') ?? false
-        g.alteredVariables = await retrieveJSON('alteredVariables') ?? false
-        if(g.deepUpdateStartTime){
+        g.userListStatus = await retrieveJSON('userListStatus') ?? {}
+        g.varScheme = await retrieveJSON('varScheme') ?? {}
+        g.alteredVariables = await retrieveJSON('alteredVariables') ?? {}
+        if(g.deepUpdateStartTime&&g.returnInfo==='getAllAnime'){
             g.savedDeepUpdateTime = await retrieveJSON('savedDeepUpdateTime') ?? [6700]
             deleteJSON('deepUpdateStartTime')
         }
-        if(g.userListStatus){
+        if(!jsonIsEmpty(g.userListStatus)&&g.returnInfo==='updateNewAnime'){
             deleteJSON('userListStatus')
-        } else {
-            g.userListStatus = {}
         }
-        if(g.varScheme){
+        if(!jsonIsEmpty(g.varScheme)&&g.returnInfo==='updateNewAnime'){
             deleteJSON('varScheme')
-        } else {
-            g.varScheme = {}
         }
-        if(g.alteredVariables){
+        if(!jsonIsEmpty(g.alteredVariables)&&g.returnInfo==='updateNewAnime'){
             deleteJSON('alteredVariables')
-        } else {
-            g.alteredVariables = {}
         }
         // Temporarily Saved
         g.isNewName = !equalsNCS(g.username,g.savedUsername)
@@ -1254,9 +1248,11 @@ async function mainWorker(){
             }
         }
         // Add Filters
-        g.savedFilterOptionsJson = []
-        for(let key in g.allFilterInfo){
-            g.savedFilterOptionsJson.push({info: key})
+        if(g.anUpdate||g.versionUpdate){
+            g.savedFilterOptionsJson = []
+            for(let key in g.allFilterInfo){
+                g.savedFilterOptionsJson.push({info: key})
+            }
         }
         return resolve()
     })
@@ -1296,12 +1292,12 @@ async function postWorker(){
         await saveJSON(g.savedUpdateAnalyzeAnimeTime, "savedUpdateAnalyzeAnimeTime")
         self.postMessage({status:'update', savedUpdateAnalyzeAnimeTime: g.savedUpdateAnalyzeAnimeTime})
         //
-        await saveJSON(g.savedFilterOptionsJson,"savedFilterOptionsJson")
         if(g.anUpdate||g.versionUpdate){
+            await saveJSON(g.savedFilterOptionsJson,"savedFilterOptionsJson")
             self.postMessage({status:'update',savedFilterOptionsJson: g.savedFilterOptionsJson}) // Notify User for the Filter Update
         }
         //
-        if(g.deepUpdateStartTime&&g.returnID==="here"){
+        if(g.deepUpdateStartTime&&g.returnID==="getAllAnime"){
             timeInterval = (new Date).getTime()-g.deepUpdateStartTime.getTime()
             if(g.savedDeepUpdateTime.length<33){
                 await g.savedDeepUpdateTime.push(Math.ceil(timeInterval/1000))
