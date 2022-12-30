@@ -44,29 +44,29 @@ async function IDBinit(){
         }
         request.onsuccess = (event) => {
             db = event.target.result
-            resolve()
+            return resolve()
         }
         request.onupgradeneeded = (event) => {
             db = event.target.result
             db.createObjectStore("MyObjectStore")
-            resolve()
+            return resolve()
         }
     })
 }
 async function retrieveJSON(name) {
-    return new Promise((resolve)=>{
+    return await new Promise((resolve)=>{
         try {
             let read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").get(name)
             read.onsuccess = (event) => {
-                resolve(read.result)
+                return resolve(read.result)
             }
             read.onerror = (error) => {
                 console.error(error)
-                resolve()
+                return resolve()
             }
         } catch(ex){
             console.error(ex)
-            resolve()
+            return resolve()
         }
     })
 }

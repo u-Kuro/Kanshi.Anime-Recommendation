@@ -1512,7 +1512,7 @@
         return await new Promise(async(resolve)=>{
             // Create/Load IndexedDB
             await IDBinit()
-            resolve()
+            return resolve()
         }).then(async()=>{
             // Init Global Saved Data from IndexedDB
             return await new Promise(async(resolve)=>{
@@ -1546,7 +1546,7 @@
                 savedUpdateAnalyzeAnimeTime = await retrieveJSON("savedUpdateAnalyzeAnimeTime") || [15]
                 savedDeepUpdateTime = await retrieveJSON("savedDeepUpdateTime") || [6700]
                 versionUpdate = await retrieveJSON("versionUpdate") ?? false
-                resolve()
+                return resolve()
             })
         }).then(async()=>{
             // Load Initial Theme
@@ -1728,9 +1728,9 @@
                                 })
                                 .then(async(value) => {
                                     if(value.isConfirmed){
-                                        resolve()
+                                        return resolve()
                                     } else {
-                                        reject()
+                                        return reject()
                                     }
                                 })
                             } else {
@@ -1744,7 +1744,7 @@
                                     </div>`
                                 )
                                 filterAlgoValidationEl.html("").hide()
-                                resolve()
+                                return resolve()
                             }
                         }).then(()=>{
                             if(worker8) worker8.terminate()
@@ -1773,6 +1773,7 @@
                                         requestIsRunning = false
                                         importBtnEl.removeClass('selected')
                                     } else if(data.doneImporting ?? false){
+                                        worker8.terminate()
                                         importFileEl.val(null)
                                         dataStatusPrio = false
                                         dataStatusSpinnerHomeEl.hide()
@@ -1828,7 +1829,7 @@
                                                 await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
                                                 await $("#flex1").prop("disabled", false)
                                             })
-                                            resolve()
+                                            return resolve()
                                         }).then(async()=>{
                                             let warnAnimeInput = await $("#flex1")
                                             for(let i=0; i<savedWarnAnime.length; i++) {
@@ -1850,7 +1851,7 @@
                                                 await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
                                                 await $("#flex2").prop("disabled", false)
                                             })
-                                            resolve()
+                                            return resolve()
                                         }).then(async()=>{
                                             // Reload Filters
                                             let filterAlgoInput = await $("#flex2")
@@ -1869,6 +1870,7 @@
                                 } else if(status==='Update'){
                                     Update(false)
                                 } else if(status==='error'){// Error
+                                    worker8.terminate()
                                     const error = data.error
                                     console.error(error)
                                     importBtnEl.removeClass('selected')
@@ -1894,7 +1896,6 @@
                                         .empty()
                                         .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
                                         .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                                    return
                                 }
                             }
                             worker8.onerror = (error) => {
@@ -1918,8 +1919,7 @@
                                     .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
                                 return
                             }
-                        }).catch((error)=>{
-                            console.error(error)
+                        }).catch(()=>{
                             importFileEl.val(null)
                             importBtnEl.removeClass('selected')
                             return
@@ -1948,7 +1948,7 @@
                                     .empty()
                                     .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
                                 await backUpData()
-                                resolve()
+                                return resolve()
                             }
                         })
                 })
@@ -2083,7 +2083,7 @@
                                 if((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000){// 1hrs
                                     await new Promise(async(resolve)=>{
                                         await menuContainerEl.fadeOut(250)
-                                        resolve()
+                                        return resolve()
                                     }).then(async()=>{
                                         if(!willAutoUpdate){
                                             dataStatusPrio = true
@@ -2242,7 +2242,7 @@
                                     inputValidator: async(value) => {
                                         return await new Promise(async(resolve) => {
                                             if(!value) {
-                                                resolve("You need to write Something...")
+                                                return resolve("You need to write Something...")
                                             } else {
                                                 let UsernameValidationEl = await $("#UsernameValidation")
                                                 $.ajax({
@@ -2282,7 +2282,7 @@
                                                             setTimeout(()=>{
                                                                 // Reset Custom Validation
                                                                 filterAlgoValidationEl.html("").hide()
-                                                                resolve()
+                                                                return resolve()
                                                             },1000)
                                                         })
                                                     },
@@ -2295,14 +2295,14 @@
                                                                 },0)
                                                             }
                                                             UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                                            resolve("Unable to connect to the Internet")
+                                                            return resolve("Unable to connect to the Internet")
                                                         } else if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
                                                                 initStartTime = undefined
                                                                 UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
                                                                 setTimeout(()=>{
                                                                     saveJSON(initStartTime,"initStartTime")
                                                                 },0)
-                                                                resolve("Username not Found, Please Try Again...")
+                                                                return resolve("Username not Found, Please Try Again...")
                                                         } else {
                                                             if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
                                                                 initStartTime = new Date()
@@ -2311,7 +2311,7 @@
                                                                 },0)
                                                             }
                                                             UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                                            resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
+                                                            return resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
                                                         }
                                                     }
                                                 })
@@ -2664,13 +2664,13 @@
                     },750)
                     clearTimeout(timeoutId)
                 })
-                resolve()
+                return resolve()
             })
         }).then(async()=>{
             return await new Promise(async(resolve)=>{
                 // Initial SavedTheme
                 await loadTheme(savedTheme)
-                resolve()
+                return resolve()
             })
         }).then(async()=>{
             // Init Modules/Config/Functions
@@ -2802,7 +2802,7 @@
                 await $(".flexdatalist").flexdatalist({})
                 await $(".flexdatalistWarnAnime").flexdatalist({})
                 await $(".flexdatalistFilterAlgo").flexdatalist({})
-                resolve()
+                return resolve()
             })
         }).then(async()=>{
             // Init Backup Data
@@ -2814,9 +2814,9 @@
                     await saveJSON(savedAnalyzeVariableTime,"savedAnalyzeVariableTime")
                     await saveJSON(savedUpdateAnalyzeAnimeTime,"savedUpdateAnalyzeAnimeTime")
                     await saveJSON(savedDeepUpdateTime,"savedDeepUpdateTime")
-                    resolve()
+                    return resolve()
                 } else {
-                    resolve()
+                    return resolve()
                 }
             })
         }).then(async()=>{
@@ -2825,6 +2825,7 @@
                     let worker0 = await new Worker(`./js-css/worker/getAnimeEntries-${version}.js`)
                     await worker0.postMessage("")
                     worker0.onmessage = async ({data}) => {
+                        worker0.terminate()
                         // data == lastSavedUpdate Time in backUp
                         if(data>lastSavedUpdateTime||!haveSavedAnimeEntries){
                             lastSavedUpdateTime = data
@@ -2837,15 +2838,15 @@
                                 Update(false)
                             }
                         }
-                        resolve()
+                        return resolve()
                     }
                     worker0.onerror = (error) => {
                         worker0.terminate()
                         console.error(error)
-                        resolve()
+                        return resolve()
                     }
                 } else {
-                    resolve()
+                    return resolve()
                 }
             })
         }).then(async()=>{
@@ -2854,6 +2855,7 @@
                     let worker1 = await new Worker(`./js-css/worker/getOptions-${version}.js`)
                     await worker1.postMessage("")
                     worker1.onmessage = async ({data}) => {
+                        worker1.terminate()
                         // data == savedFilterOptionsJson Time in backUp
                         savedFilterOptionsJson = await data || []
                         await $(".flexdatalist").flexdatalist({
@@ -2861,12 +2863,12 @@
                             searchIn: 'info',
                             data: savedFilterOptionsJson
                         })
-                        resolve()
+                        return resolve()
                     }
                     worker1.onerror = async (error) => {
                         worker1.terminate()
                         console.error(error)
-                        resolve()
+                        return resolve()
                     }
                 } else {
                     await $(".flexdatalist").flexdatalist({
@@ -2874,7 +2876,7 @@
                         searchIn: 'info',
                         data: savedFilterOptionsJson
                     })
-                    resolve()
+                    return resolve()
                 }
             })
         }).then(async()=>{
@@ -2882,9 +2884,9 @@
                 if(savedBackUpVersion<backUpVersion){
                     savedFilters = ["limit top wscore: 100", "!top similarities: !staffs", "!user status: !completed", "!user status: !dropped"]
                     await saveJSON(savedFilters,"savedFilters")
-                    resolve()
+                    return resolve()
                 } else {
-                    resolve()
+                    return resolve()
                 }
             })
         }).then(async()=>{
@@ -2893,15 +2895,16 @@
                     let worker2 = await new Worker(`./js-css/worker/getAnimeFranchises-${version}.js`)
                     await worker2.postMessage("")
                     worker2.onmessage = async (message) => {
-                        resolve()
+                        worker2.terminate()
+                        return resolve()
                     }
                     worker2.onerror = (error) => {
                         worker2.terminate()
                         console.error(error)
-                        resolve()
+                        return resolve()
                     }
                 } else {
-                    resolve()
+                    return resolve()
                 }
             })
         }).then(async()=>{
@@ -2983,7 +2986,7 @@
                     await showAllAnimeBtnEl.show()
                 }
                 await LoadData()
-                resolve()
+                return resolve()
             })
         }).then(async()=>{
             // Update Saved DOM State
@@ -3003,7 +3006,7 @@
                 },1)
                 flex1El[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                 flex2El[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
-                resolve()
+                return resolve()
             })
         }).then(async()=>{
             // Auto Intervals
@@ -3029,7 +3032,7 @@
                             },3600000)
                             updateIntervalTimeout.push(saveUpdateIntervalTimeout)
                         }
-                        resolve()
+                        return resolve()
                     } else {
                         // Timeout
                         setTimeout(async()=>{
@@ -3050,13 +3053,13 @@
                                 updateIntervalTimeout.push(saveUpdateIntervalTimeout)
                             }
                         },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
-                        resolve()
+                        return resolve()
                     }
                     setTimeout(()=>{
                         saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                     },0)
                 } else {
-                    resolve()
+                    return resolve()
                 }
             }).then(async()=>{
                 // Auto Export
@@ -3158,7 +3161,7 @@
             // Load Saved Theme
             return await new Promise(async(resolve)=>{
                 await loadTheme(savedTheme)
-                resolve()
+                return resolve()
             })
         }).then(async()=>{
             // Re-moval if fadeout failed
@@ -3336,7 +3339,8 @@
                                 })
                                 .then(async(value)=>{
                                     if(value.isConfirmed){
-                                        Update(true)
+                                        worker3.terminate()
+                                        return Update(true)
                                     }
                                 })
                             } else if(value.isDenied) {
@@ -3375,7 +3379,8 @@
                                 })
                                 .then(async(value)=>{
                                     if(value.isConfirmed){
-                                        Update(true)
+                                        worker3.terminate()
+                                        return Update(true)
                                     }
                                 })
                             }
@@ -3412,9 +3417,11 @@
                     savedFilterAlgo = data.savedFilterAlgo
                 }
             } else if(status==='reupdate'){
-                Update(data.anUpdate)
+                worker3.terminate()
+                return Update(data.anUpdate)
             } else if(status==='analyzeAnime') {
-                analyzeAnime(updateID, username, anUpdate, versionUpdate, returnInfo)
+                worker3.terminate()
+                return analyzeAnime(updateID, username, anUpdate, versionUpdate, returnInfo)
             } else if(status==='updateAnime'){
                 if(!anUpdate) {
                     filterAlgoValidationEl
@@ -3431,8 +3438,10 @@
                         filterAlgoValidationEl.fadeOut(1000)
                     },1000)
                 }
-                updateAnime(updateID, username, anUpdate, versionUpdate, data.returnInfo)
+                worker3.terminate()
+                return updateAnime(updateID, username, anUpdate, versionUpdate, data.returnInfo)
             } else {// Errors
+                worker3.terminate()
                 let error = data.error
                 for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                 dataStatusSpinnerHomeEl.hide()
@@ -3482,7 +3491,7 @@
                                                 $(".swal2-validation-message").addClass('darkMode')
                                             }
                                             if(!value) {
-                                                resolve("You need to write Something...")
+                                                return resolve("You need to write Something...")
                                             } else {
                                                 $.ajax({
                                                     type: 'POST',
@@ -3521,7 +3530,7 @@
                                                             setTimeout(()=>{
                                                                 // Reset Custom Validation
                                                                 filterAlgoValidationEl.html("").hide()
-                                                                resolve()
+                                                                return resolve()
                                                             },1000)
                                                         })
                                                     },
@@ -3534,14 +3543,14 @@
                                                                 },0)
                                                             }
                                                             UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                                            resolve("Unable to connect to the Internet")
+                                                            return resolve("Unable to connect to the Internet")
                                                         } else if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
                                                             initStartTime = undefined
                                                             setTimeout(()=>{
                                                                 saveJSON(initStartTime,"initStartTime")
                                                             },0)
                                                             UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                                            resolve("Username not Found, Please Try Again...")
+                                                            return resolve("Username not Found, Please Try Again...")
                                                         } else {
                                                             if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
                                                                 initStartTime = new Date()
@@ -3550,7 +3559,7 @@
                                                                 },0)
                                                             }
                                                             UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                                            resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
+                                                            return resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
                                                         }
                                                     }
                                                 })
@@ -3560,7 +3569,8 @@
                                 })
                                 if(xusername){
                                     await usernameEl.val(xusername)
-                                    Update(true)
+                                    worker3.terminate()
+                                    return Update(true)
                                 } else {
                                     usernameEl.val(savedUsername)
                                 }
@@ -3580,10 +3590,8 @@
                         confirmButtonColor: "#000"
                     })
                 }
-                console.error(error);
-                (async()=>{
-                    await LoadData()
-                })();
+                console.error(error)
+                LoadData()
                 // Browser
                 showNotification(`Oops...Something went wrong! Please try again...`)
                 // Browser
@@ -3600,7 +3608,6 @@
                     `)
                 }
                 requestIsRunning = false
-                return
             }
         }
         worker3.onerror = (error) => {
@@ -3682,10 +3689,13 @@
                     lastSavedUpdateTime = data.lastSavedUpdateTime
                 }
             } else if(status==='analyzeVariables'){
-                analyzeVariables(updateID, username, anUpdate, versionUpdate, data.returnInfo)
+                worker4.terminate()
+                return analyzeVariables(updateID, username, anUpdate, versionUpdate, data.returnInfo)
             } else if(status==='analyzeAnime'){
-                analyzeAnime(updateID, username, anUpdate, versionUpdate, data.returnInfo)
+                worker4.terminate()
+                return analyzeAnime(updateID, username, anUpdate, versionUpdate, data.returnInfo)
             } else if(status==='error'){
+                worker4.terminate()
                 let error;
                 if(!window.navigator.onLine){
                     error = "Error 100: Unable to connect to the Internet!"
@@ -3786,10 +3796,6 @@
             hideUnwatchedSequels: hideUnwatchedSequels
         })
         worker5.onmessage = async({data}) => {
-            if(updateIDs.length>1&&updateID!==updateIDs.at(-1)){
-                updateIDs = [updateIDs.at(-1)] // one line
-                return
-            }
             const status = data.status
             if(status==='notify'){
                 let updateAnalyzeAnimeTime, clearUpdateStatus, versionIsUpdated, newUsername, alertUser;
@@ -3918,7 +3924,7 @@
                                         await $("#flex0").prop("disabled", false)
                                     }
                                 })
-                                resolve()
+                                return resolve()
                             }).then(async()=>{
                                 let filterInput = await $("#flex0")
                                 for(let i=0; i<savedFilters.length; i++) {
@@ -3946,7 +3952,7 @@
                                     await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
                                     await $("#flex2").prop("disabled", false)
                                 })
-                                resolve()
+                                return resolve()
                             }).then(async()=>{
                                 let filterAlgoInput = await $("#flex2")
                                 for(let i=0; i<savedFilterAlgo.length; i++) {
@@ -3972,7 +3978,7 @@
                                     await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
                                     await $("#flex1").prop("disabled", false)
                                 })
-                                resolve()
+                                return resolve()
                             }).then(async()=>{
                                 let warnAnimeInput = await $("#flex1")
                                 for(let i=0; i<savedWarnAnime.length; i++) {
@@ -4007,8 +4013,10 @@
             } else if(status==='loadData'){
                 LoadData()
             } else if(status==='updateAnime'){
-                updateAnime(updateID, username, anUpdate, versionUpdate, data.returnInfo)
+                worker5.terminate()
+                return updateAnime(updateID, username, anUpdate, versionUpdate, data.returnInfo)
             } else if(status==='notAnUpdate'){
+                worker5.terminate()
                 await new Promise(async(resolve)=>{
                     let algoFilters = await $("ul.flex2 > .value")
                     await algoFilters.children(".text").toArray()?.forEach(async(e,idx)=>{
@@ -4016,7 +4024,7 @@
                         await algoFilters.eq(idx).children(".fdl-remove").trigger("click")
                         await $("#flex2").prop("disabled", false)
                     })
-                    resolve()
+                    return resolve()
                 }).then(async()=>{
                     let filterAlgoInput = await $("#flex2")
                     for(let i=0; i<savedFilterAlgo.length; i++) {
@@ -4028,6 +4036,7 @@
                 })
                 requestIsRunning = false
             } else if(status==='backUpData') {
+                worker5.terminate()
                 if(exportIntervalIsActive){
                     if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
                         dataStatusPrio = true
@@ -4035,10 +4044,12 @@
                         dataStatusEl
                             .empty()
                             .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                        await backUpData(data?.saveBackupDate??true)
+                        return backUpData(data?.saveBackupDate??true)
                     }
                 }
+                requestIsRunning = false
             } else {// Errors
+                worker5.terminate()
                 dataStatusEl
                     .empty()
                     .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
@@ -4100,6 +4111,7 @@
                 worker6.onmessage = async ({data}) => {
                     animeData += data.chunk
                     if(data.done){
+                        worker6.terminate()
                         await animeRecommendationListEl.empty()
                         await animeRecommendationListEl.css({
                             "display":"none"
@@ -4121,7 +4133,7 @@
                         await pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                         pageNumberOptionsEl.css('pointer-events','')
                         isLoading = false
-                        resolve()
+                        return resolve()
                     }
                 }
                 worker6.onerror = (error) => {
@@ -4147,14 +4159,14 @@
                         requestIsRunning = false
                     }
                     isLoading = false
-                    resolve()
+                    return resolve()
                 }
             } else {
                 pageNumberOptionsEl.css('pointer-events','')
                 tableSkeleton.addClass("display-none")
                 animeTableEl.removeClass("display-none")
                 isLoading = false
-                resolve()
+                return resolve()
             }
         })
     }
@@ -4167,6 +4179,7 @@
             worker7.postMessage('browser')
             // Browser
             worker7.onmessage = async({data}) => {
+                worker7.terminate()
                 // Browser
                 await downloadLink(data, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                 // Browser
@@ -4199,7 +4212,7 @@
                         confirmButtonColor: "#000"
                     })
                 }
-                resolve()
+                return resolve()
             }
             worker7.onerror = (error) => {
                 worker7.terminate()
@@ -4227,7 +4240,7 @@
                         confirmButtonColor: "#000"
                     })
                 }
-                resolve()
+                return resolve()
             }
         })
     }
@@ -4299,7 +4312,7 @@
                         $(".swal2-validation-message").addClass('darkMode')
                     }
                     if(!value) {
-                        resolve("You need to write Something...")
+                        return resolve("You need to write Something...")
                     } else {
                         let UsernameValidationEl = await $("#UsernameValidation")
                         $.ajax({
@@ -4339,7 +4352,7 @@
                                     setTimeout(()=>{
                                         // Reset Custom Validation
                                         filterAlgoValidationEl.html("").hide()
-                                        resolve()
+                                        return resolve()
                                     },1000)
                                 })
                             },
@@ -4352,14 +4365,14 @@
                                         },0)
                                     }
                                     UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                    resolve("Unable to connect to the Internet")
+                                    return resolve("Unable to connect to the Internet")
                                 } else if(xhr?.responseJSON?.errors?.[0]?.message==='Not Found.'){
                                     initStartTime = undefined
                                     setTimeout(()=>{
                                         saveJSON(initStartTime,"initStartTime")
                                     },0)
                                     UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                    resolve("Username not Found, Please Try Again...")
+                                    return resolve("Username not Found, Please Try Again...")
                                 } else {
                                     if((Math.floor(new Date()-initStartTime)>60000)||initStartTime===undefined){
                                         initStartTime = new Date()
@@ -4368,7 +4381,7 @@
                                         },0)
                                     }
                                     UsernameValidationEl.fadeOut(1000,()=>$(this).remove())
-                                    resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
+                                    return resolve(`An Error Occured, Please Try Again in ${msToTime(Math.max(60000-(new Date()-initStartTime),1000))}`)
                                 }
                             }
                         })
@@ -4470,7 +4483,7 @@
             }
             // Apply New
             await allElement.addClass(newTheme)
-            resolve()
+            return resolve()
         })
     }
 
@@ -4502,17 +4515,17 @@
             }
             request.onsuccess = (event) => {
                 db = event.target.result
-                resolve()
+                return resolve()
             }
             request.onupgradeneeded = (event) => {
                 db = event.target.result;
                 db.createObjectStore("MyObjectStore")
-                resolve()
+                return resolve()
             }
         })
     }
     async function saveJSON(data, name) {
-        return new Promise(async(resolve)=>{
+        return await new Promise(async(resolve)=>{
             try {
                 let write = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").openCursor()
                 write.onsuccess = async(event) => {
@@ -4520,62 +4533,62 @@
                     if (cursor) {
                         if(cursor.key===name){
                             await cursor.update(data)
-                            resolve()
+                            return resolve()
                         }
                         await cursor.continue()
                     } else {
                         await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                        resolve()
+                        return resolve()
                     }
                 }
                 write.onerror = async(error) => {
                     console.error(error)
                     await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                    resolve()
+                    return resolve()
                 }
             } catch(ex) {
                 try{
                     console.error(ex)
                     await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                    resolve()
+                    return resolve()
                 } catch(ex2) {
                     console.error(ex2)
-                    resolve()
+                    return resolve()
                 }
             }
         })
     }
     async function retrieveJSON(name) {
-        return new Promise((resolve)=>{
+        return await new Promise((resolve)=>{
             try {
                 let read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").get(name)
                 read.onsuccess = (event) => {
-                    resolve(read.result)
+                    return resolve(read.result)
                 }
                 read.onerror = (error) => {
                     console.error(error)
-                    resolve()
+                    return resolve()
                 }
             } catch(ex){
                 console.error(ex)
-                resolve()
+                return resolve()
             }
         })
     }
     async function deleteJSON(name) {
-        return new Promise((resolve)=>{
+        return await new Promise((resolve)=>{
             try {
                 let read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").delete(name)
                 read.onsuccess = (event) => {
-                    resolve()
+                    return resolve()
                 }
                 read.onerror = (error) => {
                     console.error(error)
-                    resolve()
+                    return resolve()
                 }
             } catch(ex) {
                 console.error(ex)
-                resolve()
+                return resolve()
             }
         })
     }

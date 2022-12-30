@@ -36,7 +36,7 @@ async function preWorker(){
                 return result
             },[]).join(",")
         }
-        resolve()
+        return resolve()
     })
 }
 async function mainWorker(){
@@ -197,31 +197,12 @@ async function mainWorker(){
                             },60000)
                         }
                     } else {
-                        if(!staffHasNextPage){
-                            for(let id in animeEntries){
-                                if(isaN(id)){
-                                    g.savedAnimeEntries[id] = animeEntries[id]             
-                                }
-                            }
-                            saveJSON(g.savedAnimeEntries,"savedAnimeEntries")
-                            if(!hasNextPage){
-                                let message;
-                                if(g.returnInfo==='updateNewAnime'){
-                                    message='Updating Anime from Anilist:'
-                                } else {
-                                    message='Getting Anime from Anilist:'
-                                }
-                                message = `<span style="white-space:nowrap;">${message}⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`
-                                self.postMessage({
-                                    status:'notify', 
-                                    updateStatus: {
-                                        message: message,
-                                        info: 'normal'
-                                    }
-                                })
-                                resolve()
+                        for(let id in animeEntries){
+                            if(isaN(id)){
+                                g.savedAnimeEntries[id] = animeEntries[id]             
                             }
                         }
+                        saveJSON(g.savedAnimeEntries,"savedAnimeEntries")
                         if(hasNextPage){
                             if(responseHeaders?.['x-ratelimit-remaining']??1>0){
                                 return recallUPAN(++page,1,staffHasNextPage)
@@ -244,6 +225,22 @@ async function mainWorker(){
                                     return recallUPAN(++page,1,staffHasNextPage)
                                 },60000)
                             }
+                        } else {
+                            let message;
+                            if(g.returnInfo==='updateNewAnime'){
+                                message='Updating Anime from Anilist:'
+                            } else {
+                                message='Getting Anime from Anilist:'
+                            }
+                            message = `<span style="white-space:nowrap;">${message}⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`
+                            self.postMessage({
+                                status:'notify', 
+                                updateStatus: {
+                                    message: message,
+                                    info: 'normal'
+                                }
+                            })
+                            return resolve()
                         }
                     }
                 },
@@ -290,7 +287,7 @@ async function postWorker(){
         saveJSON(g.lastSavedUpdateTime,"lastSavedUpdateTime")
         self.postMessage({status:'update', lastSavedUpdateTime: g.lastSavedUpdateTime})
         saveJSON(Math.max(g.requestCount,g.newRequestCount),"requestCount")
-        resolve()
+        return resolve()
     })
 }
 async function IDBinit(){
@@ -301,17 +298,17 @@ async function IDBinit(){
         }
         request.onsuccess = (event) => {
             db = event.target.result
-            resolve()
+            return resolve()
         }
         request.onupgradeneeded = (event) => {
             db = event.target.result
             db.createObjectStore("MyObjectStore")
-            resolve()
+            return resolve()
         }
     })
 }
 async function saveJSON(data, name) {
-    return new Promise(async(resolve)=>{
+    return await new Promise(async(resolve)=>{
         try {
             let write = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").openCursor()
             write.onsuccess = async(event) => {
@@ -319,45 +316,45 @@ async function saveJSON(data, name) {
                 if (cursor) {
                     if(cursor.key===name){
                         await cursor.update(data)
-                        resolve()
+                        return resolve()
                     }
                     await cursor.continue()
                 } else {
                     await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                    resolve()
+                    return resolve()
                 }
             }
             write.onerror = async(error) => {
                 console.error(error)
                 await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                resolve()
+                return resolve()
             }
         } catch(ex) {
             try{
                 console.error(ex)
                 await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                resolve()
+                return resolve()
             } catch(ex2) {
                 console.error(ex2)
-                resolve()
+                return resolve()
             }
         }
     })
 }
 async function retrieveJSON(name) {
-    return new Promise((resolve)=>{
+    return await new Promise((resolve)=>{
         try {
             let read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").get(name)
             read.onsuccess = () => {
-                resolve(read.result)
+                return resolve(read.result)
             }
             read.onerror = (error) => {
                 console.error(error)
-                resolve()
+                return resolve()
             }
         } catch(ex){
             console.error(ex)
-            resolve()
+            return resolve()
         }
     })
 }

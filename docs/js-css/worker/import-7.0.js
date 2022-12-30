@@ -7,10 +7,10 @@ self.onmessage = async({data}) => {
         return await postWorker()
     }).then(async()=>{
         self.postMessage({status:'LoadData'})
-        self.postMessage({status:'notify',doneImporting:true})
         if(g.importedBackUpVersion<g.backUpVersion){
             self.postMessage({status:'Update'})
         }
+        self.postMessage({status:'notify',doneImporting:true})
     })
 }
 
@@ -31,13 +31,13 @@ async function mainWorker(){
                     g.fileContent = await JSON.parse(reader.result);
                 } catch(error) {
                     console.error(error)
-                    reject('Error: Invalid Backup File')
+                    return reject('Error: Invalid Backup File')
                 }
                 if(!g.fileContent.savedUsername){
-                    reject('Error: Backup file does not Have a Username')
+                    return reject('Error: Backup file does not Have a Username')
                 } else {
                     self.postMessage({status:'notify',validFile:true})
-                    resolve()
+                    return resolve()
                 }
             }).then(async()=>{
                 g.importedBackUpVersion = await g.fileContent.backUpVersion
@@ -129,7 +129,7 @@ async function mainWorker(){
                 g.savedFilterAlgo = await g.fileContent.savedFilterAlgo || ["minimum sample size: 2","include unknown variables: false"]
                 self.postMessage({status:'update',savedFilterAlgo:g.savedFilterAlgo})
                 await saveJSON(g.savedFilterAlgo,"savedFilterAlgo")
-                resolve()
+                return resolve()
             }).catch((error)=>{
                 self.postMessage({status:'error',error:error})
             })
@@ -154,7 +154,7 @@ async function postWorker(){
             self.postMessage({status:'update',versionUpdate:g.versionUpdate})
             saveJSON(g.versionUpdate,"versionUpdate")
         }
-        resolve()
+        return resolve()
     })
 }
 async function IDBinit(){
@@ -165,17 +165,17 @@ async function IDBinit(){
         }
         request.onsuccess = (event) => {
             db = event.target.result
-            resolve()
+            return resolve()
         }
         request.onupgradeneeded = (event) => {
             db = event.target.result
             db.createObjectStore("MyObjectStore")
-            resolve()
+            return resolve()
         }
     })
 }
 async function saveJSON(data, name) {
-    return new Promise(async(resolve)=>{
+    return await new Promise(async(resolve)=>{
         try {
             let write = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").openCursor()
             write.onsuccess = async(event) => {
@@ -183,62 +183,62 @@ async function saveJSON(data, name) {
                 if (cursor) {
                     if(cursor.key===name){
                         await cursor.update(data)
-                        resolve()
+                        return resolve()
                     }
                     await cursor.continue()
                 } else {
                     await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                    resolve()
+                    return resolve()
                 }
             }
             write.onerror = async(error) => {
                 console.error(error)
                 await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                resolve()
+                return resolve()
             }
         } catch(ex) {
             try{
                 console.error(ex)
                 await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                resolve()
+                return resolve()
             } catch(ex2) {
                 console.error(ex2)
-                resolve()
+                return resolve()
             }
         }
     })
 }
 async function retrieveJSON(name) {
-    return new Promise((resolve)=>{
+    return await new Promise((resolve)=>{
         try {
             let read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").get(name)
             read.onsuccess = () => {
-                resolve(read.result)
+                return resolve(read.result)
             }
             read.onerror = (error) => {
                 console.error(error)
-                resolve()
+                return resolve()
             }
         } catch(ex){
             console.error(ex)
-            resolve()
+            return resolve()
         }
     })
 }
 async function deleteJSON(name) {
-    return new Promise((resolve)=>{
+    return await new Promise((resolve)=>{
         try {
             let read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").delete(name)
             read.onsuccess = (event) => {
-                resolve()
+                return resolve()
             }
             read.onerror = (error) => {
                 console.error(error)
-                resolve()
+                return resolve()
             }
         } catch(ex) {
             console.error(ex)
-            resolve()
+            return resolve()
         }
     })
 }

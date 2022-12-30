@@ -23,7 +23,7 @@ async function preWorker(){
                                                                     "tag: full cgi","!tag: !male harem","!tag: !mixed gender harem",
                                                                     "!tag: !nudity","!tag: !slavery","!tag: !suicide","!tag: !yuri","!tag: !netorare", "!tag: !rape"
                                                                  ]
-        resolve()
+        return resolve()
     })
 }
 
@@ -882,7 +882,7 @@ async function mainWorker(){
                 </tr>
             `
         }
-        resolve()
+        return resolve()
     })
 }
 async function postWorker(){
@@ -901,7 +901,7 @@ async function postWorker(){
                 })
             },i*100)
         }
-        resolve()
+        return resolve()
     })
 }
 async function IDBinit(){
@@ -912,17 +912,17 @@ async function IDBinit(){
         }
         request.onsuccess = (event) => {
             db = event.target.result
-            resolve()
+            return resolve()
         }
         request.onupgradeneeded = (event) => {
             db = event.target.result
             db.createObjectStore("MyObjectStore")
-            resolve()
+            return resolve()
         }
     })
 }
 async function saveJSON(data, name) {
-    return new Promise(async(resolve)=>{
+    return await new Promise(async(resolve)=>{
         try {
             let write = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").openCursor()
             write.onsuccess = async(event) => {
@@ -930,45 +930,45 @@ async function saveJSON(data, name) {
                 if (cursor) {
                     if(cursor.key===name){
                         await cursor.update(data)
-                        resolve()
+                        return resolve()
                     }
                     await cursor.continue()
                 } else {
                     await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                    resolve()
+                    return resolve()
                 }
             }
             write.onerror = async(error) => {
                 console.error(error)
                 await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                resolve()
+                return resolve()
             }
         } catch(ex) {
             try{
                 console.error(ex)
                 await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                resolve()
+                return resolve()
             } catch(ex2) {
                 console.error(ex2)
-                resolve()
+                return resolve()
             }
         }
     })
 }
 async function retrieveJSON(name) {
-    return new Promise((resolve)=>{
+    return await new Promise((resolve)=>{
         try {
             let read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").get(name)
             read.onsuccess = () => {
-                resolve(read.result)
+                return resolve(read.result)
             }
             read.onerror = (error) => {
                 console.error(error)
-                resolve()
+                return resolve()
             }
         } catch(ex){
             console.error(ex)
-            resolve()
+            return resolve()
         }
     })
 }

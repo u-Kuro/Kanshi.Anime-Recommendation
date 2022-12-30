@@ -117,7 +117,7 @@ async function preWorker(){
                                         },60000)
                                     }
                                 } else {
-                                    resolve()
+                                    return resolve()
                                 }
                             },
                             error: function(xhr) {
@@ -151,11 +151,11 @@ async function preWorker(){
                     }
                     recallAV(1) // first chunk
                 } else {
-                    resolve()
+                    return resolve()
                 }
             } else {
                 if(isJson(g.savedUserList)&&isJson(Object.values(g.savedUserList)[0])&&!jsonIsEmpty(g.savedUserList)){
-                    resolve()
+                    return resolve()
                 } else {
                     // Update User List
                     self.postMessage({status:'notify', needUpdate: true})
@@ -1336,7 +1336,7 @@ async function mainWorker(){
         g.userListStatus = userListStatus
         g.alteredVariables = alteredVariables
         g.userListCount = userListCount
-        resolve()
+        return resolve()
     })
 }
 async function postWorker(){
@@ -1376,7 +1376,7 @@ async function postWorker(){
         await saveJSON(g.alteredVariables,'alteredVariables')
         await saveJSON(g.userEntries,'userEntries')
         // Temporarily Saved
-        resolve()
+        return resolve()
     })
 }
 async function IDBinit(){
@@ -1387,17 +1387,17 @@ async function IDBinit(){
         }
         request.onsuccess = (event) => {
             db = event.target.result
-            resolve()
+            return resolve()
         }
         request.onupgradeneeded = (event) => {
             db = event.target.result
             db.createObjectStore("MyObjectStore")
-            resolve()
+            return resolve()
         }
     })
 }
 async function saveJSON(data, name) {
-    return new Promise(async(resolve)=>{
+    return await new Promise(async(resolve)=>{
         try {
             let write = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").openCursor()
             write.onsuccess = async(event) => {
@@ -1405,62 +1405,62 @@ async function saveJSON(data, name) {
                 if (cursor) {
                     if(cursor.key===name){
                         await cursor.update(data)
-                        resolve()
+                        return resolve()
                     }
                     await cursor.continue()
                 } else {
                     await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                    resolve()
+                    return resolve()
                 }
             }
             write.onerror = async(error) => {
                 console.error(error)
                 await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                resolve()
+                return resolve()
             }
         } catch(ex) {
             try{
                 console.error(ex)
                 await db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").add(data, name)
-                resolve()
+                return resolve()
             } catch(ex2) {
                 console.error(ex2)
-                resolve()
+                return resolve()
             }
         }
     })
 }
 async function retrieveJSON(name) {
-    return new Promise((resolve)=>{
+    return await new Promise((resolve)=>{
         try {
             let read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").get(name)
             read.onsuccess = () => {
-                resolve(read.result)
+                return resolve(read.result)
             }
             read.onerror = (error) => {
                 console.error(error)
-                resolve()
+                return resolve()
             }
         } catch(ex){
             console.error(ex)
-            resolve()
+            return resolve()
         }
     })
 }
 async function deleteJSON(name) {
-    return new Promise((resolve)=>{
+    return await new Promise((resolve)=>{
         try {
             let read = db.transaction("MyObjectStore","readwrite").objectStore("MyObjectStore").delete(name)
             read.onsuccess = (event) => {
-                resolve()
+                return resolve()
             }
             read.onerror = (error) => {
                 console.error(error)
-                resolve()
+                return resolve()
             }
         } catch(ex) {
             console.error(ex)
-            resolve()
+            return resolve()
         }
     })
 }
