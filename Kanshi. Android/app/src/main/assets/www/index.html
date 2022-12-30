@@ -1450,12 +1450,12 @@
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "6.8",
+    const version = "7.0",
           backUpVersion = 4.5;
         // IndexDB
     let request, db,
         // Saved Data
-    savedUsername, haveSavedRecScheme, haveSavedUserList, haveSavedAnimeEntries, savedHiddenAnimeIDs,
+    savedUsername, haveSavedRecScheme, haveSavedAnimeEntries, savedHiddenAnimeIDs, 
     savedFilters, savedWarnAnime, savedFilterAlgo, savedBackUpVersion,
     savedHiddenTablePage, savedUnhiddenTablePage, savedTableStatus, savedYscroll, savedSort,
     savedTheme, kidsAnimeIsHidden, hideUnwatchedSequels, savedFilterOptionsJson,
@@ -1528,7 +1528,6 @@
             return await new Promise(async(resolve)=>{
                 haveSavedAnimeEntries = !jsonIsEmpty(await retrieveJSON("savedAnimeEntries") || {})
                 haveSavedRecScheme = !jsonIsEmpty(await retrieveJSON("savedRecScheme") || {})
-                haveSavedUserList = !jsonIsEmpty(await retrieveJSON("savedUserList") || {})
                 lastSavedUpdateTime = await retrieveJSON("lastSavedUpdateTime") || 0
                 savedTheme = await retrieveJSON("savedTheme") || "darkMode"
                 savedUnhiddenTablePage = await retrieveJSON("savedUnhiddenTablePage") || 0
@@ -1757,6 +1756,7 @@
                                         <div>Importing Data...</div>
                                     </div>`
                                 )
+                                filterAlgoValidationEl.html("").hide()
                                 resolve()
                             }
                         }).then(()=>{
@@ -1813,8 +1813,6 @@
                                         haveSavedRecScheme = data.haveSavedRecScheme
                                     } else if(data.haveSavedAnimeEntries!==undefined) {
                                         haveSavedAnimeEntries = data.haveSavedAnimeEntries
-                                    } else if(data.haveSavedUserList!==undefined) {
-                                        haveSavedUserList = data.haveSavedUserList
                                     } else if(data.versionUpdate!==undefined) {
                                         versionUpdate = data.versionUpdate
                                     } else if(data.savedHiddenAnimeIDs ?? false) {
@@ -2240,50 +2238,19 @@
                     flex2El[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                 })
                 $("#submitFilterAlgo").on("click",async()=>{
-                    if(!haveSavedUserList){
-                        Swal.fire({
-                            heightAuto: false,
-                            text: `You need to update first or add score an anime in Anilist before using this Feature!`,
-                            showConfirmButton: true,
-                            confirmButtonText: "Update",
-                            showDenyButton: true,
-                            denyButtonText: "Later",
-                            confirmButtonColor: '#000',
-                            denyButtonColor: '#e27d81',
-                            icon: "info",
-                            reverseButtons: true
-                        }).then((value)=>{
-                            if(value.isConfirmed){
-                                filterAlgoModalEl.removeClass("swal2-show-custom").addClass("swal2-hide-custom")
-                                setTimeout(()=>{
-                                    filterAlgoContainerEl.hide()
-                                },300)
-                                Update(true)
-                                menuContainerEl.fadeOut(250)
-                                for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
-                                dataStatusSpinnerHomeEl.hide()
-                                let localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                                dataStatusEl
-                                    .empty()
-                                    .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                                    .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                            }
-                        })
-                        return
-                    } else {
-                        savedFilterAlgo = await $("ul.flex2>.value>.text").toArray()?.map((e)=>e.textContent)??[]
-                        filterAlgoValidationEl
-                            .removeClass("success-before")
-                            .addClass("no-before")
-                            .css({display:"flex"})
-                            .html(
-                                `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
-                                    <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
-                                    <div>Analyzing Variables...</div>
-                                </div>`
-                            )
-                        Update(false)
-                    }
+                    savedFilterAlgo = await $("ul.flex2>.value>.text").toArray()?.map((e)=>e.textContent)??[]
+                    filterAlgoValidationEl
+                        .removeClass("error-before")
+                        .removeClass("success-before")
+                        .addClass("no-before")
+                        .css({display:"flex"})
+                        .html(
+                            `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                <div><div style="margin-right:0.5ch;" class="dataStatusSpinner spinner ${savedTheme}"></div></div>
+                                <div>Analyzing Variables...</div>
+                            </div>`
+                        )
+                    Update(false)
                 })
                 $("#filterAlgoContainer, #cancelFilterAlgo").on("click",async()=>{
                     filterAlgoModalEl.removeClass("swal2-show-custom").addClass("swal2-hide-custom")
@@ -3467,54 +3434,55 @@
                         })
                     }
                 } else if(needUpdate = data.needUpdate ?? false){
-                    Swal.fire({
-                        heightAuto: false,
-                        text: `You need to update first before using this Feature!`,
-                        showConfirmButton: true,
-                        confirmButtonText: "Update",
-                        showDenyButton: true,
-                        denyButtonText: "Later",
-                        confirmButtonColor: '#000',
-                        denyButtonColor: '#e27d81',
-                        icon: "info",
-                        reverseButtons: true
-                    }).then((value)=>{
-                        if(value.isConfirmed){
-                            filterAlgoModalEl.removeClass("swal2-show-custom").addClass("swal2-hide-custom")
-                            setTimeout(()=>{
-                                filterAlgoContainerEl.hide()
-                            },300)
-                            Update(true)
-                            menuContainerEl.fadeOut(250)
-                            for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
-                            dataStatusSpinnerHomeEl.hide()
-                            let localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
-                            dataStatusEl
-                                .empty()
-                                .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
-                                .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
-                        }
-                    })
-                } else if(data.hideUnwatchedSequelsBtn!==undefined) {
-                    if(hideUnwatchedSequelsBtn){
-                        hideUnwatchedSequelsBtnEl.addClass("selected")
-                    } else {
-                        hideUnwatchedSequelsBtnEl.removeClass("selected")
+                    for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
+                    dataStatusSpinnerHomeEl.hide()
+                    let localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString()
+                    dataStatusEl
+                        .empty()
+                        .append(`<span style="white-space:nowrap;">${lastSavedUpdateTime?`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: `+localeStr:`<b class="${savedTheme}" id="dataStatusUpdate">⟳</b> Latest Anilist Update: N/A`}</span>`)
+                        .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
+                    if(!anUpdate) {
+                        filterAlgoValidationEl
+                            .addClass("no-before").removeClass("no-before")
+                            .addClass("error-before")
+                            .css({display:"flex"})
+                            .html(
+                                `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                    <div><div style="margin-right:0.5ch;" class="display-none dataStatusSpinner spinner ${savedTheme}"></div></div>
+                                    <div>You need to update first before using this Feature!</div>
+                                </div>`
+                            )
+                        setTimeout(()=>{
+                            filterAlgoValidationEl.fadeOut(1000)
+                        },1000)
                     }
                 }
             } else if(status==='update'){
                 if(data.savedAnalyzeVariableTime ?? false){
                     savedAnalyzeVariableTime = data.savedAnalyzeVariableTime
-                } else if(data.haveSavedUserList!==undefined) {
-                    haveSavedUserList = data.haveSavedUserList
                 } else if(data.savedFilterAlgo ?? false) {
                     savedFilterAlgo = data.savedFilterAlgo
-                } else if(data.hideUnwatchedSequels!==undefined) {
-                    hideUnwatchedSequels = data.hideUnwatchedSequels
                 }
+            } else if(status==='reupdate'){
+                Update(data.anUpdate)
             } else if(status==='analyzeAnime') {
                 analyzeAnime(updateID, username, anUpdate, versionUpdate, returnInfo)
             } else if(status==='updateAnime'){
+                if(!anUpdate) {
+                    filterAlgoValidationEl
+                        .addClass("no-before").removeClass("no-before")
+                        .addClass("error-before")
+                        .css({display:"flex"})
+                        .html(
+                            `<div id="UsernameValidation" style="display:flex; align-items:center; justify-content:center; ">
+                                <div><div style="margin-right:0.5ch;" class="display-none dataStatusSpinner spinner ${savedTheme}"></div></div>
+                                <div>You need to update first before using this Feature!</div>
+                            </div>`
+                        )
+                    setTimeout(()=>{
+                        filterAlgoValidationEl.fadeOut(1000)
+                    },1000)
+                }
                 updateAnime(updateID, username, anUpdate, versionUpdate, data.returnInfo)
             } else {// Errors
                 let error = data.error
@@ -3894,6 +3862,7 @@
                     // For Popup
                     if(!anUpdate){
                         filterAlgoValidationEl
+                            .removeClass("error-before")
                             .removeClass("success-before")
                             .addClass("no-before")
                             .css({display:"flex"})
@@ -3905,6 +3874,7 @@
                             )
                     }
                 } else if(clearUpdateStatus = data.clearUpdateStatus ?? false){
+                    requestIsRunning = false
                     if(!anUpdate){
                         filterAlgoValidationEl
                             .addClass("no-before").removeClass("no-before")
@@ -3954,7 +3924,6 @@
                             saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                         },0)
                     }
-                    requestIsRunning = false
                 }
             } else if(status==='update') {
                 if(data.savedFilterOptionsJson ?? false) {
