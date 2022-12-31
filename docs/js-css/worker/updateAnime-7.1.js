@@ -287,9 +287,11 @@ async function postWorker(){
             status:'update', 
             haveSavedAnimeEntries: !jsonIsEmpty(g.savedAnimeEntries)
         })
-        await saveJSON(g.lastSavedUpdateTime,"lastSavedUpdateTime")
-        self.postMessage({status:'update', lastSavedUpdateTime: g.lastSavedUpdateTime})
-        await saveJSON(Math.max(g.requestCount,g.newRequestCount),"requestCount")
+        if(g.returnInfo!=='notAnUpdate'){
+            await saveJSON(g.lastSavedUpdateTime,"lastSavedUpdateTime")
+            self.postMessage({status:'update', lastSavedUpdateTime: g.lastSavedUpdateTime})
+            await saveJSON(Math.max(g.requestCount,g.newRequestCount),"requestCount")
+        }
         return resolve()
     })
 }
