@@ -1768,7 +1768,6 @@
                                         requestIsRunning = false
                                         importBtnEl.removeClass('selected')
                                     } else if(data.doneImporting ?? false){
-                                        worker8.terminate()
                                         importFileEl.val(null)
                                         dataStatusPrio = false
                                         dataStatusSpinnerHomeEl.hide()

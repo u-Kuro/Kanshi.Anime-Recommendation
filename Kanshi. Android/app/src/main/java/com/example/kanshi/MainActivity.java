@@ -44,9 +44,9 @@ import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.FileWriter;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity  {
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity  {
                                         "        localStorage.setItem('exportPathIsAvailable', JSON.stringify(exportPathIsAvailable));\n" +
                                         "     }\n" +
                                         "}"
-                                    );
+                                );
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -228,15 +228,15 @@ public class MainActivity extends AppCompatActivity  {
                 if("WebtoApp: Choose an Export Path".equals(message)){
                     if (!Environment.isExternalStorageManager()) {
                         new AlertDialog.Builder(MainActivity.this)
-                            .setTitle("Requires Permission for External Storage")
-                            .setMessage("Enable Kanshi. App in the Settings after clicking OK!")
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton("OK", (dialogInterface, i) -> {
-                                Uri uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}");
-                                Toast.makeText(getApplicationContext(), "Enable Kanshi. App in here to permit Data Export!", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri));
-                            })
-                            .setNegativeButton("Later", null).show();
+                                .setTitle("Requires Permission for External Storage")
+                                .setMessage("Enable Kanshi. App in the Settings after clicking OK!")
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton("OK", (dialogInterface, i) -> {
+                                    Uri uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}");
+                                    Toast.makeText(getApplicationContext(), "Enable Kanshi. App in here to permit Data Export!", Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri));
+                                })
+                                .setNegativeButton("Later", null).show();
                     } else {
                         Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
                                 .addCategory(Intent.CATEGORY_DEFAULT);
@@ -291,6 +291,23 @@ public class MainActivity extends AppCompatActivity  {
                         managerCompat = NotificationManagerCompat.from(MainActivity.this);
                         managerCompat.notify(1, builder.build());
                     }
+                } else if(message.contains("WebtoApp: Export Data/Kanshi.Seperator/")) {
+                    String[] splitMessage = message.replace("WebtoApp: Export Data/Kanshi.Seperator/","").split("/Kanshi.Seperator/");
+                    String fileName = splitMessage[0];
+                    System.out.println(fileName+"   assacdsacascacsc");
+                    String objStr = splitMessage[1];
+                    if (!Environment.isExternalStorageManager()) {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Requires Permission for External Storage")
+                                .setMessage("Enable Kanshi. App in the Settings after clicking OK!")
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton("OK", (dialogInterface, i) -> {
+                                    Uri uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}");
+                                    Toast.makeText(getApplicationContext(), "Enable Kanshi. App in here to permit Data Export!", Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri));
+                                })
+                                .setNegativeButton("Later", null).show();
+                    }
                 }
                 Log.d("WebConsole",message+"-"+lineNumber);
                 return true;
@@ -320,42 +337,42 @@ public class MainActivity extends AppCompatActivity  {
         MainActivity.this.requestVisibleBehind(true);
     }
 
-     // Keep WebView Running on Background
-     class MediaWebView extends WebView {
-         public MediaWebView(Context context) {
-             super(context);
-         }
-         public MediaWebView(Context context, AttributeSet attrs) {
-             super(context, attrs);
-         }
-         public MediaWebView(Context context, AttributeSet attrs, int defStyleAttr) {
-             super(context, attrs, defStyleAttr);
-         }
-         @Override
-         public void onWindowSystemUiVisibilityChanged(int visibility) {
-             if(visibility != View.GONE) {
-                 super.resumeTimers();
-                 super.setVisibility(View.VISIBLE);
-                 super.setKeepScreenOn(true);
-                 super.onWindowSystemUiVisibilityChanged(View.VISIBLE);
-                 super.onWindowVisibilityChanged(View.VISIBLE);
-                 MainActivity.this.setVisible(true);
-                 MainActivity.this.requestVisibleBehind(true);
-             }
-         }
-         @Override
-         protected void onWindowVisibilityChanged(int visibility) {
-             if(visibility != View.GONE) {
-                 super.resumeTimers();
-                 super.setVisibility(View.VISIBLE);
-                 super.setKeepScreenOn(true);
-                 super.onWindowSystemUiVisibilityChanged(View.VISIBLE);
-                 super.onWindowVisibilityChanged(View.VISIBLE);
-                 MainActivity.this.setVisible(true);
-                 MainActivity.this.requestVisibleBehind(true);
-             }
-         }
-     }
+    // Keep WebView Running on Background
+    class MediaWebView extends WebView {
+        public MediaWebView(Context context) {
+            super(context);
+        }
+        public MediaWebView(Context context, AttributeSet attrs) {
+            super(context, attrs);
+        }
+        public MediaWebView(Context context, AttributeSet attrs, int defStyleAttr) {
+            super(context, attrs, defStyleAttr);
+        }
+        @Override
+        public void onWindowSystemUiVisibilityChanged(int visibility) {
+            if(visibility != View.GONE) {
+                super.resumeTimers();
+                super.setVisibility(View.VISIBLE);
+                super.setKeepScreenOn(true);
+                super.onWindowSystemUiVisibilityChanged(View.VISIBLE);
+                super.onWindowVisibilityChanged(View.VISIBLE);
+                MainActivity.this.setVisible(true);
+                MainActivity.this.requestVisibleBehind(true);
+            }
+        }
+        @Override
+        protected void onWindowVisibilityChanged(int visibility) {
+            if(visibility != View.GONE) {
+                super.resumeTimers();
+                super.setVisibility(View.VISIBLE);
+                super.setKeepScreenOn(true);
+                super.onWindowSystemUiVisibilityChanged(View.VISIBLE);
+                super.onWindowVisibilityChanged(View.VISIBLE);
+                MainActivity.this.setVisible(true);
+                MainActivity.this.requestVisibleBehind(true);
+            }
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -397,11 +414,15 @@ public class MainActivity extends AppCompatActivity  {
                             boolean fileIsDeleted;
                             if (file.exists()) {
                                 fileIsDeleted = file.delete();
+                                file.createNewFile();
                             } else {
+                                file.createNewFile();
                                 fileIsDeleted = true;
                             }
                             if(fileIsDeleted){
-                                Files.write(Paths.get(file.getAbsolutePath()), objStr.getBytes());
+                                BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+                                writer.write(objStr);
+                                writer.close();
                                 Toast.makeText(getApplicationContext(), "Data was successfully Exported!", Toast.LENGTH_LONG).show();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Data can't be re-written, Please delete it first!", Toast.LENGTH_LONG).show();

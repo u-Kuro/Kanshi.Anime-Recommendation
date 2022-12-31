@@ -7,10 +7,8 @@ self.onmessage = async({data}) => {
         return await postWorker()
     }).then(async()=>{
         self.postMessage({status:'LoadData'})
-        if(g.importedBackUpVersion<g.backUpVersion){
-            self.postMessage({status:'Update'})
-        }
         self.postMessage({status:'notify',doneImporting:true})
+        self.postMessage({status:'Update'})
     })
 }
 
