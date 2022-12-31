@@ -18,9 +18,8 @@ async function mainWorker(){
     return await new Promise(async(resolve)=>{
         // Delete Old
         await deleteJSON('varScheme')
-        await deleteJSON('userListStatus')
-        await deleteJSON('alteredVariables')
-        await deleteJSON('userEntries')
+        await deleteJSON('userEntriesStatus')
+        await deleteJSON('savedUserEntries')
         await deleteJSON('deepUpdateStartTime')
         // Update New
         const reader = new FileReader()
@@ -85,12 +84,8 @@ async function mainWorker(){
                 }
                 return
             }).then(async()=>{
-                g.savedUserList = await g.fileContent.savedUserList || {}
-                await saveJSON(g.savedUserList,"savedUserList")
-                return
-            }).then(async()=>{
-                g.savedUserScores = await g.fileContent.savedUserScores || {}
-                await saveJSON(g.savedUserScores,"savedUserScores")
+                g.savedUserEntries = await g.fileContent.savedUserEntries || []
+                await saveJSON(g.savedUserEntries,"savedUserEntries")
                 return
             }).then(async()=>{
                 if(g.importedBackUpVersion>=g.backUpVersion){

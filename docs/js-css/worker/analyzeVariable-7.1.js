@@ -15,7 +15,7 @@ self.onmessage = async({data}) => {
 // Used Functions
 async function preWorker(){
     return await new Promise(async(resolve)=>{
-        // Retrieve Data
+        // Notify User
         g.savedAnalyzeVariableTime = await retrieveJSON('savedAnalyzeVariableTime') ?? [15]
         g.analyzeVariableTime = Math.ceil(arrayMean(g.savedAnalyzeVariableTime))
         self.postMessage({
@@ -26,81 +26,108 @@ async function preWorker(){
             }
         })
         g.analyzeVariableStartTime = new Date()
+        // Retrieve
         g.savedUsername = await retrieveJSON('savedUsername') ?? ''
         g.savedAnimeEntries = await retrieveJSON('savedAnimeEntries') ?? {}
+        g.savedUserEntries = await retrieveJSON('savedUserEntries') ?? []
         g.savedAnimeFranchises = await retrieveJSON('savedAnimeFranchises') ?? []
         g.hideUnwatchedSequels = await retrieveJSON('hideUnwatchedSequels') ?? true
         if(!g.savedFilterAlgo){
             g.savedFilterAlgo = await retrieveJSON('savedFilterAlgo') ?? ["minimum sample size: 2","include unknown variables: false"]
         }
         g.lastSavedUpdateTime = await retrieveJSON('lastSavedUpdateTime') ?? 0
-        // Temporarily Saved
+        // Alter Data
         g.isNewName = !equalsNCS(g.username,g.savedUsername)
         if(jsonIsEmpty(g.savedAnimeEntries)||g.lastSavedUpdateTime===0){
             g.deepUpdateStartTime = new Date().getTime()
-            g.userEntries = []
-            g.savedUserList = {}
+            g.savedUserEntries = []
         } else if(g.isNewName){
-            g.userEntries = []
-            g.savedUserList = {}
-        } else {
-            g.savedUserList = await retrieveJSON('savedUserList') ?? {}
-            if(g.returnInfo==="getNewAnime"||g.returnInfo==="updateNewAnime"){
-                g.userEntries = await retrieveJSON('userEntries') ?? []
-            } else {
-                g.userEntries = []
-            }
+            g.savedUserEntries = []
         }
-        // Temporarily Saved
+        g.varScheme = {
+            genres: {},
+            tags: {},
+            studios: {},
+            staff: {}
+        }
+        g.userEntriesStatus = {
+            userScore: {},
+            userStatus: {}
+        }
         if(g.username&&!jsonIsEmpty(g.savedAnimeEntries)){
             if(g.anUpdate){
-                if(g.userEntries.length<=0){
-                    const maxAnimePerChunk = 500
-                    async function recallAV(chunk){
-                        // Initialize Anilist Graphql Data
-                        let query = `
-                        {
-                            MediaListCollection(userName: "${g.username}",
-                            chunk:${chunk},
-                            perChunk:${maxAnimePerChunk},
-                            forceSingleCompletedList: true,
-                            type: ANIME) {
-                                hasNextChunk
-                                lists {
-                                    entries {
-                                        status
-                                        media {
-                                            id
-                                        }
-                                        score
+                const maxAnimePerChunk = 500
+                async function recallAV(chunk){
+                    // Initialize Anilist Graphql Data
+                    let query = `
+                    {
+                        MediaListCollection(userName: "${g.username}",
+                        chunk:${chunk},
+                        perChunk:${maxAnimePerChunk},
+                        forceSingleCompletedList: true,
+                        type: ANIME) {
+                            hasNextChunk
+                            lists {
+                                entries {
+                                    status
+                                    media {
+                                        id
                                     }
+                                    score
                                 }
                             }
                         }
-                        `;
-                        // Request API
-                        $.ajax({
-                            type: 'POST',
-                            url: 'https://graphql.anilist.co',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json',
-                                'Cache-Control': 'max-age=31536000, immutable'
-                            },
-                            dataType: 'json',
-                            data: JSON.stringify({
-                                query: query
-                            }),
-                            success: (result,status,xhr)=> {
-                                const responseHeaders = xhr.getAllResponseHeaders()
-                                let userList = result?.data?.MediaListCollection?.lists ?? []
-                                let hasNextChunk = (result?.data?.MediaListCollection?.hasNextChunk ?? (userList?.length??0)>0)
-                                for(let i=0; i<userList.length; i++){
-                                    g.userEntries = g.userEntries.concat(userList[i]?.entries??[])
-                                }
-                                if(hasNextChunk){
-                                    if((responseHeaders?.['x-ratelimit-remaining']??1)>0){
+                    }
+                    `;
+                    // Request API
+                    $.ajax({
+                        type: 'POST',
+                        url: 'https://graphql.anilist.co',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Cache-Control': 'max-age=31536000, immutable'
+                        },
+                        dataType: 'json',
+                        data: JSON.stringify({
+                            query: query
+                        }),
+                        success: (result,status,xhr)=> {
+                            const responseHeaders = xhr.getAllResponseHeaders()
+                            let userList = result?.data?.MediaListCollection?.lists ?? []
+                            let hasNextChunk = (result?.data?.MediaListCollection?.hasNextChunk ?? (userList?.length??0)>0)
+                            for(let i=0; i<userList.length; i++){
+                                g.savedUserEntries = g.savedUserEntries.concat(userList[i]?.entries??[])
+                            }
+                            if(hasNextChunk){
+                                if((responseHeaders?.['x-ratelimit-remaining']??1)>0){
+                                    return recallAV(++chunk)
+                                } else {
+                                    g.analyzeVariableTime = Math.ceil(Math.max(g.analyzeVariableTime-Math.ceil(((new Date).getTime()-g.analyzeVariableStartTime.getTime())/1000),1))
+                                    self.postMessage({
+                                        status:'notify', 
+                                        updateStatus: {
+                                            analyzeVariableTime: g.analyzeVariableTime,
+                                            info: 'rateLimit'
+                                        }
+                                    })
+                                    setTimeout(()=>{
                                         return recallAV(++chunk)
+                                    },60000)
+                                }
+                            } else {
+                                return resolve()
+                            }
+                        },
+                        error: function(xhr) {
+                            const responseHeaders = xhr.getAllResponseHeaders()
+                            const error = xhr?.responseJSON?.errors?.[0]?.message || 'Oops... something wen\'t wrong, please try again...'
+                            try {
+                                if(error==='User not found'){
+                                    throw error+', please try again...'
+                                } else {
+                                    if(responseHeaders?.['x-ratelimit-remaining']??0>0){
+                                        return recallAV(chunk)
                                     } else {
                                         g.analyzeVariableTime = Math.ceil(Math.max(g.analyzeVariableTime-Math.ceil(((new Date).getTime()-g.analyzeVariableStartTime.getTime())/1000),1))
                                         self.postMessage({
@@ -111,51 +138,22 @@ async function preWorker(){
                                             }
                                         })
                                         setTimeout(()=>{
-                                            return recallAV(++chunk)
+                                            return recallAV(chunk)
                                         },60000)
                                     }
-                                } else {
-                                    return resolve()
                                 }
-                            },
-                            error: function(xhr) {
-                                const responseHeaders = xhr.getAllResponseHeaders()
-                                const error = xhr?.responseJSON?.errors?.[0]?.message || 'Oops... something wen\'t wrong, please try again...'
-                                try {
-                                    if(error==='User not found'){
-                                        throw error+', please try again...'
-                                    } else {
-                                        if(responseHeaders?.['x-ratelimit-remaining']??0>0){
-                                            return recallAV(chunk)
-                                        } else {
-                                            g.analyzeVariableTime = Math.ceil(Math.max(g.analyzeVariableTime-Math.ceil(((new Date).getTime()-g.analyzeVariableStartTime.getTime())/1000),1))
-                                            self.postMessage({
-                                                status:'notify', 
-                                                updateStatus: {
-                                                    analyzeVariableTime: g.analyzeVariableTime,
-                                                    info: 'rateLimit'
-                                                }
-                                            })
-                                            setTimeout(()=>{
-                                                return recallAV(chunk)
-                                            },60000)
-                                        }
-                                    }
-                                } catch(error) {
-                                    self.postMessage({status:'error',error:error})
-                                }
+                            } catch(error) {
+                                self.postMessage({status:'error',error:error})
                             }
-                        })
-                    }
-                    recallAV(1) // first chunk
-                } else {
-                    return resolve()
+                        }
+                    })
                 }
+                recallAV(1) // first chunk
             } else {
-                if(isJson(g.savedUserList)&&isJson(Object.values(g.savedUserList)[0])&&!jsonIsEmpty(g.savedUserList)){
+                if(g.savedUserEntries.length>0){
                     return resolve()
                 } else {
-                    // Update User List
+                    // Update User List if Empty
                     self.postMessage({status:'notify', needUpdate: true})
                     self.postMessage({status:'reupdate',anUpdate:true})
                 }
@@ -174,7 +172,6 @@ async function mainWorker(){
     return await new Promise((resolve)=>{
         const mediaRelationTypes = ["adaptation","prequel","sequel","parent","side_story","summary","alternative","spin_off"]
         const availableFilterTypes = {minsize:true,minsizes:true,minsamplesize:true,minsamplesizes:true,minimumsizes:true,minimumsizes:true,minimumsamplesize:true,minimumsamplesizes:true,format:true,formats:true,genre:true,genres:true,tagcategory:true,tagcategories:true,tag:true,tags:true,studio:true,studios:true,staffrole:true,staffroles:true,staff:true,staffs:true,measure:true,measures:true,average:true,averages:true,includeUnknownVariables:true,unknownvariables:true,unknownvariable:true,includeunknown:true,unknown:true,samplesizes:true,samplesize:true,samples:true,sample:true,size:true,minimumpopularity:true,minpopularity:true,popularity:true,minimumaveragescores:true,minimumaveragescore:true,minimumaverages:true,minimumaverage:true,minimumscores:true,minimumscore:true,averagescores:true,averagescore:true,scores:true,score:true,minaveragescores:true,minaveragescore:true,minaverages:true,minaverage:true,minscores:true,minscore:true,minimumavescores:true,minimumavescore:true,minimumave:true,avescores:true,avescore:true,limittopsimilarity:true,limittopsimilarities:true,limitsimilarity:true,limitsimilarities:true,topsimilarities:true,topsimilarity:true,similarities:true,similarity:true,userscore:true,userscores:true,wscore:true,wscores:true,year:true,years:true,season:true,seasons:true,userstatus:true,status:true,title:true,titles:true}
-        let tempUserList = {}
         // Filter Algorithm
         let measure = "mean"
         let includeUnknownVar = true
@@ -185,7 +182,6 @@ async function mainWorker(){
         let includeYear = true
         let includeAverageScore = true
         // Filter Algorithm
-        let userEntries
         let include = {
             //  formats: {}, 
             genres: {}, tags: {}, categories: {}, studios: {}, staffs: {}, roles: {}
@@ -196,7 +192,7 @@ async function mainWorker(){
         }, 
         savedIncluded = [],
         savedExcluded = [],
-        filterName
+        filterName;
         // Group Filters
         for(let i=0; i<g.savedFilterAlgo.length; i++){
         filterName = g.savedFilterAlgo[i].trim().toLowerCase()
@@ -405,69 +401,38 @@ async function mainWorker(){
     }
     // For Alert user if Scored List is 0
     // to have a better recommendation
-    let userListCount = 0
-    if(g.anUpdate){
-        if(jsonIsEmpty(g.savedAnimeEntries)){
-            userListCount = 1000 // Stop User Alert
-            userEntries = []
-        } else {
-            userEntries = g.userEntries || []
-            userEntries = userEntries.reduce((result, userEnty)=>{
-                let anime = userEnty?.media
-                let tmpAnimeEntry = {}
-                if(anime?.id&&g.savedAnimeEntries[anime?.id]){
-                    tmpAnimeEntry.media = g.savedAnimeEntries[anime?.id]
-                    tmpAnimeEntry.status = userEnty.status
-                    tmpAnimeEntry.score = userEnty.score
-                    result.push(tmpAnimeEntry)
-                }
-                return result
-            },[])
-        }
+    if(jsonIsEmpty(g.savedAnimeEntries)){
+        g.userListCount = 1000 // Stop User Alert
+        g.savedUserEntries = []
     } else {
-        let tmpSavedUserList = Object.values(g.savedUserList)
-        for(let i=0;i<tmpSavedUserList.length;i++){
-            if(typeof tmpSavedUserList[i]==="string"){
-                tmpSavedUserList[i] = JSON.parse(tmpSavedUserList[i])
+        g.userListCount = 0
+        g.savedUserEntries = g.savedUserEntries.reduce((result, userEntryIDs)=>{
+            let userAnimeID = userEntryIDs?.media?.id
+            let userEntry = {}
+            if(userAnimeID&&g.savedAnimeEntries[userAnimeID]){
+                userEntry.media = g.savedAnimeEntries[userAnimeID]
+                userEntry.status = userEntryIDs.status
+                userEntry.score = userEntryIDs.score
+                result.push(userEntry)
             }
-        }
-        userEntries = tmpSavedUserList || []
-        tempUserList = {}
-    }
-    let alteredVariables = {
-        // format_in: {},
-        genres_in: {},
-        tags_in: {},
-        studios_in: {},
-        staff_in: {},
+            return result
+        },[])
     }
     // sort by popularity for unique anime in franchise
-    if(userEntries.length>1){
-        if( typeof userEntries[0]?.score==="number"
-            &&typeof userEntries[1]?.score==="number"
-            &&typeof userEntries[0]?.media?.popularity==="number"
-            &&typeof userEntries[1]?.media?.popularity==="number"){
-            userEntries.sort((a,b)=>{
+    if(g.savedUserEntries.length>1){
+        if( typeof g.savedUserEntries[0]?.score==="number"
+            &&typeof g.savedUserEntries[1]?.score==="number"
+            &&typeof g.savedUserEntries[0]?.media?.popularity==="number"
+            &&typeof g.savedUserEntries[1]?.media?.popularity==="number"){
+            g.savedUserEntries.sort((a,b)=>{
                 return b.score-a.score
             })
-            userEntries.sort((a,b)=>{
+            g.savedUserEntries.sort((a,b)=>{
                 if(a.score===b.score){
                     return b.media.popularity-a.media.popularity
                 }
             })
         }
-    }
-    let varScheme = {
-        // format: {},
-        genres: {},
-        tags: {},
-        studios: {},
-        staff: {}
-    }
-    // Check Watched
-    let userListStatus = {
-        userScore: {},
-        userStatus: {}
     }
     // For Linear Regression Models
     // let episodes = []
@@ -483,59 +448,22 @@ async function mainWorker(){
     let tagsMeanCount = {}
     let studiosMeanCount = {}
     let staffMeanCount = {}
-    // For checking any deleted Anime
-    let savedUserListIDs = Object.keys(g.savedUserList) || []
-    let newUserListIDs = {}
     // Analyze each Anime Variable
     let includedAnimeRelations = {}
-    for(let i=0; i<userEntries.length; i++){
-        let isNewAnime = false
-        let anime = userEntries[i]?.media
-        let status = userEntries[i]?.status        
+    for(let i=0; i<g.savedUserEntries.length; i++){
+        let anime = g.savedUserEntries[i]?.media
+        let status = g.savedUserEntries[i]?.status        
         let anilistId = anime?.id
         // let title = anime?.title?.userPreferred
-        let userScore = userEntries?.[i]?.score
+        let userScore = g.savedUserEntries?.[i]?.score
         // Save every anime status in userlist
         if(anilistId){
             if(status){
-                userListStatus.userStatus[anilistId] = status
+                g.userEntriesStatus.userStatus[anilistId] = status
             }
             if(userScore){
-                userListStatus.userScore[anilistId] = userScore
+                g.userEntriesStatus.userScore[anilistId] = userScore
             }
-        }
-        let editedEntry = JSON.parse(JSON.stringify(userEntries[i])) || {}
-        if(editedEntry.media){
-            delete editedEntry.media.duration
-            delete editedEntry.media.trending
-            delete editedEntry.media.popularity
-            delete editedEntry.media.favourites
-            delete editedEntry.media.relations
-        }
-        let newAnimeObjStr = JSON.stringify(editedEntry)
-        if(!g.savedUserList[anilistId]){
-            isNewAnime = true
-            tempUserList[anilistId] = newAnimeObjStr
-        } else {
-            // Check Any Changes in User List
-            if(typeof g.savedUserList[anilistId]==="string"){
-                tempUserList[anilistId] = JSON.parse(g.savedUserList[anilistId])
-            } else {
-                tempUserList[anilistId] = g.savedUserList[anilistId]
-            }
-            if(tempUserList[anilistId]?.media&&tempUserList[anilistId]?.media){
-                delete tempUserList[anilistId].media.duration
-                delete tempUserList[anilistId].media.trending
-                delete tempUserList[anilistId].media.popularity
-                delete tempUserList[anilistId].media.favourites
-                delete tempUserList[anilistId].media.relations
-                tempUserList[anilistId] = JSON.stringify(tempUserList[anilistId])
-            }            
-        }
-        newUserListIDs[anilistId] = true
-        // Save for Updates
-        if(g.anUpdate){
-            g.savedUserList[anilistId] = userEntries[i]
         }
         // Variables
         // let format = anime?.format
@@ -543,70 +471,6 @@ async function mainWorker(){
         let tags = anime?.tags || []
         let studios = anime?.studios?.nodes || []
         let staffs = anime?.staff?.edges || []
-        // Altered Variables
-            // Altered Formats
-        // if(typeof format==="string"){
-        //     let fullFormat = "format: "+format.trim().toLowerCase()
-        //     if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
-        //         if(!alteredVariables.format_in[fullFormat]){
-        //             alteredVariables.format_in[fullFormat] = true
-        //         }
-        //     }
-        // }
-            // Altered Genres
-        for(let j=0; j<genres.length; j++){
-            let genre = genres[j]
-            if(typeof genre==="string"){
-                let fullGenre = "genre: "+genre.trim().toLowerCase()
-                if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
-                    if(!alteredVariables.genres_in[fullGenre]){
-                        alteredVariables.genres_in[fullGenre] = true
-                    }
-                }
-            }
-        }
-            // Altered Tags
-        for(let j=0; j<tags.length; j++){
-            let tag = tags[j]?.name
-            let tagCategory = tags[j]?.category
-            if(typeof tag==="string" && typeof tagCategory==="string" && tags[j]?.rank>=50){
-                let fullTag = "tag: "+tag.trim().toLowerCase()
-                if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
-                    if(!alteredVariables.tags_in[fullTag]){
-                        alteredVariables.tags_in[fullTag] = true
-                    }
-                }
-            }
-        }
-            // Altered Studios
-        for(let j=0; j<studios.length; j++){
-            if(!studios[j]?.isAnimationStudio) continue
-            let studio = studios[j]?.name
-            if(typeof studio==="string"){
-                let fullStudio = "studio: "+studio.trim().toLowerCase()
-                if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
-                    if(!alteredVariables.studios_in[fullStudio]){
-                        alteredVariables.studios_in[fullStudio] = true
-                    }
-                }
-            }
-        }
-            // Altered Staff
-        for(let j=0; j<staffs.length; j++){
-            let staff = staffs[j].node.name.userPreferred
-            if(typeof staff==="string"){
-                let fullStaff = "staff: "+staff.trim().toLowerCase()
-                if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
-                    if(!alteredVariables.staff_in[fullStaff]){
-                        alteredVariables.staff_in[fullStaff] = true
-                    }
-                }
-            }
-        }
-        // Update UserList
-        if((tempUserList[anilistId]!==newAnimeObjStr)||isNewAnime){
-            tempUserList[anilistId] = newAnimeObjStr
-        }
         if(userScore>0){
             // Check if a related anime is already analyzed
             if(includedAnimeRelations[anilistId]) continue
@@ -640,18 +504,19 @@ async function mainWorker(){
                     }
                 }
             }
-            ++userListCount
+            // Include Anime Count
+            ++g.userListCount
             // Formats
             // if(typeof format==="string"){
             //     let fullFormat = "format: "+format.trim().toLowerCase()
             //     if(!jsonIsEmpty(include.formats)){
             //         if((include.formats[fullFormat]&&!exclude.formats[fullFormat]
             //             &&!exclude.formats["format: all"])||include.formats["format: all"]){
-            //             if(varScheme.format[fullFormat]){
-            //                 varScheme.format[fullFormat].userScore.push(userScore)
-            //                 ++varScheme.format[fullFormat].count
+            //             if(g.varScheme.format[fullFormat]){
+            //                 g.varScheme.format[fullFormat].userScore.push(userScore)
+            //                 ++g.varScheme.format[fullFormat].count
             //             } else {
-            //                 varScheme.format[fullFormat] = {userScore:[userScore],count:1}
+            //                 g.varScheme.format[fullFormat] = {userScore:[userScore],count:1}
             //             }
             //             if(formatMeanCount[fullFormat]){
             //                 ++formatMeanCount[fullFormat]
@@ -662,11 +527,11 @@ async function mainWorker(){
             //     } else {
             //         if((!exclude.formats[fullFormat]
             //             &&!exclude.formats["format: all"])||include.formats["format: all"]){
-            //             if(varScheme.format[fullFormat]){
-            //                 varScheme.format[fullFormat].userScore.push(userScore)
-            //                 ++varScheme.format[fullFormat].count                            
+            //             if(g.varScheme.format[fullFormat]){
+            //                 g.varScheme.format[fullFormat].userScore.push(userScore)
+            //                 ++g.varScheme.format[fullFormat].count                            
             //             } else {
-            //                 varScheme.format[fullFormat] = {userScore:[userScore],count:1}
+            //                 g.varScheme.format[fullFormat] = {userScore:[userScore],count:1}
             //             }
             //             if(formatMeanCount[fullFormat]){
             //                 ++formatMeanCount[fullFormat]
@@ -685,11 +550,11 @@ async function mainWorker(){
                         if(((include.genres[fullGenre]&&!exclude.genres[fullGenre])
                             ||include.genres["genre: all"])
                             &&!exclude.genres["genre: all"]){
-                            if(varScheme.genres[fullGenre]){
-                                varScheme.genres[fullGenre].userScore.push(userScore)
-                                ++varScheme.genres[fullGenre].count
+                            if(g.varScheme.genres[fullGenre]){
+                                g.varScheme.genres[fullGenre].userScore.push(userScore)
+                                ++g.varScheme.genres[fullGenre].count
                             } else {
-                                varScheme.genres[fullGenre] = {userScore:[userScore],count:1}
+                                g.varScheme.genres[fullGenre] = {userScore:[userScore],count:1}
                             }
                             if(genresMeanCount[fullGenre]){
                                 ++genresMeanCount[fullGenre]
@@ -700,11 +565,11 @@ async function mainWorker(){
                     } else {
                         if((!exclude.genres[fullGenre]||include.genres["genre: all"])
                             &&!exclude.genres["genre: all"]){
-                            if(varScheme.genres[fullGenre]){
-                                varScheme.genres[fullGenre].userScore.push(userScore)
-                                ++varScheme.genres[fullGenre].count
+                            if(g.varScheme.genres[fullGenre]){
+                                g.varScheme.genres[fullGenre].userScore.push(userScore)
+                                ++g.varScheme.genres[fullGenre].count
                             } else {
-                                varScheme.genres[fullGenre] = {userScore:[userScore],count:1}
+                                g.varScheme.genres[fullGenre] = {userScore:[userScore],count:1}
                             }
                             if(genresMeanCount[fullGenre]){
                                 ++genresMeanCount[fullGenre]
@@ -730,11 +595,11 @@ async function mainWorker(){
                                 if(((include.tags[fullTag]&&!exclude.tags[fullTag])
                                     ||include.tags["tag: all"])
                                     &&!exclude.tags["tag: all"]){
-                                    if(varScheme.tags[fullTag]){
-                                        varScheme.tags[fullTag].userScore.push(userScore)
-                                        ++varScheme.tags[fullTag].count
+                                    if(g.varScheme.tags[fullTag]){
+                                        g.varScheme.tags[fullTag].userScore.push(userScore)
+                                        ++g.varScheme.tags[fullTag].count
                                     } else {
-                                        varScheme.tags[fullTag] = {userScore:[userScore],count:1}
+                                        g.varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                     }
                                     if(tagsMeanCount[fullTag]){
                                         ++tagsMeanCount[fullTag]
@@ -745,11 +610,11 @@ async function mainWorker(){
                             } else {
                                 if((!exclude.tags[fullTag]||include.tags["tag: all"])
                                     &&!exclude.tags["tag: all"]){
-                                    if(varScheme.tags[fullTag]){
-                                        varScheme.tags[fullTag].userScore.push(userScore)
-                                        ++varScheme.tags[fullTag].count
+                                    if(g.varScheme.tags[fullTag]){
+                                        g.varScheme.tags[fullTag].userScore.push(userScore)
+                                        ++g.varScheme.tags[fullTag].count
                                     } else {
-                                        varScheme.tags[fullTag] = {userScore:[userScore],count:1}
+                                        g.varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                     }
                                     if(tagsMeanCount[fullTag]){
                                         ++tagsMeanCount[fullTag]
@@ -766,11 +631,11 @@ async function mainWorker(){
                                 if(((include.tags[fullTag]&&!exclude.tags[fullTag])
                                     ||include.tags["tag: all"])
                                     &&!exclude.tags["tag: all"]){
-                                    if(varScheme.tags[fullTag]){
-                                        varScheme.tags[fullTag].userScore.push(userScore)
-                                        ++varScheme.tags[fullTag].count
+                                    if(g.varScheme.tags[fullTag]){
+                                        g.varScheme.tags[fullTag].userScore.push(userScore)
+                                        ++g.varScheme.tags[fullTag].count
                                     } else {
-                                        varScheme.tags[fullTag] = {userScore:[userScore],count:1}
+                                        g.varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                     }
                                     if(tagsMeanCount[fullTag]){
                                         ++tagsMeanCount[fullTag]
@@ -781,11 +646,11 @@ async function mainWorker(){
                             } else {
                                 if((!exclude.tags[fullTag]||include.tags["tag: all"])
                                     &&!exclude.tags["tag: all"]){
-                                    if(varScheme.tags[fullTag]){
-                                        varScheme.tags[fullTag].userScore.push(userScore)
-                                        ++varScheme.tags[fullTag].count
+                                    if(g.varScheme.tags[fullTag]){
+                                        g.varScheme.tags[fullTag].userScore.push(userScore)
+                                        ++g.varScheme.tags[fullTag].count
                                     } else {
-                                        varScheme.tags[fullTag] = {userScore:[userScore],count:1}
+                                        g.varScheme.tags[fullTag] = {userScore:[userScore],count:1}
                                     }
                                     if(tagsMeanCount[fullTag]){
                                         ++tagsMeanCount[fullTag]
@@ -811,11 +676,11 @@ async function mainWorker(){
                         if(((include.studios[fullStudio]&&!exclude.studios[fullStudio])
                             ||include.studios["studio: all"])
                             &&!exclude.studios["studio: all"]){
-                            if(varScheme.studios[fullStudio]){
-                                varScheme.studios[fullStudio].userScore.push(userScore)
-                                ++varScheme.studios[fullStudio].count
+                            if(g.varScheme.studios[fullStudio]){
+                                g.varScheme.studios[fullStudio].userScore.push(userScore)
+                                ++g.varScheme.studios[fullStudio].count
                             } else {
-                                varScheme.studios[fullStudio] = {userScore:[userScore],count:1}
+                                g.varScheme.studios[fullStudio] = {userScore:[userScore],count:1}
                             }
                             if(studiosMeanCount[fullStudio]){
                                 ++studiosMeanCount[fullStudio]
@@ -826,11 +691,11 @@ async function mainWorker(){
                     } else {
                         if((!exclude.studios[fullStudio]||include.studios["studio: all"])
                             &&!exclude.studios["studio: all"]){
-                            if(varScheme.studios[fullStudio]){
-                                varScheme.studios[fullStudio].userScore.push(userScore)
-                                ++varScheme.studios[fullStudio].count
+                            if(g.varScheme.studios[fullStudio]){
+                                g.varScheme.studios[fullStudio].userScore.push(userScore)
+                                ++g.varScheme.studios[fullStudio].count
                             } else {
-                                varScheme.studios[fullStudio] = {userScore:[userScore],count:1}
+                                g.varScheme.studios[fullStudio] = {userScore:[userScore],count:1}
                             }
                             if(studiosMeanCount[fullStudio]){
                                 ++studiosMeanCount[fullStudio]
@@ -859,11 +724,11 @@ async function mainWorker(){
                                 if(((include.staffs[fullStaff]&&!exclude.staffs[fullStaff])
                                     ||include.staffs["staff: all"])
                                     &&!exclude.staffs["staff: all"]){
-                                    if(varScheme.staff[fullStaff]){
-                                        varScheme.staff[fullStaff].userScore.push(userScore)
-                                        ++varScheme.staff[fullStaff].count
+                                    if(g.varScheme.staff[fullStaff]){
+                                        g.varScheme.staff[fullStaff].userScore.push(userScore)
+                                        ++g.varScheme.staff[fullStaff].count
                                     } else {
-                                        varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
+                                        g.varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
                                     }
                                     if(staffMeanCount[fullStaff]){
                                         ++staffMeanCount[fullStaff]
@@ -874,11 +739,11 @@ async function mainWorker(){
                             } else {
                                 if((!exclude.staffs[fullStaff]||include.staffs["staff: all"])
                                     &&!exclude.staffs["staff: all"]){
-                                    if(varScheme.staff[fullStaff]){
-                                        varScheme.staff[fullStaff].userScore.push(userScore)
-                                        ++varScheme.staff[fullStaff].count
+                                    if(g.varScheme.staff[fullStaff]){
+                                        g.varScheme.staff[fullStaff].userScore.push(userScore)
+                                        ++g.varScheme.staff[fullStaff].count
                                     } else {
-                                        varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
+                                        g.varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
                                     }
                                     if(staffMeanCount[fullStaff]){
                                         ++staffMeanCount[fullStaff]
@@ -895,11 +760,11 @@ async function mainWorker(){
                                 if(((include.staffs[fullStaff]&&!exclude.staffs[fullStaff])
                                     ||include.staffs["staff: all"])
                                     &&!exclude.staffs["staff: all"]){
-                                    if(varScheme.staff[fullStaff]){
-                                        varScheme.staff[fullStaff].userScore.push(userScore)
-                                        ++varScheme.staff[fullStaff].count
+                                    if(g.varScheme.staff[fullStaff]){
+                                        g.varScheme.staff[fullStaff].userScore.push(userScore)
+                                        ++g.varScheme.staff[fullStaff].count
                                     } else {
-                                        varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
+                                        g.varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
                                     }
                                     if(staffMeanCount[fullStaff]){
                                         ++staffMeanCount[fullStaff]
@@ -910,11 +775,11 @@ async function mainWorker(){
                             } else {
                                 if((!exclude.staffs[fullStaff]||include.staffs["staff: all"])
                                     &&!exclude.staffs["staff: all"]){
-                                    if(varScheme.staff[fullStaff]){
-                                        varScheme.staff[fullStaff].userScore.push(userScore)
-                                        ++varScheme.staff[fullStaff].count
+                                    if(g.varScheme.staff[fullStaff]){
+                                        g.varScheme.staff[fullStaff].userScore.push(userScore)
+                                        ++g.varScheme.staff[fullStaff].count
                                     } else {
-                                        varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
+                                        g.varScheme.staff[fullStaff] = {userScore:[userScore],count:1}
                                     }
                                     if(staffMeanCount[fullStaff]){
                                         ++staffMeanCount[fullStaff]
@@ -949,67 +814,6 @@ async function mainWorker(){
             // }
             if(isaN(parseFloat(anime?.seasonYear))){
                 year.push({userScore: userScore, year: parseFloat(anime.seasonYear)})
-            }
-        }
-    }
-
-    // Check and Remove if User Deleted an Anime, and add its variables as altered
-    for(let i=0;i<savedUserListIDs.length;i++){
-        if(!newUserListIDs[savedUserListIDs[i]]){
-            let entry = g.savedUserList[savedUserListIDs[i]]
-            if(typeof entry==="string"){
-                entry = JSON.parse(entry)
-            }
-            if(!jsonIsEmpty(entry)){
-                let anime = entry.media
-                if(anime){
-                    // let format = anime.format
-                    // if(typeof format==="string"){
-                    //     let fullFormat = "format: "+format.trim().toLowerCase()
-                    //     if(!alteredVariables.format_in[fullFormat]){
-                    //         alteredVariables.format_in[fullFormat] = true
-                    //     }
-                    // }
-                    let genres = anime.genres || []
-                    for(let j=0; j<genres.length; j++){   
-                        if(typeof genres[j]==="string"){
-                            let fullGenre = "genre: "+genres[j].trim().toLowerCase()
-                            if(!alteredVariables.genres_in[fullGenre]){
-                                alteredVariables.genres_in[fullGenre] = true
-                            }
-                        }
-                    }
-                    let tags = anime.tags || []
-                    for(let j=0; j<tags.length; j++){
-                        if(typeof tags[j]?.name==="string"){
-                            let fullTag = "tag: "+tags[j].name.trim().toLowerCase()
-                            if(!alteredVariables.tags_in[fullTag]){
-                                alteredVariables.tags_in[fullTag] = true
-                            }
-                        }
-                    }
-                    let studios = anime.studios.nodes || []
-                    for(let j=0; j<studios.length; j++){
-                        if(typeof studios[j].name==="string"){
-                            if(!studios[j]?.isAnimationStudio) continue
-                            let fullStudio = "studio: "+studios[j].name.trim().toLowerCase()
-                            if(!alteredVariables.studios_in[fullStudio]){
-                                alteredVariables.studios_in[fullStudio] = true
-                            }
-                        }
-                    }
-                    let staffs = anime.staff.edges || []
-                    for(let j=0; j<staffs.length; j++){
-                        if(typeof staffs[j]?.node?.name?.userPreferred==="string"){
-                            let fullStaff = "staff: "+staffs[j].node.name.userPreferred.trim().toLowerCase()
-                            if(!alteredVariables.staff_in[fullStaff]){
-                                alteredVariables.staff_in[fullStaff] = true
-                            }
-                        }
-                    }
-                    // Lastly delete the anime in the savedUserList
-                    delete g.savedUserList[savedUserListIDs[i]]
-                }
             }
         }
     }
@@ -1088,155 +892,155 @@ async function mainWorker(){
         staffMeanCount = Math.max(minSampleSize,staffMeanCount)
     }
     // If User List Scores is Empty
-    if(userListCount<1){
-        varScheme={}
+    if(g.userListCount<1){
+        g.varScheme={}
     } else {
-        varScheme.includeUnknownVar = includeUnknownVar
-        varScheme.minPopularity = minPopularity
-        varScheme.minAverageScore = minAverageScore
+        g.varScheme.includeUnknownVar = includeUnknownVar
+        g.varScheme.minPopularity = minPopularity
+        g.varScheme.minAverageScore = minAverageScore
     }
-    if(!jsonIsEmpty(varScheme)){
-        // let formatKey = Object.keys(varScheme.format)
+    if(!jsonIsEmpty(g.varScheme)){
+        // let formatKey = Object.keys(g.varScheme.format)
         // let formatMean = []
         // // Format
         // for(let i=0; i<formatKey.length; i++){
         //     if(measure==="mode"){
-        //         formatMean.push(arrayMode(varScheme.format[formatKey[i]].userScore))
+        //         formatMean.push(arrayMode(g.varScheme.format[formatKey[i]].userScore))
         //     } else {
-        //         formatMean.push(arrayMean(varScheme.format[formatKey[i]].userScore))
+        //         formatMean.push(arrayMean(g.varScheme.format[formatKey[i]].userScore))
         //     }
         // }
         // formatMean = arrayMode(formatMean)
         // for(let i=0; i<formatKey.length; i++){
         //     let tempScore = 0
         //     if(measure==="mode"){
-        //         tempScore = arrayMode(varScheme.format[formatKey[i]].userScore)
+        //         tempScore = arrayMode(g.varScheme.format[formatKey[i]].userScore)
         //     } else {
-        //         tempScore = arrayMean(varScheme.format[formatKey[i]].userScore)
+        //         tempScore = arrayMean(g.varScheme.format[formatKey[i]].userScore)
         //     }
         //     // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-        //     let count = varScheme.format[formatKey[i]].count
+        //     let count = g.varScheme.format[formatKey[i]].count
         //     if(count>=formatMeanCount||tempScore<formatMean){ 
-        //         varScheme.format[formatKey[i]] = tempScore
+        //         g.varScheme.format[formatKey[i]] = tempScore
         //     } else {
-        //         delete varScheme.format[formatKey[i]]
+        //         delete g.varScheme.format[formatKey[i]]
         //     }
         // }
         // Genres
-        let genresKey = Object.keys(varScheme.genres)
+        let genresKey = Object.keys(g.varScheme.genres)
         let genresMean = []
         for(let i=0; i<genresKey.length; i++){
             if(measure==="mode"){
-                genresMean.push(arrayMode(varScheme.genres[genresKey[i]].userScore))
+                genresMean.push(arrayMode(g.varScheme.genres[genresKey[i]].userScore))
             } else {
-                genresMean.push(arrayMean(varScheme.genres[genresKey[i]].userScore))
+                genresMean.push(arrayMean(g.varScheme.genres[genresKey[i]].userScore))
             }
         }
         genresMean = arrayMean(genresMean)
         for(let i=0; i<genresKey.length; i++){
             let tempScore = 0
             if(measure==="mode"){
-                tempScore = arrayMode(varScheme.genres[genresKey[i]].userScore)
+                tempScore = arrayMode(g.varScheme.genres[genresKey[i]].userScore)
             } else {
-                tempScore = arrayMean(varScheme.genres[genresKey[i]].userScore)
+                tempScore = arrayMean(g.varScheme.genres[genresKey[i]].userScore)
             }
             // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-            let count = varScheme.genres[genresKey[i]].count
+            let count = g.varScheme.genres[genresKey[i]].count
             if(count>=genresMeanCount||tempScore<genresMean){
-                varScheme.genres[genresKey[i]] = tempScore
+                g.varScheme.genres[genresKey[i]] = tempScore
             } else {
-                delete varScheme.genres[genresKey[i]]
+                delete g.varScheme.genres[genresKey[i]]
             }
         }
         // Tags
-        let tagsKey = Object.keys(varScheme.tags)
+        let tagsKey = Object.keys(g.varScheme.tags)
         let tagsMean = []
         for(let i=0; i<tagsKey.length; i++){
             if(measure==="mode"){
-                tagsMean.push(arrayMode(varScheme.tags[tagsKey[i]].userScore))
+                tagsMean.push(arrayMode(g.varScheme.tags[tagsKey[i]].userScore))
             } else {
-                tagsMean.push(arrayMean(varScheme.tags[tagsKey[i]].userScore))
+                tagsMean.push(arrayMean(g.varScheme.tags[tagsKey[i]].userScore))
             }
         }
         tagsMean = arrayMean(tagsMean)
         for(let i=0; i<tagsKey.length; i++){
             let tempScore = 0
             if(measure==="mode"){
-                tempScore = arrayMode(varScheme.tags[tagsKey[i]].userScore)
+                tempScore = arrayMode(g.varScheme.tags[tagsKey[i]].userScore)
             } else {
-                tempScore = arrayMean(varScheme.tags[tagsKey[i]].userScore)
+                tempScore = arrayMean(g.varScheme.tags[tagsKey[i]].userScore)
             }
             // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-            let count = varScheme.tags[tagsKey[i]].count
+            let count = g.varScheme.tags[tagsKey[i]].count
             if(count>=tagsMeanCount||tempScore<tagsMean){
-                varScheme.tags[tagsKey[i]] = tempScore
+                g.varScheme.tags[tagsKey[i]] = tempScore
             } else {
-                delete varScheme.tags[tagsKey[i]]
+                delete g.varScheme.tags[tagsKey[i]]
             }
         }
         // Studios
-        let studiosKey = Object.keys(varScheme.studios)
+        let studiosKey = Object.keys(g.varScheme.studios)
         let studiosMean = []
         for(let i=0; i<studiosKey.length; i++){
             if(measure==="mode"){
-                studiosMean.push(arrayMode(varScheme.studios[studiosKey[i]].userScore))
+                studiosMean.push(arrayMode(g.varScheme.studios[studiosKey[i]].userScore))
             } else {
-                studiosMean.push(arrayMean(varScheme.studios[studiosKey[i]].userScore))
+                studiosMean.push(arrayMean(g.varScheme.studios[studiosKey[i]].userScore))
             }
         }
         studiosMean = arrayMean(studiosMean)
         for(let i=0; i<studiosKey.length; i++){
             let tempScore = 0
             if(measure==="mode"){
-                tempScore = arrayMode(varScheme.studios[studiosKey[i]].userScore)
+                tempScore = arrayMode(g.varScheme.studios[studiosKey[i]].userScore)
             } else {
-                tempScore = arrayMean(varScheme.studios[studiosKey[i]].userScore)
+                tempScore = arrayMean(g.varScheme.studios[studiosKey[i]].userScore)
             }
             // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-            let count = varScheme.studios[studiosKey[i]].count
+            let count = g.varScheme.studios[studiosKey[i]].count
             if(count>=studiosMeanCount||(count>=(minSampleSize??2))&&tempScore<studiosMean){
-                varScheme.studios[studiosKey[i]] = tempScore
+                g.varScheme.studios[studiosKey[i]] = tempScore
             } else {
-                delete varScheme.studios[studiosKey[i]]
+                delete g.varScheme.studios[studiosKey[i]]
             }
         }
         // Staffs
-        let staffKey = Object.keys(varScheme.staff)
+        let staffKey = Object.keys(g.varScheme.staff)
         let staffMean = []
         for(let i=0; i<staffKey.length; i++){
             if(measure==="mode"){
-                staffMean.push(arrayMode(varScheme.staff[staffKey[i]].userScore))
+                staffMean.push(arrayMode(g.varScheme.staff[staffKey[i]].userScore))
             } else {
-                staffMean.push(arrayMean(varScheme.staff[staffKey[i]].userScore))
+                staffMean.push(arrayMean(g.varScheme.staff[staffKey[i]].userScore))
             }
         }
         staffMean = arrayMean(staffMean)
         for(let i=0; i<staffKey.length; i++){
             let tempScore = 0
             if(measure==="mode"){
-                tempScore = arrayMode(varScheme.staff[staffKey[i]].userScore)
+                tempScore = arrayMode(g.varScheme.staff[staffKey[i]].userScore)
             } else {
-                tempScore = arrayMean(varScheme.staff[staffKey[i]].userScore)
+                tempScore = arrayMean(g.varScheme.staff[staffKey[i]].userScore)
             }
             // Include High Weight or Low scored Variables to avoid High-scored Variables without enough sample
-            let count = varScheme.staff[staffKey[i]].count
+            let count = g.varScheme.staff[staffKey[i]].count
             if(count>=staffMeanCount||(count>=(minSampleSize??2))&&tempScore<staffMean){
-                varScheme.staff[staffKey[i]] = tempScore
+                g.varScheme.staff[staffKey[i]] = tempScore
             } else {
-                delete varScheme.staff[staffKey[i]]
+                delete g.varScheme.staff[staffKey[i]]
             }
         }
         // Join Data
-        // varScheme.meanFormat = formatMean
-        varScheme.meanGenres = genresMean
-        varScheme.meanTags = tagsMean
-        varScheme.meanStudios = studiosMean
-        varScheme.meanStaff = staffMean
-        varScheme.includeRoles = include.roles
-        varScheme.excludeRoles = exclude.roles
-        varScheme.includeCategories = include.categories
-        varScheme.excludeCategories = exclude.categories
-        varScheme.measure = measure
+        // g.varScheme.meanFormat = formatMean
+        g.varScheme.meanGenres = genresMean
+        g.varScheme.meanTags = tagsMean
+        g.varScheme.meanStudios = studiosMean
+        g.varScheme.meanStaff = staffMean
+        g.varScheme.includeRoles = include.roles
+        g.varScheme.excludeRoles = exclude.roles
+        g.varScheme.includeCategories = include.categories
+        g.varScheme.excludeCategories = exclude.categories
+        g.varScheme.measure = measure
         // Create Model for Numbers| y is predicted so userscore
         // Average Score Model
         // const r2Thresh = 0.1 // Lower than 0.3 Since Media is Subjective
@@ -1250,7 +1054,7 @@ async function mainWorker(){
             if(yearXY.length>=(minSampleSize||33)){
                 // let tempLinearReg = linearRegression(yearXY)
                 // animeDateModel.push([tempLinearReg,"yearModel"])
-                varScheme.yearModel = linearRegression(yearXY)
+                g.varScheme.yearModel = linearRegression(yearXY)
             }
         }
         // let sortedAnimeDateModels = animeDateModel.sort(function(a, b) {
@@ -1258,7 +1062,7 @@ async function mainWorker(){
         // })
         // if(sortedAnimeDateModels.length>0){
         //     sortedAnimeDateModels = sortedAnimeDateModels[0]
-        //     varScheme[sortedAnimeDateModels[1]] = sortedAnimeDateModels[0]
+        //     g.varScheme[sortedAnimeDateModels[1]] = sortedAnimeDateModels[0]
         // }
         // For Anime Length Models
         // let animeLengthModels = []
@@ -1283,7 +1087,7 @@ async function mainWorker(){
         // })
         // if(sortedAnimeLengthModels.length>0){
         //     sortedAnimeLengthModels = sortedAnimeLengthModels[0]
-        //     varScheme[sortedAnimeLengthModels[1]] = sortedAnimeLengthModels[0]
+        //     g.varScheme[sortedAnimeLengthModels[1]] = sortedAnimeLengthModels[0]
         // }
         // For Popularity Models
         // let wellKnownAnimeModels = []
@@ -1295,7 +1099,7 @@ async function mainWorker(){
             if(averageScoreXY.length>=(minSampleSize||33)){
                 // let tempLinearReg = linearRegression(averageScoreXY)
                 // wellKnownAnimeModels.push([tempLinearReg,"averageScoreModel"])
-                varScheme.averageScoreModel = linearRegression(averageScoreXY)
+                g.varScheme.averageScoreModel = linearRegression(averageScoreXY)
             }
         }
         // let trendingXY = []
@@ -1327,35 +1131,28 @@ async function mainWorker(){
         // })
         // if(sortedWellKnownAnimeModels.length>0){
         //     sortedWellKnownAnimeModels = sortedWellKnownAnimeModels[0]
-        //     varScheme[sortedWellKnownAnimeModels[1]] = sortedWellKnownAnimeModels[0]
+        //     g.varScheme[sortedWellKnownAnimeModels[1]] = sortedWellKnownAnimeModels[0]
         // }
         }
-        g.varScheme = varScheme
-        g.userListStatus = userListStatus
-        g.alteredVariables = alteredVariables
-        g.userListCount = userListCount
         return resolve()
     })
 }
 async function postWorker(){
     return await new Promise(async(resolve)=>{
-        // Alert user if Scored List is 0
-        // self.postMessage({status:'notify',userListCount: g.userListCount})
-        if( jsonIsEmpty(g.savedAnimeEntries)
-            ||g.lastSavedUpdateTime===0
-            ||!g.anUpdate
-            ||g.isNewName
-            ||g.versionUpdate
-        ){
-            await saveJSON({},"savedUserScores")
-            await saveJSON({},"savedRecScheme")
+        await saveJSON(g.savedUserEntries,'savedUserEntries')
+        // Temporarily Saved
+        if(g.deepUpdateStartTime){
+            await saveJSON(g.deepUpdateStartTime,'deepUpdateStartTime')
         }
-        await saveJSON(g.savedUserList,"savedUserList")
+        await saveJSON(g.varScheme,'varScheme')
+        await saveJSON(g.userEntriesStatus,'userEntriesStatus')
+        await saveJSON(g.alteredVariables,'alteredVariables')
+        // Update Main Algorithm Filters
         if(!g.anUpdate){
             await saveJSON(g.savedFilterAlgo,"savedFilterAlgo")
             self.postMessage({status:'update', savedFilterAlgo: g.savedFilterAlgo})
         }
-        // self.postMessage({status:'update',dataName: 'savedUserList'})
+        // Update Interval Time
         let timeInterval = (new Date).getTime()-g.analyzeVariableStartTime.getTime()
         if(g.savedAnalyzeVariableTime.length<33){
             await g.savedAnalyzeVariableTime.push(Math.ceil(timeInterval/1000))
@@ -1365,15 +1162,8 @@ async function postWorker(){
         }
         await saveJSON(g.savedAnalyzeVariableTime, "savedAnalyzeVariableTime")
         self.postMessage({status:'update',savedAnalyzeVariableTime: g.savedAnalyzeVariableTime})
-        // Temporarily Saved
-        if(g.deepUpdateStartTime){
-            await saveJSON(g.deepUpdateStartTime,'deepUpdateStartTime')
-        }
-        await saveJSON(g.varScheme,'varScheme')
-        await saveJSON(g.userListStatus,'userListStatus')
-        await saveJSON(g.alteredVariables,'alteredVariables')
-        await saveJSON(g.userEntries,'userEntries')
-        // Temporarily Saved
+        // Alert user if Scored List is not Sufficient
+        self.postMessage({status:'notify',userListCount: g.userListCount})
         return resolve()
     })
 }

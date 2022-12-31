@@ -77,7 +77,7 @@ async function mainWorker(){
                         savedWarnR.push(type+": "+cinfo)
                     }
                 } else if(warnName.length===1){
-                    savedWarnR.push(warnName)
+                    savedWarnR.push(warnName[0])
                 }
             }
             else savedWarnY.push(warnName)

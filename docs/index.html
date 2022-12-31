@@ -1443,8 +1443,8 @@
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "7.0",
-          backUpVersion = 4.5;
+    const version = "7.1",
+          backUpVersion = 4.6;
         // IndexDB
     let request, db,
         // Saved Data
@@ -1683,7 +1683,7 @@
                     if(savedUsername){
                         Swal.fire({
                             heightAuto: false,
-                            text: `Do you want to import your backup data?`,
+                            text: `Do you want to import your backup data?${requestIsRunning?' This will stop your current update.':''}`,
                             showConfirmButton: true,
                             confirmButtonText: "Yes",
                             showDenyButton: true,
@@ -1764,6 +1764,7 @@
                                         if(worker3) worker3.terminate()
                                         if(worker4) worker4.terminate() 
                                         if(worker5) worker5.terminate()
+                                        if(worker7) worker7.terminate()
                                         requestIsRunning = false
                                         importBtnEl.removeClass('selected')
                                     } else if(data.doneImporting ?? false){
@@ -1793,6 +1794,11 @@
                                         usernameEl.val(savedUsername)
                                     } else if(data.haveSavedRecScheme!==undefined) {
                                         haveSavedRecScheme = data.haveSavedRecScheme
+                                        if(haveSavedRecScheme){
+                                            updateIntervalBtnEl.show()
+                                        } else {
+                                            updateIntervalBtnEl.hide()
+                                        }
                                     } else if(data.haveSavedAnimeEntries!==undefined) {
                                         haveSavedAnimeEntries = data.haveSavedAnimeEntries
                                     } else if(data.versionUpdate!==undefined) {
@@ -1923,7 +1929,7 @@
                 $("#exportBtn").on("click", async()=>{
                         Swal.fire({
                             heightAuto: false,
-                            text: `Do you want to export your data?`,
+                            text: `Do you want to export your data?${requestIsRunning?' This will stop your current update.':''}`,
                             showConfirmButton: true,
                             confirmButtonText: "Yes",
                             showDenyButton: true,
@@ -1941,7 +1947,7 @@
                                 dataStatusEl
                                     .empty()
                                     .append(`<span style="white-space:nowrap;">Exporting data, please wait...</span>`)
-                                await backUpData()
+                                await backUpData(true, true)
                                 return resolve()
                             }
                         })
@@ -2809,6 +2815,17 @@
             })
         }).then(async()=>{
             return await new Promise(async(resolve)=>{
+                if(savedBackUpVersion<backUpVersion){// Remove Old Saved Data Names
+                    deleteJSON('userListStatus')
+                    deleteJSON('lastAnilistPage')
+                    deleteJSON('savedUserList')
+                    return resolve()
+                } else {
+                    return resolve()
+                }
+            })
+        }).then(async()=>{
+            return await new Promise(async(resolve)=>{
                 if(await savedFilterOptionsJson.length<1||savedBackUpVersion<backUpVersion){
                     let worker1 = await new Worker(`./js-css/worker/getOptions-${version}.js`)
                     await worker1.postMessage("")
@@ -2872,9 +2889,6 @@
                 if(savedUsername){
                     await usernameEl.val(savedUsername)
                     await updateIntervalBtnEl.show()
-                } else {
-                    await saveJSON({},"savedUserList")
-                    await saveJSON({},"savedUserScores")
                 }
                 // Reload Table Filters/Identifiers
                     // Table Filters
@@ -3161,6 +3175,13 @@
             if(worker3) worker3.terminate()
             if(worker4) worker4.terminate() 
             if(worker5) worker5.terminate()
+            if(worker7) worker7.terminate()
+            if(worker8) {
+                worker8.terminate()
+                importBtnEl.removeClass('selected')
+                importFileEl.val(null)
+            }
+            dataStatusPrio = false
             analyzeVariables(updateID, username, anUpdate, versionUpdate, anUpdate?'init':'notAnUpdate')
         }
     }
@@ -3588,6 +3609,7 @@
         if(worker4) worker4.terminate()
         worker4 = new Worker(`./js-css/worker/updateAnime-${version}.js`)
         worker4.postMessage({
+            username: username,
             returnInfo: returnInfo
         })
         worker4.onmessage = ({data}) => {
@@ -4121,8 +4143,19 @@
         })
     }
 
-    async function backUpData(saveBackUpDate = true){
+    async function backUpData(saveBackUpDate = true, manualBackup = false){
         return await new Promise(async(resolve)=>{
+            if(manualBackup){
+                if(worker3) worker3.terminate()
+                if(worker4) worker4.terminate() 
+                if(worker5) worker5.terminate()
+                if(worker8) {
+                    worker8.terminate()
+                    importBtnEl.removeClass('selected')
+                    importFileEl.val(null)
+                }
+                requestIsRunning = false
+            }
             if(worker7) worker7.terminate()
             worker7 = new Worker(`./js-css/worker/export-${version}.js`)
             // Browser

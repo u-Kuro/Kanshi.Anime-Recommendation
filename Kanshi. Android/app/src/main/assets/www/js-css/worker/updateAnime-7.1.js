@@ -24,7 +24,7 @@ async function preWorker(){
     return await new Promise(async(resolve)=>{
         g.savedAnimeEntries = await retrieveJSON('savedAnimeEntries') ?? {}
         g.lastSavedUpdateTime = await retrieveJSON('lastSavedUpdateTime') ?? 0
-        g.requestCount = await retrieveJSON('requestCount') ?? 1000
+        g.requestCount = await retrieveJSON('requestCount') ?? 4000
         if(g.lastSavedUpdateTime===0||jsonIsEmpty(g.savedAnimeEntries)){
             g.returnInfo = 'getAllAnime'
         }

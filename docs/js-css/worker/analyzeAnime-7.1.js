@@ -40,61 +40,41 @@ self.onmessage = async({data}) => {
 
 async function preWorker(){
     return await new Promise(async(resolve)=>{
-        // Retrieve Data
+        // Notify User
         g.savedUpdateAnalyzeAnimeTime = await retrieveJSON('savedUpdateAnalyzeAnimeTime') ?? [15]
         g.updateAnalyzeAnimeTime = Math.ceil(arrayMean(g.savedUpdateAnalyzeAnimeTime))
         self.postMessage({status:'notify', updateAnalyzeAnimeTime: g.updateAnalyzeAnimeTime})  // Notify User for the Update
         g.updateAnalyzeAnimeStartTime = new Date()
+        // retrieve
         g.animeEntries = Object.values(await retrieveJSON('savedAnimeEntries') ?? {})
         g.savedUsername = await retrieveJSON('savedUsername') ?? ''
         g.allFilterInfo = await retrieveJSON('allFilterInfo') ?? {}
-        if(g.hideUnwatchedSequels===undefined){
-            g.hideUnwatchedSequels = await retrieveJSON('hideUnwatchedSequels') ?? true
-        }
+        g.hideUnwatchedSequels = await retrieveJSON('hideUnwatchedSequels') ?? true
         // Temporarily Saved
-        g.deepUpdateStartTime = await retrieveJSON('deepUpdateStartTime') ?? false
-        g.userListStatus = await retrieveJSON('userListStatus') ?? {}
+        g.userEntriesStatus = await retrieveJSON('userEntriesStatus') ?? {}
+        if(!jsonIsEmpty(g.userEntriesStatus)&&g.returnInfo==='updateNewAnime'){
+            deleteJSON('userEntriesStatus')
+        }
         g.varScheme = await retrieveJSON('varScheme') ?? {}
-        g.alteredVariables = await retrieveJSON('alteredVariables') ?? {}
+        if(!jsonIsEmpty(g.varScheme)&&g.returnInfo==='updateNewAnime'){
+            deleteJSON('varScheme')
+        }
+        g.deepUpdateStartTime = await retrieveJSON('deepUpdateStartTime') ?? false
         if(g.deepUpdateStartTime&&g.returnInfo==='getAllAnime'){
             g.savedDeepUpdateTime = await retrieveJSON('savedDeepUpdateTime') ?? [6700]
             deleteJSON('deepUpdateStartTime')
         }
-        if(!jsonIsEmpty(g.userListStatus)&&g.returnInfo==='updateNewAnime'){
-            deleteJSON('userListStatus')
-        }
-        if(!jsonIsEmpty(g.varScheme)&&g.returnInfo==='updateNewAnime'){
-            deleteJSON('varScheme')
-        }
-        if(!jsonIsEmpty(g.alteredVariables)&&g.returnInfo==='updateNewAnime'){
-            deleteJSON('alteredVariables')
-        }
-        // Temporarily Saved
-        g.isNewName = !equalsNCS(g.username,g.savedUsername)
-        if(g.isNewName||g.versionUpdate||!g.anUpdate){
-            g.savedUserScores = {}
-            g.savedRecScheme = {}
-        } else {
-            g.savedUserScores = await retrieveJSON('savedUserScores') ?? {}
-            g.savedRecScheme = await retrieveJSON('savedRecScheme') ?? {}
-        }
-        if(g.isNewName||g.versionUpdate){
-            g.savedRecScheme = {}
-        } else {
-            g.savedRecScheme = await retrieveJSON('savedRecScheme') ?? {}
+        // Alter
+        g.savedRecScheme = {}
+        g.savedUserScores = {
+            all: {},
+            above: {}
         }
         return resolve()
     })
 }
 async function mainWorker(){
     return await new Promise((resolve)=>{
-        if(!g.savedUserScores.all){
-            g.savedUserScores.all = {}
-        }
-        if(!g.savedUserScores.above){
-            g.savedUserScores.above = {}
-        }
-        let recSchemeIsNew = jsonIsEmpty(g.savedRecScheme)
         // Algorithm Configs
         const measure = g.varScheme?.measure || "mean"
         const includeUnknownVar = g.varScheme?.includeUnknownVar ?? true
@@ -111,14 +91,7 @@ async function mainWorker(){
         g.savedAnimeFranchises = []
         //
         if(!jsonIsEmpty(g.varScheme)){
-            let savedUserAnimeIDs = Object.keys(g.savedUserScores.all)
-            for(let i=0;i<savedUserAnimeIDs.length;i++){
-                if(!g.userListStatus.userScore[savedUserAnimeIDs[i]]){
-                    delete g.savedUserScores.all[savedUserAnimeIDs[i]]
-                    delete g.savedUserScores.above[savedUserAnimeIDs[i]]
-                }
-            }
-            let userScores = Object.values(g.userListStatus.userScore)
+            let userScores = Object.values(g.userEntriesStatus.userScore)
             let meanUserScore, meanScoreAll, meanScoreAbove, userScoreBase;
             if(userScores?.length){
                 let max = Math.max(...userScores)
@@ -127,7 +100,6 @@ async function mainWorker(){
                 meanUserScore = arrayMean(userScores)
             }
             for(let i=0; i<g.animeEntries.length; i++){
-                let animeShallUpdate = false
                 let anime = g.animeEntries[i]
                 let title = anime?.title?.userPreferred
                 let anilistId = anime?.id
@@ -149,8 +121,8 @@ async function mainWorker(){
                     g.allFilterInfo["user status: "+userStatus.toLowerCase()] = true
                     g.allFilterInfo["!user status: !"+userStatus.toLowerCase()] = true
                 }
-                if(typeof g.userListStatus?.userStatus?.[anilistId]==="string"){
-                    userStatus = g.userListStatus?.userStatus?.[anilistId]
+                if(typeof g.userEntriesStatus?.userStatus?.[anilistId]==="string"){
+                    userStatus = g.userEntriesStatus?.userStatus?.[anilistId]
                     let tmpUserStatus = userStatus.trim().toLowerCase()
                     if(!g.allFilterInfo["user status: "+tmpUserStatus]
                     &&!g.allFilterInfo["!user status: !"+tmpUserStatus]){
@@ -238,13 +210,13 @@ async function mainWorker(){
                         &&typeof animeRelationPopularity==="number"){
                             if(animeRelationType.trim().toLowerCase()==="prequel"){
                                 // ...Prequel is Watched
-                                if(typeof g.userListStatus?.userStatus?.[animeRelationID]==="string"){
-                                    if((g.userListStatus?.userStatus?.[animeRelationID].trim().toLowerCase()==="completed"
-                                    ||g.userListStatus?.userStatus?.[animeRelationID].trim().toLowerCase()==="repeating")){
+                                if(typeof g.userEntriesStatus?.userStatus?.[animeRelationID]==="string"){
+                                    if((g.userEntriesStatus?.userStatus?.[animeRelationID].trim().toLowerCase()==="completed"
+                                    ||g.userEntriesStatus?.userStatus?.[animeRelationID].trim().toLowerCase()==="repeating")){
                                         return true
                                     }
                                 // ...Prequel is a Small/Unpopular Anime
-                                } else if(!g.userListStatus?.userStatus?.[animeRelationID]&&typeof popularity==="number"){
+                                } else if(!g.userEntriesStatus?.userStatus?.[animeRelationID]&&typeof popularity==="number"){
                                     if(animeRelationPopularity<=popularity){
                                         return true
                                     }
@@ -441,62 +413,6 @@ async function mainWorker(){
                         g.allFilterInfo["!status: !"+tempStatus] = true
                     }
                 }
-                // Arrange
-                // if(typeof format==="string"){
-                //     if(g.alteredVariables.format_in["format: "+format.trim().toLowerCase()]||recSchemeIsNew) animeShallUpdate=true
-                // }
-                if(!animeShallUpdate){
-                    for(let j=0; j<genres.length; j++){
-                        let genre = genres[j]
-                        if(typeof genre!=="string") continue
-                        if((g.alteredVariables.genres_in["genre: "+genre.trim().toLowerCase()]
-                            &&!animeShallUpdate)
-                        ||recSchemeIsNew){
-                            animeShallUpdate = true
-                            break
-                        }
-                    }
-                }
-                if(!animeShallUpdate){
-                    for(let j=0; j<tags.length; j++){
-                        let tag = tags[j]?.name
-                        if(typeof tag!=="string") continue
-                        if((g.alteredVariables.tags_in["tag: "+tag.trim().toLowerCase()]
-                            &&!animeShallUpdate)
-                        ||recSchemeIsNew){
-                            animeShallUpdate = true
-                            break
-                        }
-                    }
-                }
-                if(!animeShallUpdate){
-                    for(let j=0; j<studios.length; j++){
-                        let studio = studios[j]?.name
-                        if(typeof studio!=="string") continue
-                        studio = studio.trim().toLowerCase()
-                        if((g.alteredVariables.studios_in["studio: "+studio]
-                            &&!animeShallUpdate)
-                        ||recSchemeIsNew){
-                            animeShallUpdate = true
-                            break
-                        }
-                    }
-                }
-                if(!animeShallUpdate){
-                    for(let j=0; j<staffs.length; j++){
-                        let staff = staffs[j]?.node?.name?.userPreferred
-                        if(typeof staff!=="string") continue
-                        staff = staff.trim().toLowerCase()
-                        if((g.alteredVariables.staff_in["staff: "+staff]
-                            &&!animeShallUpdate)
-                        ||recSchemeIsNew){
-                            animeShallUpdate = true
-                            break
-                        }
-                    }
-                }
-                // Check if any variable is Altered, and continue
-                if(!animeShallUpdate) continue
                 let genresIncluded = {}
                 let tagsIncluded = {}
                 let studiosIncluded = {}
@@ -832,12 +748,9 @@ async function mainWorker(){
                 ]))
                 let weightedScore = score
                 // Check mean score
-                if(typeof meanUserScore==="number"&&typeof g.userListStatus.userScore[anilistId]==="number"){
-                    if(typeof g.savedUserScores[anilistId]==="number"){
-                        delete g.savedUserScores[anilistId]
-                    }
+                if(typeof meanUserScore==="number"&&typeof g.userEntriesStatus.userScore[anilistId]==="number"){
                     g.savedUserScores.all[anilistId] = score
-                    if(g.userListStatus.userScore[anilistId]>=meanUserScore){
+                    if(g.userEntriesStatus.userScore[anilistId]>=meanUserScore){
                         g.savedUserScores.above[anilistId] = score
                     }
                 }
@@ -855,7 +768,7 @@ async function mainWorker(){
                 variablesIncluded = variablesIncluded.length?variablesIncluded:[]
                 g.savedRecScheme[anilistId] = {
                     id: anilistId, title: title, animeUrl: animeUrl, 
-                    userScore: g.userListStatus?.userScore?.[anilistId], 
+                    userScore: g.userEntriesStatus?.userScore?.[anilistId], 
                     averageScore: averageScore,
                     popularity: popularity,
                     score: score, weightedScore: weightedScore, 
@@ -1209,7 +1122,7 @@ async function mainWorker(){
                 staffs = staffs.reduce((result,e)=>Object.assign(result,{[e?.node?.name?.userPreferred]:e?.node?.siteUrl}),{})
                 g.savedRecScheme[anilistId] = {
                     id: anilistId, title: title, animeUrl: animeUrl, 
-                    userScore: g.userListStatus?.userScore?.[anilistId], 
+                    userScore: g.userEntriesStatus?.userScore?.[anilistId], 
                     averageScore: averageScore,
                     popularity: popularity,
                     score: score, weightedScore: weightedScore, 
@@ -1259,44 +1172,26 @@ async function mainWorker(){
 }
 async function postWorker(){
     return await new Promise(async(resolve)=>{
-        //
-        await saveJSON(g.savedUserScores,"savedUserScores")
+        if(!equalsNCS(g.username,g.savedUsername)){
+            await saveJSON(g.username,"savedUsername")
+            self.postMessage({status:'update', savedUsername: g.username})
+        }
+        await saveJSON(g.savedRecScheme,"savedRecScheme")
+        self.postMessage({
+            status:'update', 
+            haveSavedRecScheme: !jsonIsEmpty(g.savedRecScheme)
+        })
         await saveJSON(g.hideUnwatchedSequels,'hideUnwatchedSequels')
-        // self.postMessage({status:'update',dataName: 'savedUserScores'})
-        //
+        // Save Check
         if(g.anUpdate||g.versionUpdate){
             await saveJSON(g.allFilterInfo,"allFilterInfo")
             await saveJSON(g.savedAnimeFranchises,"savedAnimeFranchises")    
         }
-        //
-        if(g.isNewName){
-            await saveJSON(g.username,"savedUsername")
-            self.postMessage({status:'update', savedUsername: g.username})
-        }
-        //
-        await saveJSON(g.savedRecScheme,"savedRecScheme")
-        // self.postMessage({status:'update', dataName: 'savedRecScheme'})
-        //
         if(g.versionUpdate){
             await saveJSON(false,"versionUpdate")
             self.postMessage({status:'update', versionUpdate: false})
         }
-        //
-        let timeInterval = (new Date).getTime()-g.updateAnalyzeAnimeStartTime.getTime()
-        if(g.savedUpdateAnalyzeAnimeTime.length<33){
-            await g.savedUpdateAnalyzeAnimeTime.push(Math.ceil(timeInterval/1000))
-        } else {
-            await g.savedUpdateAnalyzeAnimeTime.shift()
-            await g.savedUpdateAnalyzeAnimeTime.push(Math.ceil(timeInterval/1000))
-        }
-        await saveJSON(g.savedUpdateAnalyzeAnimeTime, "savedUpdateAnalyzeAnimeTime")
-        self.postMessage({status:'update', savedUpdateAnalyzeAnimeTime: g.savedUpdateAnalyzeAnimeTime})
-        //
-        if(g.anUpdate||g.versionUpdate){
-            await saveJSON(g.savedFilterOptionsJson,"savedFilterOptionsJson")
-            self.postMessage({status:'update',savedFilterOptionsJson: g.savedFilterOptionsJson}) // Notify User for the Filter Update
-        }
-        //
+        // Time Check
         if(g.deepUpdateStartTime&&g.returnID==="getAllAnime"){
             timeInterval = (new Date).getTime()-g.deepUpdateStartTime.getTime()
             if(g.savedDeepUpdateTime.length<33){
@@ -1307,11 +1202,20 @@ async function postWorker(){
             }
             self.postMessage({status:'update', savedDeepUpdateTime: g.savedDeepUpdateTime})
         }
-        //
-        self.postMessage({
-            status:'update', 
-            haveSavedRecScheme: !jsonIsEmpty(g.savedRecScheme)
-        })
+        let timeInterval = (new Date).getTime()-g.updateAnalyzeAnimeStartTime.getTime()
+        if(g.savedUpdateAnalyzeAnimeTime.length<33){
+            await g.savedUpdateAnalyzeAnimeTime.push(Math.ceil(timeInterval/1000))
+        } else {
+            await g.savedUpdateAnalyzeAnimeTime.shift()
+            await g.savedUpdateAnalyzeAnimeTime.push(Math.ceil(timeInterval/1000))
+        }
+        await saveJSON(g.savedUpdateAnalyzeAnimeTime, "savedUpdateAnalyzeAnimeTime")
+        self.postMessage({status:'update', savedUpdateAnalyzeAnimeTime: g.savedUpdateAnalyzeAnimeTime})
+        // Filters
+        if(g.anUpdate||g.versionUpdate){
+            await saveJSON(g.savedFilterOptionsJson,"savedFilterOptionsJson")
+            self.postMessage({status:'update',savedFilterOptionsJson: g.savedFilterOptionsJson}) // Notify User for the Filter Update
+        }
         return resolve()
     })
 }
