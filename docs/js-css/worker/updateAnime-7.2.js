@@ -380,5 +380,5 @@ function jsonIsEmpty(obj){
         return true
     }
     console.error(`Error: Expected Object Constructor (reading '${obj?.constructor.name}' - ${JSON.stringify(obj)})`)
-    return true // Temporarily Added for Past Conditions to Work
+    return true /// Temporarily Added for Past Conditions to Work
 }
