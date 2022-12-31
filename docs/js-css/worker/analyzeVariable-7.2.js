@@ -32,7 +32,7 @@ async function preWorker(){
         g.savedUserEntries = await retrieveJSON('savedUserEntries') ?? []
         g.savedAnimeFranchises = await retrieveJSON('savedAnimeFranchises') ?? []
         g.hideUnwatchedSequels = await retrieveJSON('hideUnwatchedSequels') ?? true
-        if(!g.savedFilterAlgo){
+        if(g.savedFilterAlgo===undefined){
             g.savedFilterAlgo = await retrieveJSON('savedFilterAlgo') ?? ["minimum sample size: 2","include unknown variables: false"]
         }
         g.lastSavedUpdateTime = await retrieveJSON('lastSavedUpdateTime') ?? 0
@@ -159,9 +159,9 @@ async function preWorker(){
                 }
             }
         } else {
-            if(jsonIsEmpty(g.savedAnimeEntries)&&g.returnInfo!=='getAllAnime'){
+            if(jsonIsEmpty(g.savedAnimeEntries)){
                 if(!g.anUpdate){ self.postMessage({status:'notify', needUpdate: true}) }
-                self.postMessage({status:'updateAnime',returnInfo:'getAllAnime'})
+                self.postMessage({status:'updateAnime',returnInfo:'getAnime'})
             } else {
                 self.postMessage({status:'error', error: "Can't connect to Anilist..."})
             }

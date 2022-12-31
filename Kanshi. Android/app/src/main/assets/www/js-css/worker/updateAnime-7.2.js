@@ -9,12 +9,10 @@ self.onmessage = async({data}) => {
     }).then(async()=>{
         return await postWorker()
     }).then(()=>{
-        if(g.returnInfo==='getNewAnime'){
-            self.postMessage({status:'analyzeVariables',returnInfo:'getNewAnime'})
-        } else if(g.returnInfo==='updateNewAnime'){
-            self.postMessage({status:'analyzeAnime',returnInfo:'updateNewAnime'})
-        } else if(g.returnInfo==='getAllAnime'){
-            self.postMessage({status:'analyzeVariables',returnInfo:'getAllAnime'})
+        if(g.returnInfo==='getAnime'){
+            self.postMessage({status:'analyzeVariables',returnInfo:'getAnime'})
+        } else if(g.returnInfo==='updateAnime'){
+            self.postMessage({status:'analyzeAnime',returnInfo:'updateAnime'})
         } else if(g.returnInfo==='notAnUpdate'){
             self.postMessage({status:'notAnUpdate'})
         }
@@ -25,10 +23,7 @@ async function preWorker(){
         g.savedAnimeEntries = await retrieveJSON('savedAnimeEntries') ?? {}
         g.lastSavedUpdateTime = await retrieveJSON('lastSavedUpdateTime') ?? 0
         g.requestCount = await retrieveJSON('requestCount') ?? 4000
-        if(g.lastSavedUpdateTime===0||jsonIsEmpty(g.savedAnimeEntries)){
-            g.returnInfo = 'getAllAnime'
-        }
-        if(g.returnInfo==='getNewAnime'||g.returnInfo==='getAllAnime'){
+        if(g.returnInfo==='getAnime'){
             g.savedAnimeIDs = Object.keys(g.savedAnimeEntries??{}).reduce((result,e)=>{
                 if(isInt(e)){
                     result.push(parseInt(e))
@@ -45,6 +40,7 @@ async function mainWorker(){
         const maxAnimePerPage = 50
         const maxStaffPerPage = 25
         const savedAnimeIDs = g.savedAnimeIDs
+        const lastSavedUpdateTime = g.lastSavedUpdateTime
         g.newRequestCount = 0
         async function recallUPAN(page, staffPage, staffHasNextPage){
             $.ajax({
@@ -67,7 +63,7 @@ async function mainWorker(){
                                 type: ANIME,
                                 genre_not_in: ["Hentai"],
                                 format_not_in:[MUSIC,MANGA,NOVEL,ONE_SHOT],
-                                ${  g.returnInfo==='updateNewAnime'? 'sort: [UPDATED_AT_DESC]'
+                                ${  g.returnInfo==='updateAnime'? 'sort: [UPDATED_AT_DESC]'
                                     : `id_not_in: [${savedAnimeIDs}]`
                                 }
                                 ) {
@@ -134,7 +130,7 @@ async function mainWorker(){
                     const usUp = g.newRequestCount
                     const loadPerc = (Math.min(99.99,(usUp/usDn)*100)).toFixed(2)
                     let message;
-                    if(g.returnInfo==='updateNewAnime'){
+                    if(g.returnInfo==='updateAnime'){
                         message='Updating Anime from Anilist:'
                     } else {
                         message='Getting Anime from Anilist:'
@@ -160,7 +156,7 @@ async function mainWorker(){
                                 animeEntries[anime.id] = anime
                             }
                             if(anime?.updatedAt){
-                                if(anime.updatedAt>g.lastSavedUpdateTime){
+                                if(anime.updatedAt>lastSavedUpdateTime){
                                     g.lastSavedUpdateTime = anime.updatedAt
                                 }
                             }
@@ -228,7 +224,7 @@ async function mainWorker(){
                             }
                         } else {
                             let message;
-                            if(g.returnInfo==='updateNewAnime'){
+                            if(g.returnInfo==='updateAnime'){
                                 message='Updating Anime from Anilist:'
                             } else {
                                 message='Getting Anime from Anilist:'
@@ -287,7 +283,7 @@ async function postWorker(){
             status:'update', 
             haveSavedAnimeEntries: !jsonIsEmpty(g.savedAnimeEntries)
         })
-        if(g.returnInfo!=='notAnUpdate'){
+        if(g.returnInfo==='updateAnime'){
             await saveJSON(g.lastSavedUpdateTime,"lastSavedUpdateTime")
             self.postMessage({status:'update', lastSavedUpdateTime: g.lastSavedUpdateTime})
             await saveJSON(Math.max(g.requestCount,g.newRequestCount),"requestCount")

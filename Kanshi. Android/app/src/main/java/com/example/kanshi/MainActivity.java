@@ -66,12 +66,12 @@ public class MainActivity extends AppCompatActivity  {
     final ActivityResultLauncher<Intent> chooseImportFile =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
+                    new ActivityResultCallback<>() {
                         @Override
                         public void onActivityResult(ActivityResult activityResult) {
                             int resultCode = activityResult.getResultCode();
                             Intent intent = activityResult.getData();
-                            try{
+                            try {
                                 Uri[] result = null;
                                 if (null == mUploadMessage || resultCode != RESULT_OK) {
                                     result = new Uri[]{Uri.parse("")};
@@ -93,20 +93,22 @@ public class MainActivity extends AppCompatActivity  {
     final ActivityResultLauncher<Intent> chooseExportFile =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
+                    new ActivityResultCallback<>() {
                         @Override
                         public void onActivityResult(ActivityResult activityResult) {
                             int resultCode = activityResult.getResultCode();
                             Intent intent = activityResult.getData();
-                            try{
-                                if (resultCode != RESULT_OK){return;}
+                            try {
+                                if (resultCode != RESULT_OK) {
+                                    return;
+                                }
                                 assert intent != null;
                                 Uri uri = intent.getData();
                                 Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
                                         DocumentsContract.getTreeDocumentId(uri));
                                 exportPath = getThisPath(docUri);
                                 Toast.makeText(getApplicationContext(), "Export Folder is Selected, you may Export now!", Toast.LENGTH_LONG).show();
-                                prefsEdit.putString("savedExportPath",exportPath).apply();
+                                prefsEdit.putString("savedExportPath", exportPath).apply();
                                 webView.loadUrl("javascript:" +
                                         "exportPathIsAvailable=true;" +
                                         "try {\n" +
@@ -291,23 +293,6 @@ public class MainActivity extends AppCompatActivity  {
                         managerCompat = NotificationManagerCompat.from(MainActivity.this);
                         managerCompat.notify(1, builder.build());
                     }
-                } else if(message.contains("WebtoApp: Export Data/Kanshi.Seperator/")) {
-                    String[] splitMessage = message.replace("WebtoApp: Export Data/Kanshi.Seperator/","").split("/Kanshi.Seperator/");
-                    String fileName = splitMessage[0];
-                    System.out.println(fileName+"   assacdsacascacsc");
-                    String objStr = splitMessage[1];
-                    if (!Environment.isExternalStorageManager()) {
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Requires Permission for External Storage")
-                                .setMessage("Enable Kanshi. App in the Settings after clicking OK!")
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .setPositiveButton("OK", (dialogInterface, i) -> {
-                                    Uri uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}");
-                                    Toast.makeText(getApplicationContext(), "Enable Kanshi. App in here to permit Data Export!", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri));
-                                })
-                                .setNegativeButton("Later", null).show();
-                    }
                 }
                 Log.d("WebConsole",message+"-"+lineNumber);
                 return true;
@@ -381,8 +366,9 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     // Native and Webview Connection
+    @SuppressWarnings("unused")
     class JSBridge {
-        @SuppressWarnings("unused")
+        @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
         @RequiresApi(api = Build.VERSION_CODES.R)
         @JavascriptInterface
         public void exportJSON(String objStr, String fileName){
@@ -414,8 +400,10 @@ public class MainActivity extends AppCompatActivity  {
                             boolean fileIsDeleted;
                             if (file.exists()) {
                                 fileIsDeleted = file.delete();
+                                //noinspection ResultOfMethodCallIgnored
                                 file.createNewFile();
                             } else {
+                                //noinspection ResultOfMethodCallIgnored
                                 file.createNewFile();
                                 fileIsDeleted = true;
                             }

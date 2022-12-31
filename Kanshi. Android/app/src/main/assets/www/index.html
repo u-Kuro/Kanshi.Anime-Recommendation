@@ -121,6 +121,7 @@
                 word-break:break-word;
                 overflow-wrap:break-word;
                 transform-origin: left;
+                font-weight: normal;
             }
             h1,
             h2,
@@ -240,6 +241,7 @@
                 margin-top: 10px !important;
                 background-color: inherit !important;
                 border: none !important;
+                overflow: scroll !important;
             }
             .flexdatalist-multiple > .value {
                 height: fit-content;
@@ -268,7 +270,8 @@
                 max-height: 100px;
                 min-height: 100px;
                 height: 100px;
-                overflow-y: scroll;
+                overflow-y: scroll !important;
+                content-visibility: auto !important;
             }
             .flex1.flexdatalist-multiple,
             .flex2.flexdatalist-multiple{
@@ -344,6 +347,7 @@
             a:hover,
             a:focus {
                 color: #005580;
+                text-decoration: none;
             }
             .display-none{
                 display: none !important;
@@ -369,10 +373,6 @@
             }
             #animeRecommendationList{
                 content-visibility: auto;
-            }
-            #updateIntervalBtn,
-            #showAllAnime{
-                display: none;
             }
             #hiddenUnhiddenBtn{
                 background: #57728e !important;
@@ -499,6 +499,8 @@
                 z-index: 100;
             }
             .pager-form{
+                height: 35px;
+                min-height: 35px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -550,6 +552,7 @@
                 -moz-appearance: none;
                 appearance: none;
                 background-color: transparent !important;
+                color: white;
             }
             #pageNumberOptions>option{
                 background-color: #2b2d42;
@@ -1009,6 +1012,15 @@
                 color: rgb(131,144,160) !important;
             }
             /* Dark Mode */
+            .alert-icon{
+                height: 12px !important;
+                width: 12px !important;
+                min-height: 12px !important;
+                max-height: 12px !important;
+                min-width: 12px !important;
+                max-width: 12px !important;
+                vertical-align: middle !important;
+            }
             .orange{
                 color: rgb(255,152,0);
             }
@@ -1450,8 +1462,8 @@
 <script defer>
     // Declare Global Variables
         // Production Version
-    const version = "7.1",
-          backUpVersion = 4.6;
+    const version = "7.2",
+          backUpVersion = 4.7;
         // IndexDB
     let request, db,
         // Saved Data
@@ -1481,10 +1493,7 @@
     searchBtnEl, updateBtnEl, importBtnEl, importFileEl, exportIntervalBtnEl, updateIntervalBtnEl,
     hiddenUnhiddenBtnEl, showAllAnimeBtnEl, hideKidsAnimeBtnEl, hideUnwatchedSequelsBtnEl, themeBtnEl,
         // Workers
-    worker3, worker4, worker5, worker6, worker7, worker8
-        // Browser
-    ,notificationGranted = false
-        // Browser
+    worker0, worker1, worker2, worker3, worker4, worker5, worker6, worker7, worker8;
 
     window.onload = async () => {
         // Get Client Height
@@ -1679,7 +1688,6 @@
                             await saveJSON(savedTableStatus,"savedTableStatus")
                             await animeTableEl.trigger("pageSet",savedUnhiddenTablePage)
                             pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
-                            showAllAnimeBtnEl.hide()
                             menuContainerEl.fadeOut(500)
                             await LoadData()
                             Swal.fire({
@@ -1781,7 +1789,6 @@
                                         requestIsRunning = false
                                         importBtnEl.removeClass('selected')
                                     } else if(data.doneImporting ?? false){
-                                        worker8.terminate()
                                         importFileEl.val(null)
                                         dataStatusPrio = false
                                         dataStatusSpinnerHomeEl.hide()
@@ -1807,22 +1814,12 @@
                                         usernameEl.val(savedUsername)
                                     } else if(data.haveSavedRecScheme!==undefined) {
                                         haveSavedRecScheme = data.haveSavedRecScheme
-                                        if(haveSavedRecScheme){
-                                            updateIntervalBtnEl.show()
-                                        } else {
-                                            updateIntervalBtnEl.hide()
-                                        }
                                     } else if(data.haveSavedAnimeEntries!==undefined) {
                                         haveSavedAnimeEntries = data.haveSavedAnimeEntries
                                     } else if(data.versionUpdate!==undefined) {
                                         versionUpdate = data.versionUpdate
                                     } else if(data.savedHiddenAnimeIDs ?? false) {
                                         savedHiddenAnimeIDs = data.savedHiddenAnimeIDs
-                                        if(data.noHiddenAnime!==undefined){
-                                            showAllAnimeBtnEl.hide()
-                                        } else {
-                                            showAllAnimeBtnEl.show()
-                                        }
                                     } else if(data.lastSavedUpdateTime ?? false) {
                                         lastSavedUpdateTime = data.lastSavedUpdateTime
                                     } else if(data.savedAnalyzeVariableTime ?? false) {
@@ -2197,11 +2194,13 @@
                 })
                 // Android
                 $("#warnAnimeBtn").on("click", async ()=>{
+                    await $("#warnAnimeModal .flexdatalist-multiple").css('content-visibility','')
                     await warnAnimeContainerEl.show()
                     warnAnimeModalEl.removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
                     let flex1El = await $("ul.flex1")
                     flex1El.animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
                     flex1El[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                    await $("#warnAnimeModal .flexdatalist-multiple").css('content-visibility','auto')
                 })
                 $("#submitWarnAnime").on("click",async()=>{
                     savedWarnAnime = await $("ul.flex1>.value>.text").toArray()?.map((e)=>e.textContent)??[]
@@ -2223,11 +2222,13 @@
                     e.stopImmediatePropagation()
                 })
                 $("#filterAlgoBtn").on("click", async ()=>{
+                    await $("#filterAlgoModal .flexdatalist-multiple").css('content-visibility','')
                     await filterAlgoContainerEl.show()
                     filterAlgoModalEl.removeClass("swal2-hide-custom").addClass("swal2-show-custom").show()
                     let flex2El = await $("ul.flex2")
                     flex2El.animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
                     flex2El[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                    await $("#filterAlgoModal .flexdatalist-multiple").css('content-visibility','auto')
                 })
                 $("#submitFilterAlgo").on("click",async()=>{
                     savedFilterAlgo = await $("ul.flex2>.value>.text").toArray()?.map((e)=>e.textContent)??[]
@@ -2758,10 +2759,6 @@
                                 `)
                             }
                             animeTableEl.trigger("pagerUpdate")
-                            // Have a Hidden Anime
-                            if(await !jsonIsEmpty(savedHiddenAnimeIDs)){
-                                await showAllAnimeBtnEl.show()
-                            }
                             await pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                             isRunning = false
                         } else isRunning = false
@@ -2796,7 +2793,6 @@
                                         </td>
                                     </tr>
                                 `)
-                                await showAllAnimeBtnEl.hide()
                             }
                             await pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
                             isRunning = false
@@ -2838,10 +2834,9 @@
         }).then(async()=>{
             return await new Promise(async(resolve)=>{
                 if(!haveSavedAnimeEntries||lastSavedUpdateTime===0||savedBackUpVersion<backUpVersion){
-                    let worker0 = await new Worker(`./js-css/worker/getAnimeEntries-${version}.js`)
+                    worker0 = await new Worker(`./js-css/worker/getAnimeEntries-${version}.js`)
                     await worker0.postMessage("")
                     worker0.onmessage = async ({data}) => {
-                        worker0.terminate()
                         // data == lastSavedUpdate Time in backUp
                         if(data>lastSavedUpdateTime||!haveSavedAnimeEntries){
                             lastSavedUpdateTime = data
@@ -2879,10 +2874,9 @@
         }).then(async()=>{
             return await new Promise(async(resolve)=>{
                 if(await savedFilterOptionsJson.length<1||savedBackUpVersion<backUpVersion){
-                    let worker1 = await new Worker(`./js-css/worker/getOptions-${version}.js`)
+                    worker1 = await new Worker(`./js-css/worker/getOptions-${version}.js`)
                     await worker1.postMessage("")
                     worker1.onmessage = async ({data}) => {
-                        worker1.terminate()
                         // data == savedFilterOptionsJson Time in backUp
                         savedFilterOptionsJson = await data || []
                         await $(".flexdatalist").flexdatalist({
@@ -2919,10 +2913,9 @@
         }).then(async()=>{
             return await new Promise(async(resolve)=>{
                 if(savedBackUpVersion<backUpVersion){
-                    let worker2 = await new Worker(`./js-css/worker/getAnimeFranchises-${version}.js`)
+                    worker2 = await new Worker(`./js-css/worker/getAnimeFranchises-${version}.js`)
                     await worker2.postMessage("")
                     worker2.onmessage = async (message) => {
-                        worker2.terminate()
                         return resolve()
                     }
                     worker2.onerror = (error) => {
@@ -2940,7 +2933,6 @@
                 // Reload Name
                 if(savedUsername){
                     await usernameEl.val(savedUsername)
-                    await updateIntervalBtnEl.show()
                 }
                 // Reload Table Filters/Identifiers
                     // Table Filters
@@ -3004,9 +2996,6 @@
                     .attr("data-copy-value",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`)
 
                 // Load Table
-                if(await !jsonIsEmpty(savedHiddenAnimeIDs)){
-                    await showAllAnimeBtnEl.show()
-                }
                 await LoadData()
                 return resolve()
             })
@@ -3705,9 +3694,15 @@
                     lastSavedUpdateTime = data.lastSavedUpdateTime
                 }
             } else if(status==='analyzeVariables'){
+                if(worker0) worker0.terminate()
+                if(worker1) worker1.terminate()
+                if(worker2) worker2.terminate()
                 worker4.terminate()
                 return analyzeVariables(updateID, username, anUpdate, versionUpdate, data.returnInfo)
             } else if(status==='analyzeAnime'){
+                if(worker0) worker0.terminate()
+                if(worker1) worker1.terminate()
+                if(worker2) worker2.terminate()
                 worker4.terminate()
                 return analyzeAnime(updateID, username, anUpdate, versionUpdate, data.returnInfo)
             } else if(status==='error'){
@@ -3727,9 +3722,6 @@
                     confirmButtonColor: "#000"
                 })
                 LoadData()
-                // Browser
-                showNotification(`Oops...Something went wrong! Please try again...`);
-                // Browser
                 console.log("WebtoApp: Update Error")
                 for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                 dataStatusSpinnerHomeEl.hide()
@@ -3886,9 +3878,6 @@
                             confirmButtonColor: "#000"
                         })
                     }
-                    // Browser
-                    showNotification("List has been updated!")
-                    // Browser
                 }
             } else if(status==='update') {
                 if(data.savedFilterOptionsJson ?? false) {
@@ -4005,7 +3994,6 @@
                     checkFiltersFocus.push(updateFiltersValid)
                 } else if(data.haveSavedRecScheme ?? false) {
                     haveSavedRecScheme = data.haveSavedRecScheme
-                    if(haveSavedRecScheme) updateIntervalBtnEl.show()
                 } else if(data.versionUpdate!==undefined){
                     versionUpdate = data.versionUpdate
                 } else if(data.savedUsername ?? false){
@@ -4014,11 +4002,19 @@
                     savedUpdateAnalyzeAnimeTime = data.savedUpdateAnalyzeAnimeTime
                 } else if(data.savedDeepUpdateTime ?? false){
                     savedDeepUpdateTime = data.savedDeepUpdateTime
+                } else if(data.hideUnwatchedSequels!==undefined) {
+                    if(data.hideUnwatchedSequels){
+                        hideUnwatchedSequels = true
+                        hideUnwatchedSequelsBtnEl.addClass("selected")
+                    } else {
+                        hideUnwatchedSequels = false
+                        hideUnwatchedSequelsBtnEl.removeClass("selected")
+                    }
                 }
             } else if(status==='loadData'){
                 LoadData()
             } else if(status==='updateAnime'){
-                if(returnInfo!=='init'&&data.returnInfo!=='getNewAnime'){ worker5.terminate() }
+                if(returnInfo!=='init'&&data.returnInfo!=='getAnime'){ worker5.terminate() }
                 return updateAnime(updateID, username, anUpdate, versionUpdate, data.returnInfo)
             } else if(status==='notAnUpdate'){
                 worker5.terminate()

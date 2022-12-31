@@ -13,17 +13,13 @@ self.onmessage = async({data}) => {
     }).then(()=>{
         self.postMessage({status:'loadData'})
         if(g.returnInfo==='init'){
-            self.postMessage({status:'updateAnime',returnInfo:'getNewAnime'})
+            self.postMessage({status:'updateAnime',returnInfo:'getAnime'})
             self.postMessage({status:'backUpData',saveBackupDate:false})
-        } else if(g.returnInfo==='getNewAnime'){
+        } else if(g.returnInfo==='getAnime'){
             self.postMessage({status:'notify',alertUser:true})
-            self.postMessage({status:'updateAnime',returnInfo:'updateNewAnime'})
+            self.postMessage({status:'updateAnime',returnInfo:'updateAnime'})
             self.postMessage({status:'backUpData',saveBackupDate:true})
-        } else if(g.returnInfo==='updateNewAnime'){
-            self.postMessage({status:'notify',clearUpdateStatus:true})
-            self.postMessage({status:'notify',alertUser:true})
-            self.postMessage({status:'backUpData',saveBackupDate:true})
-        } else if(g.returnInfo==='getAllAnime'){
+        } else if(g.returnInfo==='updateAnime'){
             self.postMessage({status:'notify',clearUpdateStatus:true})
             self.postMessage({status:'notify',alertUser:true})
             self.postMessage({status:'backUpData',saveBackupDate:true})
@@ -49,18 +45,20 @@ async function preWorker(){
         g.animeEntries = Object.values(await retrieveJSON('savedAnimeEntries') ?? {})
         g.savedUsername = await retrieveJSON('savedUsername') ?? ''
         g.allFilterInfo = await retrieveJSON('allFilterInfo') ?? {}
-        g.hideUnwatchedSequels = await retrieveJSON('hideUnwatchedSequels') ?? true
+        if(g.hideUnwatchedSequels===undefined){
+            g.hideUnwatchedSequels = await retrieveJSON('hideUnwatchedSequels') ?? true
+        }
         // Temporarily Saved
         g.userEntriesStatus = await retrieveJSON('userEntriesStatus') ?? {}
-        if(!jsonIsEmpty(g.userEntriesStatus)&&g.returnInfo==='updateNewAnime'){
+        if(!jsonIsEmpty(g.userEntriesStatus)&&g.returnInfo==='updateAnime'){
             deleteJSON('userEntriesStatus')
         }
         g.varScheme = await retrieveJSON('varScheme') ?? {}
-        if(!jsonIsEmpty(g.varScheme)&&g.returnInfo==='updateNewAnime'){
+        if(!jsonIsEmpty(g.varScheme)&&g.returnInfo==='updateAnime'){
             deleteJSON('varScheme')
         }
         g.deepUpdateStartTime = await retrieveJSON('deepUpdateStartTime') ?? false
-        if(g.deepUpdateStartTime&&g.returnInfo==='getAllAnime'){
+        if(g.deepUpdateStartTime){
             g.savedDeepUpdateTime = await retrieveJSON('savedDeepUpdateTime') ?? [6700]
             deleteJSON('deepUpdateStartTime')
         }
@@ -1182,6 +1180,7 @@ async function postWorker(){
             haveSavedRecScheme: !jsonIsEmpty(g.savedRecScheme)
         })
         await saveJSON(g.hideUnwatchedSequels,'hideUnwatchedSequels')
+        self.postMessage({status:'update', hideUnwatchedSequels: g.hideUnwatchedSequels})
         // Save Check
         if(g.anUpdate||g.versionUpdate){
             await saveJSON(g.allFilterInfo,"allFilterInfo")
@@ -1192,7 +1191,7 @@ async function postWorker(){
             self.postMessage({status:'update', versionUpdate: false})
         }
         // Time Check
-        if(g.deepUpdateStartTime&&g.returnID==="getAllAnime"){
+        if(g.deepUpdateStartTime){
             timeInterval = (new Date).getTime()-g.deepUpdateStartTime.getTime()
             if(g.savedDeepUpdateTime.length<33){
                 await g.savedDeepUpdateTime.push(Math.ceil(timeInterval/1000))
