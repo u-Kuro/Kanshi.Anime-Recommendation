@@ -1,3 +1,4 @@
+importScripts('../asyncJsonParser.js')
 let g = {}, reader, request, db;
 
 self.onmessage = async({data}) => {
@@ -25,7 +26,8 @@ async function mainWorker(){
             await new Promise(async(resolve,reject)=>{
                 try{
                     self.postMessage({status:'notify',fileLoaded:true})
-                    g.fileContent = await JSON.parse(reader.result);
+                    g.fileContent = await JSON.parseAsync(reader.result);
+                    console.log(g.fileContent)
                 } catch(error) {
                     console.error(error)
                     return reject('Error: Invalid Backup File')

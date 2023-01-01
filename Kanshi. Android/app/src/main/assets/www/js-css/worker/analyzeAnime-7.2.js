@@ -14,22 +14,22 @@ self.onmessage = async({data}) => {
         self.postMessage({status:'loadData'})
         if(g.returnInfo==='init'){
             self.postMessage({status:'updateAnime',returnInfo:'getAnime'})
-            self.postMessage({status:'backUpData',saveBackupDate:false})
+            self.postMessage({status:'backUpData',saveBackupDate:false,updateFinished:false})
         } else if(g.returnInfo==='getAnime'){
             self.postMessage({status:'notify',alertUser:true})
             self.postMessage({status:'updateAnime',returnInfo:'updateAnime'})
-            self.postMessage({status:'backUpData',saveBackupDate:true})
+            self.postMessage({status:'backUpData',saveBackupDate:true,updateFinished:false})
         } else if(g.returnInfo==='updateAnime'){
             self.postMessage({status:'notify',clearUpdateStatus:true})
             self.postMessage({status:'notify',alertUser:true})
-            self.postMessage({status:'backUpData',saveBackupDate:true})
+            self.postMessage({status:'backUpData',saveBackupDate:true,updateFinished:true})
         } else if(g.returnInfo==='notAnUpdate'){
             self.postMessage({status:'notify',clearUpdateStatus:true})
             self.postMessage({status:'notAnUpdate'})
         } else {
             self.postMessage({status:'notify',clearUpdateStatus:true})
             self.postMessage({status:'notify',alertUser:true})
-            self.postMessage({status:'backUpData',saveBackupDate:true})
+            self.postMessage({status:'backUpData',saveBackupDate:true,updateFinished:true})
         }
     })
 }

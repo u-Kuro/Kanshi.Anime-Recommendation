@@ -369,81 +369,97 @@ public class MainActivity extends AppCompatActivity  {
     @SuppressWarnings("unused")
     class JSBridge {
         @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
+        BufferedWriter writer;
         @RequiresApi(api = Build.VERSION_CODES.R)
         @JavascriptInterface
-        public void exportJSON(String objStr, String fileName){
-            if (!Environment.isExternalStorageManager()) {
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Requires Permission for External Storage")
-                        .setMessage("Enable Kanshi. App in the Settings after clicking OK!")
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton("OK", (dialogInterface, i) -> {
-                            Uri uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}");
-                            Toast.makeText(getApplicationContext(), "Enable Kanshi. App in here to permit Data Export!", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri));
-                        })
-                        .setNegativeButton("Later", null).show();
-            } else {
-                if(new File(exportPath).isDirectory()){
-                    String directoryPath = exportPath + File.separator;
-                    File directory = new File(directoryPath);
-                    boolean dirIsCreated;
-                    if (!directory.exists()) {
-                        dirIsCreated = directory.mkdirs();
-                    } else {
-                        dirIsCreated = true;
-                    }
-                    if (directory.isDirectory()&&dirIsCreated) {
-                        try {
-                            //String date = new SimpleDateFormat("GyyMMddHH").format(new Date());
-                            File file = new File(directoryPath + fileName);
-                            boolean fileIsDeleted;
-                            if (file.exists()) {
-                                fileIsDeleted = file.delete();
-                                //noinspection ResultOfMethodCallIgnored
-                                file.createNewFile();
-                            } else {
-                                //noinspection ResultOfMethodCallIgnored
-                                file.createNewFile();
-                                fileIsDeleted = true;
-                            }
-                            if(fileIsDeleted){
-                                BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-                                writer.write(objStr);
-                                writer.close();
-                                Toast.makeText(getApplicationContext(), "Data was successfully Exported!", Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Data can't be re-written, Please delete it first!", Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else if(!dirIsCreated){
-                        Toast.makeText(getApplicationContext(), "Error: Directory can't be created!", Toast.LENGTH_LONG).show();
-                    }
-                } else if(!Objects.equals(exportPath, "") &&!new File(exportPath).isDirectory()){
-                    String[] tempExportPath = exportPath.split("/");
-                    String tempPathName = tempExportPath.length>1?
-                            tempExportPath[tempExportPath.length-2]+"/"+
-                                    tempExportPath[tempExportPath.length-1]
-                            : tempExportPath[tempExportPath.length-1];
+        public void exportJSON(String chunk, int status, String fileName){
+            System.out.println(status+" "+new Boolean(writer==null).toString());
+            if(status==0) {
+                if (!Environment.isExternalStorageManager()) {
                     new AlertDialog.Builder(MainActivity.this)
-                            .setTitle("Export Folder is Missing")
-                            .setMessage("Folder Directory ["+tempPathName
-                                    +"] is missing, Please choose another Folder for Exports...")
+                            .setTitle("Requires Permission for External Storage")
+                            .setMessage("Enable Kanshi. App in the Settings after clicking OK!")
                             .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton("Choose a Folder", (dialogInterface, x) -> {
-                                Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-                                        .addCategory(Intent.CATEGORY_DEFAULT);
-                                chooseExportFile.launch(i);
-                                Toast.makeText(getApplicationContext(), "Select or Create a Directory!", Toast.LENGTH_LONG).show();
+                            .setPositiveButton("OK", (dialogInterface, i) -> {
+                                Uri uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}");
+                                Toast.makeText(getApplicationContext(), "Enable Kanshi. App in here to permit Data Export!", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri));
                             })
                             .setNegativeButton("Later", null).show();
                 } else {
-                    Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-                            .addCategory(Intent.CATEGORY_DEFAULT);
-                    chooseExportFile.launch(i);
-                    Toast.makeText(getApplicationContext(), "Select or Create a Directory!", Toast.LENGTH_LONG).show();
+                    if (new File(exportPath).isDirectory()) {
+                        String directoryPath = exportPath + File.separator;
+                        File directory = new File(directoryPath);
+                        boolean dirIsCreated;
+                        if (!directory.exists()) {
+                            dirIsCreated = directory.mkdirs();
+                        } else {
+                            dirIsCreated = true;
+                        }
+                        if (directory.isDirectory() && dirIsCreated) {
+                            try {
+                                //String date = new SimpleDateFormat("GyyMMddHH").format(new Date());
+                                File file = new File(directoryPath + fileName);
+                                boolean fileIsDeleted;
+                                if (file.exists()) {
+                                    fileIsDeleted = file.delete();
+                                    //noinspection ResultOfMethodCallIgnored
+                                    file.createNewFile();
+                                } else {
+                                    //noinspection ResultOfMethodCallIgnored
+                                    file.createNewFile();
+                                    fileIsDeleted = true;
+                                }
+                                if (fileIsDeleted) {
+                                    writer = new BufferedWriter(new FileWriter(file, true));
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Data can't be re-written, Please delete it first!", Toast.LENGTH_LONG).show();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else if (!dirIsCreated) {
+                            Toast.makeText(getApplicationContext(), "Error: Directory can't be created!", Toast.LENGTH_LONG).show();
+                        }
+                    } else if (!Objects.equals(exportPath, "") && !new File(exportPath).isDirectory()) {
+                        String[] tempExportPath = exportPath.split("/");
+                        String tempPathName = tempExportPath.length > 1 ?
+                                tempExportPath[tempExportPath.length - 2] + "/" +
+                                        tempExportPath[tempExportPath.length - 1]
+                                : tempExportPath[tempExportPath.length - 1];
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Export Folder is Missing")
+                                .setMessage("Folder Directory [" + tempPathName
+                                        + "] is missing, Please choose another Folder for Exports...")
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton("Choose a Folder", (dialogInterface, x) -> {
+                                    Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                                            .addCategory(Intent.CATEGORY_DEFAULT);
+                                    chooseExportFile.launch(i);
+                                    Toast.makeText(getApplicationContext(), "Select or Create a Directory!", Toast.LENGTH_LONG).show();
+                                })
+                                .setNegativeButton("Later", null).show();
+                    } else {
+                        Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                                .addCategory(Intent.CATEGORY_DEFAULT);
+                        chooseExportFile.launch(i);
+                        Toast.makeText(getApplicationContext(), "Select or Create a Directory!", Toast.LENGTH_LONG).show();
+                    }
+                }
+            } else if(status==1&&writer!=null) {
+                try{
+                    writer.write(chunk);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if(status==2&&writer!=null){
+                try{
+                    System.out.println("WebConsole Yey");
+                    writer.write(chunk);
+                    writer.close();
+                    Toast.makeText(getApplicationContext(), "Data was successfully Exported!", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

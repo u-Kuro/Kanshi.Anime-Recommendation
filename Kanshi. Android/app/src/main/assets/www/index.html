@@ -1986,6 +1986,7 @@
                         })
                         .then(async(value) => {
                             if(value.isConfirmed){
+                                for(let i=0;i<updateIntervalTimeout.length;i++) clearInterval(updateIntervalTimeout[i])
                                 updateIntervalIsActive = await false
                                 await saveJSON(updateIntervalIsActive,"updateIntervalIsActive")
                                 updateIntervalBtnEl.removeClass("selected")
@@ -2020,10 +2021,12 @@
                                     // Interval
                                     if(!updateIntervalTimeout.length){
                                         let saveUpdateIntervalTimeout = setInterval(async()=>{
-                                            if(!requestIsRunning){
-                                                if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
-                                                willAutoUpdate = true
-                                                Update(true)
+                                            if(updateIntervalIsActive){
+                                                if(!requestIsRunning){
+                                                    if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
+                                                    willAutoUpdate = true
+                                                    Update(true)
+                                                }
                                             }
                                         },3600000)
                                         updateIntervalTimeout.push(saveUpdateIntervalTimeout)
@@ -2031,21 +2034,25 @@
                                 } else {
                                     // Timeout
                                     setTimeout(async()=>{
-                                        if(!requestIsRunning){
-                                            if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
-                                            willAutoUpdate = true
-                                            Update(true)
-                                        }
-                                        // Interval
-                                        if(!updateIntervalTimeout.length){
-                                            let saveUpdateIntervalTimeout = setInterval(async()=>{
-                                                if(!requestIsRunning){
-                                                    if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
-                                                    willAutoUpdate = true
-                                                    Update(true)
-                                                }
-                                            },3600000)
-                                            updateIntervalTimeout.push(saveUpdateIntervalTimeout)
+                                        if(updateIntervalIsActive){
+                                            if(!requestIsRunning){
+                                                if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
+                                                willAutoUpdate = true
+                                                Update(true)
+                                            }
+                                            // Interval
+                                            if(!updateIntervalTimeout.length){
+                                                let saveUpdateIntervalTimeout = setInterval(async()=>{
+                                                    if(updateIntervalIsActive){
+                                                        if(!requestIsRunning){
+                                                            if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
+                                                            willAutoUpdate = true
+                                                            Update(true)
+                                                        }
+                                                    }
+                                                },3600000)
+                                                updateIntervalTimeout.push(saveUpdateIntervalTimeout)
+                                            }
                                         }
                                     },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                                 }
@@ -2072,6 +2079,7 @@
                             })
                             .then(async(value) => {
                                 if(value.isConfirmed){
+                                    for(let i=0;i<exportIntervalTimeout.length;i++) clearInterval(exportIntervalTimeout[i])
                                     exportIntervalIsActive = await false
                                     await saveJSON(exportIntervalIsActive,"exportIntervalIsActive")
                                     exportIntervalBtnEl.removeClass("selected")
@@ -3036,10 +3044,12 @@
                         // Interval
                         if(!updateIntervalTimeout.length){
                             let saveUpdateIntervalTimeout = setInterval(async()=>{
-                                if(!requestIsRunning){
-                                    if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
-                                    willAutoUpdate = true
-                                    Update(true)
+                                if(updateIntervalIsActive){
+                                    if(!requestIsRunning){
+                                        if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
+                                        willAutoUpdate = true
+                                        Update(true)
+                                    }
                                 }
                             },3600000)
                             updateIntervalTimeout.push(saveUpdateIntervalTimeout)
@@ -3048,21 +3058,25 @@
                     } else {
                         // Timeout
                         setTimeout(async()=>{
-                            if(!requestIsRunning&&usernameEl.val()){
-                                if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
-                                willAutoUpdate = true
-                                Update(true)
-                            }
-                            // Interval
-                            if(!updateIntervalTimeout.length){
-                                let saveUpdateIntervalTimeout = setInterval(async()=>{
-                                    if(!requestIsRunning){
-                                        if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
-                                        willAutoUpdate = true
-                                        Update(true)
-                                    }
-                                },3600000)
-                                updateIntervalTimeout.push(saveUpdateIntervalTimeout)
+                            if(updateIntervalIsActive){
+                                if(!requestIsRunning&&usernameEl.val()){
+                                    if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
+                                    willAutoUpdate = true
+                                    Update(true)
+                                }
+                                // Interval
+                                if(!updateIntervalTimeout.length){
+                                    let saveUpdateIntervalTimeout = setInterval(async()=>{
+                                        if(updateIntervalIsActive){
+                                            if(!requestIsRunning){
+                                                if(await usernameEl.val()!==savedUsername) await usernameEl.val(savedUsername)
+                                                willAutoUpdate = true
+                                                Update(true)
+                                            }
+                                        }
+                                    },3600000)
+                                    updateIntervalTimeout.push(saveUpdateIntervalTimeout)
+                                }
                             }
                         },3600000-((new Date).getTime()-(updateIntervalStartDate.getTime())))
                         return resolve()
@@ -4037,7 +4051,6 @@
                 })
                 requestIsRunning = false
             } else if(status==='backUpData') {
-                worker5.terminate()
                 if(exportIntervalIsActive){
                     if(await ((new Date).getTime()-(exportIntervalStartDate.getTime())>3600000)){// 1hr
                         dataStatusPrio = true
@@ -4048,7 +4061,10 @@
                         return backUpData(data?.saveBackupDate??true)
                     }
                 }
-                requestIsRunning = false
+                if(data.updateFinished){
+                    worker5.terminate()
+                    requestIsRunning = false
+                }
             } else {// Errors
                 worker5.terminate()
                 requestIsRunning = false
@@ -4193,15 +4209,18 @@
             worker7 = new Worker(`./js-css/worker/export-${version}.js`)
             // Android
             worker7.postMessage('android')
-            let _data = ""
             // Android
             worker7.onmessage = async({data}) => {
                 // Android
-                _data += data.chunk
-                // Android
-                if(data.done){
-                    // Android
-                    await exportJsonData(_data, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                const chunk = data.chunk
+                // 0 - start | 1 - ongoing | 2 - done
+                const status = data.status
+                if(status===0){
+                    await exportJsonData('', 0, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                } else if(status===1){
+                    await exportJsonData(chunk, 1, '')
+                } else if(status===2){
+                    await exportJsonData(chunk, 2, '')
                     // Android
                     if(saveBackUpDate){
                         exportIntervalStartDate = await new Date()
@@ -4667,8 +4686,8 @@
         return time.join(" ")
     }
     // Android
-    function exportJsonData(objStr, fileName) {
-        JSBridge.exportJSON(objStr, fileName);
+    function exportJsonData(chunk, status, fileName) {
+        JSBridge.exportJSON(chunk, status, fileName);
     }
     function copyToClipBoard(text) {
         JSBridge.copyToClipBoard(text);
