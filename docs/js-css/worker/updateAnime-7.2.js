@@ -42,6 +42,7 @@ async function mainWorker(){
         const maxAnimePerPage = 50
         const maxStaffPerPage = 25
         const savedAnimeIDs = g.savedAnimeIDs
+        const lastSavedUpdateTime = g.lastSavedUpdateTime
         g.newRequestCount = 0
         async function recallUPAN(page, staffPage, staffHasNextPage){
             $.ajax({
@@ -150,10 +151,30 @@ async function mainWorker(){
                     const responseHeaders = xhr.getAllResponseHeaders()
                     let resAnimeEntries = result?.data?.Page?.media ?? []
                     let hasNextPage = result?.data?.Page?.hasNextPage ?? (resAnimeEntries?.length??0)>0
-                    if(jsonIsEmpty(animeEntries)||!staffHasNextPage){
+                    let isLastNewUpdateTime;
+                    if(g.returnInfo==='updateAnime'){
+                        isLastNewUpdateTime = true
+                    }
+                    if(staffHasNextPage&&!jsonIsEmpty(animeEntries)){
                         for(let i=0; i<resAnimeEntries.length;i++){
                             let anime = resAnimeEntries[i]
-                            if(anime.id){
+                            if(anime?.id&&animeEntries[anime?.id]?.staff?.edges?.length&&anime?.staff?.edges?.length){
+                                animeEntries[anime.id].staff.edges = animeEntries[anime.id].staff.edges.concat(anime.staff.edges)
+                            }
+                            if(g.returnInfo==='updateAnime'){
+                                if(anime?.updatedAt){
+                                    if(anime.updatedAt>=lastSavedUpdateTime){
+                                        isLastNewUpdateTime = false
+                                    }
+                                } else {
+                                    isLastNewUpdateTime = false
+                                }
+                            }
+                        }
+                    } else {
+                        for(let i=0; i<resAnimeEntries.length;i++){
+                            let anime = resAnimeEntries[i]
+                            if(isaN(anime.id)){
                                 animeEntries[anime.id] = anime
                             }
                             if(g.returnInfo==='updateAnime'){
@@ -161,14 +182,12 @@ async function mainWorker(){
                                     if(anime.updatedAt>g.lastSavedUpdateTime){
                                         g.lastSavedUpdateTime = anime.updatedAt
                                     }
+                                    if(anime.updatedAt>=lastSavedUpdateTime){
+                                        isLastNewUpdateTime = false
+                                    }
+                                } else {
+                                    isLastNewUpdateTime = false
                                 }
-                            }
-                        }
-                    } else if(staffHasNextPage&&!jsonIsEmpty(animeEntries)){
-                        for(let i=0; i<resAnimeEntries.length;i++){
-                            let anime = resAnimeEntries[i]
-                            if(anime?.id&&animeEntries[anime?.id]?.staff?.edges?.length&&anime?.staff?.edges?.length){
-                                animeEntries[anime.id].staff.edges = animeEntries[anime.id].staff.edges.concat(anime.staff.edges)
                             }
                         }
                     }
@@ -203,7 +222,10 @@ async function mainWorker(){
                             }
                         }
                         saveJSON(g.savedAnimeEntries,"savedAnimeEntries")
-                        if(hasNextPage){
+                        // Non Sorted Query
+                        if((hasNextPage&&g.returnInfo!=='updateAnime')
+                        // Sorted Query
+                          ||(hasNextPage&&g.returnInfo==='updateAnime'&&!isLastNewUpdateTime)){
                             if(responseHeaders?.['x-ratelimit-remaining']??1>0){
                                 return recallUPAN(++page,1,staffHasNextPage)
                             } else {

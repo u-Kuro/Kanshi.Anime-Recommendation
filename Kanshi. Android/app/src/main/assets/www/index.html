@@ -1482,7 +1482,7 @@
     isRunning = false, requestIsRunning = false, isLoading = false, isScrolling = false, scrollTimeout,
     willAutoUpdate = false, updateStateText = [], checkFiltersFocus = [],
         // Helper
-    pageInits = true, versionUpdate = false, initStartTime,
+    pageInits = true, versionUpdate = false, initStartTime, alreadyNotified = false,
     pageLoadStartDate = new Date().getTime(), maxClientHeight, dataStatusPrio = false,
         // Jquery Elements
     htmlEl, bodyEl, usernameEl, pagerEl, menuContainerEl, pageNumberOptionsEl,
@@ -1786,6 +1786,7 @@
                                         if(worker4) worker4.terminate()
                                         if(worker5) worker5.terminate()
                                         if(worker7) worker7.terminate()
+                                        for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                                         requestIsRunning = false
                                         importBtnEl.removeClass('selected')
                                     } else if(data.doneImporting ?? false){
@@ -3329,7 +3330,8 @@
                             }
                         },60000)
                     }
-                } else if(userListCount = data.userListCount ?? false){
+                } else if(!alreadyNotified&&(userListCount = data.userListCount ?? false)){
+                    alreadyNotified = true
                     if(userListCount===0){
                         await Swal.fire({
                             heightAuto: false,
@@ -4203,6 +4205,7 @@
                     importBtnEl.removeClass('selected')
                     importFileEl.val(null)
                 }
+                for(let i=0;i<updateStateText.length;i++) clearTimeout(updateStateText[i])
                 requestIsRunning = false
             }
             if(worker7) worker7.terminate()
@@ -4222,6 +4225,7 @@
                 } else if(status===2){
                     await exportJsonData(chunk, 2, '')
                     // Android
+                    worker7.terminate()
                     if(saveBackUpDate){
                         exportIntervalStartDate = await new Date()
                         saveJSON(exportIntervalStartDate, "exportIntervalStartDate")
