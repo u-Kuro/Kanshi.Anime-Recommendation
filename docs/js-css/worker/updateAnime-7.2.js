@@ -21,7 +21,9 @@ self.onmessage = async({data}) => {
 async function preWorker(){
     return await new Promise(async(resolve)=>{
         g.savedAnimeEntries = await retrieveJSON('savedAnimeEntries') ?? {}
-        g.lastSavedUpdateTime = await retrieveJSON('lastSavedUpdateTime') ?? 0
+        if(g.returnInfo==='updateAnime'){
+            g.lastSavedUpdateTime = await retrieveJSON('lastSavedUpdateTime') ?? 0
+        }
         g.requestCount = await retrieveJSON('requestCount') ?? 4000
         if(g.returnInfo==='getAnime'){
             g.savedAnimeIDs = Object.keys(g.savedAnimeEntries??{}).reduce((result,e)=>{
@@ -40,7 +42,6 @@ async function mainWorker(){
         const maxAnimePerPage = 50
         const maxStaffPerPage = 25
         const savedAnimeIDs = g.savedAnimeIDs
-        const lastSavedUpdateTime = g.lastSavedUpdateTime
         g.newRequestCount = 0
         async function recallUPAN(page, staffPage, staffHasNextPage){
             $.ajax({
@@ -155,9 +156,11 @@ async function mainWorker(){
                             if(anime.id){
                                 animeEntries[anime.id] = anime
                             }
-                            if(anime?.updatedAt){
-                                if(anime.updatedAt>lastSavedUpdateTime){
-                                    g.lastSavedUpdateTime = anime.updatedAt
+                            if(g.returnInfo==='updateAnime'){
+                                if(anime?.updatedAt){
+                                    if(anime.updatedAt>g.lastSavedUpdateTime){
+                                        g.lastSavedUpdateTime = anime.updatedAt
+                                    }
                                 }
                             }
                         }
