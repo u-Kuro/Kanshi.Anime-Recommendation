@@ -39,7 +39,7 @@ async function preWorker(){
         // Alter Data
         g.isNewName = !equalsNCS(g.username,g.savedUsername)
         if(jsonIsEmpty(g.savedAnimeEntries)||g.lastSavedUpdateTime===0){
-            g.deepUpdateStartTime = new Date().getTime()
+            g.deepUpdateStartTime = new Date()
             g.savedUserEntries = []
         } else if(g.isNewName){
             g.savedUserEntries = []
