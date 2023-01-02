@@ -373,7 +373,6 @@ public class MainActivity extends AppCompatActivity  {
         @RequiresApi(api = Build.VERSION_CODES.R)
         @JavascriptInterface
         public void exportJSON(String chunk, int status, String fileName){
-            System.out.println(status+" "+new Boolean(writer==null).toString());
             if(status==0) {
                 if (!Environment.isExternalStorageManager()) {
                     new AlertDialog.Builder(MainActivity.this)
@@ -454,7 +453,6 @@ public class MainActivity extends AppCompatActivity  {
                 }
             } else if(status==2&&writer!=null){
                 try{
-                    System.out.println("WebConsole Yey");
                     writer.write(chunk);
                     writer.close();
                     Toast.makeText(getApplicationContext(), "Data was successfully Exported!", Toast.LENGTH_LONG).show();

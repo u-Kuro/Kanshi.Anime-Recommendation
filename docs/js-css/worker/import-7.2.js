@@ -1,3 +1,4 @@
+importScripts('../asyncJsonParser.js')
 let g = {}, reader, request, db;
 
 self.onmessage = async({data}) => {
@@ -25,13 +26,15 @@ async function mainWorker(){
             await new Promise(async(resolve,reject)=>{
                 try{
                     self.postMessage({status:'notify',fileLoaded:true})
-                    g.fileContent = await JSON.parse(reader.result);
+                    g.fileContent = await JSON.parseAsync(reader.result);
                 } catch(error) {
                     console.error(error)
                     return reject('Error: Invalid Backup File')
                 }
                 if(!g.fileContent.savedUsername){
                     return reject('Error: Backup file does not Have a Username')
+                } else if(!isJson(g.fileContent)||!g.fileContent){
+                    return reject('Error: Invalid Backup File')
                 } else {
                     self.postMessage({status:'notify',validFile:true})
                     return resolve()

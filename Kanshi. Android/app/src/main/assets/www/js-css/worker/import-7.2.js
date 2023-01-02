@@ -27,13 +27,14 @@ async function mainWorker(){
                 try{
                     self.postMessage({status:'notify',fileLoaded:true})
                     g.fileContent = await JSON.parseAsync(reader.result);
-                    console.log(g.fileContent)
                 } catch(error) {
                     console.error(error)
                     return reject('Error: Invalid Backup File')
                 }
                 if(!g.fileContent.savedUsername){
                     return reject('Error: Backup file does not Have a Username')
+                } else if(!isJson(g.fileContent)||!g.fileContent){
+                    return reject('Error: Invalid Backup File')
                 } else {
                     self.postMessage({status:'notify',validFile:true})
                     return resolve()

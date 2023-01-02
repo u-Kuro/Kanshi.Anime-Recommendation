@@ -4320,6 +4320,9 @@
             reverseButtons: true
         }).then((value)=>{
             if(value.isConfirmed){
+                if(menuContainerEl.css('display')!=='none'){
+                    menuContainerEl.fadeOut(250)
+                }
                 Update(true)
             }
         })

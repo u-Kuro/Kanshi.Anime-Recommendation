@@ -1,9 +1,13 @@
+importScripts('../jsonBufferize.js')
 let request, db;
 
 self.onmessage = async({data}) => {
     if(!db){ await IDBinit() }
+    if(data==='android'){
+        self.postMessage({status:0}) // Start Deleting Existing File
+    }
     const savedUsername = await retrieveJSON("savedUsername")
-    const backUpData = JSON.stringify({
+    const backUpData = {
         savedUsername: savedUsername,
         savedWarnAnime: await retrieveJSON("savedWarnAnime"),
         savedFilterAlgo: await retrieveJSON("savedFilterAlgo"),
@@ -18,21 +22,74 @@ self.onmessage = async({data}) => {
         requestCount: await retrieveJSON("requestCount"),
         lastSavedUpdateTime: await retrieveJSON("lastSavedUpdateTime"),
         backUpVersion: await retrieveJSON("backUpVersion")
-    })
+    }
     if(data==='android'){
-        const maxStrLength = 1000000
-        const postMessage = chunkString(backUpData, maxStrLength)
-        const pmLen = postMessage.length
-        for(let i=0; i<pmLen;i++){
-            setTimeout(()=>{
+        let chunkStr = '';
+        function stringify(x){
+            if(!validSize(chunkStr)){
                 self.postMessage({
-                    chunk: postMessage[i],
-                    done: i===pmLen-1
+                    chunk: chunkStr,
+                    status: 1
                 })
-            },i*50)
+                chunkStr = ''
+            }
+            let first = true;
+            if(isJson(x)){
+                chunkStr+='{';
+                for(let k in x){
+                    if(isJson(x[k])||x[k] instanceof Array){
+                        if(first) first = false;
+                        else {
+                            chunkStr+=','
+                        }
+                        chunkStr+='"'+k.replace(/"/g,"'")+'":'
+                        stringify(x[k])
+                    } else {
+                        if(first) first = false;
+                        else {
+                            chunkStr+=','
+                        }
+                        if(typeof x[k]==='string'){
+                            chunkStr+='"'+k.replace(/"/g,"'")+'":"'+x[k].replace(/"/g,"'")+'"'
+                        } else {
+                            chunkStr+='"'+k.replace(/"/g,"'")+'":'+(JSON.stringify(x[k])??'null')
+                        }
+                    }
+                }
+                chunkStr+='}'
+                return
+            } else if(x instanceof Array){
+                chunkStr+='[';
+                for(let v of x){
+                    if(isJson(v)||v instanceof Array){
+                        if(first) first = false;
+                        else {
+                            chunkStr+=','
+                        }
+                        stringify(v)
+                    } else {
+                        if(first) first = false;
+                        else {
+                            chunkStr+=','
+                        }
+                        if(typeof v==='string'){
+                            chunkStr+='"'+v.replace(/"/g,"'")+'"'
+                        } else {
+                            chunkStr+=(JSON.stringify(v)??'null')
+                        }
+                    }
+                }
+                chunkStr+=']';
+                return;
+            }
         }
+        stringify(backUpData)
+        self.postMessage({
+            chunk: chunkStr,
+            status: 2
+        })
     } else {
-        self.postMessage(URL.createObjectURL(new Blob([backUpData], { type:`text/json` })))
+        self.postMessage(URL.createObjectURL(new Blob([await JSON.bufferize(backUpData)], { type:'text/json' })))
     }
 }
 async function IDBinit(){
@@ -69,18 +126,16 @@ async function retrieveJSON(name) {
         }
     })
 }
-// Android
-function chunkString(str, chunkSize) {
-    const chunks = []
-    while (str) {
-        if (str.length < chunkSize) {
-            chunks.push(str);
-            break;
-        } else {
-            chunks.push(str.substr(0, chunkSize));
-            str = str.substr(chunkSize);
-        }
-    }
-    return chunks
+function isJson(j){
+    try{return(j?.constructor.name==='Object'&&`${j}`==='[object Object]')}
+    catch(e){return false}
 }
-// Android
+function validSize(obj, maxByteSize=1024*1024){
+    const constructor = obj?.constructor.name
+    if(!obj&&obj!==false){ return true; }
+    else if(typeof obj==="string"){ return obj.length<maxByteSize; }
+    else if(constructor==="Blob"){ return obj.size<maxByteSize }
+    else if(constructor==="Uint8Array"){ return new TextEncoder().encode(obj).length<maxByteSize; }
+    else if(obj instanceof Array){ return JSON.stringify(obj).replace(/[\[\]\,\"]/g,'').length<maxByteSize; }
+    else{ return new Blob([JSON.stringify(obj)]).size<maxByteSize; }
+}

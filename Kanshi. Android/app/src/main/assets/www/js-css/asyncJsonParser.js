@@ -1,4 +1,4 @@
-JSON.parseAsync = async(text, byte=1024*128) => {// 128kb
+JSON.parseAsync = async(text, byte = 1024*1024) => {
   function isValidJson(j){
    let construct = j?.constructor.name
    try{return((construct==='Object'&&`${j}`==='[object Object]')||j instanceof Array||construct==='Array')}

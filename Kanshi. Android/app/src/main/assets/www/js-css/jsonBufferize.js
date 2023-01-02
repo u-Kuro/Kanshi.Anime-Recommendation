@@ -9,7 +9,7 @@ JSON.bufferize = (obj) =>{
             return mergedArray.set(_new, _old.length);
         } else { return _new }
     }
-    function validSize(obj, maxByteSize = 1024*128){
+    function validSize(obj, maxByteSize = 1024*1024){
         const constructor = obj?.constructor.name
         if(!obj){ return true; }
         else if(constructor==="Uint8Array"){ return new TextEncoder().encode(obj).length<maxByteSize; }

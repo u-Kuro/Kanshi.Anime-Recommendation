@@ -89,8 +89,7 @@ self.onmessage = async({data}) => {
             status: 2
         })
     } else {
-        console.log(JSON.bufferize(backUpData).length)
-        // self.postMessage(URL.createObjectURL(new Blob([JSON.bufferize(backUpData)], { type:`application/octet-stream` })))
+        self.postMessage(URL.createObjectURL(new Blob([await JSON.bufferize(backUpData)], { type:'text/json' })))
     }
 }
 async function IDBinit(){
@@ -131,17 +130,12 @@ function isJson(j){
     try{return(j?.constructor.name==='Object'&&`${j}`==='[object Object]')}
     catch(e){return false}
 }
-function validSize(obj, maxByteSize = 1024*128){
+function validSize(obj, maxByteSize=1024*1024){
     const constructor = obj?.constructor.name
-    if(!obj){ return true; }
+    if(!obj&&obj!==false){ return true; }
+    else if(typeof obj==="string"){ return obj.length<maxByteSize; }
+    else if(constructor==="Blob"){ return obj.size<maxByteSize }
     else if(constructor==="Uint8Array"){ return new TextEncoder().encode(obj).length<maxByteSize; }
     else if(obj instanceof Array){ return JSON.stringify(obj).replace(/[\[\]\,\"]/g,'').length<maxByteSize; }
-    else if(constructor==="Blob"){ return obj.size<maxByteSize }
-    else if(typeof obj==="string"){ return obj.length<maxByteSize; }
     else{ return new Blob([JSON.stringify(obj)]).size<maxByteSize; }
 }
-// function mergeUint8Array(_old,_new){
-//     const mergedArray = new Uint8Array(_old.length + _new.length);
-//     mergedArray.set(_old);
-//     return mergedArray.set(_new, _old.length);
-// }

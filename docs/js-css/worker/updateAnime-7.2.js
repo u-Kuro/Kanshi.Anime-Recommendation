@@ -194,6 +194,7 @@ async function mainWorker(){
                             },60000)
                         }
                     } else {
+                        return resolve()
                         for(let id in animeEntries){
                             if(isaN(id)){
                                 g.savedAnimeEntries[id] = animeEntries[id]             

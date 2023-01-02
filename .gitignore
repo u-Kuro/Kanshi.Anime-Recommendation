@@ -1,4 +1,4 @@
-KanshiVI.jks
+*.jks
 .copy/
 Kanshi. Android/*.iml
 Kanshi. Android/.gradle
