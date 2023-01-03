@@ -370,9 +370,10 @@ public class MainActivity extends AppCompatActivity  {
     class JSBridge {
         @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
         BufferedWriter writer;
+        File tempFile;
         @RequiresApi(api = Build.VERSION_CODES.R)
         @JavascriptInterface
-        public void exportJSON(String chunk, int status, String fileName){
+        public void exportJSON(String chunk, int status, String fileName){         
             if(status==0) {
                 if (!Environment.isExternalStorageManager()) {
                     new AlertDialog.Builder(MainActivity.this)
@@ -397,28 +398,48 @@ public class MainActivity extends AppCompatActivity  {
                         }
                         if (directory.isDirectory() && dirIsCreated) {
                             try {
-                                //String date = new SimpleDateFormat("GyyMMddHH").format(new Date());
+                                String date = new SimpleDateFormat("GyyMMddHH").format(new Date());
                                 File file = new File(directoryPath + fileName);
                                 boolean fileIsDeleted;
                                 if (file.exists()) {
-                                    fileIsDeleted = file.delete();
-                                    //noinspection ResultOfMethodCallIgnored
-                                    file.createNewFile();
+                                    tempFile = new File(directoryPath + "tmp." + fileName);
+                                    boolean tempFileIsDeleted;
+                                    if (tempFile.exists()){ 
+                                        tempFileIsDeleted = tempFile.delete();
+                                        //noinspection ResultOfMethodCallIgnored
+                                        tempFile.createNewFile();
+                                    } else {
+                                        tempFileIsDeleted = true                                                                                         
+                                        //noinspection ResultOfMethodCallIgnored
+                                        tempFile.createNewFile();
+                                    }
+                                    if (tempFileIsDeleted) {
+                                        file.renameTo(tempFile);
+                                        fileIsDeleted = file.delete();
+                                        //noinspection ResultOfMethodCallIgnored
+                                        file.createNewFile();
+                                    } else {                                        
+                                        Toast.makeText(getApplicationContext(), "Error: Temporary data can't be re-written, switching to create an individual copy. You may delete the old one!", Toast.LENGTH_LONG).show();
+                                        String date = new SimpleDateFormat("GyyMMddHH").format(new Date());
+                                        file = new File(directoryPath + fileName.replace(".json",".") + date + ".json");
+                                        //noinspection ResultOfMethodCallIgnored
+                                        file.createNewFile();
+                                    }
                                 } else {
                                     //noinspection ResultOfMethodCallIgnored
-                                    file.createNewFile();
+                                    file.createNewFile();       
                                     fileIsDeleted = true;
                                 }
                                 if (fileIsDeleted) {
                                     writer = new BufferedWriter(new FileWriter(file, true));
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Data can't be re-written, Please delete it first!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "Error: Data can't be re-written, Please delete it first!", Toast.LENGTH_LONG).show();
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         } else if (!dirIsCreated) {
-                            Toast.makeText(getApplicationContext(), "Error: Directory can't be created!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Error: Directory can't be created! Please create it first!", Toast.LENGTH_LONG).show();
                         }
                     } else if (!Objects.equals(exportPath, "") && !new File(exportPath).isDirectory()) {
                         String[] tempExportPath = exportPath.split("/");
@@ -455,7 +476,17 @@ public class MainActivity extends AppCompatActivity  {
                 try{
                     writer.write(chunk);
                     writer.close();
-                    Toast.makeText(getApplicationContext(), "Data was successfully Exported!", Toast.LENGTH_LONG).show();
+                    boolean tempFileIsDeleted;
+                    if(tempFile!=null){
+                        tempFileIsDeleted = tempFile.delete();
+                    } else {
+                        tempFileIsDeleted = true;
+                    }
+                    if(tempFileIsDeleted){
+                        Toast.makeText(getApplicationContext(), "Data was successfully Exported!", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Data was successfully Exported, but temporary data can't be deleted!", Toast.LENGTH_LONG).show();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
