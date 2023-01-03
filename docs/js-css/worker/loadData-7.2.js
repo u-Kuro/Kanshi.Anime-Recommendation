@@ -2,7 +2,7 @@ importScripts( "../ajax.js" );
 let g = {}, request, db;
 const availableFilterTypes = {topscore:true,topscores:true,limittopscore:true,limittopscores:true,topwscore:true,limittopwscores:true,limittopwscore:true,topwscores:true,format:true,formats:true,genre:true,genres:true,tagcategory:true,tagcategories:true,tag:true,tags:true,studio:true,studios:true,staffrole:true,staffroles:true,staff:true,staffs:true,measure:true,measures:true,average:true,averages:true,includeunknownvariables:true,unknownvariables:true,unknownvariable:true,includeunknown:true,unknown:true,samplesizes:true,samplesize:true,samples:true,sample:true,size:true,minimumpopularity:true,minpopularity:true,popularity:true,minimumaveragescores:true,minimumaveragescore:true,minimumaverages:true,minimumaverage:true,minimumscores:true,minimumscore:true,averagescores:true,averagescore:true,scores:true,score:true,minaveragescores:true,minaveragescore:true,minaverages:true,minaverage:true,minscores:true,minscore:true,minimumavescores:true,minimumavescore:true,minimumave:true,avescores:true,avescore:true,limittopsimilarity:true,limittopsimilarities:true,limitsimilarity:true,limitsimilarities:true,topsimilarities:true,topsimilarity:true,similarities:true,similarity:true,userscore:true,userscores:true,wscore:true,wscores:true,year:true,years:true,season:true,seasons:true,userstatus:true,status:true,title:true,titles:true}
 const topSimilarities = {include:{},exclude:{}}
-const red='rgb(239,48,81)',orange='rgb(255,152,0)',purple='rgb(128, 0, 128)',iris='rgb(0,188,212)'
+const red='rgb(239,48,81)',orange='rgb(255,152,0)',purple='rgb(128, 0, 128)',cyan='rgb(0,188,212)'
 self.onmessage = async({data}) => {
     if(!db){ await IDBinit() }
     g = await data
@@ -757,7 +757,7 @@ async function mainWorker(){
                     <td class="anime-score ${g.savedTheme} ${hasWarn?'pointer':''}">
                         <div class="td-container ${g.savedTheme} ${hasWarn?'':'user-select-all'} copy-value" data-copy-value="${weightedScore||0}" title="${nFormatter((weightedScore||0),2)}">
                             ${hasWarn?`<div title="${warns.join(', ')}">
-                                <svg class="alert-icon ${g.savedTheme}" xmlns="http://www.w3.org/2000/svg" fill="${hasWarnR?red:hasWarnY?orange:hasWarnP?purple:hasWarnI?iris:''}" viewBox="0 0 512 512"><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zm32 224c0 17.7-14.3 32-32 32s-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32z"/></svg>
+                                <svg class="alert-icon ${g.savedTheme}" xmlns="http://www.w3.org/2000/svg" fill="${hasWarnR?red:hasWarnY?orange:hasWarnP?purple:hasWarnI?cyan:''}" viewBox="0 0 512 512"><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zm32 224c0 17.7-14.3 32-32 32s-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32z"/></svg>
                             </div>`:''}
                             ${weightedScore||0}
                         </div>
@@ -823,7 +823,7 @@ async function mainWorker(){
                     <td class="anime-score ${g.savedTheme} ${hasWarn?'pointer':''}">
                         <div class="td-container ${g.savedTheme} ${hasWarn?'':'user-select-all'} copy-value" data-copy-value="${weightedScore||0}" title="${nFormatter((weightedScore||0),2)}">
                             ${hasWarn?`<div title="${warns.join(', ')}">
-                                <svg class="alert-icon ${g.savedTheme}" xmlns="http://www.w3.org/2000/svg" fill="${hasWarnR?red:hasWarnY?orange:hasWarnP?purple:hasWarnI?iris:''}" viewBox="0 0 512 512"><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zm32 224c0 17.7-14.3 32-32 32s-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32z"/></svg>
+                                <svg class="alert-icon ${g.savedTheme}" xmlns="http://www.w3.org/2000/svg" fill="${hasWarnR?red:hasWarnY?orange:hasWarnP?purple:hasWarnI?cyan:''}" viewBox="0 0 512 512"><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zm32 224c0 17.7-14.3 32-32 32s-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32z"/></svg>
                             </div>`:''}
                             ${weightedScore||0}
                         </div>

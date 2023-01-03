@@ -4655,10 +4655,13 @@
     }
     // Browser
     async function downloadLink(url, fileName){
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        a.click();
+        return await new Promise((resolve)=>{
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            a.click();
+            resolve();
+        })
     }
     function showNotification(text) {
         if(document.hasFocus()) return

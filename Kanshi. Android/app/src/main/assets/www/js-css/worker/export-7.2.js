@@ -38,22 +38,14 @@ self.onmessage = async({data}) => {
                 chunkStr+='{';
                 for(let k in x){
                     if(isJson(x[k])||x[k] instanceof Array){
-                        if(first) first = false;
-                        else {
-                            chunkStr+=','
-                        }
-                        chunkStr+='"'+k.replace(/"/g,"'")+'":'
+                        if(first){ first = false }
+                        else { chunkStr+=',' }
+                        chunkStr+=JSON.stringify(k)+':'
                         stringify(x[k])
-                    } else {
-                        if(first) first = false;
-                        else {
-                            chunkStr+=','
-                        }
-                        if(typeof x[k]==='string'){
-                            chunkStr+='"'+k.replace(/"/g,"'")+'":"'+x[k].replace(/"/g,"'")+'"'
-                        } else {
-                            chunkStr+='"'+k.replace(/"/g,"'")+'":'+(JSON.stringify(x[k])??'null')
-                        }
+                    } else if(x[k]!==undefined) {
+                        if(first){ first = false }
+                        else{  chunkStr+=',' }
+                        chunkStr+=JSON.stringify(k)+':'+JSON.stringify(x[k])
                     }
                 }
                 chunkStr+='}'
@@ -62,21 +54,13 @@ self.onmessage = async({data}) => {
                 chunkStr+='[';
                 for(let v of x){
                     if(isJson(v)||v instanceof Array){
-                        if(first) first = false;
-                        else {
-                            chunkStr+=','
-                        }
+                        if(first){ first = false }
+                        else { chunkStr+=',' }
                         stringify(v)
                     } else {
-                        if(first) first = false;
-                        else {
-                            chunkStr+=','
-                        }
-                        if(typeof v==='string'){
-                            chunkStr+='"'+v.replace(/"/g,"'")+'"'
-                        } else {
-                            chunkStr+=(JSON.stringify(v)??'null')
-                        }
+                        if(first){ first = false }
+                        else { chunkStr+=',' }
+                        chunkStr+=JSON.stringify(v)
                     }
                 }
                 chunkStr+=']';

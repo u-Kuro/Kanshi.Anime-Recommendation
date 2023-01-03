@@ -1,11 +1,10 @@
+const encoder = new TextEncoder;
 JSON.bufferize = async(obj) =>{
     function _mergeUint8Array(_old,_new){
-        if(_old.length){
-            const mergedArray = new Uint8Array(_old.length + _new.length);
-            mergedArray.set(_old);
-            mergedArray.set(_new, _old.length);
-            return mergedArray;
-        } else { return _new }
+        const mergedArray = new Uint8Array(_old.length + _new.length);
+        mergedArray.set(_old);
+        mergedArray.set(_new, _old.length);
+        return mergedArray;
     }
     function _validSize(obj, maxByteSize=1024*1024){
         const constructor = obj?.constructor.name
@@ -17,7 +16,6 @@ JSON.bufferize = async(obj) =>{
         else{ return new Blob([JSON.stringify(obj)]).size<maxByteSize; }
     }
     return await new Promise((resolve) => {
-        const encoder = new TextEncoder;
         let chunkBuffer = new Uint8Array;
         let chunkStr = ''
         function isJson(j){
@@ -34,22 +32,14 @@ JSON.bufferize = async(obj) =>{
                 chunkStr+='{'
                 for(let k in x){
                     if(isJson(x[k])||x[k] instanceof Array){
-                        if(first) first = false;
-                        else {
-                            chunkStr+=', '
-                        }
-                        chunkStr+='"'+k.replace(/"/g,"'")+'":'
+                        if(first){ first = false }
+                        else { chunkStr+=',' }
+                        chunkStr+=JSON.stringify(k)+':'
                         _bufferize(x[k])
-                    } else {
-                        if(first) first = false;
-                        else {
-                            chunkStr+=', '
-                        }
-                        if(typeof x[k]==='string'){
-                            chunkStr+='"'+k.replace(/"/g,"'")+'":"'+x[k].replace(/"/g,"'")+'"'
-                        } else {
-                            chunkStr+='"'+k.replace(/"/g,"'")+'":'+(JSON.stringify(x[k])??'null')
-                        }
+                    } else if(x[k]!==undefined){
+                        if(first){ first = false }
+                        else { chunkStr+=',' }
+                        chunkStr+=JSON.stringify(k)+':'+JSON.stringify(x[k])
                     }
                 }
                 chunkStr+='}'
@@ -58,21 +48,13 @@ JSON.bufferize = async(obj) =>{
                 chunkStr+='['
                 for(let v of x){
                     if(isJson(v)||v instanceof Array){
-                        if(first) first = false;
-                        else {
-                            chunkStr+=','
-                        }
+                        if(first){ first = false }
+                        else { chunkStr+=',' }
                         _bufferize(v)
                     } else {
-                        if(first) first = false;
-                        else {
-                            chunkStr+=','
-                        }
-                        if(typeof v==='string'){
-                            chunkStr+='"'+v.replace(/"/g,"'")+'"'
-                        } else {
-                            chunkStr+=JSON.stringify(v)??'null'
-                        }
+                        if(first){ first = false }
+                        else { chunkStr+=',' }
+                        chunkStr+=JSON.stringify(v)
                     }
                 }
                 chunkStr+=']'
