@@ -4219,11 +4219,11 @@
                 // 0 - start | 1 - ongoing | 2 - done
                 const status = data.status
                 if(status===0){
-                    await exportJsonData('', 0, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
+                    await exportJsonData('', 0, '')
                 } else if(status===1){
                     await exportJsonData(chunk, 1, '')
                 } else if(status===2){
-                    await exportJsonData(chunk, 2, '')
+                    await exportJsonData(chunk, 2, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                     // Android
                     worker7.terminate()
                     if(saveBackUpDate){

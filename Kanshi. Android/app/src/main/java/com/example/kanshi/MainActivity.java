@@ -111,28 +111,7 @@ public class MainActivity extends AppCompatActivity  {
                                 prefsEdit.putString("savedExportPath", exportPath).apply();
                                 webView.loadUrl("javascript:" +
                                         "exportPathIsAvailable=true;" +
-                                        "try {\n" +
-                                        "    var write = db.transaction(\"MyObjectStore\",\"readwrite\").objectStore(\"MyObjectStore\").openCursor();\n" +
-                                        "    write.onsuccess = (event) => {\n" +
-                                        "        const cursor = event.target.result;\n" +
-                                        "        if (cursor) {\n" +
-                                        "            if(cursor.key==='exportPathIsAvailable'){\n" +
-                                        "                cursor.update(exportPathIsAvailable);\n" +
-                                        "            }\n" +
-                                        "            cursor.continue();\n" +
-                                        "        } else {\n" +
-                                        "            db.transaction(\"MyObjectStore\",\"readwrite\").objectStore(\"MyObjectStore\").add(exportPathIsAvailable, 'exportPathIsAvailable');\n" +
-                                        "        }\n" +
-                                        "    }\n" +
-                                        "} catch(ex) {\n" +
-                                        "    try{\n" +
-                                        "        console.error(ex);\n" +
-                                        "        db.transaction(\"MyObjectStore\",\"readwrite\").objectStore(\"MyObjectStore\").add(exportPathIsAvailable, 'exportPathIsAvailable');\n" +
-                                        "     } catch(ex2){\n" +
-                                        "        console.error(ex2);\n" +
-                                        "        localStorage.setItem('exportPathIsAvailable', JSON.stringify(exportPathIsAvailable));\n" +
-                                        "     }\n" +
-                                        "}"
+                                        "saveJSON(true,'exportPathIsAvailable')"
                                 );
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -285,7 +264,7 @@ public class MainActivity extends AppCompatActivity  {
                         }
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "My Notification")
                                 .setContentTitle("Update")
-                                .setContentText("An Error Occured, List was not been Updated!")
+                                .setContentText("An Error Occurred, List was not been Updated!")
                                 .setSmallIcon(R.drawable.img)
                                 .setAutoCancel(true)
                                 .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -368,8 +347,10 @@ public class MainActivity extends AppCompatActivity  {
     // Native and Webview Connection
     @SuppressWarnings("unused")
     class JSBridge {
-        @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
+        @SuppressWarnings({"unused"})
         BufferedWriter writer;
+        File tempFile;
+        String directoryPath;
         @RequiresApi(api = Build.VERSION_CODES.R)
         @JavascriptInterface
         public void exportJSON(String chunk, int status, String fileName){
@@ -387,7 +368,7 @@ public class MainActivity extends AppCompatActivity  {
                             .setNegativeButton("Later", null).show();
                 } else {
                     if (new File(exportPath).isDirectory()) {
-                        String directoryPath = exportPath + File.separator;
+                        directoryPath = exportPath + File.separator;
                         File directory = new File(directoryPath);
                         boolean dirIsCreated;
                         if (!directory.exists()) {
@@ -397,28 +378,39 @@ public class MainActivity extends AppCompatActivity  {
                         }
                         if (directory.isDirectory() && dirIsCreated) {
                             try {
-                                //String date = new SimpleDateFormat("GyyMMddHH").format(new Date());
-                                File file = new File(directoryPath + fileName);
-                                boolean fileIsDeleted;
-                                if (file.exists()) {
-                                    fileIsDeleted = file.delete();
+                                tempFile = new File(directoryPath + "tmp.json");
+                                boolean tempFileIsDeleted;
+                                if (tempFile.exists()) {
+                                    tempFileIsDeleted = tempFile.delete();
                                     //noinspection ResultOfMethodCallIgnored
-                                    file.createNewFile();
+                                    tempFile.createNewFile();
                                 } else {
                                     //noinspection ResultOfMethodCallIgnored
-                                    file.createNewFile();
-                                    fileIsDeleted = true;
+                                    tempFile.createNewFile();
+                                    tempFileIsDeleted = true;
                                 }
-                                if (fileIsDeleted) {
-                                    writer = new BufferedWriter(new FileWriter(file, true));
+                                if (tempFileIsDeleted) {
+                                    writer = new BufferedWriter(new FileWriter(tempFile, true));
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Data can't be re-written, Please delete it first!", Toast.LENGTH_LONG).show();
+                                    terminateExport();
+                                    Toast.makeText(getApplicationContext(), "Error: Temporary data can't be re-written, Please delete tmp.json first in the selected directory!", Toast.LENGTH_LONG).show();
                                 }
                             } catch (Exception e) {
+                                if(writer!=null){
+                                    try {
+                                        writer.close();
+                                    } catch (Exception e2) {
+                                        terminateExport();
+                                        Toast.makeText(getApplicationContext(), "Error: An exception occurred initializing the tmp.json file!", Toast.LENGTH_LONG).show();
+                                        e.printStackTrace();
+                                    }
+                                }
+                                terminateExport();
+                                Toast.makeText(getApplicationContext(), "Error: An exception occurred initializing the tmp.json file!", Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
                             }
                         } else if (!dirIsCreated) {
-                            Toast.makeText(getApplicationContext(), "Error: Directory can't be created!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Error: Directory can't be found! Please create it first!", Toast.LENGTH_LONG).show();
                         }
                     } else if (!Objects.equals(exportPath, "") && !new File(exportPath).isDirectory()) {
                         String[] tempExportPath = exportPath.split("/");
@@ -449,14 +441,53 @@ public class MainActivity extends AppCompatActivity  {
                 try{
                     writer.write(chunk);
                 } catch (Exception e) {
+                    try {
+                        writer.close();
+                    } catch (Exception e2) {
+                        terminateExport();
+                        Toast.makeText(getApplicationContext(), "Error: An exception occurred while writing to tmp.json file!", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+                    terminateExport();
+                    Toast.makeText(getApplicationContext(), "Error: An exception occurred while writing to tmp.json file!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             } else if(status==2&&writer!=null){
                 try{
                     writer.write(chunk);
                     writer.close();
-                    Toast.makeText(getApplicationContext(), "Data was successfully Exported!", Toast.LENGTH_LONG).show();
+                    File file = new File(directoryPath + fileName);
+                    boolean fileIsDeleted;
+                    if (file.exists()) {
+                        fileIsDeleted = file.delete();
+                        //noinspection ResultOfMethodCallIgnored
+                        file.createNewFile();
+                    } else {
+                        //noinspection ResultOfMethodCallIgnored
+                        file.createNewFile();
+                        fileIsDeleted = true;
+                    }
+                    if(fileIsDeleted){
+                        boolean renamed = tempFile.renameTo(file);
+                        if(renamed){
+                            Toast.makeText(getApplicationContext(), "Data was successfully Exported!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Error: Data file can't be renamed, your original backup is in tmp.json!", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        terminateExport();
+                        Toast.makeText(getApplicationContext(), "Error: Data can't be re-written, Please delete it first in the selected directory!", Toast.LENGTH_LONG).show();
+                    }
                 } catch (Exception e) {
+                    try {
+                        writer.close();
+                    } catch (Exception e2) {
+                        terminateExport();
+                        Toast.makeText(getApplicationContext(), "Error: An exception occurred in finalizing the exported file, your back-up was saved in tmp.json but is not guaranteed to work!", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+                    terminateExport();
+                    Toast.makeText(getApplicationContext(), "Error: An exception occurred in finalizing the exported file, your back-up was saved in tmp.json but is not guaranteed to work!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             }
@@ -467,6 +498,20 @@ public class MainActivity extends AppCompatActivity  {
             ClipData clip = ClipData.newPlainText("Copied Text", text);
             clipboard.setPrimaryClip(clip);
         }
+    }
+
+    public void terminateExport(){
+        webView.post(() -> webView.loadUrl("javascript:" +
+            "if(worker7){ worker7.terminate(); }" +
+            "dataStatusPrio = false;" +
+            "if(!requestIsRunning){" +
+            "    dataStatusSpinnerHomeEl.hide();" +
+            "    let localeStr = new Date(lastSavedUpdateTime*1000).toLocaleString();" +
+            "    dataStatusEl" +
+            "        .empty()" +
+            "        .append(`<span style=\"white-space:nowrap;\">${lastSavedUpdateTime?`<b class=\"${savedTheme}\" id=\"dataStatusUpdate\">⟳</b> Latest Anilist Update: `+localeStr:`<b class=\"${savedTheme}\" id=\"dataStatusUpdate\">⟳</b> Latest Anilist Update: N/A`}</span>`)" +
+            "        .attr(\"data-copy-value\",`Latest Anilist Update: ${lastSavedUpdateTime?localeStr:'N/A'}`);" +
+            "}"));
     }
 }
 
