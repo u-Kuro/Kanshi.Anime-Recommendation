@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity  {
         String directoryPath;
         @RequiresApi(api = Build.VERSION_CODES.R)
         @JavascriptInterface
-        public void exportJSON(String chunk, int status, String fileName){
+        public void exportJSON(String chunk, int status, String fileName){         
             if(status==0) {
                 if (!Environment.isExternalStorageManager()) {
                     new AlertDialog.Builder(MainActivity.this)
