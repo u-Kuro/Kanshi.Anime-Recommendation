@@ -1,6 +1,6 @@
 *.jks
-.copy/
 .extra/
+.copy/
 Kanshi. Android/*.iml
 Kanshi. Android/.gradle
 Kanshi. Android/local.properties
