@@ -106,7 +106,7 @@
    - Anilist with list of Scored Anime (A properly rated list for the account is Necessary for Analysis).
 
 ## Current Limitations
-   - The Android app only runs on WebView for the moment so update pauses when app is not visible.
+   - The Android app only runs on WebView so update pauses when app is not visible.
    - The Web page is static so updates may also stop when the tab is closed.
-   - Anilist Request Limits to 50 anime per page/request might slow down update when getting all available anime information.
-   - App Kanshi.VI can also be slow due to the Amount of Anime 10000+ being Loaded. (This can be temporarily fixed by adding filters i.e limit top wscore: N to limit visible anime)
+   - Anilist Rate Limits to 50 anime per page and 25 staff per page that takes that lot of request to finish before seeing some recommendation. To fix this individual updates for new anime, changes in anime status is included and transferred the long update at the end.
+   - Kanshi.VI lags upon rendering huge list (10000+ anime). This can be temporarily fixed by adding filters i.e limit top wscore: N to limit visible anime recommendation.
