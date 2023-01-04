@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity  {
     class JSBridge {
         @SuppressWarnings({"unused"})
         BufferedWriter writer;
-        File tempFile;
+        File tempFile, file;
         String directoryPath;
         @RequiresApi(api = Build.VERSION_CODES.R)
         @JavascriptInterface
@@ -379,15 +379,22 @@ public class MainActivity extends AppCompatActivity  {
                         if (directory.isDirectory() && dirIsCreated) {
                             try {
                                 tempFile = new File(directoryPath + "tmp.json");
+                                file = new File(directoryPath + fileName);
                                 boolean tempFileIsDeleted;
-                                if (tempFile.exists()) {
+                                if (tempFile.exists()&&!file.exists()) {
+                                    tempFileIsDeleted = tempFile.renameTo(file);
+                                    if(tempFileIsDeleted){
+                                        //noinspection ResultOfMethodCallIgnored
+                                        tempFile.createNewFile();
+                                    }
+                                } else if (tempFile.exists()) {
                                     tempFileIsDeleted = tempFile.delete();
                                     //noinspection ResultOfMethodCallIgnored
                                     tempFile.createNewFile();
                                 } else {
+                                    tempFileIsDeleted = true;
                                     //noinspection ResultOfMethodCallIgnored
                                     tempFile.createNewFile();
-                                    tempFileIsDeleted = true;
                                 }
                                 if (tempFileIsDeleted) {
                                     writer = new BufferedWriter(new FileWriter(tempFile, true));
@@ -456,7 +463,6 @@ public class MainActivity extends AppCompatActivity  {
                 try{
                     writer.write(chunk);
                     writer.close();
-                    File file = new File(directoryPath + fileName);
                     boolean fileIsDeleted;
                     if (file.exists()) {
                         fileIsDeleted = file.delete();
