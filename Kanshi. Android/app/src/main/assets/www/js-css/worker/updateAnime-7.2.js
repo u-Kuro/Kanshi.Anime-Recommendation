@@ -26,9 +26,9 @@ async function preWorker(){
         }
         g.requestCount = await retrieveJSON('requestCount') ?? 4000
         if(g.returnInfo==='getAnime'){
-            g.savedAnimeIDs = Object.keys(g.savedAnimeEntries??{}).reduce((result,e)=>{
-                if(isInt(e)){
-                    result.push(parseInt(e))
+            g.savedAnimeIDs = Object.keys(g.savedAnimeEntries??{}).reduce((result,id)=>{
+                if(isInt(id)){
+                    result.push(id)
                 }
                 return result
             },[]).join(",")
@@ -41,7 +41,6 @@ async function mainWorker(){
         const animeEntries = {}
         const maxAnimePerPage = 50
         const maxStaffPerPage = 25
-        const savedAnimeIDs = g.savedAnimeIDs
         const lastSavedUpdateTime = g.lastSavedUpdateTime
         g.newRequestCount = 0
         async function recallUPAN(page, staffPage, staffHasNextPage){
@@ -54,9 +53,8 @@ async function mainWorker(){
                     'Cache-Control': 'max-age=31536000, immutable'
                 },
                 dataType: 'json',
-                data: JSON.stringify({
-                    query: `
-                    {
+                data:  JSON.stringify({query:
+                    `{
                         Page(page: ${page}, perPage: ${maxAnimePerPage}) {
                             pageInfo{
                                 hasNextPage
@@ -66,7 +64,8 @@ async function mainWorker(){
                                 genre_not_in: ["Hentai"],
                                 format_not_in:[MUSIC,MANGA,NOVEL,ONE_SHOT],
                                 ${  g.returnInfo==='updateAnime'? 'sort: [UPDATED_AT_DESC]'
-                                    : `id_not_in: [${savedAnimeIDs}]`
+                                    : g.returnInfo==='getAnime'&&g.getUnfinishedAnime? `id_in: [${g.savedAnimeIDs}], status: FINISHED`
+                                    : `id_not_in: [${g.savedAnimeIDs}]`
                                 }
                                 ) {
                                 id
@@ -124,8 +123,7 @@ async function mainWorker(){
                                 }
                             }
                         }
-                    }
-                    `
+                    }`
                 }),
                 beforeSend: ()=> {
                     const usDn = g.requestCount>g.newRequestCount?g.requestCount:g.newRequestCount+1
@@ -139,7 +137,7 @@ async function mainWorker(){
                     }
                     message = `<span style="white-space:nowrap;">${message}⠀</span><span style="white-space:nowrap;"><progress style="vertical-align:revert;" value="${usUp}" max="${usDn}"></progress>⠀${loadPerc}%</span>`
                     self.postMessage({
-                        status:'notify', 
+                        status:'notify',
                         updateStatus: {
                             message: message,
                             info: 'normal'
@@ -201,7 +199,7 @@ async function mainWorker(){
                             const usUp = g.newRequestCount
                             const loadPerc = (Math.min(99.99,(usUp/usDn)*100)).toFixed(2)
                             self.postMessage({
-                                status:'notify', 
+                                status:'notify',
                                 updateStatus: {
                                     message: {
                                         loadPerc: loadPerc,
@@ -218,7 +216,7 @@ async function mainWorker(){
                     } else {
                         for(let id in animeEntries){
                             if(isaN(id)){
-                                g.savedAnimeEntries[id] = animeEntries[id]             
+                                g.savedAnimeEntries[id] = animeEntries[id]
                             }
                         }
                         saveJSON(g.savedAnimeEntries,"savedAnimeEntries")
@@ -233,7 +231,7 @@ async function mainWorker(){
                                 const usUp = g.newRequestCount
                                 const loadPerc = (Math.min(99.99,(usUp/usDn)*100)).toFixed(2)
                                 self.postMessage({
-                                    status:'notify', 
+                                    status:'notify',
                                     updateStatus: {
                                         message: {
                                             loadPerc: loadPerc,
@@ -256,12 +254,44 @@ async function mainWorker(){
                             }
                             message = `<span style="white-space:nowrap;">${message}⠀</span><span style="white-space:nowrap;"><progress value="100" max="100"></progress>⠀100%</span>`
                             self.postMessage({
-                                status:'notify', 
+                                status:'notify',
                                 updateStatus: {
                                     message: message,
                                     info: 'normal'
                                 }
                             })
+                            // Update Unfinished Anime, if there are any
+                            if(!g.getUnfinishedAnime&&g.returnInfo==='getAnime'){
+                                g.savedAnimeIDs = Object.values(g.savedAnimeEntries??{}).reduce((result,anime)=>{
+                                    let id = anime.id
+                                    if(isInt(id)&&!equalsNCS(anime.status,'finished')){
+                                        result.push(id)
+                                    }
+                                    return result
+                                },[]).join(",")
+                                g.getUnfinishedAnime = true
+                                if(responseHeaders?.['x-ratelimit-remaining']??1>0){
+                                    return recallUPAN(1,1,false)
+                                } else {
+                                    const usDn = g.requestCount>g.newRequestCount?g.requestCount:g.newRequestCount+1
+                                    const usUp = g.newRequestCount
+                                    const loadPerc = (Math.min(99.99,(usUp/usDn)*100)).toFixed(2)
+                                    self.postMessage({
+                                        status:'notify',
+                                        updateStatus: {
+                                            message: {
+                                                loadPerc: loadPerc,
+                                                usDn: usDn,
+                                                usUp: usUp
+                                            },
+                                            info: 'rateLimit'
+                                        }
+                                    })
+                                    setTimeout(()=>{
+                                        return recallUPAN(1,1,false)
+                                    },60000)
+                                }
+                            }
                             setTimeout(()=>{
                                 return resolve()
                             },100)
@@ -279,7 +309,7 @@ async function mainWorker(){
                             const usUp = g.newRequestCount
                             const loadPerc = (Math.min(99.99,(usUp/usDn)*100)).toFixed(2)
                             self.postMessage({
-                                status:'notify', 
+                                status:'notify',
                                 updateStatus: {
                                     message: {
                                         loadPerc: loadPerc,
@@ -305,7 +335,7 @@ async function mainWorker(){
 async function postWorker(){
     return await new Promise(async(resolve)=>{
         self.postMessage({
-            status:'update', 
+            status:'update',
             haveSavedAnimeEntries: !jsonIsEmpty(g.savedAnimeEntries)
         })
         if(g.returnInfo==='updateAnime'){
@@ -383,6 +413,15 @@ async function retrieveJSON(name) {
             return resolve()
         }
     })
+}
+function equalsNCS(str1, str2) {
+    let s1 = str1
+    let s2 = str2
+    if(typeof s1==="number") s1 = s1.toString()
+    if(typeof s2==="number") s2 = s2.toString()
+    if(typeof s1==="string") s1 = s1.trim().toLowerCase()
+    if(typeof s2==="string") s2 = s2.trim().toLowerCase()
+    return s1 === s2
 }
 function isaN(num){
     if(!num&&num!==0){return false}

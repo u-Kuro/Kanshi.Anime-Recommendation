@@ -58,27 +58,6 @@ async function preWorker(){
             if(g.anUpdate){
                 const maxAnimePerChunk = 500
                 async function recallAV(chunk){
-                    // Initialize Anilist Graphql Data
-                    let query = `
-                    {
-                        MediaListCollection(userName: "${g.username}",
-                        chunk:${chunk},
-                        perChunk:${maxAnimePerChunk},
-                        forceSingleCompletedList: true,
-                        type: ANIME) {
-                            hasNextChunk
-                            lists {
-                                entries {
-                                    status
-                                    media {
-                                        id
-                                    }
-                                    score
-                                }
-                            }
-                        }
-                    }
-                    `;
                     // Request API
                     $.ajax({
                         type: 'POST',
@@ -89,8 +68,25 @@ async function preWorker(){
                             'Cache-Control': 'max-age=31536000, immutable'
                         },
                         dataType: 'json',
-                        data: JSON.stringify({
-                            query: query
+                        data: JSON.stringify({query:
+                            `{
+                                MediaListCollection(userName: "${g.username}",
+                                chunk:${chunk},
+                                perChunk:${maxAnimePerChunk},
+                                forceSingleCompletedList: true,
+                                type: ANIME) {
+                                    hasNextChunk
+                                    lists {
+                                        entries {
+                                            status
+                                            media {
+                                                id
+                                            }
+                                            score
+                                        }
+                                    }
+                                }
+                            }`
                         }),
                         success: (result,status,xhr)=> {
                             const responseHeaders = xhr.getAllResponseHeaders()
