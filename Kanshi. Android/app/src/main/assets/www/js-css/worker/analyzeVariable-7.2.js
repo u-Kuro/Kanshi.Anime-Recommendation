@@ -56,6 +56,7 @@ async function preWorker(){
         }
         if(g.username&&!jsonIsEmpty(g.savedAnimeEntries)){
             if(g.anUpdate){
+                g.savedUserEntries = []
                 const maxAnimePerChunk = 500
                 async function recallAV(chunk){
                     // Request API

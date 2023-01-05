@@ -354,6 +354,7 @@ public class MainActivity extends AppCompatActivity  {
         @RequiresApi(api = Build.VERSION_CODES.R)
         @JavascriptInterface
         public void exportJSON(String chunk, int status, String fileName){
+            System.out.println(status+"|"+fileName+"|"+tempFile+"|"+file);
             if(status==0) {
                 if (!Environment.isExternalStorageManager()) {
                     new AlertDialog.Builder(MainActivity.this)

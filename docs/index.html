@@ -1456,7 +1456,7 @@
     // Declare Global Variables
         // Production Version
     const version = "7.2",
-          backUpVersion = 4.7;
+          backUpVersion = 4.8;
         // IndexDB
     let request, db,
         // Saved Data
@@ -2822,10 +2822,13 @@
             })
         }).then(async()=>{
             return await new Promise(async(resolve)=>{
-                if(savedBackUpVersion<backUpVersion){// Remove Old Saved Data Names
+                if(savedBackUpVersion<backUpVersion){
+                    // Remove Old Saved Data Names
                     deleteJSON('userListStatus')
                     deleteJSON('lastAnilistPage')
                     deleteJSON('savedUserList')
+                    // Restart User List
+                    deleteJSON('savedUserEntries')
                     return resolve()
                 } else {
                     return resolve()

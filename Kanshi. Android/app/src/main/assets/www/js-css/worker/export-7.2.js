@@ -1,11 +1,11 @@
-importScripts('../jsonBufferize.js')
+//importScripts('../jsonBufferize.js')
 let request, db;
 
 self.onmessage = async({data}) => {
     if(!db){ await IDBinit() }
-    if(data==='android'){
+//    if(data==='android'){
         self.postMessage({status:0}) // Start Deleting Existing File
-    }
+//    }
     const savedUsername = await retrieveJSON("savedUsername")
     const backUpData = {
         savedUsername: savedUsername,
@@ -23,7 +23,7 @@ self.onmessage = async({data}) => {
         lastSavedUpdateTime: await retrieveJSON("lastSavedUpdateTime"),
         backUpVersion: await retrieveJSON("backUpVersion")
     }
-    if(data==='android'){
+//    if(data==='android'){
         const byteSize = 1024*1024
         let chunkStr = ''
         function stringify(x){
@@ -84,12 +84,13 @@ self.onmessage = async({data}) => {
             chunk: chunkStr,
             status: 2
         })
-    } else {
-        let buffer = await JSON.bufferize(backUpData)
-        let blob = new Blob([buffer], { type:'text/json' })
-        let url = URL.createObjectURL(blob)
-        self.postMessage(url)
-    }
+//    }
+//    else {
+//        let buffer = await JSON.bufferize(backUpData)
+//        let blob = new Blob([buffer], { type:'text/json' })
+//        let url = URL.createObjectURL(blob)
+//        self.postMessage(url)
+//    }
 }
 async function IDBinit(){
     return await new Promise((resolve)=>{
