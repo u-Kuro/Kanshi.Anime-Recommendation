@@ -1,4 +1,4 @@
-JSON.parseAsync = async(text, byte = 1024*1024) => {
+JSON.parseAsync = async(text, byte=1024*1024) => {
   function isValidJson(j){
    let construct = j?.constructor.name
    try{return((construct==='Object'&&`${j}`==='[object Object]')||j instanceof Array||construct==='Array')}
@@ -23,8 +23,8 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
      this.value = _ogStr
      if(!isNaN(_pos)){
        this.position = _pos??0
-       let rpos = Math.max(0,_pos-2)
-       let strLen = Math.min(5,_ogStr.length)
+       let rpos = Math.max(0,_pos-5)
+       let strLen = Math.min(10,_ogStr.length)
        this.preview = _ogStr.substr(rpos,strLen)
        _char = _pos<_ogStr.length?_ogStr.charAt(_pos):'EOS'
        this.char = _char.match(/['"`]/gm)?` ${_char} `:_char
@@ -34,11 +34,11 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
      console.warn(new ParseError(`Data is already a valid JSON`))
      return ogStr
    } else if(!(typeof ogStr==='string'||ogStr instanceof String)){
-     console.log(new ParseError('Unexpected Type'))
+     console.error(new ParseError('Unexpected Type'))
      return null
    } else if(typeof ogStr==='string'||ogStr instanceof String){
      if(!ogStr.match(/^\s*[\[\{]/gm)){
-         console.log(new ParseError('Data is not a Valid JSON'))
+         console.error(new ParseError('Data is not a Valid JSON'))
          return null
      }
    }
@@ -146,7 +146,7 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
        numHolder += ch;
        seek();
      };
-     if(yielding instanceof ParseError){ 
+     if(yielding instanceof ParseError){
        return yielding
      }
      if (typeof parseStr === 'number' || typeof parseStr === 'boolean' ||
@@ -168,7 +168,7 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
          yield;
        }
        if (keyN !== 1){
-         if(yielding instanceof ParseError){ 
+         if(yielding instanceof ParseError){
            return yielding
          }
          seek();
@@ -199,7 +199,7 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
              }
              keyN = 1;
              key = yield *parseYield();
-             if(yielding instanceof ParseError){ 
+             if(yielding instanceof ParseError){
                return yielding
              }
              if(parseStr.charAt(0)!==':'){
@@ -208,7 +208,7 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
              keyN = 0;
              seek();
              returnObj[key] = yield *parseYield();
-             if(yielding instanceof ParseError){ 
+             if(yielding instanceof ParseError){
                return yielding
              }
              seek();
@@ -223,7 +223,7 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
            }
            return(yielding = new ParseError('Unmatched Brace',position()));
          case '[':
-           if(yielding instanceof ParseError){ 
+           if(yielding instanceof ParseError){
              return yielding
            }
            seek();
@@ -235,7 +235,7 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
            unseek();
            do {
              v = yield *parseYield();
-             if(yielding instanceof ParseError){ 
+             if(yielding instanceof ParseError){
                return yielding
            }
              seek();
@@ -249,7 +249,7 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
            return(yielding = new ParseError('Umatched Bracket',position()));
          case '"':
            _quote = '"'
-           if(yielding instanceof ParseError){ 
+           if(yielding instanceof ParseError){
              return yielding
            }
            parseStr = parseStr.slice(at - 1);
@@ -268,7 +268,7 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
            }
          case "'":
            _quote = "'"
-           if(yielding instanceof ParseError){ 
+           if(yielding instanceof ParseError){
              return yielding
            }
            parseStr = parseStr.slice(at - 1);
@@ -287,7 +287,7 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
            }
          case '`':
            _quote = "`"
-           if(yielding instanceof ParseError){ 
+           if(yielding instanceof ParseError){
              return yielding
            }
            parseStr = parseStr.slice(at - 1);
@@ -348,7 +348,7 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
              return(yielding = new ParseError('Unexpected Token',position()));
            }
          case 'f':
-           if(yielding instanceof ParseError){ 
+           if(yielding instanceof ParseError){
              return yielding
            }
            word = wordCheck();
@@ -361,7 +361,7 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
              return(yielding = new ParseError('Unexpected Token',position()));
            }
          case 'n':
-           if(yielding instanceof ParseError){ 
+           if(yielding instanceof ParseError){
              return yielding
            }
            word = wordCheck();
@@ -403,17 +403,17 @@ JSON.parseAsync = async(text, byte = 1024*1024) => {
            if(parseStr.length<=0){
              resolve(yielding);
            } else {
-             console.log(new ParseError('Unexpected non-whitespace character after JSON',position()))
+             console.error(new ParseError('Unexpected non-whitespace character after JSON',position()))
              resolve(null);
            }
          } else if(yielding instanceof ParseError) {
-           console.log(yielding);
+           console.error(yielding);
            resolve(null);
          } else if(typeof yielding==='string'||yielding instanceof String){
-           console.log(new ParseError('Unexpected Type',null,yielding))
+           console.error(new ParseError('Unexpected Type',null,yielding))
            resolve(null);
          } else {
-           console.log(new ParseError('Unexpected Type',yielding,null,yielding?.constructor.name))
+           console.error(new ParseError('Unexpected Type',yielding,null,yielding?.constructor.name))
            resolve(null);
          }
        } else {

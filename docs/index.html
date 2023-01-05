@@ -1485,7 +1485,7 @@
         // Workers
     worker0, worker1, worker2, worker3, worker4, worker5, worker6, worker7, worker8
         // Browser
-    ,notificationGranted = false;
+    , pastExportUrl, notificationGranted = false;
         // Browser
 
     window.onload = async () => {
@@ -4189,7 +4189,6 @@
                 // Browser
                 await downloadLink(data, `Kanshi.${savedUsername.toLowerCase()||"Backup"}.json`)
                 // Browser
-                worker7.terminate()
                 if(saveBackUpDate){
                     exportIntervalStartDate = await new Date()
                     saveJSON(exportIntervalStartDate, "exportIntervalStartDate")
@@ -4654,14 +4653,16 @@
         return time.join(" ")
     }
     // Browser
-    async function downloadLink(url, fileName){
-        return await new Promise((resolve)=>{
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            a.click();
-            resolve();
-        })
+    async function downloadLink(url, fileName) {
+        if (pastExportUrl) {
+            setTimeout(() => URL.revokeObjectURL(pastExportUrl), 0)
+        }
+        pastExportUrl = url
+        const a = document.createElement('a')
+        a.href = url
+        a.download = fileName
+        a.click()
+        return
     }
     function showNotification(text) {
         if(document.hasFocus()) return

@@ -24,9 +24,10 @@ self.onmessage = async({data}) => {
         backUpVersion: await retrieveJSON("backUpVersion")
     }
     if(data==='android'){
-        let chunkStr = '';
+        const byteSize = 1024*1024
+        let chunkStr = ''
         function stringify(x){
-            if(!validSize(chunkStr)){
+            if(chunkStr.length>=byteSize){
                 self.postMessage({
                     chunk: chunkStr,
                     status: 1
@@ -35,36 +36,47 @@ self.onmessage = async({data}) => {
             }
             let first = true;
             if(isJson(x)){
-                chunkStr+='{';
-                for(let k in x){
-                    if(isJson(x[k])||x[k] instanceof Array){
-                        if(first){ first = false }
-                        else { chunkStr+=',' }
-                        chunkStr+=JSON.stringify(k)+':'
-                        stringify(x[k])
-                    } else if(x[k]!==undefined) {
-                        if(first){ first = false }
-                        else{  chunkStr+=',' }
-                        chunkStr+=JSON.stringify(k)+':'+JSON.stringify(x[k])
+                chunkStr+='{'
+                for(const [k,v] of Object.entries(x)){
+                    if(v===undefined) continue
+                    if(isJson(v)||v instanceof Array){
+                        if(first){
+                            first = false
+                            chunkStr+=`${JSON.stringify(k)}:`
+                        } else {
+                            chunkStr+=`,${JSON.stringify(k)}:`
+                        }
+                        stringify(v)
+                    } else {
+                        if(first){
+                            first = false
+                            chunkStr+=`${JSON.stringify(k)}:${JSON.stringify(v)}`
+                        } else{
+                            chunkStr+=`,${JSON.stringify(k)}:${JSON.stringify(v)}`
+                        }
                     }
                 }
                 chunkStr+='}'
                 return
             } else if(x instanceof Array){
                 chunkStr+='[';
-                for(let v of x){
+                for(let i=0;i<x.length;i++){
+                    let v = x[i]
                     if(isJson(v)||v instanceof Array){
                         if(first){ first = false }
                         else { chunkStr+=',' }
                         stringify(v)
                     } else {
-                        if(first){ first = false }
-                        else { chunkStr+=',' }
-                        chunkStr+=JSON.stringify(v)
+                        if(first){
+                            first = false
+                            chunkStr+=JSON.stringify(v)
+                        } else {
+                            chunkStr+=`,${JSON.stringify(v)}`
+                        }
                     }
                 }
-                chunkStr+=']';
-                return;
+                chunkStr+=']'
+                return
             }
         }
         stringify(backUpData)
@@ -73,7 +85,10 @@ self.onmessage = async({data}) => {
             status: 2
         })
     } else {
-        self.postMessage(URL.createObjectURL(new Blob([await JSON.bufferize(backUpData)], { type:'text/json' })))
+        let buffer = await JSON.bufferize(backUpData)
+        let blob = new Blob([buffer], { type:'text/json' })
+        let url = URL.createObjectURL(blob)
+        self.postMessage(url)
     }
 }
 async function IDBinit(){
@@ -113,13 +128,4 @@ async function retrieveJSON(name) {
 function isJson(j){
     try{return(j?.constructor.name==='Object'&&`${j}`==='[object Object]')}
     catch(e){return false}
-}
-function validSize(obj, maxByteSize=1024*1024){
-    const constructor = obj?.constructor.name
-    if(!obj&&obj!==false){ return true; }
-    else if(typeof obj==="string"){ return obj.length<maxByteSize; }
-    else if(constructor==="Blob"){ return obj.size<maxByteSize }
-    else if(constructor==="Uint8Array"){ return new TextEncoder().encode(obj).length<maxByteSize; }
-    else if(obj instanceof Array){ return JSON.stringify(obj).replace(/[\[\]\,\"]/g,'').length<maxByteSize; }
-    else{ return new Blob([JSON.stringify(obj)]).size<maxByteSize; }
 }

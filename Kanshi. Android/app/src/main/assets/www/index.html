@@ -4224,8 +4224,8 @@
                     await exportJsonData(chunk, 1, '')
                 } else if(status===2){
                     await exportJsonData(chunk, 2, '')
-                    // Android
                     worker7.terminate()
+                    // Android
                     if(saveBackUpDate){
                         exportIntervalStartDate = await new Date()
                         saveJSON(exportIntervalStartDate, "exportIntervalStartDate")

@@ -23,8 +23,8 @@ JSON.parseAsync = async(text, byte=1024*1024) => {
      this.value = _ogStr
      if(!isNaN(_pos)){
        this.position = _pos??0
-       let rpos = Math.max(0,_pos-2)
-       let strLen = Math.min(5,_ogStr.length)
+       let rpos = Math.max(0,_pos-5)
+       let strLen = Math.min(10,_ogStr.length)
        this.preview = _ogStr.substr(rpos,strLen)
        _char = _pos<_ogStr.length?_ogStr.charAt(_pos):'EOS'
        this.char = _char.match(/['"`]/gm)?` ${_char} `:_char
