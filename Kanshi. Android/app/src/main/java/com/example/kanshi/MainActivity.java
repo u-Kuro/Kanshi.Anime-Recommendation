@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity  {
                         managerCompat.notify(1, builder.build());
                     }
                 }
-                Log.d("WebConsole",message+"-"+lineNumber);
+                //Log.d("WebConsole",message+"-"+lineNumber);
                 return true;
             }
         });
@@ -354,7 +354,6 @@ public class MainActivity extends AppCompatActivity  {
         @RequiresApi(api = Build.VERSION_CODES.R)
         @JavascriptInterface
         public void exportJSON(String chunk, int status, String fileName){
-            System.out.println(status+"|"+fileName+"|"+tempFile+"|"+file);
             if(status==0) {
                 if (!Environment.isExternalStorageManager()) {
                     new AlertDialog.Builder(MainActivity.this)

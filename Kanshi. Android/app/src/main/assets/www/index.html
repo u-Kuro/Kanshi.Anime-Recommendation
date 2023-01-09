@@ -441,7 +441,9 @@
                 background-color: #e7e7e7 !important;
             }
             .user-select-all{
-                user-select: all !important;
+                /* Android */
+                user-select: none !important;
+                /* Android */
             }
             #animeRecommendationList > .item > td {
                 vertical-align: middle !important;
@@ -1630,12 +1632,10 @@
                                 savedTableStatus = await "Hidden"
                                 await saveJSON(savedTableStatus,"savedTableStatus")
                                 let filterInput = await $("#flex0")
-                                if(filterInput.length){
-                                    await filterInput.val("hidden")
-                                    let e = await $.Event("keyup",{keyCode:13})
-                                    await filterInput.trigger(e)
-                                    await filterInput.val("")
-                                }
+                                const currentFIValue = filterInput.val()
+                                await filterInput.val("hidden")
+                                await filterInput.trigger(await $.Event("keyup",{keyCode:13}))
+                                await filterInput.val(currentFIValue)
                                 hiddenUnhiddenBtnEl.text("Hidden")
                                 await LoadData()
                                 pageNumberOptionsEl.find("option:selected").text(`${pageNumberOptionsEl.val()} of ${animeTableEl[0]?.config?.pager?.totalPages||1}`).prop('selected', true)
@@ -1832,7 +1832,6 @@
                                     } else if(data.savedWarnAnime ?? false) {
                                         new Promise(async(resolve)=>{
                                             savedWarnAnime = await data.savedWarnAnime
-                                            await warnAnimeContainerEl.css({visibility:"hidden"}).show()
                                             // Remove Current Filters
                                             let warnInfo = await $("ul.flex1>.value")
                                             await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
@@ -1843,18 +1842,16 @@
                                             return resolve()
                                         }).then(async()=>{
                                             let warnAnimeInput = await $("#flex1")
+                                            const currentWAValue = warnAnimeInput.val()
                                             for(let i=0; i<savedWarnAnime.length; i++) {
                                                 await warnAnimeInput.val(savedWarnAnime[i])
-                                                let e = await $.Event("keyup",{keyCode:13})
-                                                await warnAnimeInput.trigger(e)
-                                                await warnAnimeInput.val("")
+                                                await warnAnimeInput.trigger(await $.Event("keyup",{keyCode:13}))
                                             }
-                                            await warnAnimeContainerEl.css({visibility:"visible"}).hide()
+                                            await warnAnimeInput.val(currentWAValue)
                                         })
                                     } else if(data.savedFilterAlgo ?? false) {
                                         new Promise(async(resolve)=>{
                                             savedFilterAlgo = await data.savedFilterAlgo
-                                            await filterAlgoContainerEl.css({visibility:"hidden"}).show()
                                             // Remove Current Filters
                                             let filterInfo = await $("ul.flex2>.value")
                                             await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
@@ -1866,13 +1863,12 @@
                                         }).then(async()=>{
                                             // Reload Filters
                                             let filterAlgoInput = await $("#flex2")
+                                            const currentFAValue = filterAlgoInput.val()
                                             for(let i=0; i<savedFilterAlgo.length; i++){
                                                 await filterAlgoInput.val(savedFilterAlgo[i])
-                                                let e = await $.Event("keyup",{keyCode:13})
-                                                await filterAlgoInput.trigger(e)
-                                                await filterAlgoInput.val("")
+                                                await filterAlgoInput.trigger(await $.Event("keyup",{keyCode:13}))
                                             }
-                                            await filterAlgoContainerEl.css({visibility:"visible"}).hide()
+                                            filterAlgoInput.val(currentFAValue)
                                         })
                                     }
                                 } else if(status==='LoadData'){
@@ -2951,26 +2947,20 @@
                 let filterInput = await $("#flex0")
                 for(let i=0; i<savedFilters.length; i++) {
                     await filterInput.val(savedFilters[i])
-                    let e = await $.Event("keyup",{keyCode:13})
-                    await filterInput.trigger(e)
-                    await filterInput.val("")
+                    await filterInput.trigger(await $.Event("keyup",{keyCode:13}))
                 }
                     // Algorithm Filters
                 let filterAlgoInput = await $("#flex2")
                 for(let i=0; i<savedFilterAlgo.length; i++) {
                     await filterAlgoInput.val(savedFilterAlgo[i])
-                    let e = await $.Event("keyup",{keyCode:13})
-                    await filterAlgoInput.trigger(e)
-                    await filterAlgoInput.val("")
+                    await filterAlgoInput.trigger(await $.Event("keyup",{keyCode:13}))
                 }
                 await filterAlgoContainerEl.css({visibility:"visible"}).hide()
                     // Warn Content Identifier
                 let warnAnimeInput = await $("#flex1")
                 for(let i=0; i<savedWarnAnime.length; i++) {
                     await warnAnimeInput.val(savedWarnAnime[i])
-                    let e = await $.Event("keyup",{keyCode:13})
-                    await warnAnimeInput.trigger(e)
-                    await warnAnimeInput.val("")
+                    await warnAnimeInput.trigger(await $.Event("keyup",{keyCode:13}))
                 }
                 await warnAnimeContainerEl.css({visibility:"visible"}).hide()
 
@@ -3875,20 +3865,14 @@
                         saveJSON(updateIntervalStartDate,"updateIntervalStartDate")
                         willAutoUpdate = false
                     }
-                    let filtersHasFocus = false
-                    // Check input Focus before updating
-                    if( $("#flex0").is(":focus")
-                        ||$("#flex1").is(":focus")
-                        ||$("#flex2").is(":focus")
-                        ||warnAnimeContainerEl.css("display")!=="none"
-                        ||filterAlgoContainerEl.css("display")!=="none"
-                    ){
-                        filtersHasFocus = true
-                    }
                     console.log("WebtoApp: List is Updated")
                     if(!swal.isVisible()
                         &&!usernameEl.is(":focus")
-                        &&!filtersHasFocus
+                        &&!$("#flex0").is(":focus")
+                        &&!$("#flex1").is(":focus")
+                        &&!$("#flex2").is(":focus")
+                        &&warnAnimeContainerEl.css("display")==="none"
+                        &&filterAlgoContainerEl.css("display")==="none"
                     ){
                         Swal.fire({
                             heightAuto: false,
@@ -3900,110 +3884,92 @@
                 }
             } else if(status==='update') {
                 if(data.savedFilterOptionsJson ?? false) {
-                    let filtersHasFocus = false
-                    // Check input Focus before updating
-                    if( $("#flex0").is(":focus")
-                        ||$("#flex1").is(":focus")
-                        ||$("#flex2").is(":focus")
-                        ||warnAnimeContainerEl.css("display")!=="none"
-                        ||filterAlgoContainerEl.css("display")!=="none"
-                    ){
-                        filtersHasFocus = true
-                    }
                     // This Remove Current Filters in DOM so Check First
                     for(let i=0;i<checkFiltersFocus.length;i++) clearInterval(checkFiltersFocus[i])
                     let updateFiltersValid = setInterval(async()=>{
                         if( !$("#flex0").is(":focus")
                             &&!$("#flex1").is(":focus")
                             &&!$("#flex2").is(":focus")
-                            &&warnAnimeContainerEl.css("display")==="none"
-                            &&filterAlgoContainerEl.css("display")==="none"
                         ){
                             await clearInterval(updateFiltersValid)
+                            checkFiltersFocus.length = 0
                             // Get Current Value
-                            let currentInputValue = await $("#flex0").val()
-                            checkFiltersFocus = []
+                            const currentTFValue = await $("#flex0").val()
+                            const currentWAValue = await $("#flex1").val()
+                            const currentAFValue = await $("#flex2").val()
+                            const currentTFFilters = await $("ul.flex0>.value>.text").toArray()?.map((e)=>e.textContent)?? ["limit top wscore: 100", "!top similarities: !staffs", "!user status: !completed", "!user status: !dropped"]
+                            const currentWAFilters = await $("ul.flex1>.value>.text").toArray()?.map((e)=>e.textContent)?? [ "!genre: !ecchi","!tag: !boys' love","tag: cgi","!tag: !ero guro","!tag: !female harem",
+                                                                                                                             "tag: full cgi","!tag: !male harem","!tag: !mixed gender harem",
+                                                                                                                             "!tag: !nudity","!tag: !slavery","!tag: !suicide","!tag: !yuri","!tag: !netorare", "!tag: !rape"
+                                                                                                                           ]
+                            const currentAFFilters = await $("ul.flex2>.value>.text").toArray()?.map((e)=>e.textContent)?? ["minimum sample size: 2","include unknown variables: false"]
                             // Update
                             await $(".flexdatalist").flexdatalist({
                                 data: data.savedFilterOptionsJson
                             })
+                            const filterInput = await $("#flex0")
+                            const filterUL = await $("ul.flex0")
+                            const warnAnimeInput = await $("#flex1")
+                            const warnAnimeUL = await $("ul.flex1")
+                            const filterAlgoInput = await $("#flex2")
+                            const filterAlgoUL = await $("ul.flex2")
                             // Reload Saved Table Filters
                             await new Promise(async(resolve)=>{
-                                let filters = await $("ul.flex0 > .value")
+                                let filters = await filterUL.children(".value")
                                 await filters.children(".text").toArray()?.forEach(async(e,idx)=>{
-                                    if(e?.textContent?.toLowerCase()==="hidden"){
-                                        await $("#flex0").prop("disabled", true)
-                                        await filters.eq(idx).children(".fdl-remove").trigger("click")
-                                        await $("#flex0").prop("disabled", false)
-                                    }
+                                    await filterInput.prop("disabled", true)
+                                    await filters.eq(idx).children(".fdl-remove").trigger("click")
+                                    await filterInput.prop("disabled", false)
                                 })
                                 return resolve()
                             }).then(async()=>{
-                                let filterInput = await $("#flex0")
-                                for(let i=0; i<savedFilters.length; i++) {
-                                    await filterInput.val(savedFilters[i])
-                                    let e = await $.Event("keyup",{keyCode:13})
-                                    await filterInput.trigger(e)
-                                    await filterInput.val("")
+                                for(let i=0; i<currentTFFilters.length; i++) {
+                                    await filterInput.val(currentTFFilters[i])
+                                    await filterInput.trigger(await $.Event("keyup",{keyCode:13}))
                                 }
-                                if(typeof currentInputValue==="string"){
-                                    await filterInput.val(currentInputValue)
-                                }
-                                let flex0El = await $("ul.flex0")
-                                await flex0El.animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
-                                await flex0El[0]?.scroll(0, flex0El.outerHeight())
-                                return
-                            })
-                            // Reload Saved Algorithm Filters
-                            if(filterAlgoContainerEl.css("display")!=="none"){
-                                await filterAlgoContainerEl.css({visibility:"hidden"}).show()
-                            }
-                            await new Promise(async(resolve)=>{
-                                let filterInfo = await $("ul.flex2 > .value")
-                                await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
-                                    await $("#flex2").prop("disabled", true)
-                                    await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                    await $("#flex2").prop("disabled", false)
-                                })
-                                return resolve()
-                            }).then(async()=>{
-                                let filterAlgoInput = await $("#flex2")
-                                for(let i=0; i<savedFilterAlgo.length; i++) {
-                                    await filterAlgoInput.val(savedFilterAlgo[i])
-                                    let e = await $.Event("keyup",{keyCode:13})
-                                    await filterAlgoInput.trigger(e)
-                                    await filterAlgoInput.val("")
-                                }
-                                await filterAlgoContainerEl.css({visibility:"visible"}).hide()
-                                let flex2El = await $("ul.flex2")
-                                await flex2El.animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
-                                await flex2El[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                                await filterInput.val(currentTFValue)
+                                await filterUL.animate({scrollTop: Number.MAX_SAFE_INTEGER},1)
+                                setTimeout(()=>{
+                                    filterUL[0]?.scroll(0, filterUL.outerHeight())
+                                },1)
                                 return
                             })
                             // Reload Warn Anime Contents
-                            if(warnAnimeContainerEl.css("display")!=="none"){
-                                await warnAnimeContainerEl.css({visibility:"hidden"}).show()
-                            }
                             await new Promise(async(resolve)=>{
-                                let warnInfo = await $("ul.flex1>.value")
+                                let warnInfo = await warnAnimeUL.children(".value")
                                 await warnInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
-                                    await $("#flex1").prop("disabled", true)
+                                    await warnAnimeInput.prop("disabled", true)
                                     await warnInfo.eq(idx).children(".fdl-remove").trigger("click")
-                                    await $("#flex1").prop("disabled", false)
+                                    await warnAnimeInput.prop("disabled", false)
                                 })
                                 return resolve()
                             }).then(async()=>{
-                                let warnAnimeInput = await $("#flex1")
-                                for(let i=0; i<savedWarnAnime.length; i++) {
-                                    await warnAnimeInput.val(savedWarnAnime[i])
-                                    let e = await $.Event("keyup",{keyCode:13})
-                                    await warnAnimeInput.trigger(e)
-                                    await warnAnimeInput.val("")
+                                for(let i=0; i<currentWAFilters.length; i++) {
+                                    await warnAnimeInput.val(currentWAFilters[i])
+                                    await warnAnimeInput.trigger(await $.Event("keyup",{keyCode:13}))
                                 }
-                                await warnAnimeContainerEl.css({visibility:"visible"}).hide()
-                                let flex1El = await $("ul.flex1")
-                                await flex1El.animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
-                                await flex1El[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                                await warnAnimeInput.val(currentWAValue)
+                                await warnAnimeUL.animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
+                                await warnAnimeUL[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
+                                return
+                            })
+                            // Reload Saved Algorithm Filters
+                            await new Promise(async(resolve)=>{
+                                let filterInfo = await filterAlgoUL.children(".value")
+                                await filterInfo.children(".text").toArray()?.forEach(async(e,idx)=>{
+                                    await filterAlgoInput.prop("disabled", true)
+                                    await filterInfo.eq(idx).children(".fdl-remove").trigger("click")
+                                    await filterAlgoInput.prop("disabled", false)
+                                })
+                                return resolve()
+                            }).then(async()=>{
+                                for(let i=0; i<currentAFFilters.length; i++) {
+                                    await filterAlgoInput.val(currentAFFilters[i])
+                                    await filterAlgoInput.trigger(await $.Event("keyup",{keyCode:13}))
+                                }
+                                await filterAlgoInput.val(currentAFValue)
+                                await filterAlgoUL.animate({scrollTop: -Number.MAX_SAFE_INTEGER},1)
+                                await filterAlgoUL[0]?.scroll(0, -Number.MAX_SAFE_INTEGER)
                                 return
                             })
                             // Double Check
@@ -4037,22 +4003,22 @@
                 return updateAnime(updateID, username, anUpdate, versionUpdate, data.returnInfo)
             } else if(status==='notAnUpdate'){
                 worker5.terminate()
+                let filterAlgoInput = await $("#flex2")
+                const currentFAValue = filterAlgoInput.val()
                 await new Promise(async(resolve)=>{
                     let algoFilters = await $("ul.flex2 > .value")
                     await algoFilters.children(".text").toArray()?.forEach(async(e,idx)=>{
-                        await $("#flex2").prop("disabled", true)
+                        await filterAlgoInput.prop("disabled", true)
                         await algoFilters.eq(idx).children(".fdl-remove").trigger("click")
-                        await $("#flex2").prop("disabled", false)
+                        await filterAlgoInput.prop("disabled", false)
                     })
                     return resolve()
                 }).then(async()=>{
-                    let filterAlgoInput = await $("#flex2")
                     for(let i=0; i<savedFilterAlgo.length; i++) {
                         await filterAlgoInput.val(savedFilterAlgo[i])
-                        let e = await $.Event("keyup",{keyCode:13})
-                        await filterAlgoInput.trigger(e)
-                        await filterAlgoInput.val("")
+                        await filterAlgoInput.trigger(await $.Event("keyup",{keyCode:13}))
                     }
+                    filterAlgoInput.val(currentFAValue)
                 })
                 requestIsRunning = false
             } else if(status==='backUpData') {
